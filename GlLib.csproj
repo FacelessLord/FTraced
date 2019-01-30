@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenTK.NETCore" Version="1.1.2749.6433" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="textures\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="DiggerLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>libs\DiggerLib.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

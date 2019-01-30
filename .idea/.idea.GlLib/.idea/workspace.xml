@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e05593b8-9ce5-4a92-af10-5cf1c627d507" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/contentModel.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/riderModule.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.uuid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Core/Core.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GlLib.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Graphic/GraphicCore.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Graphic/GraphicWindow.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Graphic/Texture.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Graphic/Vertexer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Map/Chunk.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Map/GrassBlock.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Map/TerrainBlock.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.uuid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/.uuid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/.uuid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/DiggerLib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.runtimeconfig.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.runtimeconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/.directory" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/dragon_slayer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/grass.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/grass_autumn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/null.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/one_and_a_half_sword.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/one_and_a_half_sword_uncommon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/DiggerLib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/opentk.3.0.1.nupkg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/opentk.glcontrol.3.0.1.nupkg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/.uuid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/.uuid" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.CopyComplete" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csprojAssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/GlLib.csproj.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/GlLib.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/GlLib.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/.directory" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/dragon_slayer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/grass.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/grass_autumn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/null.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/one_and_a_half_sword.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/one_and_a_half_sword_uncommon.png" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Map/Chunk.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="468">
+              <caret line="42" column="52" selection-start-line="42" selection-start-column="52" selection-end-line="42" selection-end-column="52" />
+              <folding>
+                <marker date="1548855804860" expanded="false" signature="6:67" ph="..." />
+                <marker date="1548855804860" expanded="true" signature="88:1525" ph="{...}" />
+                <marker date="1548855804860" expanded="true" signature="113:1523" ph="{...}" />
+                <marker date="1548855804860" expanded="true" signature="289:385" ph="{...}" />
+                <marker date="1548855804860" expanded="true" signature="451:551" ph="{...}" />
+                <marker date="1548855804860" expanded="true" signature="621:1517" ph="{...}" />
+                <marker date="1548855804860" expanded="true" signature="866:1466" ph="{...}" />
+                <marker date="1548855804860" expanded="true" signature="924:1452" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Core/Core.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="104">
+              <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+              <folding>
+                <marker date="1548016126184" expanded="false" signature="6:48" ph="..." />
+                <marker date="1548016126184" expanded="true" signature="70:263" ph="{...}" />
+                <marker date="1548016126184" expanded="true" signature="103:261" ph="{...}" />
+                <marker date="1548016126184" expanded="true" signature="156:254" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Graphic/GraphicWindow.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="143">
+              <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+              <folding>
+                <marker date="1548855960448" expanded="false" signature="6:201" ph="..." />
+                <marker date="1548855960448" expanded="true" signature="226:2417" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="272:2415" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="394:427" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="492:734" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="637:689" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="789:885" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="938:1020" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="1052:1194" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="1259:1997" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="2169:2353" ph="{...}" />
+                <marker date="1548855960448" expanded="true" signature="2235:2313" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Map/TerrainBlock.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="104">
+              <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+              <folding>
+                <marker date="1548852984001" expanded="true" signature="41:340" ph="{...}" />
+                <marker date="1548852984001" expanded="true" signature="82:338" ph="{...}" />
+                <marker date="1548852984001" expanded="true" signature="97:231" ph="/// name in format : [mod:]block.[blockset.]blockname or  ... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Core/Core.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Graphic/GraphicWindow.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Graphic/Texture.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Graphic/Vertexer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/34592514-C0AB-44AE-BA27-D1E4FA8D78AD/9b/b273bb19/DiggerLib.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Map/Chunk.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Map/TerrainBlock.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Map/GrassBlock.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Map/TerrainBlock.cs" />
+        <option value="$PROJECT_DIR$/Map/GrassBlock.cs" />
+        <option value="$PROJECT_DIR$/Map/Chunk.cs" />
+        <option value="$PROJECT_DIR$/Graphic/GraphicWindow.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="30" />
+    <option name="width" value="1336" />
+    <option name="height" value="768" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <option name="show-all-files" value="false" />
+      </pane>
+      <pane id="FileSystemExplorer" />
+      <pane id="AssemblyExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Project" type="5427d58d:AssemblyExplorerRootNode" />
+              <item name="DiggerLib (1.0.0.0, msil, .Net Framework v4.6.1)" type="5e97225f:AssemblyExplorerNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/DiggerLib.dll" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <envs>
+        <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
+        <env name="ASPNETCORE_URLS" value="http://localhost:5000" />
+      </envs>
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/GlLib.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v2.2" />
+      <browser url="http://localhost:5000" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e05593b8-9ce5-4a92-af10-5cf1c627d507" name="Default Changelist" comment="" />
+      <created>1548853455644</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1548853455644</updated>
+      <workItem from="1548853457927" duration="2642000" />
+      <workItem from="1548857948448" duration="335000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2977000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="30" y="0" width="1336" height="768" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25269645" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Capture Tool" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3287879" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.034848485" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="NuGet" order="7" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Unit Tests" order="11" />
+      <window_info anchor="bottom" id="Terminal" order="12" />
+      <window_info anchor="bottom" id="Event Log" order="13" side_tool="true" />
+      <window_info anchor="bottom" id="Build" order="14" weight="0.3287879" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Capture Analysis" order="3" />
+      <window_info anchor="right" id="Errors In Solution" order="4" />
+      <window_info anchor="right" id="Database" order="5" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Image Layers" order="0" />
+      <window_info id="Capture Tool" order="1" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="3" visible="true" weight="0.24961479" />
+      <window_info id="Structure" order="4" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="NuGet" order="0" />
+      <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unit Tests" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="5" />
+      <window_info anchor="bottom" id="Version Control" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.3287879" />
+      <window_info anchor="bottom" id="Message" order="8" />
+      <window_info anchor="bottom" id="Find" order="9" />
+      <window_info anchor="bottom" id="Run" order="10" weight="0.3287879" />
+      <window_info active="true" anchor="bottom" id="Debug" order="11" visible="true" weight="0.034848485" />
+      <window_info anchor="bottom" id="Cvs" order="12" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="13" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="14" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Errors In Solution" order="1" />
+      <window_info anchor="right" id="Database" order="2" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Graphic/Texture.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39">
+          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+          <folding>
+            <marker date="1548851158706" expanded="false" signature="6:224" ph="..." />
+            <marker date="1548851158706" expanded="true" signature="249:5795" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="291:5793" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="453:4631" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="829:1184" ph="/* ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be ... */" />
+            <marker date="1548851158706" expanded="true" signature="1438:1598" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="1612:2196" ph="/* Now that have our pixels, we need to set a few settings. ... */" />
+            <marker date="1548851158706" expanded="true" signature="2491:2711" ph="/* Now, set the wrapping mode. S is for the X axis, and T is for the Y axis. ... */" />
+            <marker date="1548851158706" expanded="true" signature="3088:3917" ph="/* Now that our pixels have been loaded and our settings are prepared, it's time to generate a texture. We do thi ... */" />
+            <marker date="1548851158706" expanded="true" signature="4119:4558" ph="/* Next, generate mipmaps. ... */" />
+            <marker date="1548851158706" expanded="true" signature="4641:4961" ph="/* Activate texture ... */" />
+            <marker date="1548851158706" expanded="true" signature="5027:5188" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="5290:5591" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="5333:5581" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="5378:5484" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="5611:5669" ph="{...}" />
+            <marker date="1548851158706" expanded="true" signature="5701:5787" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/34592514-C0AB-44AE-BA27-D1E4FA8D78AD/9b/b273bb19/DiggerLib.cs">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Graphic/Vertexer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="51" column="30" selection-start-line="51" selection-start-column="30" selection-end-line="51" selection-end-column="30" />
+          <folding>
+            <marker date="1548848924230" expanded="false" signature="6:77" ph="..." />
+            <marker date="1548848924230" expanded="true" signature="102:3728" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="130:3726" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="180:244" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="289:354" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="402:465" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="525:573" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="629:678" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="742:793" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="881:961" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="1049:1131" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="1166:1208" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="1264:1492" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="1626:2395" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="2514:3383" ph="{...}" />
+            <marker date="1548848924230" expanded="true" signature="3616:3720" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Map/GrassBlock.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+          <folding>
+            <marker date="1548855545066" expanded="true" signature="41:333" ph="{...}" />
+            <marker date="1548855545066" expanded="true" signature="84:331" ph="{...}" />
+            <marker date="1548855545066" expanded="true" signature="131:193" ph="{...}" />
+            <marker date="1548855545066" expanded="true" signature="251:325" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Map/Chunk.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="42" column="52" selection-start-line="42" selection-start-column="52" selection-end-line="42" selection-end-column="52" />
+          <folding>
+            <marker date="1548855804860" expanded="false" signature="6:67" ph="..." />
+            <marker date="1548855804860" expanded="true" signature="88:1525" ph="{...}" />
+            <marker date="1548855804860" expanded="true" signature="113:1523" ph="{...}" />
+            <marker date="1548855804860" expanded="true" signature="289:385" ph="{...}" />
+            <marker date="1548855804860" expanded="true" signature="451:551" ph="{...}" />
+            <marker date="1548855804860" expanded="true" signature="621:1517" ph="{...}" />
+            <marker date="1548855804860" expanded="true" signature="866:1466" ph="{...}" />
+            <marker date="1548855804860" expanded="true" signature="924:1452" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/Core.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
+          <folding>
+            <marker date="1548016126184" expanded="false" signature="6:48" ph="..." />
+            <marker date="1548016126184" expanded="true" signature="70:263" ph="{...}" />
+            <marker date="1548016126184" expanded="true" signature="103:261" ph="{...}" />
+            <marker date="1548016126184" expanded="true" signature="156:254" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Map/TerrainBlock.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+          <folding>
+            <marker date="1548852984001" expanded="true" signature="41:340" ph="{...}" />
+            <marker date="1548852984001" expanded="true" signature="82:338" ph="{...}" />
+            <marker date="1548852984001" expanded="true" signature="97:231" ph="/// name in format : [mod:]block.[blockset.]blockname or  ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Graphic/GraphicWindow.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding>
+            <marker date="1548855960448" expanded="false" signature="6:201" ph="..." />
+            <marker date="1548855960448" expanded="true" signature="226:2417" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="272:2415" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="394:427" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="492:734" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="637:689" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="789:885" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="938:1020" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="1052:1194" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="1259:1997" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="2169:2353" ph="{...}" />
+            <marker date="1548855960448" expanded="true" signature="2235:2313" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

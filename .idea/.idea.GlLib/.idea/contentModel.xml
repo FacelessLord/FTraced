@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2018.3/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2018.3/system/resharper-host/local/Transient/ReSharperHost/v183/SolutionCaches/_AirGame.1585822991.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p=".uuid" t="Include" />
+      <e p="Core" t="Include">
+        <e p="Core.cs" t="Include" />
+      </e>
+      <e p="GlLib.csproj" t="IncludeRecursive" />
+      <e p="Graphic" t="Include">
+        <e p="GraphicCore.cs" t="Include" />
+        <e p="GraphicWindow.cs" t="Include" />
+        <e p="Texture.cs" t="Include" />
+        <e p="Vertexer.cs" t="Include" />
+      </e>
+      <e p="LICENSE.md" t="Include" />
+      <e p="Map" t="Include">
+        <e p="Chunk.cs" t="Include" />
+        <e p="GrassBlock.cs" t="Include" />
+        <e p="TerrainBlock.cs" t="Include" />
+      </e>
+      <e p="README.md" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="libs" t="Include">
+        <e p="DiggerLib.dll" t="Include" />
+        <e p="opentk.3.0.1.nupkg" t="Include" />
+        <e p="opentk.glcontrol.3.0.1.nupkg" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="netcoreapp2.2" t="Include">
+            <e p="GlLib.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="textures" t="Include">
+        <e p=".directory" t="Include" />
+        <e p="dragon_slayer.png" t="Include" />
+        <e p="grass.png" t="Include" />
+        <e p="grass_autumn.png" t="Include" />
+        <e p="null.png" t="Include" />
+        <e p="one_and_a_half_sword.png" t="Include" />
+        <e p="one_and_a_half_sword_uncommon.png" t="Include" />
+      </e>
+    </e>
+  </component>
+</project>
