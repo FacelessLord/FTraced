@@ -60,6 +60,7 @@ namespace GlLib.Graphic
 
         public static void DrawTexturedModalRect(Texture texture,double x,double y, double u, double v, double width, double height)
         {
+            GL.PushMatrix();
             texture.Bind();
             double textureLeft = x;
             double textureUp = y;
@@ -79,41 +80,13 @@ namespace GlLib.Graphic
             VertexWithUvAt(textureLeft,textureDown,uvLeft,uvDown);
             
             Draw();
-        }
-
-        public static void DrawTexturedModalRect(double x, double y, double u, double v, double width, double height)
-        {
-            double textureLeft = x;
-            double textureUp = y;
-            double uOverV = width / height;
-            double kU = uOverV > 1 ? uOverV : 1;
-            double kV = uOverV < 1 ? uOverV : 1;
-            double textureRight = x + width;
-            double textureDown = y + height;
-
-            double uvLeft = u / _texture.width;
-            double uvUp = v / _texture.height;
-            double uvRight = (u + width) / _texture.width;
-            double uvDown = (v + height) / _texture.height;
-
-            StartDrawingQuads();
-
-            VertexWithUvAt(textureLeft, textureUp, uvLeft, uvUp);
-            VertexWithUvAt(textureRight, textureUp, uvRight, uvUp);
-            VertexWithUvAt(textureRight, textureDown, uvRight, uvDown);
-            VertexWithUvAt(textureLeft, textureDown, uvLeft, uvDown);
-
-            Draw();
+            GL.PopMatrix();
         }
 
         public static Dictionary<string,Texture> textures = new Dictionary<string,Texture>();
-
-        public static Texture _texture = new Texture("textures/null.png");
         
         public static void BindTexture(Texture text)
         {
-            EnableTextures();
-            _texture = text;
             text.Bind();
         }
     }

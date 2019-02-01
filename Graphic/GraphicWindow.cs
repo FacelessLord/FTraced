@@ -40,42 +40,33 @@ namespace GlLib.Graphic
             VSync = VSyncMode.On;
         }
 
-        static GraphicWindow()
-        {
-            
-            for(int i=0;i<16;i++)
-            for (int j = 0; j < 16; j++)
-                blocks[i, j] = b;
-        }
-
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
+            
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
 
             GL.Scale(1d / Width, 1d / Height, 1);
 
-            GL.Translate(0, 0, 0);
-            GL.Scale(0.75, 0.75, 1);
-
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 
-            Chunk chk = new Chunk(0, 0, blocks);
-            chk.RenderChunk(Width / 2, Height / 2);
+            Chunk chk1 = new Chunk(0, 0, Core.Core.blocks);
+            Chunk chk2 = new Chunk(1, 0, Core.Core.blocks);
+            Chunk chk3 = new Chunk(1, 1, Core.Core.blocks);
+            Chunk chk4 = new Chunk(0, 1, Core.Core.blocks);
+            GL.Translate(Width / 2d, Height / 2d,0);
+            GL.Scale(1.5, 1.5, 1);
+            chk1.RenderChunk(0,0);
+            //chk1.RenderChunk(-1,0);
             Console.WriteLine("i");
             SwapBuffers();
         }
-
-        static TerrainBlock b = new GrassBlock();
-        static TerrainBlock[,] blocks = new TerrainBlock[16, 16];
-
         protected override void OnUnload(EventArgs e)
         {
             foreach (var key in Vertexer.textures.Keys)

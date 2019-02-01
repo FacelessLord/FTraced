@@ -99,7 +99,6 @@ namespace GlLib.Graphic
         //The OpenGL standard requires that there be at least 16, but there can be more depending on your graphics card.
         public void Bind(TextureUnit unit = TextureUnit.Texture0)
         {
-            GL.Enable(EnableCap.Texture2D);
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }

@@ -17,8 +17,13 @@
       </e>
       <e p="LICENSE.md" t="Include" />
       <e p="Map" t="Include">
+        <e p="Blocks" t="Include">
+          <e p="AutumnGrassBlock.cs" t="Include" />
+          <e p="AutumnGrassWithStone.cs" t="Include" />
+          <e p="GrassBlock.cs" t="Include" />
+          <e p="Path.cs" t="Include" />
+        </e>
         <e p="Chunk.cs" t="Include" />
-        <e p="GrassBlock.cs" t="Include" />
         <e p="TerrainBlock.cs" t="Include" />
       </e>
       <e p="README.md" t="Include" />
@@ -41,9 +46,12 @@
         <e p="dragon_slayer.png" t="Include" />
         <e p="grass.png" t="Include" />
         <e p="grass_autumn.png" t="Include" />
+        <e p="grass_autumn_st_0.png" t="Include" />
+        <e p="grass_autumn_st_1.png" t="Include" />
         <e p="null.png" t="Include" />
         <e p="one_and_a_half_sword.png" t="Include" />
         <e p="one_and_a_half_sword_uncommon.png" t="Include" />
+        <e p="path.png" t="Include" />
       </e>
     </e>
   </component>
