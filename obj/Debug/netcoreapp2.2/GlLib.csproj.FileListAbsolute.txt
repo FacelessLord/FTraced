@@ -16,7 +16,6 @@
 /home/lord_faceless/RiderProjects/GlLib/GlLib/bin/Debug/netcoreapp2.2/textures/.directory
 /home/lord_faceless/RiderProjects/GlLib/GlLib/bin/Debug/netcoreapp2.2/textures/grass.png
 /home/lord_faceless/RiderProjects/GlLib/GlLib/bin/Debug/netcoreapp2.2/textures/grass_autumn.png
-/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/.directory
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/dragon_slayer.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/grass.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/grass_autumn.png

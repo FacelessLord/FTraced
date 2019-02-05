@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e05593b8-9ce5-4a92-af10-5cf1c627d507" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Map/Blocks/AutumnGrassWithStone.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Map/Blocks/GrassBlock.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Map/Blocks/Path.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GlLib/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/Core.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Core/Core.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphic/GraphicWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Graphic/GraphicWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphic/Texture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Graphic/Texture.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphic/Vertexer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Graphic/Vertexer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Map/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Map/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Map/GrassBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Map/Blocks/AutumnGrassBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Map/TerrainBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Map/TerrainBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/GlLib.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/grass.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/grass_autumn.png" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/netcoreapp2.2/textures/grass_autumn.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/netcoreapp2.2/GlLib.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/textures/grass.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/grass_autumn.png" beforeDir="false" afterPath="$PROJECT_DIR$/textures/grass_autumn.png" afterDir="false" />
-    </list>
+    <list default="true" id="e05593b8-9ce5-4a92-af10-5cf1c627d507" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,10 +157,10 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="34" />
-    <option name="width" value="882" />
-    <option name="height" value="508" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="38" />
+    <option name="width" value="872" />
+    <option name="height" value="507" />
   </component>
   <component name="ProjectView">
     <navigator currentView="SolutionExplorer" proportions="" version="1">
@@ -275,12 +252,12 @@
       <workItem from="1548857948448" duration="1045000" />
       <workItem from="1548925480860" duration="1294000" />
       <workItem from="1548936835454" duration="862000" />
-      <workItem from="1548939414933" duration="10356000" />
+      <workItem from="1548939414933" duration="10951000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16199000" />
+    <option name="totallyTimeSpent" value="16794000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -292,17 +269,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="30" y="0" width="1336" height="768" extended-state="6" />
-    <editor active="true" />
+    <frame x="38" y="0" width="872" height="507" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25543478" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.39927185" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Capture Tool" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.11968504" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.20320855" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.06771654" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />

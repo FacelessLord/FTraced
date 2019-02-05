@@ -64,7 +64,6 @@ namespace GlLib.Graphic
             GL.Scale(1.5, 1.5, 1);
             chk1.RenderChunk(0,0);
             //chk1.RenderChunk(-1,0);
-            Console.WriteLine("i");
             SwapBuffers();
         }
         protected override void OnUnload(EventArgs e)
