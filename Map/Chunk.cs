@@ -1,13 +1,19 @@
+using System.Collections.Generic;
 using GlLib.Graphic;
 using DiggerLib;
+using GlLib.Entities;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Map
 {
     public class Chunk
     {
+        public const int Heights = 8;
+        
         public TerrainBlock[,] _blocks; // = new TerrainBlock[16,16];
 
+        public List<Entity>[] _entities = new List<Entity>[Heights];
+        
         public int _chunkX;
         public int _chunkY;
 
@@ -24,17 +30,17 @@ namespace GlLib.Map
             _blocks = blocks;
         }
 
-        public double blockWidth = 64;
-        public double blockHeight = 32;
+        public double _blockWidth = 64;
+        public double _blockHeight = 32;
 
         public void RenderChunk(double centerX, double centerY)
         {
             GL.PushMatrix();
 
-            GL.Translate((centerX+centerY)*blockWidth*8, (centerX-centerY)*blockHeight*8, 0);
+            GL.Translate((centerX+centerY)*_blockWidth*8, (centerX-centerY)*_blockHeight*8, 0);
 
-            Vector xAxis = new Vector(blockWidth / 2, blockHeight / 2);
-            Vector yAxis = new Vector(blockWidth / 2, -blockHeight / 2);
+            Vector xAxis = new Vector(_blockWidth / 2, _blockHeight / 2);
+            Vector yAxis = new Vector(_blockWidth / 2, -_blockHeight / 2);
 
             //GL.Color3(0.75,0.75,0.75);
             for (int i = 7; i > -9; i--)
@@ -52,9 +58,9 @@ namespace GlLib.Map
 
                     Vertexer.StartDrawingQuads();
 
-                    Vertexer.VertexWithUvAt(blockWidth, 0, 1, 0);
-                    Vertexer.VertexWithUvAt(blockWidth, blockHeight, 1, 1);
-                    Vertexer.VertexWithUvAt(0, blockHeight, 0, 1);
+                    Vertexer.VertexWithUvAt(_blockWidth, 0, 1, 0);
+                    Vertexer.VertexWithUvAt(_blockWidth, _blockHeight, 1, 1);
+                    Vertexer.VertexWithUvAt(0, _blockHeight, 0, 1);
                     Vertexer.VertexWithUvAt(0, 0, 0, 0);
 
                     Vertexer.Draw();
@@ -65,5 +71,17 @@ namespace GlLib.Map
 
             GL.PopMatrix();
         }
+
+        public bool _isLoaded = false;
+
+        public void LoadChunk(World world, int x, int y)
+        {
+            
+        }
+        public void UnloadChunk(World world, int x, int y)
+        {
+            
+        }
+        
     }
 }

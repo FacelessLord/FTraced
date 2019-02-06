@@ -51,10 +51,10 @@ namespace GlLib.Graphic
 
         public static Texture LoadTexture(string path)
         {
-            if (textures.ContainsKey(path))
-                return textures[path];
+            if (_textures.ContainsKey(path))
+                return _textures[path];
             var texture = new Texture("textures/"+path);
-            textures.Add(path,texture);
+            _textures.Add(path,texture);
             return texture;
         }
 
@@ -67,10 +67,10 @@ namespace GlLib.Graphic
             double textureRight = x + width;
             double textureDown = y + height;
 
-            double uvLeft = u / texture.width;
-            double uvUp = v / texture.height;
-            double uvRight= (u+width) / texture.width;
-            double uvDown = (v+height)/ texture.height;
+            double uvLeft = u / texture._width;
+            double uvUp = v / texture._height;
+            double uvRight= (u+width) / texture._width;
+            double uvDown = (v+height)/ texture._height;
             
             StartDrawingQuads();
             
@@ -83,7 +83,7 @@ namespace GlLib.Graphic
             GL.PopMatrix();
         }
 
-        public static Dictionary<string,Texture> textures = new Dictionary<string,Texture>();
+        public static Dictionary<string,Texture> _textures = new Dictionary<string,Texture>();
         
         public static void BindTexture(Texture text)
         {

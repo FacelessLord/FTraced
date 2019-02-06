@@ -12,17 +12,17 @@ namespace GlLib.Graphic
 
     public class Texture : IDisposable
     {
-        int Handle;
+        int _handle;
 
-        public int width;
-        public int height;
+        public int _width;
+        public int _height;
         
 
         //Create texture from path.
         public Texture(string path)
         {
             //Generate handle
-            Handle = GL.GenTexture();
+            _handle = GL.GenTexture();
 
 
             //Bind the handle
@@ -31,9 +31,9 @@ namespace GlLib.Graphic
 
             //Load the image
             Image<Rgba32> image = Image.Load(path);
-            width = image.Width;
-            height = image.Height;
-            Console.WriteLine($"path: {path}, width: {width}, height: {height}");
+            _width = image.Width;
+            _height = image.Height;
+            Console.WriteLine($"path: {path}, width: {_width}, height: {_height}");
             //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
             //This will correct that, making the texture display properly.
 //            image.Mutate(x => x.Flip(FlipMode.Vertical));
@@ -100,7 +100,7 @@ namespace GlLib.Graphic
         public void Bind(TextureUnit unit = TextureUnit.Texture0)
         {
             GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
+            GL.BindTexture(TextureTarget.Texture2D, _handle);
         }
 
         private bool _disposedValue = false;
@@ -114,7 +114,7 @@ namespace GlLib.Graphic
                     // TODO: dispose managed state (managed objects).
                 }
 
-                GL.DeleteProgram(Handle);
+                GL.DeleteProgram(_handle);
 
                 _disposedValue = true;
             }
@@ -122,7 +122,7 @@ namespace GlLib.Graphic
 
         ~Texture()
         {
-            GL.DeleteProgram(Handle);
+            GL.DeleteProgram(_handle);
         }
 
 
