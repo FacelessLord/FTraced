@@ -18,6 +18,9 @@
       <Reference Include="DiggerLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>libs\DiggerLib.dll</HintPath>
       </Reference>
+      <Reference Include="System.Net.Json, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>libs\System.Net.Json.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

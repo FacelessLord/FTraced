@@ -126,10 +126,10 @@ namespace GlLib.Utils
         public double _endX;
         public double _endY;
 
-        public int StartXI => (int) _startX;
-        public int StartYI => (int) _startY;
-        public int EndXI => (int) _endX;
-        public int EndYI => (int) _endY;
+        public int StartXi => (int) _startX;
+        public int StartYi => (int) _startY;
+        public int EndXi => (int) _endX;
+        public int EndYi => (int) _endY;
 
         public double Width => _endX - _startX;
         public double Height => _endY - _startY;

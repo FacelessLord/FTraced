@@ -44,7 +44,7 @@ namespace GlLib.Graphic
         {
             base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            
+
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
@@ -55,17 +55,12 @@ namespace GlLib.Graphic
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-
-            Chunk chk1 = new Chunk(0, 0, Core.Core._blocks);
-            Chunk chk2 = new Chunk(1, 0, Core.Core._blocks);
-            Chunk chk3 = new Chunk(1, 1, Core.Core._blocks);
-            Chunk chk4 = new Chunk(0, 1, Core.Core._blocks);
-            GL.Translate(Width / 2d, Height / 2d,0);
+            GL.Translate(Width / 2d, Height / 2d, 0);
             GL.Scale(1.5, 1.5, 1);
-            chk1.RenderChunk(0,0);
-            //chk1.RenderChunk(-1,0);
+            Core.Core.World.Render(0,0);
             SwapBuffers();
         }
+
         protected override void OnUnload(EventArgs e)
         {
             foreach (var key in Vertexer._textures.Keys)

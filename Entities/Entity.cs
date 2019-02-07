@@ -13,7 +13,9 @@ namespace GlLib.Entities
         public PlanarVector _velocity = new PlanarVector();
         public Chunk _chunkObj;
 
-        public bool noClip = false;
+        public bool _isDead = false;
+
+        public bool _noClip = false;
 
         public Entity(World world, RestrictedVector3D position, int height)
         {
@@ -50,7 +52,17 @@ namespace GlLib.Entities
             }
         }
 
+        public void SetDead(bool dead)
+        {
+            _isDead = dead;
+        }
+
         public virtual void OnCollideWith(Entity obj)
+        {
+            
+        }
+        
+        public virtual void Render()
         {
             
         }
