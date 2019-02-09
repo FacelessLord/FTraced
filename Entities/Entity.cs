@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using DiggerLib;
 using GlLib.Events;
+using GlLib.Graphic;
 using GlLib.Map;
 using GlLib.Utils;
+using OpenTK.Graphics.ES11;
 
 namespace GlLib.Entities
 {
@@ -12,12 +14,14 @@ namespace GlLib.Entities
         public RestrictedVector3D _position;
         public PlanarVector _velocity = new PlanarVector();
         public Chunk _chunkObj;
+        
+        public NbtTag _nbtTag = new NbtTag();
 
         public bool _isDead = false;
 
         public bool _noClip = false;
 
-        public Entity(World world, RestrictedVector3D position, int height)
+        public Entity(World world, RestrictedVector3D position)
         {
             _worldObj = world;
             _position = position;
@@ -64,7 +68,26 @@ namespace GlLib.Entities
         
         public virtual void Render()
         {
-            
+            Vertexer.DisableTextures();
+            GL.PushMatrix();
+            Vertexer.StartDrawingQuads();
+            GL.Color4(0.0f,1,1,1);
+            Vertexer.VertexWithUvAt(20, 0, 1, 0);
+            Vertexer.VertexWithUvAt(20, 20, 1, 1);
+            Vertexer.VertexWithUvAt(0, 20, 0, 1);
+            Vertexer.VertexWithUvAt(0, 0, 0, 0);
+
+            Vertexer.Draw();
+            GL.PopMatrix();
+            Vertexer.EnableTextures();
         }
+
+        public virtual string GetName()
+        {
+            return "entity.null";
+        }
+        
+        public virtual void SaveToNbt(NbtTag tag){}
+        public virtual void LoadFromNbt(NbtTag tag){}
     }
 }

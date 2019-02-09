@@ -2,6 +2,7 @@
 using GlLib.Graphic;
 using GlLib.Map;
 using GlLib.Registries;
+using GlLib.Utils;
 using OpenTK;
 
 namespace GlLib.Core
@@ -12,6 +13,7 @@ namespace GlLib.Core
         {
             Console.WriteLine("Hello World!");
             Blocks.Register();
+            Registries.Entities.Register();
             GraphicCore.Run();
         }
 

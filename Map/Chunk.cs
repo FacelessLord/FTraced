@@ -4,6 +4,7 @@ using System.Net.Json;
 using GlLib.Graphic;
 using DiggerLib;
 using GlLib.Entities;
+using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Map
@@ -33,6 +34,10 @@ namespace GlLib.Map
             _chunkY = y;
             _blocks = blocks;
             _isLoaded = true;
+            for (int i = 0; i < Heights; i++)
+            {
+                _entities[i] = new List<Entity>();
+            }
         }
         
         public Chunk(World world,int x, int y)
@@ -41,6 +46,10 @@ namespace GlLib.Map
             _chunkX = x;
             _chunkY = y;
             _blocks = new TerrainBlock[16,16];
+            for (int i = 0; i < Heights; i++)
+            {
+                _entities[i] = new List<Entity>();
+            }
         }
 
         public const double BlockWidth = 64;
@@ -82,8 +91,14 @@ namespace GlLib.Map
                     GL.PopMatrix();
                 }
             }
-            
-            
+
+            foreach (var level in _entities)
+            {
+                foreach (var entity in level)
+                {
+                    entity.Render();
+                }
+            }
 
             GL.PopMatrix();
         }
@@ -110,47 +125,85 @@ namespace GlLib.Map
             if (chunkCollection != null)
             {
                 _blocks = new TerrainBlock[16, 16];//todo
-                for (int i = 0; i < 16; i++)
-                {
-                    for (int j = 0; j < 16; j++)
-                    {
-                        foreach (var block in chunkCollection)
-                        {
-                            if (block.Name == i + "," + j && block is JsonStringValue blockName)
-                            {
-                                Console.WriteLine($"Chunk's block {i}x{j} is loaded");
-                                _blocks[i, j] = GameRegistry.GetBlockFromName(blockName.Value);
-                                break;
-                            }
-                        }
-                    }
-                }
-
                 foreach (var entry in chunkCollection)
                 {
-                    if (entry is JsonObjectCollection chunk && chunk.Name.StartsWith("Rect"))
+                    if (entry is JsonStringValue blockName)
                     {
-                        JsonObject preBorders = chunk[0];
-                        if (preBorders is JsonArrayCollection borders)
+                        if (blockName.Value.StartsWith("block."))
                         {
-                            JsonObject preBlock = chunk[1];
-                            if (preBlock is JsonStringValue blockName)
+                            string[] coords = blockName.Name.Split(',');
+                            int i = int.Parse(coords[0]);
+                            int j = int.Parse(coords[1]);
+
+//                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
+                            _blocks[i, j] = GameRegistry.GetBlockFromName(blockName.Value);
+                        }
+                    }
+
+                    if (entry is JsonObjectCollection collection)
+                    {
+                        if(collection.Name.StartsWith("Rect"))
+                        {
+                            JsonObject preBorders = collection[0];
+                            if (preBorders is JsonArrayCollection borders)
                             {
-                                TerrainBlock block = GameRegistry.GetBlockFromName(blockName.Value);
-                                int startX = (int)((JsonNumericValue)borders[0]).Value;
-                                int startY = (int)((JsonNumericValue)borders[1]).Value;
-                                int endX = (int)((JsonNumericValue)borders[2]).Value;
-                                int endY = (int)((JsonNumericValue)borders[3]).Value;
-                                for (int i = startX; i <= endX; i++)
+                                JsonObject preBlock = collection[1];
+                                if (preBlock is JsonStringValue rectBlockName)
                                 {
-                                    for (int j = startY; j <= endY; j++)
+                                    TerrainBlock block = GameRegistry.GetBlockFromName(rectBlockName.Value);
+                                    int startX = (int) ((JsonNumericValue) borders[0]).Value;
+                                    int startY = (int) ((JsonNumericValue) borders[1]).Value;
+                                    int endX = (int) ((JsonNumericValue) borders[2]).Value;
+                                    int endY = (int) ((JsonNumericValue) borders[3]).Value;
+                                    for (int i = startX; i <= endX; i++)
                                     {
-                                        _blocks[i, j] = block;
+                                        for (int j = startY; j <= endY; j++)
+                                        {
+                                            _blocks[i, j] = block;
+                                        }
                                     }
                                 }
                             }
                         }
-                        
+                        else//Entity
+                        {
+                            double posX = 0;
+                            double posY = 0;
+                            int z = 0;
+                            string id = "null";
+                            string rawTag = "";
+
+                            foreach (var entityField in collection)
+                            {
+                                if (entityField is JsonNumericValue number)
+                                {
+                                    switch (number.Name)
+                                    {
+                                        case "x": posX = number.Value;
+                                            break;
+                                        case "y": posY = number.Value;
+                                            break;
+                                        case "z": z = (int) number.Value;
+                                            break;
+                                    }
+                                }
+
+                                if (entityField is JsonStringValue str)
+                                {
+                                    switch (str.Name)
+                                    {
+                                        case "id": id = str.Value;
+                                            break;
+                                        case "tag": rawTag = str.Value;
+                                            break;
+                                    }
+                                }
+                            }
+
+                            Entity entity = GameRegistry.GetEntityFromName(id,_world,new RestrictedVector3D(posX,posY,z));
+                            entity._nbtTag = NbtTag.FromString(rawTag);
+                            _world.SpawnEntity(entity);
+                        }
                     }
                 }
                 
