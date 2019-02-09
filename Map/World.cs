@@ -19,19 +19,19 @@ namespace GlLib.Map
         {
             get
             {
-                if (i + _width / 2 < 0 || i + _width / 2 > _width)
+                if (i < 0 || i >= _width)
                     return null;
-                if (j + _height / 2 < 0 || j + _height / 2 > _height)
+                if (j < 0 || j >= _height)
                     return null;
-                return _chunks[i + _width / 2, j + _height / 2];
+                return _chunks[i ,j ];
             }
             set
             {
-                if (i + _width / 2 < 0 || i + _width / 2 > _width)
+                if (i < 0 || i > _width)
                     return;
-                if (j + _height / 2 < 0 || j + _height / 2 > _height)
+                if (j < 0 || j > _height)
                     return;
-                _chunks[i + _width / 2, j + _height / 2] = value;
+                _chunks[i , j ] = value;
             }
         }
 
@@ -47,11 +47,21 @@ namespace GlLib.Map
             
             _chunks = new Chunk[_width, _height];
 
-            for (int i = -_width / 2; i < _width - _width / 2; i++)
+            for (int i = 0; i < _width ; i++)
             {
-                for (int j = -_height / 2; j < _height - _height / 2; j++)
+                for (int j = 0; j < _height ; j++)
                 {
                     this[i, j] = new Chunk(this, i, j);
+                }
+            }
+        }
+
+        public void LoadWorld()
+        {
+            for (int i = 0; i < _width ; i++)
+            {
+                for (int j = 0; j < _height ; j++)
+                {
                     this[i,j].LoadChunk(this,i,j);
                 }
             }
@@ -69,8 +79,10 @@ namespace GlLib.Map
         public void SpawnEntity(Entity e)
         {
             if (EventBus.OnEntitySpawn(e)) return;
-
+            
             e._chunkObj._entities[e._position._z].Add(e);
+            Console.WriteLine($"Entity {e} spawned in world");
+            Console.WriteLine($"{e._chunkObj._chunkX}, {e._chunkObj._chunkY}");
         }
 
         public void SetBlockAt(TerrainBlock block, int x, int y)
@@ -152,14 +164,43 @@ namespace GlLib.Map
         public void Render(int x, int y)
         {
             GL.PushMatrix();
-            for (int i = -_width/2; i <= _width/2; i++)
-            for (int j = -_height/2; j <= _height/2; j++)
+            GL.Translate(-Math.Max(_width,_height)*Chunk.BlockWidth*5,0,0);
+            for (int i = 0; i < _width; i++)
+            for (int j = 0; j < _height; j++)
                 if (this[i + x, j + y]._isLoaded)
                 {
                     this[i + x, j + y].RenderChunk(i, j);
                 }
 
             GL.PopMatrix();
+        }
+
+        public void Update()
+        {
+            foreach (var pair in _entityRemoveQueue)
+            {
+                pair.chk._entities[pair.e._position._z].Remove((pair.e));
+            }
+            _entityRemoveQueue.Clear();
+            foreach (var pair in _entityAddQueue)
+            {
+                pair.chk._entities[pair.e._position._z].Add((pair.e));
+            }
+            _entityAddQueue.Clear();
+            foreach (var chunk in _chunks)
+            {
+                chunk.Update();
+            }
+        }
+
+        public List<(Entity e, Chunk chk)> _entityRemoveQueue = new List<(Entity e, Chunk chk)>();
+        public List<(Entity e, Chunk chk)> _entityAddQueue = new List<(Entity e, Chunk chk)>();
+        
+        public void ChangeEntityChunk(Entity e, Chunk next)
+        {
+            _entityRemoveQueue.Add((e,e._chunkObj));
+            _entityAddQueue.Add((e,next));
+            e._chunkObj = next;
         }
     }
 }

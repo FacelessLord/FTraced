@@ -15,9 +15,9 @@ namespace GlLib.Map
 
         public World _world;
         public TerrainBlock[,] _blocks; // = new TerrainBlock[16,16];
-
+    
         public List<Entity>[] _entities = new List<Entity>[Heights];
-        
+
         public int _chunkX;
         public int _chunkY;
 
@@ -27,25 +27,12 @@ namespace GlLib.Map
             set => _blocks[i, j] = value;
         }
 
-        public Chunk(World world,int x, int y, TerrainBlock[,] blocks)
+        public Chunk(World world, int x, int y)
         {
             _world = world;
             _chunkX = x;
             _chunkY = y;
-            _blocks = blocks;
-            _isLoaded = true;
-            for (int i = 0; i < Heights; i++)
-            {
-                _entities[i] = new List<Entity>();
-            }
-        }
-        
-        public Chunk(World world,int x, int y)
-        {
-            _world = world;
-            _chunkX = x;
-            _chunkY = y;
-            _blocks = new TerrainBlock[16,16];
+            _blocks = new TerrainBlock[16, 16];
             for (int i = 0; i < Heights; i++)
             {
                 _entities[i] = new List<Entity>();
@@ -59,24 +46,24 @@ namespace GlLib.Map
         {
             GL.PushMatrix();
 
-            GL.Translate((centerX+centerY)*BlockWidth*8, (centerX-centerY)*BlockHeight*8, 0);
+            GL.Translate((centerX + centerY) * BlockWidth * 8, (centerX - centerY) * BlockHeight * 8, 0);
 
-            Vector xAxis = new Vector(BlockWidth / 2, BlockHeight / 2);
-            Vector yAxis = new Vector(BlockWidth / 2, -BlockHeight / 2);
+            PlanarVector xAxis = new PlanarVector(BlockWidth / 2, BlockHeight / 2);
+            PlanarVector yAxis = new PlanarVector(BlockWidth / 2, -BlockHeight / 2);
 
             //GL.Color3(0.75,0.75,0.75);
             for (int i = 7; i > -9; i--)
             {
                 for (int j = 7; j > -9; j--)
                 {
-                    TerrainBlock block = _blocks[i+8, j+8];
-                    if(block == null) continue;
-                    Texture btexture = block.GetTexture(i+8, j+8);
+                    TerrainBlock block = _blocks[i + 8, j + 8];
+                    if (block == null) continue;
+                    Texture btexture = block.GetTexture(i + 8, j + 8);
                     Vertexer.BindTexture(btexture);
-                    Vector coord = xAxis * i + yAxis * j;
+                    PlanarVector coord = xAxis * i + yAxis * j;
                     GL.PushMatrix();
 
-                    GL.Translate(coord.X, coord.Y, 0);
+                    GL.Translate(coord._x, coord._y, 0);
                     //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
                     Vertexer.StartDrawingQuads();
@@ -87,7 +74,7 @@ namespace GlLib.Map
                     Vertexer.VertexWithUvAt(0, 0, 0, 0);
 
                     Vertexer.Draw();
-                    
+
                     GL.PopMatrix();
                 }
             }
@@ -96,7 +83,12 @@ namespace GlLib.Map
             {
                 foreach (var entity in level)
                 {
-                    entity.Render();
+                    PlanarVector coord = xAxis * (entity._position._x % 16 - 8) + yAxis * (entity._position._y % 16 - 8);
+                    GL.PushMatrix();
+
+                    GL.Translate(coord._x, coord._y, 0);
+                    entity.Render(xAxis, yAxis);
+                    GL.PopMatrix();
                 }
             }
 
@@ -124,7 +116,7 @@ namespace GlLib.Map
 
             if (chunkCollection != null)
             {
-                _blocks = new TerrainBlock[16, 16];//todo
+                _blocks = new TerrainBlock[16, 16]; //todo
                 foreach (var entry in chunkCollection)
                 {
                     if (entry is JsonStringValue blockName)
@@ -142,7 +134,7 @@ namespace GlLib.Map
 
                     if (entry is JsonObjectCollection collection)
                     {
-                        if(collection.Name.StartsWith("Rect"))
+                        if (collection.Name.StartsWith("Rect"))
                         {
                             JsonObject preBorders = collection[0];
                             if (preBorders is JsonArrayCollection borders)
@@ -165,25 +157,30 @@ namespace GlLib.Map
                                 }
                             }
                         }
-                        else//Entity
+                        else //Entity
                         {
                             double posX = 0;
                             double posY = 0;
                             int z = 0;
+                            double velX = 0;
+                            double velY = 0;
                             string id = "null";
                             string rawTag = "";
 
                             foreach (var entityField in collection)
                             {
-                                if (entityField is JsonNumericValue number)
+                                if (entityField is JsonArrayCollection arr)
                                 {
-                                    switch (number.Name)
+                                    switch (arr.Name)
                                     {
-                                        case "x": posX = number.Value;
+                                        case "pos":
+                                            (posX, posY, z) = (((JsonNumericValue) arr[0]).Value,
+                                                ((JsonNumericValue) arr[1]).Value,
+                                                (int) ((JsonNumericValue) arr[2]).Value);
                                             break;
-                                        case "y": posY = number.Value;
-                                            break;
-                                        case "z": z = (int) number.Value;
+                                        case "vel":
+                                            (velX, velY) = (((JsonNumericValue) arr[0]).Value,
+                                                ((JsonNumericValue) arr[1]).Value);
                                             break;
                                     }
                                 }
@@ -192,29 +189,46 @@ namespace GlLib.Map
                                 {
                                     switch (str.Name)
                                     {
-                                        case "id": id = str.Value;
+                                        case "id":
+                                            id = str.Value;
                                             break;
-                                        case "tag": rawTag = str.Value;
+                                        case "tag":
+                                            rawTag = str.Value;
                                             break;
                                     }
                                 }
                             }
 
-                            Entity entity = GameRegistry.GetEntityFromName(id,_world,new RestrictedVector3D(posX,posY,z));
+                            Entity entity =
+                                GameRegistry.GetEntityFromName(id, _world, new RestrictedVector3D(posX+x*16, posY+y*16, z));
+                            entity._velocity = new PlanarVector(velX, velY);
+                            entity._chunkObj = this;
                             entity._nbtTag = NbtTag.FromString(rawTag);
                             _world.SpawnEntity(entity);
+                            Console.WriteLine($"Entity with id \"{id}\" has been loaded");
                         }
                     }
                 }
-                
+
                 Console.WriteLine($"Chunk {_chunkX}x{_chunkY} is loaded");
                 _isLoaded = true;
             }
         }
+
         public void UnloadChunk(World world, int x, int y)
         {
-            
+
         }
-        
+
+        public void Update()
+        {
+            foreach (var level in _entities)
+            {
+                foreach (var entity in level)
+                {
+                    entity.Update();
+                }
+            }
+        }
     }
 }

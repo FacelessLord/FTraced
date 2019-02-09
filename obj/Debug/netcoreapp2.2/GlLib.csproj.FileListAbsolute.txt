@@ -39,3 +39,4 @@
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/grass_autumn_st_1.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/path.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/System.Net.Json.dll
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/.directory

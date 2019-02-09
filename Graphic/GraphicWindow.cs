@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using GlLib.Map;
+using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -16,6 +17,7 @@ namespace GlLib.Graphic
         {
             
         }
+        
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -25,6 +27,26 @@ namespace GlLib.Graphic
             {
                 Exit();
             }
+
+            Core.Core.playerSpeed = new PlanarVector();
+            double speed = 0.1;
+            if (input.IsKeyDown(Key.W))
+            {
+                Core.Core.playerSpeed += new PlanarVector(-speed,speed);
+            }
+            if (input.IsKeyDown(Key.A))
+            {
+                Core.Core.playerSpeed += new PlanarVector(-speed,-speed);
+            }
+            if (input.IsKeyDown(Key.S))
+            {
+                Core.Core.playerSpeed += new PlanarVector(speed,-speed);
+            }
+            if (input.IsKeyDown(Key.D))
+            {
+                Core.Core.playerSpeed += new PlanarVector(speed, speed);
+            }
+            Core.Core.World.Update();
             base.OnUpdateFrame(e);
         }
 
@@ -56,7 +78,7 @@ namespace GlLib.Graphic
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             GL.Translate(Width / 2d, Height / 2d, 0);
-            GL.Scale(1.5, 1.5, 1);
+            GL.Scale(1/3d, 1/3d, 1);
             Core.Core.World.Render(0,0);
             SwapBuffers();
         }

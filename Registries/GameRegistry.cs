@@ -58,7 +58,7 @@ namespace GlLib.Map
             if (entities.ContainsKey(entityName))
             {
                 Type clazz =(Type) entities[entityName];
-                Activator.CreateInstance(clazz,world,pos);
+                return (Entity) Activator.CreateInstance(clazz,world,pos);
             }
 
             return null;

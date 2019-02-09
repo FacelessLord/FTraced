@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using DiggerLib;
 using GlLib.Events;
 using GlLib.Graphic;
 using GlLib.Map;
+using GlLib.Registries;
 using GlLib.Utils;
-using OpenTK.Graphics.ES11;
+using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Entities
 {
@@ -14,13 +16,14 @@ namespace GlLib.Entities
         public RestrictedVector3D _position;
         public PlanarVector _velocity = new PlanarVector();
         public Chunk _chunkObj;
-        
+
         public NbtTag _nbtTag = new NbtTag();
 
         public bool _isDead = false;
 
         public bool _noClip = false;
 
+        
         public Entity(World world, RestrictedVector3D position)
         {
             _worldObj = world;
@@ -30,7 +33,7 @@ namespace GlLib.Entities
 
         public AxisAlignedBb GetAaBb()
         {
-            return _position.ToPlanar().ExpandBothTo(1,1);
+            return _position.ToPlanar().ExpandBothTo(1, 1);
         }
 
         public TerrainBlock GetUnderlyingBlock()
@@ -41,18 +44,47 @@ namespace GlLib.Entities
         public virtual void Update()
         {
             if (EventBus.OnEntityUpdate(this)) return;
-            _position += _velocity;
-            if (_position.Ix / 16 != _chunkObj._chunkX || _position.Iy / 16 != _chunkObj._chunkY)
-            {
-                if (EventBus.OnEntityLeftChunk(this) || EventBus.OnEntityEnteredChunk(this))
-                    _position -= _velocity;
-                    _chunkObj = _worldObj._chunks[_position.Ix / 16, _position.Iy / 16];
-            }
+            MoveEntity(this,_position,_velocity);
 
             List<Entity> entities = _worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), _position._z);
             foreach (var entity in entities)
             {
                 OnCollideWith(entity);
+            }
+        }
+
+        private void MoveEntity(Entity entity, RestrictedVector3D position, PlanarVector velocity)
+        {
+            RestrictedVector3D oldPos = _position;
+            //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
+            _position += _velocity;
+            Chunk proj = GetProjection(_position);
+            if (proj != null && proj._isLoaded)
+            {
+                if (_chunkObj != proj)
+                {
+                    Core.Core.World.ChangeEntityChunk(this, proj);
+                }
+            }
+            else
+            {
+                _position = oldPos;
+            }
+        }
+
+        public static Chunk GetProjection(RestrictedVector3D vector)
+        {
+            if (vector.Ix < 0 || vector.Iy < 0)
+            {
+                return null;
+            }
+            try
+            {
+                return Core.Core.World[vector.Ix / 16, vector.Iy / 16];
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
@@ -63,15 +95,18 @@ namespace GlLib.Entities
 
         public virtual void OnCollideWith(Entity obj)
         {
-            
+    
         }
-        
-        public virtual void Render()
+
+        public virtual void Render(PlanarVector xAxis, PlanarVector yAxis)
         {
-            Vertexer.DisableTextures();
             GL.PushMatrix();
+            Texture btexture = Blocks.AutumnGrassStone.GetTexture(_position.Ix, _position.Iy);
+            Vertexer.BindTexture(btexture);
+            //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
+
             Vertexer.StartDrawingQuads();
-            GL.Color4(0.0f,1,1,1);
+
             Vertexer.VertexWithUvAt(20, 0, 1, 0);
             Vertexer.VertexWithUvAt(20, 20, 1, 1);
             Vertexer.VertexWithUvAt(0, 20, 0, 1);
@@ -79,15 +114,19 @@ namespace GlLib.Entities
 
             Vertexer.Draw();
             GL.PopMatrix();
-            Vertexer.EnableTextures();
         }
 
         public virtual string GetName()
         {
             return "entity.null";
         }
-        
-        public virtual void SaveToNbt(NbtTag tag){}
-        public virtual void LoadFromNbt(NbtTag tag){}
+
+        public virtual void SaveToNbt(NbtTag tag)
+        {
+        }
+
+        public virtual void LoadFromNbt(NbtTag tag)
+        {
+        }
     }
 }

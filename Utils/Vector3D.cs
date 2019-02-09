@@ -10,8 +10,8 @@ namespace GlLib.Utils
         public double _y = 0;
         public int _z = 0;
 
-        public int Ix => (int) _x;
-        public int Iy => (int) _y;
+        public int Ix => (int)Math.Floor(_x);
+        public int Iy => (int)Math.Floor(_y);
 
         public RestrictedVector3D()
         {
@@ -93,9 +93,16 @@ namespace GlLib.Utils
             (_x, _y) = (x, y);
         }
 
+        public double Length => Math.Sqrt(_x * _x + _y * _y);
+
         public static PlanarVector operator *(PlanarVector a, double k)
         {
             return new PlanarVector(a._x * k, a._y * k);
+        }
+        
+        public static PlanarVector operator /(PlanarVector a, double k)
+        {
+            return new PlanarVector(a._x / k, a._y / k);
         }
 
         public static PlanarVector operator +(PlanarVector a, PlanarVector b)
@@ -156,7 +163,7 @@ namespace GlLib.Utils
             double halfWidth = _endX - cx1 + box._endX - cx2;
             double halfHeight = _endY - cy1 + box._endY - cy2;
 
-            return Math.Abs(cx1 - cx2) < halfWidth || Math.Abs(cy1 - cy2) < halfHeight;
+            return Math.Abs(cx1 - cx2) < halfWidth && Math.Abs(cy1 - cy2) < halfHeight;
         }
 
         public static AxisAlignedBb operator +(AxisAlignedBb a, PlanarVector v)

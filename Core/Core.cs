@@ -11,13 +11,15 @@ namespace GlLib.Core
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine($"Hello World! {1/16}");
             Blocks.Register();
             Registries.Entities.Register();
+            World.LoadWorld();
             GraphicCore.Run();
         }
 
         public static World World = new World("maps/testmap1.json");
 
+        public static PlanarVector playerSpeed = new PlanarVector();
     }
 }
