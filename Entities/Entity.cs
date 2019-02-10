@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Json;
-using DiggerLib;
 using GlLib.Events;
-using GlLib.Graphic;
 using GlLib.Map;
-using GlLib.Registries;
 using GlLib.Utils;
-using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Entities
 {

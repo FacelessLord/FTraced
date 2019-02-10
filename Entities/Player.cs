@@ -1,7 +1,5 @@
-using System;
 using GlLib.Graphic;
 using GlLib.Map;
-using GlLib.Registries;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 

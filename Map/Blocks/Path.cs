@@ -1,4 +1,3 @@
-using System;
 using GlLib.Graphic;
 
 namespace GlLib.Map

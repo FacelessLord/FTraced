@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using OpenTK.Platform.MacOS;
 
 namespace GlLib.Utils
 {

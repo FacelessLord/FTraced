@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using GlLib.Input;
-using GlLib.Map;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using Color = OpenTK.Color;
 
 namespace GlLib.Graphic
 {
@@ -74,7 +69,6 @@ namespace GlLib.Graphic
             {
                 Vertexer._textures[key].Dispose();
             }
-
             Core.Core.World.UnloadWorld();
             base.OnUnload(e);
         }

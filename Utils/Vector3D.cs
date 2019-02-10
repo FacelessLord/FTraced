@@ -1,6 +1,4 @@
 using System;
-using DiggerLib;
-using OpenTK;
 
 namespace GlLib.Utils
 {

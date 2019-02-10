@@ -3,8 +3,6 @@ using GlLib.Graphic;
 using GlLib.Input;
 using GlLib.Map;
 using GlLib.Registries;
-using GlLib.Utils;
-using OpenTK;
 
 namespace GlLib.Core
 {

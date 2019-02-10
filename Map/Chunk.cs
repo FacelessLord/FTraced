@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Graphic;
-using DiggerLib;
 using GlLib.Entities;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
