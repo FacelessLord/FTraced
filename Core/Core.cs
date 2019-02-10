@@ -1,5 +1,6 @@
 ﻿using System;
 using GlLib.Graphic;
+using GlLib.Input;
 using GlLib.Map;
 using GlLib.Registries;
 using GlLib.Utils;
@@ -13,6 +14,7 @@ namespace GlLib.Core
         {
             Console.WriteLine($"Hello World! {1/16}");
             Blocks.Register();
+            KeyBinds.Register();
             Registries.Entities.Register();
             World.LoadWorld();
             GraphicCore.Run();

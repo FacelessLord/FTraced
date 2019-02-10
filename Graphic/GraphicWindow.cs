@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using GlLib.Input;
 using GlLib.Map;
 using GlLib.Utils;
 using OpenTK;
@@ -15,37 +16,21 @@ namespace GlLib.Graphic
     {
         public GraphicWindow(int width, int height, string title) : base(width, height,GraphicsMode.Default, title)
         {
-            
+            MouseHandler.Setup();
         }
         
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+            MouseHandler.Update();
+            KeyboardHandler.Update();
             KeyboardState input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape))
             {
                 Exit();
             }
-
-            Core.Core.playerSpeed = new PlanarVector();
-            double speed = 0.1;
-            if (input.IsKeyDown(Key.W))
-            {
-                Core.Core.playerSpeed += new PlanarVector(-speed,speed);
-            }
-            if (input.IsKeyDown(Key.A))
-            {
-                Core.Core.playerSpeed += new PlanarVector(-speed,-speed);
-            }
-            if (input.IsKeyDown(Key.S))
-            {
-                Core.Core.playerSpeed += new PlanarVector(speed,-speed);
-            }
-            if (input.IsKeyDown(Key.D))
-            {
-                Core.Core.playerSpeed += new PlanarVector(speed, speed);
-            }
+            
             Core.Core.World.Update();
             base.OnUpdateFrame(e);
         }

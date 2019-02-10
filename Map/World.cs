@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Json;
 using GlLib.Entities;
 using GlLib.Events;
+using GlLib.Input;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
@@ -12,6 +13,8 @@ namespace GlLib.Map
     public class World
     {
         public Chunk[,] _chunks;
+        
+        public List<Player> _players = new List<Player>();
 
         public string _mapName;
 
@@ -80,6 +83,8 @@ namespace GlLib.Map
         {
             if (EventBus.OnEntitySpawn(e)) return;
             
+            if(e is Player p)
+                _players.Add(p);
             e._chunkObj._entities[e._position._z].Add(e);
             Console.WriteLine($"Entity {e} spawned in world");
             Console.WriteLine($"{e._chunkObj._chunkX}, {e._chunkObj._chunkY}");
@@ -187,6 +192,12 @@ namespace GlLib.Map
                 pair.chk._entities[pair.e._position._z].Add((pair.e));
             }
             _entityAddQueue.Clear();
+            foreach (var player in _players)
+            {
+                player._acceleration = new PlanarVector();
+                KeyBinds.Update(player);
+                player.Update();
+            }
             foreach (var chunk in _chunks)
             {
                 chunk.Update();

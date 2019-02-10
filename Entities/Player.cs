@@ -1,3 +1,4 @@
+using System;
 using GlLib.Graphic;
 using GlLib.Map;
 using GlLib.Registries;
@@ -9,10 +10,13 @@ namespace GlLib.Entities
     public class Player : Entity
     {
         public string _nickname = "Player";
-        public Player(string nickname,World world, RestrictedVector3D position) : base(world, position)
+        public double _accelValue = 0.005;
+
+        public Player(string nickname, World world, RestrictedVector3D position) : base(world, position)
         {
             _nickname = nickname;
         }
+
         public Player(World world, RestrictedVector3D position) : base(world, position)
         {
         }
@@ -24,23 +28,23 @@ namespace GlLib.Entities
 
         public override void Update()
         {
-            _velocity = Core.Core.playerSpeed;
+            _nickname = _nbtTag.GetString("Name");
             base.Update();
         }
 
         public override void Render(PlanarVector xAxis, PlanarVector yAxis)
         {
             GL.PushMatrix();
-            Texture btexture = Blocks.AutumnGrassStone.GetTexture(_position.Ix, _position.Iy);
+            Texture btexture = Vertexer.LoadTexture("one_and_a_half_sword.png");
             Vertexer.BindTexture(btexture);
             //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
             Vertexer.StartDrawingQuads();
 
-            Vertexer.VertexWithUvAt(20, 0, 1, 0);
-            Vertexer.VertexWithUvAt(20, 20, 1, 1);
-            Vertexer.VertexWithUvAt(0, 20, 0, 1);
-            Vertexer.VertexWithUvAt(0, 0, 0, 0);
+            Vertexer.VertexWithUvAt(60, -60, 1, 0);
+            Vertexer.VertexWithUvAt(60, 60, 1, 1);
+            Vertexer.VertexWithUvAt(-60, 60, 0, 1);
+            Vertexer.VertexWithUvAt(-60, -60, 0, 0);
 
             Vertexer.Draw();
             GL.PopMatrix();

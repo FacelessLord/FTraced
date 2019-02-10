@@ -48,7 +48,7 @@ namespace GlLib.Map
         }
         
         
-        public static Entity GetEntityFromName(string entityName,World world,RestrictedVector3D pos)
+        public static Entity GetEntityFromName(string entityName,params object[] args)
         {
             Console.WriteLine(entityName);
             foreach (var key in entities.Keys)
@@ -58,7 +58,7 @@ namespace GlLib.Map
             if (entities.ContainsKey(entityName))
             {
                 Type clazz =(Type) entities[entityName];
-                return (Entity) Activator.CreateInstance(clazz,world,pos);
+                return (Entity) Activator.CreateInstance(clazz,args);
             }
 
             return null;

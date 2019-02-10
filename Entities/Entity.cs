@@ -15,6 +15,8 @@ namespace GlLib.Entities
         public World _worldObj;
         public RestrictedVector3D _position;
         public PlanarVector _velocity = new PlanarVector();
+        public PlanarVector _acceleration = new PlanarVector();
+        public PlanarVector _maxVel = new PlanarVector(0.3,0.3);
         public Chunk _chunkObj;
 
         public NbtTag _nbtTag = new NbtTag();
@@ -44,6 +46,20 @@ namespace GlLib.Entities
         public virtual void Update()
         {
             if (EventBus.OnEntityUpdate(this)) return;
+            
+            if (_acceleration._y == 0 && _acceleration._x == 0)
+            {
+                _velocity *= 0.95;
+            }
+            _velocity += _acceleration;
+            if (Math.Abs(_velocity._x) > _maxVel._x)
+            {
+                _velocity._x *= _maxVel._x / Math.Abs(_velocity._x);
+            }
+            if (Math.Abs(_velocity._y) > _maxVel._y)
+            {
+                _velocity._y *= _maxVel._y / Math.Abs(_velocity._y);
+            }
             MoveEntity(this,_position,_velocity);
 
             List<Entity> entities = _worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), _position._z);
@@ -57,6 +73,7 @@ namespace GlLib.Entities
         {
             RestrictedVector3D oldPos = _position;
             //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
+            
             _position += _velocity;
             Chunk proj = GetProjection(_position);
             if (proj != null && proj._isLoaded)
