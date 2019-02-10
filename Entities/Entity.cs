@@ -26,7 +26,7 @@ namespace GlLib.Entities
 
         public bool _noClip = false;
 
-        
+
         public Entity(World world, RestrictedVector3D position)
         {
             _worldObj = world;
@@ -74,7 +74,7 @@ namespace GlLib.Entities
         {
             RestrictedVector3D oldPos = _position;
             //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
-            
+
             _position += _velocity;
             Chunk proj = GetProjection(_position);
             if (proj != null && proj._isLoaded)
@@ -87,6 +87,7 @@ namespace GlLib.Entities
             else
             {
                 _position = oldPos;
+                _velocity = new PlanarVector();
             }
         }
 
@@ -118,20 +119,7 @@ namespace GlLib.Entities
 
         public virtual void Render(PlanarVector xAxis, PlanarVector yAxis)
         {
-            GL.PushMatrix();
-            Texture btexture = Blocks.AutumnGrassStone.GetTexture(_position.Ix, _position.Iy);
-            Vertexer.BindTexture(btexture);
-            //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
-
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(20, 0, 1, 0);
-            Vertexer.VertexWithUvAt(20, 20, 1, 1);
-            Vertexer.VertexWithUvAt(0, 20, 0, 1);
-            Vertexer.VertexWithUvAt(0, 0, 0, 0);
-
-            Vertexer.Draw();
-            GL.PopMatrix();
+           
         }
 
         public virtual string GetName()

@@ -58,11 +58,6 @@ namespace GlLib.Map
         
         public static Entity GetEntityFromName(string entityName,params object[] args)
         {
-            Console.WriteLine(entityName);
-            foreach (var key in entities.Keys)
-            {   
-                Console.WriteLine(key);
-            }
             if (entities.ContainsKey(entityName))
             {
                 Type clazz =(Type) entities[entityName];

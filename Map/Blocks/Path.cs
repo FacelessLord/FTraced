@@ -10,7 +10,7 @@ namespace GlLib.Map
             return "block.outdoor.grass.path";
         }
 
-        public override Texture GetTexture(int x, int y)
+        public override Texture GetTexture(World world,int x, int y)
         {
             return Vertexer.LoadTexture("path.png");
         }

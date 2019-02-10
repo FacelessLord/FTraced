@@ -103,8 +103,8 @@
       "borders": [
         0,
         0,
-        15,
-        15
+        2,
+        1
       ],
       "block": "block.outdoor.grass"
     },
@@ -120,19 +120,6 @@
       "vel": [
         0.0,
         0.0
-      ]
-    },
-    "entityn": {
-      "pos": [
-        7,
-        7,
-        0
-      ],
-      "id": "entity.null",
-      "tag": "",
-      "vel": [
-        0.1,
-        0.1
       ]
     }
   }

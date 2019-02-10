@@ -8,7 +8,6 @@ namespace GlLib.Registries
     {
         public static void Register()
         {
-            GameRegistry.RegisterEntity(new Entity(Core.Core.World,new RestrictedVector3D()));
             GameRegistry.RegisterEntity(new Player(Core.Core.World,new RestrictedVector3D()));
         }
     }

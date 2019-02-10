@@ -54,36 +54,45 @@ namespace GlLib.Map
             //GL.Color3(0.75,0.75,0.75);
             for (int i = 7; i > -9; i--)
             {
-                for (int j = 7; j > -9; j--)
+                for (int j = -8; j < 8; j++)
                 {
                     TerrainBlock block = _blocks[i + 8, j + 8];
                     if (block == null) continue;
-                    Texture btexture = block.GetTexture(i + 8, j + 8);
-                    Vertexer.BindTexture(btexture);
-                    PlanarVector coord = xAxis * i + yAxis * j;
-                    GL.PushMatrix();
+                    if (!block.RequiresSpecialRenderer(_world, i + 8, j + 8))
+                    {
+                        Texture btexture = block.GetTexture(_world, i + 8, j + 8);
+                        Vertexer.BindTexture(btexture);
+                        PlanarVector coord = xAxis * i + yAxis * j;
+                        GL.PushMatrix();
 
-                    GL.Translate(coord._x, coord._y, 0);
-                    //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
+                        GL.Translate(coord._x, coord._y, 0);
+                        //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
-                    Vertexer.StartDrawingQuads();
+                        Vertexer.StartDrawingQuads();
 
-                    Vertexer.VertexWithUvAt(BlockWidth, 0, 1, 0);
-                    Vertexer.VertexWithUvAt(BlockWidth, BlockHeight, 1, 1);
-                    Vertexer.VertexWithUvAt(0, BlockHeight, 0, 1);
-                    Vertexer.VertexWithUvAt(0, 0, 0, 0);
+                        Vertexer.VertexWithUvAt(BlockWidth, 0, 1, 0);
+                        Vertexer.VertexWithUvAt(BlockWidth, BlockHeight, 1, 1);
+                        Vertexer.VertexWithUvAt(0, BlockHeight, 0, 1);
+                        Vertexer.VertexWithUvAt(0, 0, 0, 0);
 
-                    Vertexer.Draw();
+                        Vertexer.Draw();
 
-                    GL.PopMatrix();
+                        GL.PopMatrix();
+                    }
+                    else
+                    {
+                        block.GetSpecialRenderer(_world, i, j).Render(_world, i, j);
+                    }
                 }
             }
+
+            GL.PopMatrix();
 
             foreach (var level in _entities)
             {
                 foreach (var entity in level)
                 {
-                    PlanarVector coord = xAxis * (entity._position._x % 16 - 8) + yAxis * (entity._position._y % 16 - 8);
+                    PlanarVector coord = xAxis * (entity._position._x - 8) + yAxis * (entity._position._y - 8);
                     GL.PushMatrix();
 
                     GL.Translate(coord._x, coord._y, 0);
@@ -91,8 +100,6 @@ namespace GlLib.Map
                     GL.PopMatrix();
                 }
             }
-
-            GL.PopMatrix();
         }
 
         public bool _isLoaded = false;
