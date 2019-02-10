@@ -14,11 +14,11 @@ namespace GlLib.Graphic
 {
     public class GraphicWindow : GameWindow
     {
-        public GraphicWindow(int width, int height, string title) : base(width, height,GraphicsMode.Default, title)
+        public GraphicWindow(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
             MouseHandler.Setup();
         }
-        
+
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -30,7 +30,7 @@ namespace GlLib.Graphic
             {
                 Exit();
             }
-            
+
             Core.Core.World.Update();
             base.OnUpdateFrame(e);
         }
@@ -63,8 +63,8 @@ namespace GlLib.Graphic
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             GL.Translate(Width / 2d, Height / 2d, 0);
-            GL.Scale(1/3d, 1/3d, 1);
-            Core.Core.World.Render(0,0);
+            GL.Scale(1 / 3d, 1 / 3d, 1);
+            Core.Core.World.Render(0, 0);
             SwapBuffers();
         }
 
@@ -74,6 +74,8 @@ namespace GlLib.Graphic
             {
                 Vertexer._textures[key].Dispose();
             }
+
+            Core.Core.World.UnloadWorld();
             base.OnUnload(e);
         }
 

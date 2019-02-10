@@ -8,7 +8,9 @@ namespace GlLib.Map
         /// name in format : [mod:]block.[blockset.]blockname[.subtype]
         /// </summary>
         /// <returns></returns>
-        public abstract string GetName(); 
+        public abstract string GetName();
+
+        public int id = -1;
         public abstract Texture GetTexture(int x, int y);
     }
 }

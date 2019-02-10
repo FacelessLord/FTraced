@@ -13,8 +13,8 @@ namespace GlLib.Utils
             {
                 ret.Append(obj+delim);
             }
-
-            ret.Remove(ret.Length - 1, 1);
+            if(objects.Length>0)
+                ret.Remove(ret.Length - 1, 1);
 
             return ret + "";
         }

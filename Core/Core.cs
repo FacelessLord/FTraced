@@ -21,7 +21,5 @@ namespace GlLib.Core
         }
 
         public static World World = new World("maps/testmap1.json");
-
-        public static PlanarVector playerSpeed = new PlanarVector();
     }
 }

@@ -1,7 +1,10 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Json;
+using System.Runtime.Serialization.Json;
+using System.Xml;
 using GlLib.Entities;
 using GlLib.Events;
 using GlLib.Input;
@@ -13,10 +16,8 @@ namespace GlLib.Map
     public class World
     {
         public Chunk[,] _chunks;
-        
-        public List<Player> _players = new List<Player>();
 
-        public string _mapName;
+        public List<Player> _players = new List<Player>();
 
         public Chunk this[int i, int j]
         {
@@ -26,7 +27,7 @@ namespace GlLib.Map
                     return null;
                 if (j < 0 || j >= _height)
                     return null;
-                return _chunks[i ,j ];
+                return _chunks[i, j];
             }
             set
             {
@@ -34,25 +35,27 @@ namespace GlLib.Map
                     return;
                 if (j < 0 || j > _height)
                     return;
-                _chunks[i , j ] = value;
+                _chunks[i, j] = value;
             }
         }
 
         public int _width;
         public int _height;
         public JsonObjectCollection _jsonObj;
+        public string _mapName;
 
         public World(string mapName)
         {
-            _jsonObj = LoadJsonWorld(mapName);
+            _mapName = mapName;
+            _jsonObj = LoadWorldJson(mapName);
             _width = (int) ((JsonNumericValue) _jsonObj[0]).Value;
             _height = (int) ((JsonNumericValue) _jsonObj[1]).Value;
-            
+
             _chunks = new Chunk[_width, _height];
 
-            for (int i = 0; i < _width ; i++)
+            for (int i = 0; i < _width; i++)
             {
-                for (int j = 0; j < _height ; j++)
+                for (int j = 0; j < _height; j++)
                 {
                     this[i, j] = new Chunk(this, i, j);
                 }
@@ -61,16 +64,40 @@ namespace GlLib.Map
 
         public void LoadWorld()
         {
-            for (int i = 0; i < _width ; i++)
+            for (int i = 0; i < _width; i++)
             {
-                for (int j = 0; j < _height ; j++)
+                for (int j = 0; j < _height; j++)
                 {
-                    this[i,j].LoadChunk(this,i,j);
+                    this[i, j].LoadChunk(this, i, j);
                 }
             }
         }
 
-        public JsonObjectCollection LoadJsonWorld(string name)
+        public void UnloadWorld()
+        {
+            List<JsonObject> objects = new List<JsonObject>();
+            objects.Add(new JsonNumericValue("Width", _width));
+            objects.Add(new JsonNumericValue("Height", _height));
+            for (int i = 0; i < _width; i++)
+            {
+                for (int j = 0; j < _height; j++)
+                {
+                    objects.Add(this[i, j].UnloadChunk(this, i, j));
+                }
+            }
+
+            JsonObjectCollection mainColl = new JsonObjectCollection(objects);
+            
+            FileStream fs = File.OpenWrite(_mapName);
+            TextWriter tw = new StreamWriter(fs);
+            mainColl.WriteTo(tw);
+            tw.Flush();
+            fs.Flush();
+            tw.Close();
+            fs.Close();
+        }
+
+        public JsonObjectCollection LoadWorldJson(string name)
         {
             var parser = new JsonTextParser();
             var mapCode = File.ReadAllText(name);
@@ -82,8 +109,8 @@ namespace GlLib.Map
         public void SpawnEntity(Entity e)
         {
             if (EventBus.OnEntitySpawn(e)) return;
-            
-            if(e is Player p)
+
+            if (e is Player p)
                 _players.Add(p);
             e._chunkObj._entities[e._position._z].Add(e);
             Console.WriteLine($"Entity {e} spawned in world");
@@ -169,7 +196,7 @@ namespace GlLib.Map
         public void Render(int x, int y)
         {
             GL.PushMatrix();
-            GL.Translate(-Math.Max(_width,_height)*Chunk.BlockWidth*5,0,0);
+            GL.Translate(-Math.Max(_width, _height) * Chunk.BlockWidth * 5, 0, 0);
             for (int i = 0; i < _width; i++)
             for (int j = 0; j < _height; j++)
                 if (this[i + x, j + y]._isLoaded)
@@ -186,11 +213,13 @@ namespace GlLib.Map
             {
                 pair.chk._entities[pair.e._position._z].Remove((pair.e));
             }
+
             _entityRemoveQueue.Clear();
             foreach (var pair in _entityAddQueue)
             {
                 pair.chk._entities[pair.e._position._z].Add((pair.e));
             }
+
             _entityAddQueue.Clear();
             foreach (var player in _players)
             {
@@ -198,6 +227,7 @@ namespace GlLib.Map
                 KeyBinds.Update(player);
                 player.Update();
             }
+
             foreach (var chunk in _chunks)
             {
                 chunk.Update();
@@ -206,11 +236,11 @@ namespace GlLib.Map
 
         public List<(Entity e, Chunk chk)> _entityRemoveQueue = new List<(Entity e, Chunk chk)>();
         public List<(Entity e, Chunk chk)> _entityAddQueue = new List<(Entity e, Chunk chk)>();
-        
+
         public void ChangeEntityChunk(Entity e, Chunk next)
         {
-            _entityRemoveQueue.Add((e,e._chunkObj));
-            _entityAddQueue.Add((e,next));
+            _entityRemoveQueue.Add((e, e._chunkObj));
+            _entityAddQueue.Add((e, next));
             e._chunkObj = next;
         }
     }

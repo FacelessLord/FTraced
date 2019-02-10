@@ -12,13 +12,17 @@ namespace GlLib.Map
     public class GameRegistry
     {
         public static Hashtable blocks = new Hashtable();
+        public static Hashtable blocksById = new Hashtable();
         public static Hashtable entities = new Hashtable();
 
         public static void RegisterBlock(TerrainBlock block)
         {
             try
             {
+                int id = blocks.Count;
                 blocks.Add(block.GetName(),block);
+                blocksById.Add(id,block);
+                block.id = id;
             }
             catch (Exception e)
             {
@@ -47,6 +51,10 @@ namespace GlLib.Map
             return null;
         }
         
+        public static TerrainBlock GetBlockFromId(int id)
+        {
+            return (TerrainBlock)blocksById[id];
+        }
         
         public static Entity GetEntityFromName(string entityName,params object[] args)
         {

@@ -1,0 +1,139 @@
+{
+  "Width": 3,
+  "Height": 3,
+  "0,1": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "1,0": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "2,0": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "1,1": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "2,1": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "0,2": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "1,2": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+  "2,2": {
+
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    }
+  },
+
+  "0,0": {
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        15,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    },
+
+    "entity": {
+      "pos": [
+        7,
+        7,
+        0
+      ],
+      "id": "entity.player",
+      "tag": "Name|SFaceless",
+      "vel": [
+        0.0,
+        0.0
+      ]
+    },
+    "entityn": {
+      "pos": [
+        7,
+        7,
+        0
+      ],
+      "id": "entity.null",
+      "tag": "",
+      "vel": [
+        0.1,
+        0.1
+      ]
+    }
+  }
+}

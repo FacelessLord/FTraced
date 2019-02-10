@@ -132,6 +132,15 @@ namespace GlLib.Map
                         }
                     }
 
+                    if (entry is JsonNumericValue num)
+                    {
+                        string[] coords = num.Name.Split(',');
+                        int i = int.Parse(coords[0]);
+                        int j = int.Parse(coords[1]);
+                        
+                        _blocks[i, j] = GameRegistry.GetBlockFromId((int)num.Value);
+                    }
+
                     if (entry is JsonObjectCollection collection)
                     {
                         if (collection.Name.StartsWith("Rect"))
@@ -159,54 +168,8 @@ namespace GlLib.Map
                         }
                         else //Entity
                         {
-                            double posX = 0;
-                            double posY = 0;
-                            int z = 0;
-                            double velX = 0;
-                            double velY = 0;
-                            string id = "null";
-                            string rawTag = "";
-
-                            foreach (var entityField in collection)
-                            {
-                                if (entityField is JsonArrayCollection arr)
-                                {
-                                    switch (arr.Name)
-                                    {
-                                        case "pos":
-                                            (posX, posY, z) = (((JsonNumericValue) arr[0]).Value,
-                                                ((JsonNumericValue) arr[1]).Value,
-                                                (int) ((JsonNumericValue) arr[2]).Value);
-                                            break;
-                                        case "vel":
-                                            (velX, velY) = (((JsonNumericValue) arr[0]).Value,
-                                                ((JsonNumericValue) arr[1]).Value);
-                                            break;
-                                    }
-                                }
-
-                                if (entityField is JsonStringValue str)
-                                {
-                                    switch (str.Name)
-                                    {
-                                        case "id":
-                                            id = str.Value;
-                                            break;
-                                        case "tag":
-                                            rawTag = str.Value;
-                                            break;
-                                    }
-                                }
-                            }
-
-                            Entity entity =
-                                GameRegistry.GetEntityFromName(id, _world, new RestrictedVector3D(posX+x*16, posY+y*16, z));
-                            entity._velocity = new PlanarVector(velX, velY);
-                            entity._chunkObj = this;
-                            entity._nbtTag = NbtTag.FromString(rawTag);
-                            entity.LoadFromNbt(entity._nbtTag);
+                            Entity entity = Entity.LoadFromJson(collection, _world, this);
                             _world.SpawnEntity(entity);
-                            Console.WriteLine($"Entity with id \"{id}\" has been loaded");
                         }
                     }
                 }
@@ -216,9 +179,27 @@ namespace GlLib.Map
             }
         }
 
-        public void UnloadChunk(World world, int x, int y)
+        public JsonObjectCollection UnloadChunk(World world, int x, int y)
         {
-            //todo saving by creating json with blocks and entities(using ReadFromNBT)
+            List<JsonObject> objects = new List<JsonObject>();
+            foreach (var height in _entities)
+            {
+                foreach (var entity in height)
+                {
+                    objects.Add(entity.CreateJsonObj());
+                }
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                for (int j = 0; j < 16; j++)
+                {
+                    TerrainBlock block = this[i,j];
+                    if(block != null)
+                        objects.Add(new JsonNumericValue($"{i},{j}",block.id));
+                }
+            }
+            return new JsonObjectCollection($"{x},{y}",objects);
         }
 
         public void Update()
