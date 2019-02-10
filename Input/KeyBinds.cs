@@ -26,7 +26,7 @@ namespace GlLib.Input
             {
                 if (binds.ContainsKey(key) && (bool) KeyboardHandler.Pressed[key])
                 {
-                    Console.WriteLine(key + ", " + p._nickname);
+//                    Console.WriteLine(key + ", " + p._nickname);
                     binds[key].DynamicInvoke(p);
                 }
             }

@@ -10,16 +10,6 @@ namespace GlLib.Input
         public static Hashtable Clicked = new Hashtable();
         public static List<Key> Keys = new List<Key>();
 
-        public static void Setup()
-        {
-            KeyboardState state = Keyboard.GetState();
-            foreach (var key in Keys)
-            {
-                Pressed.Add(key, state.IsKeyDown(key));
-                Clicked.Add(key, state.IsKeyDown(key));
-            }
-        }
-
         public static void RegisterKey(Key key)
         {
             KeyboardState state = Keyboard.GetState();

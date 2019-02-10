@@ -116,7 +116,7 @@ namespace GlLib.Map
 
             if (chunkCollection != null)
             {
-                _blocks = new TerrainBlock[16, 16]; //todo
+                _blocks = new TerrainBlock[16, 16];
                 foreach (var entry in chunkCollection)
                 {
                     if (entry is JsonStringValue blockName)
@@ -204,6 +204,7 @@ namespace GlLib.Map
                             entity._velocity = new PlanarVector(velX, velY);
                             entity._chunkObj = this;
                             entity._nbtTag = NbtTag.FromString(rawTag);
+                            entity.LoadFromNbt(entity._nbtTag);
                             _world.SpawnEntity(entity);
                             Console.WriteLine($"Entity with id \"{id}\" has been loaded");
                         }
@@ -217,7 +218,7 @@ namespace GlLib.Map
 
         public void UnloadChunk(World world, int x, int y)
         {
-
+            //todo saving by creating json with blocks and entities(using ReadFromNBT)
         }
 
         public void Update()

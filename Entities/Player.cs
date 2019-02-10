@@ -28,7 +28,6 @@ namespace GlLib.Entities
 
         public override void Update()
         {
-            _nickname = _nbtTag.GetString("Name");
             base.Update();
         }
 
@@ -48,6 +47,12 @@ namespace GlLib.Entities
 
             Vertexer.Draw();
             GL.PopMatrix();
+        }
+
+        public override void LoadFromNbt(NbtTag tag)
+        {
+            _nickname = tag.GetString("Name");
+            base.LoadFromNbt(tag);
         }
     }
 }
