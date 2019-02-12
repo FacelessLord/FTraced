@@ -9,9 +9,9 @@ namespace GlLib.Common.Map.Blocks
             return "block.indoor.bricks";
         }
 
-        public override Texture GetTexture(World world, int x, int y)
+        public override string GetTextureName(World world,int x, int y)
         {
-            return Vertexer.LoadTexture("bricks_worn.png");
+            return "bricks_worn.png";
         }
     }
 }

@@ -11,8 +11,8 @@ namespace GlLib.Common.Map
         /// <returns></returns>
         public abstract string GetName();
 
-        public int id = -1;
-        public abstract Texture GetTexture(World world,int x, int y);
+        public int _id = -1;
+        public abstract string GetTextureName(World world,int x, int y);
 
         public virtual bool RequiresSpecialRenderer(World world,int x,int y)
         {

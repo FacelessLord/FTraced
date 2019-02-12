@@ -17,7 +17,7 @@ namespace GlLib.Common.Map
                 int id = blocks.Count;
                 blocks.Add(block.GetName(),block);
                 blocksById.Add(id,block);
-                block.id = id;
+                block._id = id;
             }
             catch (Exception e)
             {

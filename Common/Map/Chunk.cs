@@ -41,14 +41,11 @@ namespace GlLib.Common.Map
         public const double BlockWidth = 64;
         public const double BlockHeight = 32;
 
-        public void RenderChunk(double centerX, double centerY)
+        public void RenderChunk(double centerX, double centerY,PlanarVector xAxis,PlanarVector yAxis)
         {
             GL.PushMatrix();
 
             GL.Translate((centerX + centerY) * BlockWidth * 8, (centerX - centerY) * BlockHeight * 8, 0);
-
-            PlanarVector xAxis = new PlanarVector(BlockWidth / 2, BlockHeight / 2);
-            PlanarVector yAxis = new PlanarVector(BlockWidth / 2, -BlockHeight / 2);
 
             //GL.Color3(0.75,0.75,0.75);
             for (int i = 7; i > -9; i--)
@@ -59,7 +56,7 @@ namespace GlLib.Common.Map
                     if (block == null) continue;
                     if (!block.RequiresSpecialRenderer(_world, i + 8, j + 8))
                     {
-                        Texture btexture = block.GetTexture(_world, i + 8, j + 8);
+                        Texture btexture = Vertexer.LoadTexture(block.GetTextureName(_world, i + 8, j + 8));
                         Vertexer.BindTexture(btexture);
                         PlanarVector coord = xAxis * i + yAxis * j;
                         GL.PushMatrix();
@@ -202,7 +199,7 @@ namespace GlLib.Common.Map
                 {
                     TerrainBlock block = this[i,j];
                     if(block != null)
-                        objects.Add(new JsonNumericValue($"{i},{j}",block.id));
+                        objects.Add(new JsonNumericValue($"{i},{j}",block._id));
                 }
             }
             return new JsonObjectCollection($"{x},{y}",objects);

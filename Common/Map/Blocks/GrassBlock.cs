@@ -9,9 +9,9 @@ namespace GlLib.Common.Map.Blocks
             return "block.outdoor.grass";
         }
 
-        public override Texture GetTexture(World world,int x, int y)
+        public override string GetTextureName(World world,int x, int y)
         {
-            return Vertexer.LoadTexture("grass.png");
+            return "grass.png";
         }
     }
 }

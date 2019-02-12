@@ -192,13 +192,34 @@ namespace GlLib.Common.Map
 
         public void Render(int x, int y)
         {
+            PlanarVector xAxis = new PlanarVector(Chunk.BlockWidth / 2, Chunk.BlockHeight / 2);
+            PlanarVector yAxis = new PlanarVector(Chunk.BlockWidth / 2, -Chunk.BlockHeight / 2);
             GL.PushMatrix();
             GL.Translate(-Math.Max(_width, _height) * Chunk.BlockWidth * 5, 0, 0);
             for (int i = 0; i < _width; i++)
-            for (int j = 0; j < _height; j++)
+            for (int j = _width - 1; j >= 0; j--)
                 if (this[i + x, j + y]._isLoaded)
                 {
-                    this[i + x, j + y].RenderChunk(i, j);
+                    this[i + x, j + y].RenderChunk(i, j, xAxis, yAxis);
+                }
+
+            for (int i = 0; i < _width; i++)
+            for (int j = _width - 1; j >= 0; j--)
+                if (this[i + x, j + y]._isLoaded)
+                {
+
+                    foreach (var level in this[i + x, j + y]._entities)
+                    {
+                        foreach (var entity in level)
+                        {
+                            PlanarVector coord = xAxis * (entity._position._x - 8) + yAxis * (entity._position._y - 8);
+                            GL.PushMatrix();
+
+                            GL.Translate(coord._x, coord._y, 0);
+                            entity.Render(xAxis, yAxis);
+                            GL.PopMatrix();
+                        }
+                    }
                 }
 
             GL.PopMatrix();
