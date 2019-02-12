@@ -40,3 +40,5 @@
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/path.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/System.Net.Json.dll
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/.directory
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/bricks_worn.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/bricks_worn_fire.png
