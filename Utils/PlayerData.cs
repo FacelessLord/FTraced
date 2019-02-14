@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GlLib.Common.Map;
+using GlLib.Server;
 
 namespace GlLib.Utils
 {
@@ -15,12 +16,14 @@ namespace GlLib.Utils
         
         public void SaveToNbt(NbtTag tag)
         {
-            //todo
+            tag.SetInt("WorldId",_world._worldId);
+            tag.SetString("WorldId",_position.ToString());
         }
 
         public void LoadFromNbt(NbtTag tag)
         {
-            //todo
+            _world = ServerInstance.GetWorldById(tag.GetInt("WorldId"));
+            _position = RestrictedVector3D.FromString(tag.GetString("WorldId"));
         }
     }
 }

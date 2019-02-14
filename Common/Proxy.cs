@@ -1,33 +1,57 @@
+using System.Collections.Generic;
+using GlLib.Client;
 using GlLib.Common.Packets;
 using GlLib.Utils;
+using System.Linq;
+using GlLib.Common.Map;
+using GlLib.Server;
 
 namespace GlLib.Common
 {
     public class Proxy
     {
-        public void SendPacketToPlayer(string nickName, Packet packet)
+        public static List<ClientService> _clients = new List<ClientService>();
+
+        public static void SendPacketToPlayer(string nickName, Packet packet)
         {
-            //todo
+            if (Config._isIntegratedServer)
+            {
+                _clients.Where(c => c._nickName == nickName).ToList().ForEach(c => c.HandlePackage(packet));
+            }
+
+            //todo not Integrated Server
         }
-        
-        public void SendPacketToAllAround(PlanarVector pos,double range, Packet packet)
+
+        public static void SendPacketToAllAround(PlanarVector pos, double range, Packet packet)
         {
-            //todo
+
+            //todo not Integrated Server
         }
-        
-        public void SendPacketToWorld(int worldId, Packet packet)
+
+        public static void SendPacketToWorld(int worldId, Packet packet)
         {
-            //todo
+            //todo not Integrated Server
         }
-        
-        public void SendPacketToServer(Packet packet)
+
+        public static void SendPacketToServer(Packet packet)
         {
-            //todo
+            if (Config._isIntegratedServer)
+            {
+                ServerInstance.HandlePackage(packet);
+            }
+
+            //todo not Integrated Server
         }
-        
-        public void AwaitForPacketFromServer(int packetType)
+
+        public static Packet AwaitForPacketFromServer(int packetType)
         {
-            //todo
+            //todo not Integrated Server
+            return null;
+        }
+
+        public static void Sync()
+        {
+            //todo send SyncPackage
         }
     }
 }

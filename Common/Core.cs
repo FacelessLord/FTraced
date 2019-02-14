@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Threading;
+using GlLib.Client;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;
+using GlLib.Server;
 
 namespace GlLib.Common
 {
@@ -10,14 +13,38 @@ namespace GlLib.Common
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine($"Hello World! {1/16}");
-            Blocks.Register();
-            KeyBinds.Register();
-            Registries.Entities.Register();
-            World.LoadWorld();
-            GraphicCore.Run();
-        }
+            foreach (var arg in args)
+            {
+                Console.WriteLine(arg);
+                string[] argsParts = arg.Split("=");
+                (string variableName, string value) = (argsParts[0], argsParts[1]);
+                Config.ProcessArgument(variableName, value);
+            }
 
-        public static World World = new World("maps/testmap1.json");
+            if (Config._isIntegratedServer)
+            {
+                Thread serverThread = new Thread(() =>
+                {
+                    ServerInstance.StartServer();
+                    ServerInstance.GameLoop();
+                    ServerInstance.ExitGame();
+                });
+
+                ClientService._instance = new ClientService(Config._playerName, Config._playerPassword);
+                Thread clientThread = new Thread(() =>
+                {
+                    ClientService._instance.StartClient();
+                    ClientService._instance.GameLoop();
+                    ClientService._instance.ExitGame();
+                });
+                serverThread.Start();
+                clientThread.Start();
+                //todo Main Menu
+                while (ClientService._instance._state <= State.Starting && ServerInstance._state <= State.Starting)
+                {
+                }
+                ClientService._instance.ConnectToIntegratedServer();
+            }
+        }
     }
 }

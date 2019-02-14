@@ -26,7 +26,7 @@ namespace GlLib.Client.Graphic
                 Exit();
             }
 
-            Core.World.Update();
+//            ClientService._instance._currentWorld.Update();//todo update in clientService
             base.OnUpdateFrame(e);
         }
 
@@ -59,7 +59,7 @@ namespace GlLib.Client.Graphic
 
             GL.Translate(Width / 2d, Height / 2d, 0);
 //            GL.Scale(1 / 3d, 1 / 3d, 1);
-            Core.World.Render(0, 0);
+            ClientService._instance._currentWorld.Render(0, 0);
             SwapBuffers();
         }
 
@@ -69,7 +69,8 @@ namespace GlLib.Client.Graphic
             {
                 Vertexer._textures[key].Dispose();
             }
-            Core.World.UnloadWorld();
+
+            ClientService._instance._currentWorld.UnloadWorld();
             base.OnUnload(e);
         }
 

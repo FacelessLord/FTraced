@@ -14,6 +14,8 @@ namespace GlLib.Common.Map
     {
         public Chunk[,] _chunks;
 
+        public int _worldId;
+
         public List<Player> _players = new List<Player>();
 
         public Chunk this[int i, int j]
@@ -41,9 +43,10 @@ namespace GlLib.Common.Map
         public JsonObjectCollection _jsonObj;
         public string _mapName;
 
-        public World(string mapName)
+        public World(string mapName,int worldId)
         {
             _mapName = mapName;
+            _worldId = worldId;
             _jsonObj = LoadWorldJson(mapName);
             _width = (int) ((JsonNumericValue) _jsonObj[0]).Value;
             _height = (int) ((JsonNumericValue) _jsonObj[1]).Value;
@@ -97,7 +100,7 @@ namespace GlLib.Common.Map
         public JsonObjectCollection LoadWorldJson(string name)
         {
             var parser = new JsonTextParser();
-            var mapCode = File.ReadAllText(name);
+            var mapCode = File.ReadAllText("maps/"+name);
             var obj = parser.Parse(mapCode);
             var mainCollection = (JsonObjectCollection) obj;
             return mainCollection;
@@ -248,7 +251,10 @@ namespace GlLib.Common.Map
 
             foreach (var chunk in _chunks)
             {
-                chunk.Update();
+                if (chunk._isLoaded)
+                {
+                    chunk.Update();
+                }
             }
         }
 

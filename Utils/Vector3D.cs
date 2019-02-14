@@ -8,8 +8,8 @@ namespace GlLib.Utils
         public double _y = 0;
         public int _z = 0;
 
-        public int Ix => (int)Math.Floor(_x);
-        public int Iy => (int)Math.Floor(_y);
+        public int Ix => (int) Math.Floor(_x);
+        public int Iy => (int) Math.Floor(_y);
 
         public RestrictedVector3D()
         {
@@ -71,6 +71,17 @@ namespace GlLib.Utils
             return new RestrictedVector3D(_x * cos - _y * sin, _x * sin + _y * cos, _z);
         }
 
+        public override string ToString()
+        {
+            return $"({_x},{_y},{_z}";
+        }
+
+        public static RestrictedVector3D FromString(string s)
+        {
+            string[] coords = s.Substring(1, s.Length - 2).Split(",");
+            return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
+        }
+
         public PlanarVector ToPlanar()
         {
             return new PlanarVector(_x, _y);
@@ -97,7 +108,7 @@ namespace GlLib.Utils
         {
             return new PlanarVector(a._x * k, a._y * k);
         }
-        
+
         public static PlanarVector operator /(PlanarVector a, double k)
         {
             return new PlanarVector(a._x / k, a._y / k);
@@ -111,6 +122,17 @@ namespace GlLib.Utils
         public static PlanarVector operator -(PlanarVector a)
         {
             return new PlanarVector(-a._x, -a._y);
+        }
+
+        public override string ToString()
+        {
+            return $"({_x},{_y}";
+        }
+
+        public static PlanarVector FromString(string s)
+        {
+            string[] coords = s.Substring(1, s.Length - 2).Split(",");
+            return new PlanarVector(double.Parse(coords[0]), double.Parse(coords[1]));
         }
 
         public AxisAlignedBb Expand(double width, double height)

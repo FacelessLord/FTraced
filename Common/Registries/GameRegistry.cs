@@ -25,20 +25,21 @@ namespace GlLib.Common.Map
                 throw;
             }
         }
-        public static void RegisterEntity(Entity entity)
+
+        public static void RegisterEntity(string name, Type entityType)
         {
             try
             {
-                Console.WriteLine("Register: "+entity.GetName());
-                entities.Add(entity.GetName(),entity.GetType());
+                Console.WriteLine("Register: " + name);
+                entities.Add(name, entityType);
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Entity with name {entity.GetName()} had already been registered");
+                Console.WriteLine($"Entity with name {name} had already been registered");
                 throw;
             }
         }
-        
+
         public static TerrainBlock GetBlockFromName(string blockName)
         {
             if (blocks.ContainsKey(blockName))

@@ -27,7 +27,7 @@ namespace GlLib.Common.Entities
         {
             _worldObj = world;
             _position = position;
-            _chunkObj = GetProjection(position);
+            _chunkObj = GetProjection(position,world);
         }
 
         public AxisAlignedBb GetAaBb()
@@ -72,12 +72,12 @@ namespace GlLib.Common.Entities
             //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
 
             _position += _velocity;
-            Chunk proj = GetProjection(_position);
+            Chunk proj = GetProjection(_position,entity._worldObj);
             if (proj != null && proj._isLoaded)
             {
                 if (_chunkObj != proj)
                 {
-                    Core.World.ChangeEntityChunk(this, proj);
+                    entity._worldObj.ChangeEntityChunk(this, proj);
                 }
             }
             else
@@ -87,7 +87,7 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public static Chunk GetProjection(RestrictedVector3D vector)
+        public static Chunk GetProjection(RestrictedVector3D vector,World world)
         {
             if (vector.Ix < 0 || vector.Iy < 0)
             {
@@ -95,7 +95,7 @@ namespace GlLib.Common.Entities
             }
             try
             {
-                return Core.World[vector.Ix / 16, vector.Iy / 16];
+                return world[vector.Ix / 16, vector.Iy / 16];
             }
             catch (Exception e)
             {

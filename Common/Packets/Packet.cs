@@ -8,6 +8,8 @@ namespace GlLib.Common.Packets
     /// You can store any information you need here,
     /// but implement methods to save and load info from nbt tag.
     /// Otherwise your information wouldn't be sent
+    ///
+    /// You must also implement empty constructor
     /// </summary>
     public abstract class Packet
     {
@@ -30,7 +32,7 @@ namespace GlLib.Common.Packets
 
         }
 
-        public void OnServerReceive(ServerInstance server)
+        public void OnServerReceive()
         {
 
         }
