@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Client;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
@@ -14,6 +15,7 @@ namespace GlLib.Server
     public static class ServerInstance
     {
         public static State _state = State.Off; 
+        public static List<ClientService> _clients = new List<ClientService>();
         
         public static void StartServer()
         {
@@ -31,6 +33,10 @@ namespace GlLib.Server
             _state = State.Loop;
             foreach (var world in _worlds)
             {
+                foreach (var client in _clients)
+                {
+                    client._player._worldObj.LoadWorld();
+                }
                 world.Value.Update();
             }
         }

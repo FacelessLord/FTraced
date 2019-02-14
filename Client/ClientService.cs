@@ -68,14 +68,21 @@ namespace GlLib.Client
 
         public bool ConnectToIntegratedServer()
         {
+            //todo receiving world file
             _currentWorld = ServerInstance.GetWorldById(0);
+            
+            //todo send connectionPackage and receive ConnectedPackage
             
             // Getting player data from server
             PlayerDataRequestPacket playerDataRequest = new PlayerDataRequestPacket(this._nickName);
             Proxy.SendPacketToServer(playerDataRequest);
-            _player = new Player(null,null);
+            _player = new Player();
             while(_player._playerData == null)//waiting for data to be received
             {}
+
+            _player._worldObj = _player._playerData._world;
+            _player._position = _player._playerData._position;
+            _player._nickname = _player._playerData._nickname;
             
             return Config._isIntegratedServer;
         }

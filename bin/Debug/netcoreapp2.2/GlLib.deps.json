@@ -1,13 +1,14 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "94960ee7b02dbb5391512b7d68bea717a56476e8"
+    "signature": "489c49daa93fc9f9ca1bc00dfdce696255ba2b22"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.2": {
       "GlLib/1.0.0": {
         "dependencies": {
+          "NUnit": "3.11.0",
           "OpenTK.NETCore": "1.1.2749.6433",
           "SixLabors.ImageSharp": "1.0.0-beta0006",
           "DiggerLib": "1.0.0.0",
@@ -20,6 +21,14 @@
       "Microsoft.Win32.Primitives/4.0.1": {
         "dependencies": {
           "System.Runtime": "4.1.0"
+        }
+      },
+      "NUnit/3.11.0": {
+        "runtime": {
+          "lib/netstandard2.0/nunit.framework.dll": {
+            "assemblyVersion": "3.11.0.0",
+            "fileVersion": "3.11.0.0"
+          }
         }
       },
       "OpenTK.NETCore/1.1.2749.6433": {
@@ -338,6 +347,13 @@
       "sha512": "sha512-OCvTpmNJ4Hf99iKmmi2eKgfRUUPPI49Pohx08sHlWS+LqX5vuVbBxpygz066kcpKfTyO8ZUonFoOlbysUueUvg==",
       "path": "microsoft.win32.primitives/4.0.1",
       "hashPath": "microsoft.win32.primitives.4.0.1.nupkg.sha512"
+    },
+    "NUnit/3.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zecrYxUA5p5w8AZ2bvbBbiUIcrQnZAVPrziNMSWMdcOi0D2Oe7yKUNivWPIQMcUwQDHmWtS/ijnD48ubU/eHZQ==",
+      "path": "nunit/3.11.0",
+      "hashPath": "nunit.3.11.0.nupkg.sha512"
     },
     "OpenTK.NETCore/1.1.2749.6433": {
       "type": "package",

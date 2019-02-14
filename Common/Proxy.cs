@@ -10,13 +10,15 @@ namespace GlLib.Common
 {
     public class Proxy
     {
-        public static List<ClientService> _clients = new List<ClientService>();
 
         public static void SendPacketToPlayer(string nickName, Packet packet)
         {
             if (Config._isIntegratedServer)
             {
-                _clients.Where(c => c._nickName == nickName).ToList().ForEach(c => c.HandlePackage(packet));
+                ServerInstance._clients
+                    .Where(c => c._nickName == nickName)
+                    .ToList()
+                    .ForEach(c => c.HandlePackage(packet));
             }
 
             //todo not Integrated Server

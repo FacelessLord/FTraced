@@ -61,14 +61,15 @@ namespace GlLib.Common.Map
                 }
             }
         }
-
+        
         public void LoadWorld()
         {
             for (int i = 0; i < _width; i++)
             {
                 for (int j = 0; j < _height; j++)
                 {
-                    this[i, j].LoadChunk(this, i, j);
+                    if(!this[i,j]._isLoaded)
+                        this[i, j].LoadChunk(this, i, j);
                 }
             }
         }
