@@ -5,15 +5,15 @@ using GlLib.Utils;
 namespace GlLib.Common.Packets
 {
     /// <summary>
-    /// You can store any information you need here,
+    /// <para>You can store any information you need here,
     /// but implement methods to save and load info from nbt tag.
-    /// Otherwise your information wouldn't be sent
+    /// Otherwise your information wouldn't be sent.</para>
     ///
-    /// You must also implement empty constructor
+    /// You must also implement empty constructor.
     /// </summary>
     public abstract class Packet
     {
-        public static int _typeId = -1;
+        public int _packetId = -1;
         
         /// <summary>
         /// Prepare information to be sent to receiver
@@ -27,12 +27,12 @@ namespace GlLib.Common.Packets
         /// <param name="tag">Tag to load info</param>
         public abstract void ReadFromNbt(NbtTag tag);
 
-        public void OnClientReceive(ClientService client)
+        public virtual void OnClientReceive(ClientService client)
         {
 
         }
 
-        public void OnServerReceive()
+        public virtual void OnServerReceive()
         {
 
         }

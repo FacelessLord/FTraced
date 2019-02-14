@@ -42,11 +42,19 @@ namespace GlLib.Common
 
             //todo not Integrated Server
         }
+        
+        public static List<int> _awaitedPacketIds = new List<int>();
 
-        public static Packet AwaitForPacketFromServer(int packetType)
-        {
-            //todo not Integrated Server
-            return null;
+        public static Packet _awaitedPacket = null;
+        public static Packet AwaitForPacketFromServer(int packetId)
+        {//todo think of usability
+            _awaitedPacketIds.Add(packetId);
+            while (_awaitedPacket == null)
+            {
+                
+            }
+            
+            return _awaitedPacket;
         }
 
         public static void Sync()

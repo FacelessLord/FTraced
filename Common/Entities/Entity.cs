@@ -11,6 +11,17 @@ namespace GlLib.Common.Entities
     {
         public World _worldObj;
         public RestrictedVector3D _position;
+
+        public RestrictedVector3D Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+                _chunkObj = GetProjection(_position, _worldObj);
+            }
+        }
+
         public PlanarVector _velocity = new PlanarVector();
         public PlanarVector _acceleration = new PlanarVector();
         public PlanarVector _maxVel = new PlanarVector(0.3,0.3);
@@ -26,18 +37,21 @@ namespace GlLib.Common.Entities
         public Entity(World world, RestrictedVector3D position)
         {
             _worldObj = world;
-            _position = position;
-            _chunkObj = GetProjection(position,world);
+           Position = position;
+        }
+        
+        public Entity()
+        {
         }
 
         public AxisAlignedBb GetAaBb()
         {
-            return _position.ToPlanar().ExpandBothTo(1, 1);
+            return Position.ToPlanar().ExpandBothTo(1, 1);
         }
 
         public TerrainBlock GetUnderlyingBlock()
         {
-            return _chunkObj[_position.Ix % 16, _position.Iy % 16];
+            return _chunkObj[Position.Ix % 16, Position.Iy % 16];
         }
 
         public virtual void Update()
@@ -57,7 +71,7 @@ namespace GlLib.Common.Entities
             {
                 _velocity._y *= _maxVel._y / Math.Abs(_velocity._y);
             }
-            MoveEntity(this,_position,_velocity);
+            MoveEntity();
 
             List<Entity> entities = _worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), _position._z);
             foreach (var entity in entities)
@@ -66,23 +80,23 @@ namespace GlLib.Common.Entities
             }
         }
 
-        private void MoveEntity(Entity entity, RestrictedVector3D position, PlanarVector velocity)
+        private void MoveEntity()
         {
             RestrictedVector3D oldPos = _position;
             //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
 
-            _position += _velocity;
-            Chunk proj = GetProjection(_position,entity._worldObj);
+            Position += _velocity;
+            Chunk proj = this._chunkObj;
             if (proj != null && proj._isLoaded)
             {
                 if (_chunkObj != proj)
                 {
-                    entity._worldObj.ChangeEntityChunk(this, proj);
+                    _worldObj.ChangeEntityChunk(this, proj);
                 }
             }
             else
             {
-                _position = oldPos;
+                Position = oldPos;
                 _velocity = new PlanarVector();
             }
         }

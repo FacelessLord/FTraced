@@ -10,12 +10,17 @@ namespace GlLib.Common.Entities
         public string _nickname = "Player";
         public double _accelValue = 0.005;
 
+        public PlayerData _playerData = null;
+
         public Player(string nickname, World world, RestrictedVector3D position) : base(world, position)
         {
             _nickname = nickname;
         }
 
         public Player(World world, RestrictedVector3D position) : base(world, position)
+        {
+        }
+        public Player() : base()
         {
         }
 

@@ -15,28 +15,29 @@ namespace GlLib.Client
         public static ClientService _instance;
         public IPAddress _ip;
         public string _nickName;
-        public int _passwordHashcode;
+        public string _password;
         public Player _player;
 
-        public State _state = State.Off; 
+        public State _state = State.Off;
 
         public World _currentWorld;
 
         public ClientService(string nickName, string password)
         {
             _nickName = nickName;
-            _passwordHashcode = password.GetHashCode();
+            _password = password;
         }
 
         public void StartClient()
         {
             _state = State.Starting;
-            if(!Config._isIntegratedServer)
+            if (!Config._isIntegratedServer)
             {
                 Blocks.Register();
                 KeyBinds.Register();
                 Entities.Register();
             }
+
             GraphicCore.Run();
         }
 
@@ -68,12 +69,25 @@ namespace GlLib.Client
         public bool ConnectToIntegratedServer()
         {
             _currentWorld = ServerInstance.GetWorldById(0);
+            
+            // Getting player data from server
+            PlayerDataRequestPacket playerDataRequest = new PlayerDataRequestPacket(this._nickName);
+            Proxy.SendPacketToServer(playerDataRequest);
+            _player = new Player(null,null);
+            while(_player._playerData == null)//waiting for data to be received
+            {}
+            
             return Config._isIntegratedServer;
         }
 
         public void HandlePackage(Packet packet)
         {
-            packet.OnClientReceive(this);
+            if (Proxy._awaitedPacketIds.Contains(packet._packetId))
+            {
+                Proxy._awaitedPacket = packet;
+            }
+            else
+                packet.OnClientReceive(this);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace GlLib.Server
                 return _playerInfo[playerName];
             World spawnWorld = GetWorldById(0);
             PlayerData data = new PlayerData(spawnWorld,
-                new RestrictedVector3D(spawnWorld._width * 8, spawnWorld._height * 8, 0));
+                new RestrictedVector3D(spawnWorld._width * 8, spawnWorld._height * 8, 0),playerName);
 
             return data;
         }
