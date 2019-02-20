@@ -25,7 +25,6 @@ namespace GlLib.Client.Input
             {
                 if (binds.ContainsKey(key) && (bool) KeyboardHandler.Pressed[key])
                 {
-//                    Console.WriteLine(key + ", " + p._nickname);
                     binds[key].DynamicInvoke(p);
                 }
             }
@@ -68,7 +67,11 @@ namespace GlLib.Client.Input
             }
         }
 
-        public static MoveLeftDelegate moveLeft = (p) => p._acceleration += new PlanarVector(-p._accelValue, -p._accelValue);
+        public static MoveLeftDelegate moveLeft = (p) =>
+        {
+            Console.WriteLine("Left");
+            p._acceleration += new PlanarVector(-p._accelValue, -p._accelValue);
+        };
         public static MoveUpDelegate moveUp = (p) => p._acceleration += new PlanarVector(-p._accelValue, p._accelValue);
         public static MoveRightDelegate moveRight = (p) => p._acceleration += new PlanarVector(p._accelValue, p._accelValue);
         public static MoveDownDelegate moveDown = (p) => p._acceleration += new PlanarVector(p._accelValue, -p._accelValue);

@@ -5,33 +5,95 @@
     <e p="$USER_HOME$/.Rider2018.3/system/resharper-host/local/Transient/ReSharperHost/v183/SolutionCaches/_AirGame.1585822991.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p=".uuid" t="Include" />
-      <e p="Core" t="Include">
+      <e p="Client" t="Include">
+        <e p="API" t="Include">
+          <e p="IBlockRenderer.cs" t="Include" />
+          <e p="IItemRenderer.cs" t="Include" />
+        </e>
+        <e p="ClientService.cs" t="Include" />
+        <e p="Graphic" t="Include">
+          <e p="GraphicWindow.cs" t="Include" />
+          <e p="Texture.cs" t="Include" />
+          <e p="Vertexer.cs" t="Include" />
+        </e>
+        <e p="Input" t="Include">
+          <e p="KeyBinds.cs" t="Include" />
+          <e p="KeyboardHandler.cs" t="Include" />
+          <e p="MouseHandler.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Common" t="Include">
+        <e p="API" t="Include">
+          <e p="IInventory.cs" t="Include" />
+        </e>
+        <e p="Config.cs" t="Include" />
         <e p="Core.cs" t="Include" />
+        <e p="Entities" t="Include">
+          <e p="Entity.cs" t="Include" />
+          <e p="Player.cs" t="Include" />
+        </e>
+        <e p="Events" t="Include">
+          <e p="Event.cs" t="Include" />
+        </e>
+        <e p="Items" t="Include">
+          <e p="Item.cs" t="Include" />
+          <e p="ItemStack.cs" t="Include" />
+        </e>
+        <e p="Map" t="Include">
+          <e p=".uuid" t="Include" />
+          <e p="Blocks" t="Include">
+            <e p="AutumnGrassBlock.cs" t="Include" />
+            <e p="AutumnGrassWithStone.cs" t="Include" />
+            <e p="Bricks.cs" t="Include" />
+            <e p="GrassBlock.cs" t="Include" />
+            <e p="Path.cs" t="Include" />
+          </e>
+          <e p="Chunk.cs" t="Include" />
+          <e p="TerrainBlock.cs" t="Include" />
+          <e p="World.cs" t="Include" />
+        </e>
+        <e p="Packets" t="Include">
+          <e p="ConnectRequestPacket.cs" t="Include" />
+          <e p="ConnectedEstablishedPacket.cs" t="Include" />
+          <e p="KeyPressedPacket.cs" t="Include" />
+          <e p="Packet.cs" t="Include" />
+          <e p="PlayerDataPacket.cs" t="Include" />
+          <e p="PlayerDataRequestPacket.cs" t="Include" />
+        </e>
+        <e p="Proxy.cs" t="Include" />
+        <e p="Registries" t="Include">
+          <e p="Blocks.cs" t="Include" />
+          <e p="Entities.cs" t="Include" />
+          <e p="GameRegistry.cs" t="Include" />
+        </e>
+        <e p="Side.cs" t="Include" />
+        <e p="State.cs" t="Include" />
       </e>
       <e p="GlLib.csproj" t="IncludeRecursive" />
-      <e p="Graphic" t="Include">
-        <e p="GraphicCore.cs" t="Include" />
-        <e p="GraphicWindow.cs" t="Include" />
-        <e p="Texture.cs" t="Include" />
-        <e p="Vertexer.cs" t="Include" />
-      </e>
       <e p="LICENSE.md" t="Include" />
-      <e p="Map" t="Include">
-        <e p="Blocks" t="Include">
-          <e p="AutumnGrassBlock.cs" t="Include" />
-          <e p="AutumnGrassWithStone.cs" t="Include" />
-          <e p="GrassBlock.cs" t="Include" />
-          <e p="Path.cs" t="Include" />
-        </e>
-        <e p="Chunk.cs" t="Include" />
-        <e p="TerrainBlock.cs" t="Include" />
-      </e>
       <e p="README.md" t="Include" />
+      <e p="Server" t="Include">
+        <e p="ServerInstance.cs" t="Include" />
+        <e p="ServerPacketHandler.cs" t="Include" />
+      </e>
+      <e p="Utils" t="Include">
+        <e p="MiscUtils.cs" t="Include" />
+        <e p="NbtTag.cs" t="Include" />
+        <e p="PlayerData.cs" t="Include" />
+        <e p="SidedConsole.cs" t="Include" />
+        <e p="Vector3D.cs" t="Include" />
+      </e>
+      <e p="_config.yml" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="libs" t="Include">
         <e p="DiggerLib.dll" t="Include" />
+        <e p="System.Net.Json.dll" t="Include" />
         <e p="opentk.3.0.1.nupkg" t="Include" />
         <e p="opentk.glcontrol.3.0.1.nupkg" t="Include" />
+      </e>
+      <e p="maps" t="Include">
+        <e p="testmap1.json" t="Include" />
+        <e p="testmap2.json" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
@@ -41,8 +103,11 @@
         </e>
       </e>
       <e p="packages" t="ExcludeRecursive" />
+      <e p="testmap1.json" t="Include" />
       <e p="textures" t="Include">
         <e p=".directory" t="Include" />
+        <e p="bricks_worn.png" t="Include" />
+        <e p="bricks_worn_fire.png" t="Include" />
         <e p="dragon_slayer.png" t="Include" />
         <e p="grass.png" t="Include" />
         <e p="grass_autumn.png" t="Include" />

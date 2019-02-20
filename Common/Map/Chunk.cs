@@ -177,7 +177,7 @@ namespace GlLib.Common.Map
                     }
                 }
 
-                Console.WriteLine($"Chunk {_chunkX}x{_chunkY} is loaded");
+                SidedConsole.WriteLine($"Chunk {_chunkX}x{_chunkY} is loaded");
                 _isLoaded = true;
             }
         }

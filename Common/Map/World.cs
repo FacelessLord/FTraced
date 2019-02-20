@@ -113,9 +113,10 @@ namespace GlLib.Common.Map
 
             if (e is Player p)
                 _players.Add(p);
+            if (e._chunkObj == null)
+                e._chunkObj = Entity.GetProjection(e._position, this);
             e._chunkObj._entities[e._position._z].Add(e);
-            Console.WriteLine($"Entity {e} spawned in world");
-            Console.WriteLine($"{e._chunkObj._chunkX}, {e._chunkObj._chunkY}");
+            SidedConsole.WriteLine($"Entity {e} spawned in world");
         }
 
         public void SetBlockAt(TerrainBlock block, int x, int y)
@@ -247,6 +248,8 @@ namespace GlLib.Common.Map
             {
                 player._acceleration = new PlanarVector();
                 KeyBinds.Update(player);
+                
+//                SidedConsole.WriteLine(player._nickname);
                 player.Update();
             }
 

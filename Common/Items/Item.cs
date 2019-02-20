@@ -1,5 +1,4 @@
 using GlLib.Client.API;
-using GlLib.Common.Map;
 
 namespace GlLib.Common.Items
 {

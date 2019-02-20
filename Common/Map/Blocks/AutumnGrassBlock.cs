@@ -1,5 +1,3 @@
-using GlLib.Client.Graphic;
-
 namespace GlLib.Common.Map.Blocks
 {
     public class AutumnGrassBlock:TerrainBlock

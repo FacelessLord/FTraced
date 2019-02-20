@@ -7,6 +7,7 @@ using GlLib.Common.Map;
 using GlLib.Common.Packets;
 using GlLib.Common.Registries;
 using GlLib.Server;
+using GlLib.Utils;
 
 namespace GlLib.Client
 {
@@ -16,7 +17,12 @@ namespace GlLib.Client
         public IPAddress _ip;
         public string _nickName;
         public string _password;
-        public Player _player;
+        public volatile Player _player;
+        
+        public ClientPacketHandler _packetHandler;
+
+        public int _serverId = -1;
+        public bool IsConnectedToServer => _serverId > -1;
 
         public State _state = State.Off;
 
@@ -26,26 +32,38 @@ namespace GlLib.Client
         {
             _nickName = nickName;
             _password = password;
+            _packetHandler = new ClientPacketHandler(this);
         }
 
         public void StartClient()
         {
             _state = State.Starting;
+            _player = new Player();
             if (!Config._isIntegratedServer)
             {
                 Blocks.Register();
-                KeyBinds.Register();
                 Entities.Register();
+                KeyBinds.Register();
             }
+            else
+            {
+                SidedConsole.WriteLine("Connecting To Integrated Server");
+                ConnectToIntegratedServer();
+                SidedConsole.WriteLine($"Connection established. ServerId is {_serverId}");
+            }
+            _packetHandler.StartPacketHandler();
 
-            GraphicCore.Run();
+            GraphicWindow.RunWindow();
         }
 
         public void GameLoop()
         {
             _state = State.Loop;
-            _currentWorld.Update();
-            Proxy.Sync();
+            while (true)
+            {
+                _currentWorld.Update();
+                Proxy.Sync();
+            }
         }
 
         public void ExitGame()
@@ -69,32 +87,39 @@ namespace GlLib.Client
         public bool ConnectToIntegratedServer()
         {
             //todo receiving world file
-            _currentWorld = ServerInstance.GetWorldById(0);
-            
-            //todo send connectionPackage and receive ConnectedPackage
-            
-            // Getting player data from server
-            PlayerDataRequestPacket playerDataRequest = new PlayerDataRequestPacket(this._nickName);
-            Proxy.SendPacketToServer(playerDataRequest);
-            _player = new Player();
-            while(_player._playerData == null)//waiting for data to be received
-            {}
+//            _currentWorld = ServerInstance.GetWorldById(0);
 
-            _player._worldObj = _player._playerData._world;
-            _player._position = _player._playerData._position;
-            _player._nickname = _player._playerData._nickname;
-            
+            //todo send connectionPackage and receive ConnectedPackage
+            SidedConsole.WriteLine("Connect request");
+            ConnectRequestPacket connectRequest = new ConnectRequestPacket(_nickName, _password);
+            Proxy.SendPacketToServer(connectRequest);
+            Proxy.AwaitWhile(() =>
+            {
+                return !IsConnectedToServer;
+            });
+            SidedConsole.WriteLine("Connected");
+
+            // Getting player data from server
+            SidedConsole.WriteLine("Player data request");
+            PlayerDataRequestPacket playerDataRequest = new PlayerDataRequestPacket(_nickName, _password);
+            Proxy.SendPacketToServer(playerDataRequest);
+            Proxy.AwaitWhile(() => _player.Data == null); //waiting for data to be received
+
+            SidedConsole.WriteLine("Client setup");
+            _player._worldObj = _player.Data._world;
+            _currentWorld = _player.Data._world;
+            _player._position = _player.Data._position;
+            _player._nickname = _player.Data._nickname;
+                
+            _currentWorld.SpawnEntity(_player);
+            _currentWorld._players.Add(_player);
             return Config._isIntegratedServer;
         }
 
-        public void HandlePackage(Packet packet)
+        public void HandlePacket(Packet packet)
         {
-            if (Proxy._awaitedPacketIds.Contains(packet._packetId))
-            {
-                Proxy._awaitedPacket = packet;
-            }
-            else
-                packet.OnClientReceive(this);
+            SidedConsole.WriteLine($"Packet {packet._packetId} has been received.");
+            packet.OnClientReceive(this);
         }
     }
 }

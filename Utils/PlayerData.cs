@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using GlLib.Common.Map;
 using GlLib.Server;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using GlLib.Common.Entities;
+using GlLib.Utils;
 
 namespace GlLib.Common.Map
 {
@@ -21,7 +22,7 @@ namespace GlLib.Common.Map
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Block with name {block.GetName()} had already been registerded");
+                SidedConsole.WriteLine($"Block with name {block.GetName()} had already been registerded");
                 throw;
             }
         }
@@ -30,12 +31,12 @@ namespace GlLib.Common.Map
         {
             try
             {
-                Console.WriteLine("Register: " + name);
+                SidedConsole.WriteLine("Register: " + name);
                 entities.Add(name, entityType);
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Entity with name {name} had already been registered");
+                SidedConsole.WriteLine($"Entity with name {name} had already been registered");
                 throw;
             }
         }

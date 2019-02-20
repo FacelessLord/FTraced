@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -13,11 +15,11 @@ namespace GlLib.Client.Graphic
         public GraphicWindow(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
             MouseHandler.Setup();
+            SidedConsole.WriteLine("Window constructed");
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            base.OnUpdateFrame(e);
             MouseHandler.Update();
             KeyboardHandler.Update();
             KeyboardState input = Keyboard.GetState();
@@ -25,8 +27,6 @@ namespace GlLib.Client.Graphic
             {
                 Exit();
             }
-
-//            ClientService._instance._currentWorld.Update();//todo update in clientService
             base.OnUpdateFrame(e);
         }
 
@@ -75,5 +75,13 @@ namespace GlLib.Client.Graphic
         }
 
         public static VSyncMode _vSync = VSyncMode.On;
+
+        public static void RunWindow()
+        {
+            Thread graphicThread = new Thread(() =>
+                new GraphicWindow(400, 300, "GLLib").Run(60));
+            graphicThread.Name = Side.Graphics.ToString();
+            graphicThread.Start();
+        }
     }
 }

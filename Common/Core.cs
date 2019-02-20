@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Threading;
 using GlLib.Client;
-using GlLib.Client.Graphic;
-using GlLib.Client.Input;
-using GlLib.Common.Map;
-using GlLib.Common.Registries;
 using GlLib.Server;
 
 namespace GlLib.Common
@@ -29,6 +25,7 @@ namespace GlLib.Common
                     ServerInstance.GameLoop();
                     ServerInstance.ExitGame();
                 });
+                serverThread.Name = Side.Server.ToString();
 
                 ClientService._instance = new ClientService(Config._playerName, Config._playerPassword);
                 Thread clientThread = new Thread(() =>
@@ -37,13 +34,13 @@ namespace GlLib.Common
                     ClientService._instance.GameLoop();
                     ClientService._instance.ExitGame();
                 });
+                clientThread.Name = Side.Client.ToString();
                 serverThread.Start();
+                Proxy.AwaitWhile(() => ServerInstance._state <= State.Starting);
                 clientThread.Start();
                 //todo Main Menu
-                while (ClientService._instance._state <= State.Starting && ServerInstance._state <= State.Starting)
-                {
-                }
-                ClientService._instance.ConnectToIntegratedServer();
+                Proxy.AwaitWhile(() => ClientService._instance._state <= State.Starting);
+//                ClientService._instance.ConnectToIntegratedServer();
             }
         }
     }

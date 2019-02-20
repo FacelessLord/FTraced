@@ -7,13 +7,14 @@ namespace GlLib.Common.Packets
     {
         public PlayerDataPacket()
         {
-            
+            _packetId = 3;
         }
 
         public PlayerData _playerData;
         public PlayerDataPacket(PlayerData data)
         {
             _playerData = data;
+            _packetId = 3;
         }
         
         public override void WriteToNbt(NbtTag tag)
@@ -28,7 +29,7 @@ namespace GlLib.Common.Packets
 
         public override void OnClientReceive(ClientService client)
         {
-            client._player._playerData = _playerData;
+            client._player.Data = _playerData;
         }
     }
 }

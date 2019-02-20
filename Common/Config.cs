@@ -1,5 +1,4 @@
 using System.Threading;
-using GlLib.Client;
 
 namespace GlLib.Common
 {

@@ -1,5 +1,4 @@
 using GlLib.Client.API;
-using GlLib.Client.Graphic;
 
 namespace GlLib.Common.Map
 {
