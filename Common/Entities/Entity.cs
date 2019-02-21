@@ -24,7 +24,7 @@ namespace GlLib.Common.Entities
 
         public PlanarVector _velocity = new PlanarVector();
         public PlanarVector _acceleration = new PlanarVector();
-        public PlanarVector _maxVel = new PlanarVector(0.3,0.3);
+        public PlanarVector _maxVel = new PlanarVector(0.02,0.02);
         public Chunk _chunkObj;
 
         public NbtTag _nbtTag = new NbtTag();
@@ -145,7 +145,7 @@ namespace GlLib.Common.Entities
         {
         }
 
-        public static Entity LoadFromJson(JsonObjectCollection collection, World _world, Chunk chunk)
+        public static Entity LoadFromJson(JsonObjectCollection collection, World world, Chunk chunk)
         {
             double posX = 0;
             double posY = 0;
@@ -188,7 +188,7 @@ namespace GlLib.Common.Entities
             }
 
             Entity entity = 
-                GameRegistry.GetEntityFromName(id, _world, new RestrictedVector3D(posX, posY, z));
+                GameRegistry.GetEntityFromName(id, world, new RestrictedVector3D(posX, posY, z));
             entity._velocity = new PlanarVector(velX, velY);
             entity._chunkObj = chunk;
             entity._nbtTag = NbtTag.FromString(rawTag);

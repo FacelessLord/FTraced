@@ -8,17 +8,17 @@ namespace GlLib.Client.Input
         public static int MouseX => Mouse.GetState().X;
         public static int MouseY => Mouse.GetState().Y;
 
-        public static Hashtable Pressed = new Hashtable();
-        public static Hashtable Clicked = new Hashtable();
+        public static Hashtable _pressed = new Hashtable();
+        public static Hashtable _clicked = new Hashtable();
 
         public static void Setup()
         {
-            Pressed.Add(MouseButton.Left, Mouse.GetState().IsButtonDown(MouseButton.Left));
-            Pressed.Add(MouseButton.Right, Mouse.GetState().IsButtonDown(MouseButton.Right));
-            Pressed.Add(MouseButton.Middle, Mouse.GetState().IsButtonDown(MouseButton.Middle));
-            Clicked.Add(MouseButton.Left, Mouse.GetState().IsButtonDown(MouseButton.Left));
-            Clicked.Add(MouseButton.Right, Mouse.GetState().IsButtonDown(MouseButton.Right));
-            Clicked.Add(MouseButton.Middle, Mouse.GetState().IsButtonDown(MouseButton.Middle));
+            _pressed.Add(MouseButton.Left, Mouse.GetState().IsButtonDown(MouseButton.Left));
+            _pressed.Add(MouseButton.Right, Mouse.GetState().IsButtonDown(MouseButton.Right));
+            _pressed.Add(MouseButton.Middle, Mouse.GetState().IsButtonDown(MouseButton.Middle));
+            _clicked.Add(MouseButton.Left, Mouse.GetState().IsButtonDown(MouseButton.Left));
+            _clicked.Add(MouseButton.Right, Mouse.GetState().IsButtonDown(MouseButton.Right));
+            _clicked.Add(MouseButton.Middle, Mouse.GetState().IsButtonDown(MouseButton.Middle));
         }
 
         public static void Update()
@@ -26,12 +26,12 @@ namespace GlLib.Client.Input
             bool left = Mouse.GetState().IsButtonDown(MouseButton.Left);
             bool right = Mouse.GetState().IsButtonDown(MouseButton.Right);
             bool middle = Mouse.GetState().IsButtonDown(MouseButton.Middle);
-            Clicked[MouseButton.Left] = !(bool) Pressed[MouseButton.Left] && left;
-            Clicked[MouseButton.Right] = !(bool) Pressed[MouseButton.Right] && right;
-            Clicked[MouseButton.Middle] = !(bool) Pressed[MouseButton.Middle] && middle;
-            Pressed[MouseButton.Left] = left;
-            Pressed[MouseButton.Right] = right;
-            Pressed[MouseButton.Middle] = middle;
+            _clicked[MouseButton.Left] = !(bool) _pressed[MouseButton.Left] && left;
+            _clicked[MouseButton.Right] = !(bool) _pressed[MouseButton.Right] && right;
+            _clicked[MouseButton.Middle] = !(bool) _pressed[MouseButton.Middle] && middle;
+            _pressed[MouseButton.Left] = left;
+            _pressed[MouseButton.Right] = right;
+            _pressed[MouseButton.Middle] = middle;
         }
     }
 }

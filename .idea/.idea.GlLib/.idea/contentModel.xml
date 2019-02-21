@@ -55,6 +55,7 @@
         <e p="Packets" t="Include">
           <e p="ConnectRequestPacket.cs" t="Include" />
           <e p="ConnectedEstablishedPacket.cs" t="Include" />
+          <e p="IntegratedConnectionRequestPacket.cs" t="Include" />
           <e p="KeyPressedPacket.cs" t="Include" />
           <e p="Packet.cs" t="Include" />
           <e p="PlayerDataPacket.cs" t="Include" />
@@ -117,6 +118,7 @@
         <e p="one_and_a_half_sword.png" t="Include" />
         <e p="one_and_a_half_sword_uncommon.png" t="Include" />
         <e p="path.png" t="Include" />
+        <e p="player.png" t="Include" />
       </e>
     </e>
   </component>

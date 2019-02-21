@@ -42,3 +42,6 @@
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/.directory
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/bricks_worn.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/bricks_worn_fire.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/player.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/maps/testmap1.json
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/maps/testmap2.json

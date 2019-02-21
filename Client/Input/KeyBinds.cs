@@ -8,41 +8,42 @@ namespace GlLib.Client.Input
 {
     public class KeyBinds
     {
-        public static Dictionary<Key, Delegate> binds = new Dictionary<Key, Delegate>();
-        public static Dictionary<Delegate, Key> delegates = new Dictionary<Delegate, Key>();
+        public static Dictionary<Key, Delegate> _binds = new Dictionary<Key, Delegate>();
+        public static Dictionary<Delegate, Key> _delegates = new Dictionary<Delegate, Key>();
 
         public static void Register()
         {
-            Bind(Key.W, moveUp);
-            Bind(Key.A, moveLeft);
-            Bind(Key.S, moveDown);
-            Bind(Key.D, moveRight);
+            Bind(Key.W, _moveUp);
+            Bind(Key.A, _moveLeft);
+            Bind(Key.S, _moveDown);
+            Bind(Key.D, _moveRight);
         }
 
         public static void Update(Player p)
         {
-            foreach (var key in KeyboardHandler.Keys)
+            p._acceleration = new PlanarVector();
+            foreach (var key in KeyboardHandler._keys)
             {
-                if (binds.ContainsKey(key) && (bool) KeyboardHandler.Pressed[key])
+                if (_binds.ContainsKey(key) && (bool) KeyboardHandler._pressed[key])
                 {
-                    binds[key].DynamicInvoke(p);
+                    _binds[key].DynamicInvoke(p);
                 }
             }
         }
 
         public static void Bind(Key key, Delegate @delegate)
         {
-            binds.Add(key, @delegate);
-            delegates.Add(@delegate, key);
+            _binds.Add(key, @delegate);
+            _delegates.Add(@delegate, key);
             KeyboardHandler.RegisterKey(key);
         }
 
         public static void Rebind(Key key, Delegate @delegate)
         {
             List<Key> toRemove = new List<Key>();
-            foreach (var keyh in KeyboardHandler.Keys)
+            foreach (var keyh in KeyboardHandler._keys)
             {
-                if (binds[keyh] == @delegate)
+                if (_binds[keyh] == @delegate)
                 {
                     toRemove.Add(keyh);
                 }
@@ -50,31 +51,27 @@ namespace GlLib.Client.Input
 
             foreach (var keyh in toRemove)
             {
-                binds.Remove(keyh);
+                _binds.Remove(keyh);
             }
 
             toRemove.Clear();
 
             KeyboardHandler.RegisterKey(key);
-            binds.Add(key, @delegate);
-            if (delegates.ContainsKey(@delegate))
+            _binds.Add(key, @delegate);
+            if (_delegates.ContainsKey(@delegate))
             {
-                delegates[@delegate] = key;
+                _delegates[@delegate] = key;
             }
             else
             {
-                delegates.Add(@delegate, key);
+                _delegates.Add(@delegate, key);
             }
         }
 
-        public static MoveLeftDelegate moveLeft = (p) =>
-        {
-            Console.WriteLine("Left");
-            p._acceleration += new PlanarVector(-p._accelValue, -p._accelValue);
-        };
-        public static MoveUpDelegate moveUp = (p) => p._acceleration += new PlanarVector(-p._accelValue, p._accelValue);
-        public static MoveRightDelegate moveRight = (p) => p._acceleration += new PlanarVector(p._accelValue, p._accelValue);
-        public static MoveDownDelegate moveDown = (p) => p._acceleration += new PlanarVector(p._accelValue, -p._accelValue);
+        public static MoveLeftDelegate _moveLeft = (p) => p._acceleration += new PlanarVector(-p._accelValue, -p._accelValue);
+        public static MoveUpDelegate _moveUp = (p) => p._acceleration += new PlanarVector(-p._accelValue, p._accelValue);
+        public static MoveRightDelegate _moveRight = (p) => p._acceleration += new PlanarVector(p._accelValue, p._accelValue);
+        public static MoveDownDelegate _moveDown = (p) => p._acceleration += new PlanarVector(p._accelValue, -p._accelValue);
     }
 
     public delegate void MoveLeftDelegate(Player p);

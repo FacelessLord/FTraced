@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
@@ -39,6 +40,7 @@ namespace GlLib.Client
         {
             _state = State.Starting;
             _player = new Player();
+            _packetHandler.StartPacketHandler();
             if (!Config._isIntegratedServer)
             {
                 Blocks.Register();
@@ -51,10 +53,11 @@ namespace GlLib.Client
                 ConnectToIntegratedServer();
                 SidedConsole.WriteLine($"Connection established. ServerId is {_serverId}");
             }
-            _packetHandler.StartPacketHandler();
 
             GraphicWindow.RunWindow();
         }
+
+        public const int FrameTime = 50;
 
         public void GameLoop()
         {
@@ -63,6 +66,7 @@ namespace GlLib.Client
             {
                 _currentWorld.Update();
                 Proxy.Sync();
+                Thread.Sleep(FrameTime);
             }
         }
 
@@ -91,7 +95,7 @@ namespace GlLib.Client
 
             //todo send connectionPackage and receive ConnectedPackage
             SidedConsole.WriteLine("Connect request");
-            ConnectRequestPacket connectRequest = new ConnectRequestPacket(_nickName, _password);
+            IntegratedConnectionRequestPacket connectRequest = new IntegratedConnectionRequestPacket(this);
             Proxy.SendPacketToServer(connectRequest);
             Proxy.AwaitWhile(() =>
             {

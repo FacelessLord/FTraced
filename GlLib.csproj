@@ -6,12 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="NUnit" Version="3.11.0" />
       <PackageReference Include="OpenTK.NETCore" Version="1.1.2749.6433" />
       <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
     </ItemGroup>
     <ItemGroup>
         <None Include="textures\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="maps\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

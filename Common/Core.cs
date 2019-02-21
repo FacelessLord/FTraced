@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using GlLib.Client;
 using GlLib.Server;
@@ -11,7 +12,7 @@ namespace GlLib.Common
         {
             foreach (var arg in args)
             {
-                Console.WriteLine(arg);
+                Console.WriteLine("Arguments: ["+args.Aggregate((a,b) => a+","+b)+"]");
                 string[] argsParts = arg.Split("=");
                 (string variableName, string value) = (argsParts[0], argsParts[1]);
                 Config.ProcessArgument(variableName, value);

@@ -219,21 +219,6 @@
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
       },
-      "NUnit/3.11.0": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "2.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/nunit.framework.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/nunit.framework.dll": {}
-        },
-        "build": {
-          "build/NUnit.props": {}
-        }
-      },
       "OpenTK.NETCore/1.1.2749.6433": {
         "type": "package",
         "dependencies": {
@@ -1214,40 +1199,6 @@
         "lib/netstandard1.0/_._",
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
-      ]
-    },
-    "NUnit/3.11.0": {
-      "sha512": "zecrYxUA5p5w8AZ2bvbBbiUIcrQnZAVPrziNMSWMdcOi0D2Oe7yKUNivWPIQMcUwQDHmWtS/ijnD48ubU/eHZQ==",
-      "type": "package",
-      "path": "nunit/3.11.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CHANGES.md",
-        "LICENSE.txt",
-        "NOTICES.txt",
-        "build/NUnit.props",
-        "lib/net20/NUnit.System.Linq.dll",
-        "lib/net20/nunit.framework.dll",
-        "lib/net20/nunit.framework.pdb",
-        "lib/net20/nunit.framework.xml",
-        "lib/net35/nunit.framework.dll",
-        "lib/net35/nunit.framework.pdb",
-        "lib/net35/nunit.framework.xml",
-        "lib/net40/nunit.framework.dll",
-        "lib/net40/nunit.framework.pdb",
-        "lib/net40/nunit.framework.xml",
-        "lib/net45/nunit.framework.dll",
-        "lib/net45/nunit.framework.pdb",
-        "lib/net45/nunit.framework.xml",
-        "lib/netstandard1.4/nunit.framework.dll",
-        "lib/netstandard1.4/nunit.framework.pdb",
-        "lib/netstandard1.4/nunit.framework.xml",
-        "lib/netstandard2.0/nunit.framework.dll",
-        "lib/netstandard2.0/nunit.framework.pdb",
-        "lib/netstandard2.0/nunit.framework.xml",
-        "nunit.3.11.0.nupkg.sha512",
-        "nunit.nuspec"
       ]
     },
     "OpenTK.NETCore/1.1.2749.6433": {
@@ -2884,7 +2835,6 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
       "Microsoft.NETCore.App >= 2.2.0",
-      "NUnit >= 3.11.0",
       "OpenTK.NETCore >= 1.1.2749.6433",
       "SixLabors.ImageSharp >= 1.0.0-beta0006"
     ]
@@ -2933,10 +2883,6 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
-          },
-          "NUnit": {
-            "target": "Package",
-            "version": "[3.11.0, )"
           },
           "OpenTK.NETCore": {
             "target": "Package",

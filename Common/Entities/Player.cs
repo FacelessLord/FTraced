@@ -8,7 +8,7 @@ namespace GlLib.Common.Entities
     public class Player : Entity
     {
         public string _nickname = "Player";
-        public double _accelValue = 0.005;
+        public double _accelValue = 0.0005;
 
         private PlayerData _playerData = null;
 
@@ -48,16 +48,16 @@ namespace GlLib.Common.Entities
         public override void Render(PlanarVector xAxis, PlanarVector yAxis)
         {
             GL.PushMatrix();
-            Texture btexture = Vertexer.LoadTexture("one_and_a_half_sword.png");
+            Texture btexture = Vertexer.LoadTexture("player.png");
             Vertexer.BindTexture(btexture);
             //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
             Vertexer.StartDrawingQuads();
 
-            Vertexer.VertexWithUvAt(60, -60, 1, 0);
-            Vertexer.VertexWithUvAt(60, 60, 1, 1);
-            Vertexer.VertexWithUvAt(-60, 60, 0, 1);
-            Vertexer.VertexWithUvAt(-60, -60, 0, 0);
+            Vertexer.VertexWithUvAt(10, -10, 1, 0);
+            Vertexer.VertexWithUvAt(10, 10, 1, 1);
+            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
+            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
 
             Vertexer.Draw();
             GL.PopMatrix();
