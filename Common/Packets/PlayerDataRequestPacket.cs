@@ -30,10 +30,10 @@ namespace GlLib.Common.Packets
             _password = tag.GetString("Password");
         }
 
-        public override void OnServerReceive()
+        public override void OnServerReceive(SideService server)
         {
             PlayerDataPacket playerDataPacket = 
-                new PlayerDataPacket(ServerInstance.GetDataFor(_playerNickname,_password));
+                new PlayerDataPacket(((ServerInstance)server).GetDataFor(_playerNickname,_password));
             Proxy.SendPacketToPlayer(_playerNickname,playerDataPacket);
         }
     }

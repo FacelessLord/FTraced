@@ -44,9 +44,16 @@ namespace GlLib.Server
 
     public class ServerPacketHandler : PacketHandler
     {
+        private ServerInstance _server;
+
+        public ServerPacketHandler(SideService client)
+        {
+            _server = (ServerInstance) client;
+        }
+        
         public override void HandlePacket(Packet packet)
         {
-            ServerInstance.HandlePacket(packet);
+            _server.HandlePacket(packet);
         }
     }
     
@@ -55,9 +62,9 @@ namespace GlLib.Server
     {
         private ClientService _client;
 
-        public ClientPacketHandler(ClientService client)
+        public ClientPacketHandler(SideService client)
         {
-            _client = client;
+            _client = (ClientService) client;
         }
 
         public override void HandlePacket(Packet packet)

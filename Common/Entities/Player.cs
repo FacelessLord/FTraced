@@ -10,7 +10,7 @@ namespace GlLib.Common.Entities
         public string _nickname = "Player";
         public double _accelValue = 0.0005;
 
-        private PlayerData _playerData = null;
+        private PlayerData _playerData;
 
         public PlayerData Data
         {
@@ -31,7 +31,8 @@ namespace GlLib.Common.Entities
         public Player(World world, RestrictedVector3D position) : base(world, position)
         {
         }
-        public Player() : base()
+
+        public Player()
         {
         }
 
@@ -63,10 +64,19 @@ namespace GlLib.Common.Entities
             GL.PopMatrix();
         }
 
-        public override void LoadFromNbt(NbtTag tag)
+        public override void LoadFromNbt(NbtTag tag, World world)
         {
             _nickname = tag.GetString("Name");
-            base.LoadFromNbt(tag);
+            Data = PlayerData.LoadFromNbt(tag);
+            base.LoadFromNbt(tag, world);
+        }
+
+        public override void SaveToNbt(NbtTag tag)
+        {
+            tag.SetString("Name", _nickname);
+            if (Data != null)
+                Data.SaveToNbt(tag);
+            base.SaveToNbt(tag);
         }
     }
 }

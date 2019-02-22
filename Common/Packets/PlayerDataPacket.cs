@@ -25,9 +25,9 @@ namespace GlLib.Common.Packets
             _playerData = PlayerData.LoadFromNbt(tag);
         }
 
-        public override void OnClientReceive(ClientService client)
+        public override void OnClientReceive(SideService client)
         {
-            client._player.Data = _playerData;
+            ((ClientService)client)._player.Data = _playerData;
         }
     }
 }

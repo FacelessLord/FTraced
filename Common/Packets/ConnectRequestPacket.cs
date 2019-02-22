@@ -32,13 +32,13 @@ namespace GlLib.Common.Packets
             _password = tag.GetString("Password");
         }
 
-        public override void OnServerReceive()
+        public override void OnServerReceive(SideService server)
         {
             ClientService client = new ClientService(_playerNickname, _password);
-            ServerInstance.ConnectClient(client);
+            ((ServerInstance) server).ConnectClient(client);
 
             ConnectionEstablishedPacket connectionPacket =
-                new ConnectionEstablishedPacket(ServerInstance._serverId);
+                new ConnectionEstablishedPacket(server._serverId);
 
             Proxy.SendPacketToPlayer(_playerNickname, connectionPacket);
         }

@@ -139,10 +139,31 @@ namespace GlLib.Common.Entities
 
         public virtual void SaveToNbt(NbtTag tag)
         {
+            if(_position != null && _velocity != null && _maxVel != null && _acceleration != null && _worldObj != null)
+            {
+                tag.SetString("Position", _position + "");
+                tag.SetString("Velocity", _velocity + "");
+                tag.SetString("MaxVelocity", _maxVel + "");
+                tag.SetString("Acceleration", _acceleration + "");
+                tag.SetInt("WorldId", _worldObj._worldId);
+                tag.SetBool("IsDead", _isDead);
+                tag.SetBool("noclip", _noClip);
+                if (_nbtTag != null)
+                    tag.AppendTag(_nbtTag, "EntityTag");
+            }
         }
 
-        public virtual void LoadFromNbt(NbtTag tag)
+        public virtual void LoadFromNbt(NbtTag tag,World world)
         {
+            _position = RestrictedVector3D.FromString(tag.GetString("Position"));
+            _velocity = PlanarVector.FromString(tag.GetString("Velocity"));
+            _maxVel = PlanarVector.FromString(tag.GetString("MaxVelocity"));
+            _acceleration = PlanarVector.FromString(tag.GetString("Acceleration"));
+            _worldObj = world._worldId == tag.GetInt("WorldId") ? world : null;
+            _isDead = tag.GetBool("IsDead");
+            _noClip = tag.GetBool("noclip");
+            if(tag.CanRetrieveTag("EntityTag"))
+                _nbtTag = tag.RetrieveTag("EntityTag");
         }
 
         public static Entity LoadFromJson(JsonObjectCollection collection, World world, Chunk chunk)
@@ -192,7 +213,7 @@ namespace GlLib.Common.Entities
             entity._velocity = new PlanarVector(velX, velY);
             entity._chunkObj = chunk;
             entity._nbtTag = NbtTag.FromString(rawTag);
-            entity.LoadFromNbt(entity._nbtTag);
+            entity.LoadFromNbt(entity._nbtTag,world);
             return entity;
         }
 

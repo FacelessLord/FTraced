@@ -6,12 +6,16 @@ using System.Numerics;
 
 namespace GlLib.Utils
 {
-    public class NbtTag
+    public class NbtTag : IEnumerable<string>
     {
-        public Hashtable _table = new Hashtable();
+        private Hashtable _table = new Hashtable();
 
         private void SetObject(string key, object obj)
         {
+            if (_table.ContainsKey(key))
+            {
+                _table.Remove(key);
+            }
             _table.Add(key, obj);
         }
 
@@ -106,6 +110,19 @@ namespace GlLib.Utils
             return MiscUtils.Compact(entries.ToArray());
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            foreach (var key in _table.Keys)
+            {
+                yield return key + "";
+            }
+        }
+
         public static NbtTag FromString(string rawTag)
         {
             NbtTag tag = new NbtTag();
@@ -143,7 +160,7 @@ namespace GlLib.Utils
 
         public void AppendTag(NbtTag tag, string prefix)
         {
-            foreach (var key in tag._table)
+            foreach (var key in tag)
             {
                 SetObject(prefix+key, tag._table[key]);
             }
@@ -153,12 +170,12 @@ namespace GlLib.Utils
         {
             NbtTag tag = new NbtTag();
             List<string> keysToRemove = new List<string>();
-            foreach (var key in _table)
+            foreach (var key in this)
             {
-                if ((key + "").StartsWith(prefix))
+                if (key.StartsWith(prefix))
                 {
-                    keysToRemove.Add(key+"");
-                    tag.SetObject((key+"").Substring(prefix.Length), _table[key]);
+                    keysToRemove.Add(key);
+                    tag.SetObject((key).Substring(prefix.Length), _table[key]);
                 }
             }
 
@@ -168,6 +185,19 @@ namespace GlLib.Utils
             }
 
             return tag;
+        }
+
+        public bool CanRetrieveTag(string prefix)
+        {
+            foreach (var key in this)
+            {
+                if (key.StartsWith(prefix))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

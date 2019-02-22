@@ -27,7 +27,7 @@ namespace GlLib.Common.Packets
             _serverId = tag.GetInt("ServerId");
         }
         
-        public override void OnClientReceive(ClientService client)
+        public override void OnClientReceive(SideService client)
         {
             client._serverId = _serverId;
         }

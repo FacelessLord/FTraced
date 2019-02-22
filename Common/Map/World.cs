@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Json;
+using System.Threading;
 using GlLib.Common.Entities;
 using GlLib.Common.Events;
 using GlLib.Client.Input;
@@ -16,7 +18,7 @@ namespace GlLib.Common.Map
 
         public int _worldId;
 
-        public List<Player> _players = new List<Player>();
+        public ConcurrentDictionary<string, Player> _players = new ConcurrentDictionary<string, Player>();
 
         public Chunk this[int i, int j]
         {
@@ -43,7 +45,7 @@ namespace GlLib.Common.Map
         public JsonObjectCollection _jsonObj;
         public string _mapName;
 
-        public World(string mapName,int worldId)
+        public World(string mapName, int worldId)
         {
             _mapName = mapName;
             _worldId = worldId;
@@ -61,14 +63,14 @@ namespace GlLib.Common.Map
                 }
             }
         }
-        
+
         public void LoadWorld()
         {
             for (int i = 0; i < _width; i++)
             {
                 for (int j = 0; j < _height; j++)
                 {
-                    if(!this[i,j]._isLoaded)
+                    if (!this[i, j]._isLoaded)
                         this[i, j].LoadChunk(this, i, j);
                 }
             }
@@ -88,7 +90,7 @@ namespace GlLib.Common.Map
             }
 
             JsonObjectCollection mainColl = new JsonObjectCollection(objects);
-            
+
             FileStream fs = File.OpenWrite(_mapName);
             TextWriter tw = new StreamWriter(fs);
             mainColl.WriteTo(tw);
@@ -101,7 +103,7 @@ namespace GlLib.Common.Map
         public JsonObjectCollection LoadWorldJson(string name)
         {
             var parser = new JsonTextParser();
-            var mapCode = File.ReadAllText("maps/"+name);
+            var mapCode = File.ReadAllText("maps/" + name);
             var obj = parser.Parse(mapCode);
             var mainCollection = (JsonObjectCollection) obj;
             return mainCollection;
@@ -112,7 +114,7 @@ namespace GlLib.Common.Map
             if (EventBus.OnEntitySpawn(e)) return;
 
             if (e is Player p)
-                _players.Add(p);
+                _players.TryAdd(p._nickname, p);
             if (e._chunkObj == null)
                 e._chunkObj = Entity.GetProjection(e._position, this);
             e._chunkObj._entities[e._position._z].Add(e);
@@ -146,7 +148,9 @@ namespace GlLib.Common.Map
             {
                 Chunk chk = this[i, j];
                 if (chk != null)
+                {
                     chunks.Add(chk);
+                }
             }
 
             foreach (var chk in chunks)
@@ -179,7 +183,9 @@ namespace GlLib.Common.Map
             {
                 Chunk chk = this[i, j];
                 if (chk != null)
+                {
                     chunks.Add(chk);
+                }
             }
 
             foreach (var chk in chunks)
@@ -188,7 +194,9 @@ namespace GlLib.Common.Map
                 foreach (var entity in chkEntities)
                 {
                     if (entity.GetAaBb().IntersectsWith(aabb))
+                    {
                         entities.Add(entity);
+                    }
                 }
             }
 
@@ -203,16 +211,18 @@ namespace GlLib.Common.Map
             GL.Translate(-Math.Max(_width, _height) * Chunk.BlockWidth * 5, 0, 0);
             for (int i = 0; i < _width; i++)
             for (int j = _width - 1; j >= 0; j--)
+            {
                 if (this[i + x, j + y]._isLoaded)
                 {
                     this[i + x, j + y].RenderChunk(i, j, xAxis, yAxis);
                 }
+            }
 
             for (int i = 0; i < _width; i++)
             for (int j = _width - 1; j >= 0; j--)
+            {
                 if (this[i + x, j + y]._isLoaded)
                 {
-
                     foreach (var level in this[i + x, j + y]._entities)
                     {
                         foreach (var entity in level)
@@ -226,6 +236,7 @@ namespace GlLib.Common.Map
                         }
                     }
                 }
+            }
 
             GL.PopMatrix();
         }
@@ -244,15 +255,16 @@ namespace GlLib.Common.Map
             }
 
             _entityAddQueue.Clear();
-            foreach (var player in _players)
+            foreach (var player in _players.Values)
             {
                 player._acceleration = new PlanarVector();
                 KeyBinds.Update(player);
-                
+
 //                SidedConsole.WriteLine(player._nickname);
                 player.Update();
             }
 
+            _entityMutex.WaitOne();
             foreach (var chunk in _chunks)
             {
                 if (chunk._isLoaded)
@@ -260,6 +272,8 @@ namespace GlLib.Common.Map
                     chunk.Update();
                 }
             }
+
+            _entityMutex.ReleaseMutex();
         }
 
         public List<(Entity e, Chunk chk)> _entityRemoveQueue = new List<(Entity e, Chunk chk)>();
@@ -271,16 +285,47 @@ namespace GlLib.Common.Map
             _entityAddQueue.Add((e, next));
             e._chunkObj = next;
         }
-        
-        public virtual void SaveToNbt(NbtTag tag)
+
+        public virtual void SaveEntitiesToNbt(NbtTag tag)
         {
+            int i = 0;
+            NbtTag entityTag = new NbtTag();
             
+            _entityMutex.WaitOne();
+            foreach (var chunk in _chunks)
+            {
+                foreach (var level in chunk._entities)
+                {
+                    foreach (var entity in level)
+                    {
+                        NbtTag localTag = new NbtTag();
+                        entity.SaveToNbt(localTag);
+                        entityTag.AppendTag(localTag, "Entity" + i);
+                        i++;
+                    }
+                }
+            }
+            _entityMutex.ReleaseMutex();
+            
+            entityTag.SetInt("EntityCount", i);
+            tag.AppendTag(entityTag, "Entities");
         }
 
-        public static World LoadFromNbt(NbtTag tag)
+        public Mutex _entityMutex = new Mutex();
+
+        public void LoadEntitiesFromNbt(NbtTag tag)
         {
-            //todo
-            return null;
+            _entityMutex.WaitOne();
+            
+            NbtTag entityTag = tag.RetrieveTag("Entities");
+            int entityCount = entityTag.GetInt("EntityCount");
+            for (int i = 0; i < entityCount; i++)
+            {
+                Entity entity = new Entity();
+                entity.LoadFromNbt(entityTag.RetrieveTag("Entity" + i), this);
+            }
+
+            _entityMutex.ReleaseMutex();
         }
     }
 }

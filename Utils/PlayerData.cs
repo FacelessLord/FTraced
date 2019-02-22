@@ -17,14 +17,14 @@ namespace GlLib.Utils
         public void SaveToNbt(NbtTag tag)
         {
             tag.SetInt("WorldId", _world._worldId);
-            tag.SetString("WorldId", _position.ToString());
+            tag.SetString("Position", _position.ToString());
             tag.SetString("Nickname", _nickname);
         }
 
         public static PlayerData LoadFromNbt(NbtTag tag)
         {
             World world = ServerInstance.GetWorldById(tag.GetInt("WorldId"));
-            RestrictedVector3D position = RestrictedVector3D.FromString(tag.GetString("WorldId"));
+            RestrictedVector3D position = RestrictedVector3D.FromString(tag.GetString("Position"));
             string nickname = tag.GetString("Nickname");
             return new PlayerData(world, position, nickname);
         }

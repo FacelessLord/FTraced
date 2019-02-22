@@ -25,12 +25,12 @@ namespace GlLib.Common.Packets
         {
         }
 
-        public override void OnServerReceive()
+        public override void OnServerReceive(SideService server)
         {
-            ServerInstance.ConnectClient(_client);
+            ((ServerInstance)server).ConnectClient(_client);
 
             ConnectionEstablishedPacket connectionPacket =
-                new ConnectionEstablishedPacket(ServerInstance._serverId);
+                new ConnectionEstablishedPacket(server._serverId);
 
             Proxy.SendPacketToPlayer(_client._nickName, connectionPacket);
         }

@@ -12,77 +12,35 @@ using GlLib.Utils;
 
 namespace GlLib.Client
 {
-    public class ClientService
+    public class ClientService : SideService
     {
-        public static ClientService _instance;
-        public IPAddress _ip;
         public string _nickName;
         public string _password;
         public volatile Player _player;
-        
-        public ClientPacketHandler _packetHandler;
 
-        public int _serverId = -1;
         public bool IsConnectedToServer => _serverId > -1;
-
-        public State _state = State.Off;
 
         public World _currentWorld;
 
-        public ClientService(string nickName, string password)
+        public ClientService(string nickName, string password) : base(Side.Client)
         {
             _nickName = nickName;
             _password = password;
-            _packetHandler = new ClientPacketHandler(this);
-        }
-
-        public void StartClient()
-        {
-            _state = State.Starting;
             _player = new Player();
-            _packetHandler.StartPacketHandler();
-            if (!Config._isIntegratedServer)
-            {
-                Blocks.Register();
-                Entities.Register();
-                KeyBinds.Register();
-                PacketRegistry.Register();
-            }
-            else
-            {
-                SidedConsole.WriteLine("Connecting To Integrated Server");
-                ConnectToIntegratedServer();
-                SidedConsole.WriteLine($"Connection established. ServerId is {_serverId}");
-            }
-
-            GraphicWindow.RunWindow();
         }
 
-        public const int FrameTime = 50;
-
-        public void GameLoop()
+        public override void OnStart()
         {
-            _state = State.Loop;
-            while (true)
-            {
-                _currentWorld.Update();
-                Proxy.Sync();
-                Thread.Sleep(FrameTime);
-            }
         }
 
-        public void ExitGame()
+        public override void OnServiceUpdate()
         {
-            _state = State.Exiting;
-            //todo
-            _state = State.Off;
+            _currentWorld.Update();
         }
 
-        public void SetupIp(IPAddress ip)
+        public override void OnExit()
         {
-            _ip = ip;
         }
-
         public bool ConnectToServer(IPAddress ip)
         {
             //todo
@@ -94,7 +52,6 @@ namespace GlLib.Client
             //todo receiving world file
 //            _currentWorld = ServerInstance.GetWorldById(0);
 
-            //todo send connectionPackage and receive ConnectedPackage
             SidedConsole.WriteLine("Connect request");
             IntegratedConnectionRequestPacket connectRequest = new IntegratedConnectionRequestPacket(this);
             Proxy.SendPacketToServer(connectRequest);
@@ -104,6 +61,12 @@ namespace GlLib.Client
             });
             SidedConsole.WriteLine("Connected");
 
+            return Config._isIntegratedServer;
+        }
+
+        public void LoadPlayerFromServer()
+        {
+            
             // Getting player data from server
             SidedConsole.WriteLine("Player data request");
             PlayerDataRequestPacket playerDataRequest = new PlayerDataRequestPacket(_nickName, _password);
@@ -117,14 +80,7 @@ namespace GlLib.Client
             _player._nickname = _player.Data._nickname;
                 
             _currentWorld.SpawnEntity(_player);
-            _currentWorld._players.Add(_player);
-            return Config._isIntegratedServer;
-        }
-
-        public void HandlePacket(Packet packet)
-        {
-            SidedConsole.WriteLine($"Packet {PacketRegistry.GetPacketId(packet)} has been received.");
-            packet.OnClientReceive(this);
+            _currentWorld._players.TryAdd(_player._nickname,_player);
         }
     }
 }

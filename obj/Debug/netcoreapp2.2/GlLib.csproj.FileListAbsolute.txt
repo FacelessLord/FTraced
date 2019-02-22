@@ -33,7 +33,6 @@
 /home/lord_faceless/RiderProjects/GlLib/AirGame/obj/Debug/netcoreapp2.2/GlLib.AssemblyInfo.cs
 /home/lord_faceless/RiderProjects/GlLib/AirGame/obj/Debug/netcoreapp2.2/GlLib.dll
 /home/lord_faceless/RiderProjects/GlLib/AirGame/obj/Debug/netcoreapp2.2/GlLib.pdb
-/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/DiggerLib.dll
 /home/lord_faceless/RiderProjects/GlLib/AirGame/obj/Debug/netcoreapp2.2/GlLib.csproj.CopyComplete
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/grass_autumn_st_0.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/grass_autumn_st_1.png

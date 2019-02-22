@@ -73,11 +73,13 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            return $"({_x},{_y},{_z}";
+            return $"({_x},{_y},{_z})";
         }
 
         public static RestrictedVector3D FromString(string s)
         {
+            if (s == "")
+                return new RestrictedVector3D();
             string[] coords = s.Substring(1, s.Length - 2).Split(",");
             return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
         }
@@ -126,11 +128,13 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            return $"({_x},{_y}";
+            return $"({_x},{_y})";
         }
 
         public static PlanarVector FromString(string s)
         {
+            if (s == "")
+                return new PlanarVector();
             string[] coords = s.Substring(1, s.Length - 2).Split(",");
             return new PlanarVector(double.Parse(coords[0]), double.Parse(coords[1]));
         }

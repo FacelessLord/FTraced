@@ -20,15 +20,16 @@ namespace GlLib.Common
 
             if (Config._isIntegratedServer)
             {
+                ServerInstance server = new ServerInstance();
                 Thread serverThread = new Thread(() =>
                 {
-                    ServerInstance.StartServer();
-                    ServerInstance.GameLoop();
-                    ServerInstance.ExitGame();
+                    server.Start();
+                    server.Loop();
+                    server.Exit();
                 });
                 serverThread.Name = Side.Server.ToString();
 
-                ClientService._instance = new ClientService(Config._playerName, Config._playerPassword);
+                ClientService client = new ClientService(Config._playerName, Config._playerPassword);
                 Thread clientThread = new Thread(() =>
                 {
                     ClientService._instance.StartClient();

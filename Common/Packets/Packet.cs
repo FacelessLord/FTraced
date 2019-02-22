@@ -24,14 +24,19 @@ namespace GlLib.Common.Packets
         /// <param name="tag">Tag to load info</param>
         public abstract void ReadFromNbt(NbtTag tag);
 
-        public virtual void OnClientReceive(ClientService client)
+        public virtual void OnClientReceive(SideService client)
         {
 
         }
 
-        public virtual void OnServerReceive()
+        public virtual void OnServerReceive(SideService server)
         {
 
+        }
+
+        public virtual bool RequiresReceiveMessage()
+        {
+            return true;
         }
     }
 }

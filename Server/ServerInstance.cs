@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using GlLib.Client;
 using GlLib.Client.Input;
 using GlLib.Common;
@@ -11,38 +12,31 @@ using GlLib.Utils;
 
 namespace GlLib.Server
 {
-    public static class ServerInstance
+    public class ServerInstance: SideService
     {
-        public static State _state = State.Off;
-        public static List<ClientService> _clients = new List<ClientService>();
-        public static int _serverId;
+        public List<ClientService> _clients = new List<ClientService>();
 
-        public static ServerPacketHandler _packetHandler = new ServerPacketHandler();
-        
-        public static void StartServer()
+
+        public override void OnStart()
         {
             _serverId = new Random().Next();
-            _state = State.Starting;
-//            Console.WriteLine($"Hello World! {1/16}");
-            Blocks.Register();
-            KeyBinds.Register();
-            Entities.Register();
             CreateWorlds();
-            _packetHandler.StartPacketHandler();
-            PacketRegistry.Register();
         }
 
-
-        public static void GameLoop()
+        public override void OnServiceUpdate()
         {
-            _state = State.Loop;
+            Proxy.Sync();
             foreach (var world in _worlds)
             {
                 world.Value.Update();
             }
         }
+        
+        public override void OnExit()
+        {
+        }
 
-        public static void ConnectClient(ClientService client)
+        public void ConnectClient(ClientService client)
         {
             _clients.Add(client);
             client._player = new Player {Data = GetDataFor(client._nickName, client._password)};
@@ -52,23 +46,16 @@ namespace GlLib.Server
             //todo something
         }
 
-        public static void ExitGame()
-        {
-            _state = State.Exiting;
-            //todo
-            _state = State.Off;
-        }
-
-        public static void CreateWorlds()
+        public void CreateWorlds()
         {
             _worlds.Add(0, new World("testmap1.json", 0));
         }
 
-        public static Dictionary<int, World> _worlds = new Dictionary<int, World>();
+        public Dictionary<int, World> _worlds = new Dictionary<int, World>();
 
-        public static Dictionary<string, PlayerData> _playerInfo = new Dictionary<string, PlayerData>();
+        public Dictionary<string, PlayerData> _playerInfo = new Dictionary<string, PlayerData>();
 
-        public static PlayerData GetDataFor(string playerName, string password)
+        public PlayerData GetDataFor(string playerName, string password)
         {
             //todo use password
             if (_playerInfo.ContainsKey(playerName))
@@ -80,15 +67,13 @@ namespace GlLib.Server
             return data;
         }
 
-        public static World GetWorldById(int id)
+        public World GetWorldById(int id)
         {
             return _worlds[id];
         }
 
-        public static void HandlePacket(Packet packet)
+        public ServerInstance() : base(Side.Server)
         {
-            SidedConsole.WriteLine($"Packet {PacketRegistry.GetPacketId(packet)} has been received.");
-            packet.OnServerReceive();
         }
     }
 }

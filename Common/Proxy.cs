@@ -3,6 +3,8 @@ using GlLib.Common.Packets;
 using GlLib.Utils;
 using System.Linq;
 using System.Threading;
+using GlLib.Common.Entities;
+using GlLib.Common.Map;
 using GlLib.Server;
 
 namespace GlLib.Common
@@ -55,7 +57,13 @@ namespace GlLib.Common
 
         public static void Sync()
         {
-            //todo send SyncPackage
+            foreach (var client in ServerInstance._clients)
+            {
+                Player player = client._player;
+                World world = client._currentWorld;
+                
+                SendPacketToPlayer(player._nickname, new SyncPacket(world,player));
+            }
         }
 
         public static Side GetSide()

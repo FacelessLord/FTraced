@@ -7,11 +7,11 @@ namespace GlLib.Common.Map
 {
     public class GameRegistry
     {
-        public static Hashtable _blocks = new Hashtable();
-        public static Hashtable _blocksById = new Hashtable();
-        public static Hashtable _entities = new Hashtable();
+        public Hashtable _blocks = new Hashtable();
+        public Hashtable _blocksById = new Hashtable();
+        public Hashtable _entities = new Hashtable();
 
-        public static void RegisterBlock(TerrainBlock block)
+        public void RegisterBlock(TerrainBlock block)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace GlLib.Common.Map
             }
         }
 
-        public static void RegisterEntity(string name, Type entityType)
+        public void RegisterEntity(string name, Type entityType)
         {
             try
             {
@@ -41,19 +41,19 @@ namespace GlLib.Common.Map
             }
         }
 
-        public static TerrainBlock GetBlockFromName(string blockName)
+        public TerrainBlock GetBlockFromName(string blockName)
         {
             if (_blocks.ContainsKey(blockName))
                 return (TerrainBlock) _blocks[blockName];
             return null;
         }
         
-        public static TerrainBlock GetBlockFromId(int id)
+        public TerrainBlock GetBlockFromId(int id)
         {
             return (TerrainBlock)_blocksById[id];
         }
         
-        public static Entity GetEntityFromName(string entityName,params object[] args)
+        public Entity GetEntityFromName(string entityName,params object[] args)
         {
             if (_entities.ContainsKey(entityName))
             {

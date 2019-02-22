@@ -7,38 +7,47 @@ namespace GlLib.Common.Packets
 {
     public class SyncPacket : Packet
     {
-        private World _world;
-        private Player _player;
+        private NbtTag _playerTag;
+        private NbtTag _worldTag;
 
+        public SyncPacket()
+        {
+            
+        }
+        
         public SyncPacket(World world, Player player)
         {
-            (_world, _player) = (world, player);
+            _playerTag = new NbtTag();
+            player.SaveToNbt(_playerTag);
+            _worldTag = new NbtTag();
+            if(world != null)
+                world.SaveEntitiesToNbt(_worldTag);
         }
 
         public override void WriteToNbt(NbtTag tag)
         {
-            NbtTag worldTag = new NbtTag();
-            _world.SaveToNbt(worldTag);
-
-            NbtTag playerTag = new NbtTag();
-            _player.SaveToNbt(playerTag);
-
-            tag.AppendTag(worldTag, "World");
-            tag.AppendTag(playerTag, "Player");
+            tag.AppendTag(_worldTag, "World");
+            tag.AppendTag(_playerTag, "Player");
         }
 
         public override void ReadFromNbt(NbtTag tag)
         {
-            NbtTag worldTag = tag.RetrieveTag("World");
-            _world = World.LoadFromNbt(worldTag);
-            NbtTag playerTag = tag.RetrieveTag("Player");
-            _player = new Player();
-            _player.LoadFromNbt(playerTag);
+            _worldTag = tag.RetrieveTag("World");
+            _playerTag = tag.RetrieveTag("Player");
         }
 
-        public override void OnClientReceive(ClientService client)
+        public override void OnClientReceive(SideService client)
         {
-            client._currentWorld = _world;
+            ClientService clientService = (ClientService) client;
+            clientService._currentWorld.LoadEntitiesFromNbt(_worldTag);
+            clientService._player = new Player();
+            clientService._player.LoadFromNbt(_playerTag, clientService._currentWorld);
+
+        }
+
+        public override bool RequiresReceiveMessage()
+        {
+            return false;
         }
     }
 }

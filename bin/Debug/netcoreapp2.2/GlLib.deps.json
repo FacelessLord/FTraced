@@ -10,7 +10,6 @@
         "dependencies": {
           "OpenTK.NETCore": "1.1.2749.6433",
           "SixLabors.ImageSharp": "1.0.0-beta0006",
-          "DiggerLib": "1.0.0.0",
           "System.Net.Json": "1.0.0.0"
         },
         "runtime": {
@@ -308,14 +307,6 @@
           "System.Runtime": "4.1.0"
         }
       },
-      "DiggerLib/1.0.0.0": {
-        "runtime": {
-          "DiggerLib.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "System.Net.Json/1.0.0.0": {
         "runtime": {
           "System.Net.Json.dll": {
@@ -562,11 +553,6 @@
       "sha512": "sha512-nuUpkup2FbB4Xf62nwWARtm1wQ457fEyR9KvLsCzBSj1yQTtKuqmlSgw/e6aiwB3CiUEAUbZ1IgEvza/m2SYxA==",
       "path": "system.threading.thread/4.0.0",
       "hashPath": "system.threading.thread.4.0.0.nupkg.sha512"
-    },
-    "DiggerLib/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
     },
     "System.Net.Json/1.0.0.0": {
       "type": "reference",
