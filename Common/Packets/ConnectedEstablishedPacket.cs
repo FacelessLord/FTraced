@@ -31,7 +31,6 @@ namespace GlLib.Common.Packets
 
         public override void OnClientReceive(ClientService client)
         {
-            Console.WriteLine("PacketReceived");
             client._serverId = _serverId;
         }
     }
