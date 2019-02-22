@@ -12,8 +12,6 @@ namespace GlLib.Common.Packets
     /// </summary>
     public abstract class Packet
     {
-        public int _packetId = -1;
-        
         /// <summary>
         /// Prepare information to be sent to receiver
         /// </summary>

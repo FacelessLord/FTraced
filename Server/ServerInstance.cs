@@ -29,6 +29,7 @@ namespace GlLib.Server
             Entities.Register();
             CreateWorlds();
             _packetHandler.StartPacketHandler();
+            PacketRegistry.Register();
         }
 
 
@@ -86,7 +87,7 @@ namespace GlLib.Server
 
         public static void HandlePacket(Packet packet)
         {
-            SidedConsole.WriteLine($"Packet {packet._packetId} has been received.");
+            SidedConsole.WriteLine($"Packet {PacketRegistry.GetPacketId(packet)} has been received.");
             packet.OnServerReceive();
         }
     }

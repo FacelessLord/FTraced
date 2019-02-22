@@ -9,7 +9,6 @@ namespace GlLib.Common.Packets
     {
         public ConnectRequestPacket()
         {
-            _packetId = 0;
         }
 
         public string _playerNickname;
@@ -19,7 +18,6 @@ namespace GlLib.Common.Packets
         {
             _playerNickname = nickname;
             _password = password;
-            _packetId = 0;
         }
 
         public override void WriteToNbt(NbtTag tag)
@@ -39,8 +37,8 @@ namespace GlLib.Common.Packets
             ClientService client = new ClientService(_playerNickname, _password);
             ServerInstance.ConnectClient(client);
 
-            ConnectedEstablishedPacket connectionPacket =
-                new ConnectedEstablishedPacket(ServerInstance._serverId);
+            ConnectionEstablishedPacket connectionPacket =
+                new ConnectionEstablishedPacket(ServerInstance._serverId);
 
             Proxy.SendPacketToPlayer(_playerNickname, connectionPacket);
         }

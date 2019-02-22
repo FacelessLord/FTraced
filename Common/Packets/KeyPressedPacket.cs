@@ -7,6 +7,11 @@ namespace GlLib.Common.Packets
     {
         public Key _key;
         
+        public KeyPressedPacket()
+        {
+            _key = Key.Unknown;
+        }
+        
         public KeyPressedPacket(Key key)
         {
             _key = key;

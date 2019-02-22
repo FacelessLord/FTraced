@@ -46,6 +46,7 @@ namespace GlLib.Client
                 Blocks.Register();
                 Entities.Register();
                 KeyBinds.Register();
+                PacketRegistry.Register();
             }
             else
             {
@@ -122,7 +123,7 @@ namespace GlLib.Client
 
         public void HandlePacket(Packet packet)
         {
-            SidedConsole.WriteLine($"Packet {packet._packetId} has been received.");
+            SidedConsole.WriteLine($"Packet {PacketRegistry.GetPacketId(packet)} has been received.");
             packet.OnClientReceive(this);
         }
     }

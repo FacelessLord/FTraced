@@ -7,7 +7,6 @@ namespace GlLib.Common.Packets
     {
         public PlayerDataRequestPacket()
         {
-            _packetId = 2;
         }
 
         public string _playerNickname;
@@ -17,7 +16,6 @@ namespace GlLib.Common.Packets
         {
             _playerNickname = nickname;
             _password = password;
-            _packetId = 2;
         }
 
         public override void WriteToNbt(NbtTag tag)

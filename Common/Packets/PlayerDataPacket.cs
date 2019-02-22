@@ -7,14 +7,12 @@ namespace GlLib.Common.Packets
     {
         public PlayerDataPacket()
         {
-            _packetId = 3;
         }
 
         public PlayerData _playerData;
         public PlayerDataPacket(PlayerData data)
         {
             _playerData = data;
-            _packetId = 3;
         }
         
         public override void WriteToNbt(NbtTag tag)

@@ -271,5 +271,16 @@ namespace GlLib.Common.Map
             _entityAddQueue.Add((e, next));
             e._chunkObj = next;
         }
+        
+        public virtual void SaveToNbt(NbtTag tag)
+        {
+            
+        }
+
+        public static World LoadFromNbt(NbtTag tag)
+        {
+            //todo
+            return null;
+        }
     }
 }

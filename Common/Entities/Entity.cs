@@ -24,7 +24,7 @@ namespace GlLib.Common.Entities
 
         public PlanarVector _velocity = new PlanarVector();
         public PlanarVector _acceleration = new PlanarVector();
-        public PlanarVector _maxVel = new PlanarVector(0.02,0.02);
+        public PlanarVector _maxVel = new PlanarVector(0.07,0.07);
         public Chunk _chunkObj;
 
         public NbtTag _nbtTag = new NbtTag();

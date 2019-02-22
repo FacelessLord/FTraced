@@ -4,19 +4,17 @@ using GlLib.Utils;
 
 namespace GlLib.Common.Packets
 {
-    public class ConnectedEstablishedPacket : Packet
+    public class ConnectionEstablishedPacket : Packet
     {
-        public ConnectedEstablishedPacket()
+        public ConnectionEstablishedPacket()
         {
-            _packetId = 1;
         }
 
         public int _serverId;
         
-        public ConnectedEstablishedPacket(int serverId)
+        public ConnectionEstablishedPacket(int serverId)
         {
             _serverId = serverId;
-            _packetId = 1;
         }
         
         public override void WriteToNbt(NbtTag tag)
@@ -28,7 +26,7 @@ namespace GlLib.Common.Packets
         {
             _serverId = tag.GetInt("ServerId");
         }
-
+        
         public override void OnClientReceive(ClientService client)
         {
             client._serverId = _serverId;

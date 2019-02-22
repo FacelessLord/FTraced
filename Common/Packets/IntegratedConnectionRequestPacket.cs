@@ -9,14 +9,12 @@ namespace GlLib.Common.Packets
     {
         public IntegratedConnectionRequestPacket()
         {
-            _packetId = 4;
         }
         public ClientService _client;
 
         public IntegratedConnectionRequestPacket(ClientService client)
         {
             _client = client;
-            _packetId = 4;
         }
 
         public override void WriteToNbt(NbtTag tag)
@@ -31,8 +29,8 @@ namespace GlLib.Common.Packets
         {
             ServerInstance.ConnectClient(_client);
 
-            ConnectedEstablishedPacket connectionPacket =
-                new ConnectedEstablishedPacket(ServerInstance._serverId);
+            ConnectionEstablishedPacket connectionPacket =
+                new ConnectionEstablishedPacket(ServerInstance._serverId);
 
             Proxy.SendPacketToPlayer(_client._nickName, connectionPacket);
         }

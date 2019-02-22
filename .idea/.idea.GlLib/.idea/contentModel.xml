@@ -54,12 +54,14 @@
         </e>
         <e p="Packets" t="Include">
           <e p="ConnectRequestPacket.cs" t="Include" />
-          <e p="ConnectedEstablishedPacket.cs" t="Include" />
+          <e p="ConnectionEstablishedPacket.cs" t="Include" />
           <e p="IntegratedConnectionRequestPacket.cs" t="Include" />
           <e p="KeyPressedPacket.cs" t="Include" />
           <e p="Packet.cs" t="Include" />
+          <e p="PacketRegistry.cs" t="Include" />
           <e p="PlayerDataPacket.cs" t="Include" />
           <e p="PlayerDataRequestPacket.cs" t="Include" />
+          <e p="SyncPacket.cs" t="Include" />
         </e>
         <e p="Proxy.cs" t="Include" />
         <e p="Registries" t="Include">

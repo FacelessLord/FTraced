@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace GlLib.Utils
 {
@@ -133,6 +136,35 @@ namespace GlLib.Utils
                         tag._table[entries[2 * i]] = value;
                         break;
                 }
+            }
+
+            return tag;
+        }
+
+        public void AppendTag(NbtTag tag, string prefix)
+        {
+            foreach (var key in tag._table)
+            {
+                SetObject(prefix+key, tag._table[key]);
+            }
+        }
+
+        public NbtTag RetrieveTag(string prefix)
+        {
+            NbtTag tag = new NbtTag();
+            List<string> keysToRemove = new List<string>();
+            foreach (var key in _table)
+            {
+                if ((key + "").StartsWith(prefix))
+                {
+                    keysToRemove.Add(key+"");
+                    tag.SetObject((key+"").Substring(prefix.Length), _table[key]);
+                }
+            }
+
+            foreach (var key in keysToRemove)
+            {
+                _table.Remove(key);
             }
 
             return tag;
