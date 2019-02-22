@@ -9,7 +9,6 @@ namespace GlLib.Common
 {
     public class Proxy
     {
-
         public static void SendPacketToPlayer(string nickName, Packet packet)
         {
             if (Config._isIntegratedServer)

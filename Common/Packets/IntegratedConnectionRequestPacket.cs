@@ -16,6 +16,7 @@ namespace GlLib.Common.Packets
         public IntegratedConnectionRequestPacket(ClientService client)
         {
             _client = client;
+            _packetId = 4;
         }
 
         public override void WriteToNbt(NbtTag tag)

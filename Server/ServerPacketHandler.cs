@@ -14,7 +14,7 @@ namespace GlLib.Server
         
         public void ReceivePacket(Packet packet)
         {
-            SidedConsole.WriteLine("PacketSent");
+//            SidedConsole.WriteLine("PacketSent");
             _receivedPackets.Enqueue(packet);
         }
 
@@ -34,7 +34,7 @@ namespace GlLib.Server
                 {
                 }
                 
-                SidedConsole.WriteLine("PacketProcessed");
+//                SidedConsole.WriteLine("PacketProcessed");
                 HandlePacket(_receivedPackets.Dequeue());
             }
         }

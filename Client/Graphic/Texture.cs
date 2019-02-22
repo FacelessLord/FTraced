@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GlLib.Utils;
 using OpenTK.Graphics.OpenGL4;
 
 using SixLabors.ImageSharp;
@@ -15,7 +16,6 @@ namespace GlLib.Client.Graphic
 
         public int _width;
         public int _height;
-        
 
         //Create texture from path.
         public Texture(string path)
@@ -32,7 +32,7 @@ namespace GlLib.Client.Graphic
             Image<Rgba32> image = Image.Load(path);
             _width = image.Width;
             _height = image.Height;
-            Console.WriteLine($"path: {path}, width: {_width}, height: {_height}");
+            SidedConsole.WriteLine($"Texture: path: {path}, width: {_width}, height: {_height}");
             //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
             //This will correct that, making the texture display properly.
 //            image.Mutate(x => x.Flip(FlipMode.Vertical));
