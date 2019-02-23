@@ -26,9 +26,12 @@ namespace GlLib.Common
             _packets = new PacketRegistry();
             switch (side)
             {
-                case Side.Client : 
-                _packetHandler = new ClientPacketHandler(this);
-                break;
+                case Side.Client:
+                    _packetHandler = new ClientPacketHandler(this);
+                    break;
+                case Side.Server:
+                    _packetHandler = new ServerPacketHandler(this);
+                    break;
             }
         }
 
@@ -45,6 +48,7 @@ namespace GlLib.Common
             _entities.Register();
             _packetHandler.StartPacketHandler();
             _packets.Register();
+            Proxy.RegisterService(this);
             OnStart();
         }
 

@@ -209,7 +209,7 @@ namespace GlLib.Common.Entities
             }
 
             Entity entity = 
-                GameRegistry.GetEntityFromName(id, world, new RestrictedVector3D(posX, posY, z));
+                Proxy.GetSideRegistry().GetEntityFromName(id, world, new RestrictedVector3D(posX, posY, z));
             entity._velocity = new PlanarVector(velX, velY);
             entity._chunkObj = chunk;
             entity._nbtTag = NbtTag.FromString(rawTag);

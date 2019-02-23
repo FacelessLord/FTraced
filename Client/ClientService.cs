@@ -35,7 +35,8 @@ namespace GlLib.Client
 
         public override void OnServiceUpdate()
         {
-            _currentWorld.Update();
+            if(_currentWorld != null)
+                _currentWorld.Update();
         }
 
         public override void OnExit()

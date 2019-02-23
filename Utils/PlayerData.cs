@@ -1,3 +1,4 @@
+using GlLib.Common;
 using GlLib.Common.Map;
 using GlLib.Server;
 
@@ -23,7 +24,7 @@ namespace GlLib.Utils
 
         public static PlayerData LoadFromNbt(NbtTag tag)
         {
-            World world = ServerInstance.GetWorldById(tag.GetInt("WorldId"));
+            World world = Proxy.GetServer().GetWorldById(tag.GetInt("WorldId"));
             RestrictedVector3D position = RestrictedVector3D.FromString(tag.GetString("Position"));
             string nickname = tag.GetString("Nickname");
             return new PlayerData(world, position, nickname);

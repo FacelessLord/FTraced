@@ -29,11 +29,11 @@ namespace GlLib.Common.Registries
 
         public Dictionary<string,int> _packets = new Dictionary<string,int>();
         
-        private int LastId = 0;
+        private int _lastId = 0;
         public int GetNextId()
         {
-            LastId++;
-            return LastId-1;
+            _lastId++;
+            return _lastId-1;
         }
 
         public int GetPacketId(Packet packet)

@@ -59,7 +59,7 @@ namespace GlLib.Client.Graphic
 
             GL.Translate(Width / 2d, Height / 2d, 0);
 //            GL.Scale(1 / 3d, 1 / 3d, 1);
-            ClientService._instance._currentWorld.Render(0, 0);
+            Proxy.GetClient()._currentWorld.Render(0, 0);
             SwapBuffers();
         }
 
@@ -70,7 +70,7 @@ namespace GlLib.Client.Graphic
                 Vertexer._textures[key].Dispose();
             }
 
-            ClientService._instance._currentWorld.UnloadWorld();
+            Proxy.GetClient()._currentWorld.UnloadWorld();
             base.OnUnload(e);
         }
 

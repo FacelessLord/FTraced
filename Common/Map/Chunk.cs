@@ -131,7 +131,7 @@ namespace GlLib.Common.Map
                             int j = int.Parse(coords[1]);
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
-                            _blocks[i, j] = GameRegistry.GetBlockFromName(blockName.Value);
+                            _blocks[i, j] = Proxy.GetSideRegistry().GetBlockFromName(blockName.Value);
                         }
                     }
 
@@ -141,7 +141,7 @@ namespace GlLib.Common.Map
                         int i = int.Parse(coords[0]);
                         int j = int.Parse(coords[1]);
                         
-                        _blocks[i, j] = GameRegistry.GetBlockFromId((int)num.Value);
+                        _blocks[i, j] = Proxy.GetSideRegistry().GetBlockFromId((int)num.Value);
                     }
 
                     if (entry is JsonObjectCollection collection)
@@ -154,7 +154,7 @@ namespace GlLib.Common.Map
                                 JsonObject preBlock = collection[1];
                                 if (preBlock is JsonStringValue rectBlockName)
                                 {
-                                    TerrainBlock block = GameRegistry.GetBlockFromName(rectBlockName.Value);
+                                    TerrainBlock block = Proxy.GetSideRegistry().GetBlockFromName(rectBlockName.Value);
                                     int startX = (int) ((JsonNumericValue) borders[0]).Value;
                                     int startY = (int) ((JsonNumericValue) borders[1]).Value;
                                     int endX = (int) ((JsonNumericValue) borders[2]).Value;

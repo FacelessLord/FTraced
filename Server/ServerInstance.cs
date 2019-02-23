@@ -12,7 +12,7 @@ using GlLib.Utils;
 
 namespace GlLib.Server
 {
-    public class ServerInstance: SideService
+    public class ServerInstance : SideService
     {
         public List<ClientService> _clients = new List<ClientService>();
 
@@ -31,7 +31,7 @@ namespace GlLib.Server
                 world.Value.Update();
             }
         }
-        
+
         public override void OnExit()
         {
         }
@@ -74,6 +74,7 @@ namespace GlLib.Server
 
         public ServerInstance() : base(Side.Server)
         {
+            Proxy._serverInstance = this;
         }
     }
 }

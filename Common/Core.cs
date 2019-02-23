@@ -32,16 +32,16 @@ namespace GlLib.Common
                 ClientService client = new ClientService(Config._playerName, Config._playerPassword);
                 Thread clientThread = new Thread(() =>
                 {
-                    ClientService._instance.StartClient();
-                    ClientService._instance.GameLoop();
-                    ClientService._instance.ExitGame();
+                    client.Start();
+                    client.Loop();
+                    client.Exit();
                 });
                 clientThread.Name = Side.Client.ToString();
                 serverThread.Start();
-                Proxy.AwaitWhile(() => ServerInstance._state <= State.Starting);
+                Proxy.AwaitWhile(() => server._state <= State.Starting);
                 clientThread.Start();
                 //todo Main Menu
-                Proxy.AwaitWhile(() => ClientService._instance._state <= State.Starting);
+                Proxy.AwaitWhile(() => client._state <= State.Starting);
 //                ClientService._instance.ConnectToIntegratedServer();
             }
         }
