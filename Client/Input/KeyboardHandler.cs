@@ -6,29 +6,29 @@ namespace GlLib.Client.Input
 {
     public class KeyboardHandler
     {
-        public static Hashtable _pressed = new Hashtable();
-        public static Hashtable _clicked = new Hashtable();
-        public static List<Key> _keys = new List<Key>();
+        public static Hashtable pressed = new Hashtable();
+        public static Hashtable clicked = new Hashtable();
+        public static List<Key> keys = new List<Key>();
 
         public static void RegisterKey(Key key)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (!_keys.Contains(key))
+            var state = Keyboard.GetState();
+            if (!keys.Contains(key))
             {
-                _keys.Add(key);
-                _pressed.Add(key, state.IsKeyDown(key));
-                _clicked.Add(key, state.IsKeyDown(key));
+                keys.Add(key);
+                pressed.Add(key, state.IsKeyDown(key));
+                clicked.Add(key, state.IsKeyDown(key));
             }
         }
 
         public static void Update()
         {
-            KeyboardState state = Keyboard.GetState();
-            foreach (var key in _keys)
+            var state = Keyboard.GetState();
+            foreach (var key in keys)
             {
-                bool old = state.IsKeyDown(key);
-                _clicked[key] = !(bool) _pressed[key] && old;
-                _pressed[key] = old;
+                var old = state.IsKeyDown(key);
+                clicked[key] = !(bool) pressed[key] && old;
+                pressed[key] = old;
             }
         }
     }

@@ -12,6 +12,8 @@ namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
+        public static VSyncMode vSync = VSyncMode.On;
+
         public GraphicWindow(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
             MouseHandler.Setup();
@@ -22,11 +24,8 @@ namespace GlLib.Client.Graphic
         {
             MouseHandler.Update();
             KeyboardHandler.Update();
-            KeyboardState input = Keyboard.GetState();
-            if (input.IsKeyDown(Key.Escape))
-            {
-                Exit();
-            }
+            var input = Keyboard.GetState();
+            if (input.IsKeyDown(Key.Escape)) Exit();
             base.OnUpdateFrame(e);
         }
 
@@ -59,26 +58,22 @@ namespace GlLib.Client.Graphic
 
             GL.Translate(Width / 2d, Height / 2d, 0);
 //            GL.Scale(1 / 3d, 1 / 3d, 1);
-            Proxy.GetClient()._currentWorld.Render(0, 0);
+//            SidedConsole.WriteLine(Proxy.GetClient().CurrentWorld);
+            Proxy.GetClient().CurrentWorld.Render(0, 0);
             SwapBuffers();
         }
 
         protected override void OnUnload(EventArgs e)
         {
-            foreach (var key in Vertexer._textures.Keys)
-            {
-                Vertexer._textures[key].Dispose();
-            }
+            foreach (var key in Vertexer.textures.Keys) Vertexer.textures[key].Dispose();
 
-            Proxy.GetClient()._currentWorld.UnloadWorld();
+            Proxy.GetClient().CurrentWorld.SaveWorld();
             base.OnUnload(e);
         }
 
-        public static VSyncMode _vSync = VSyncMode.On;
-
         public static void RunWindow()
         {
-            Thread graphicThread = new Thread(() =>
+            var graphicThread = new Thread(() =>
                 new GraphicWindow(400, 300, "GLLib").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();

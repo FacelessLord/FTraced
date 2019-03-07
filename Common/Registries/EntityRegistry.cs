@@ -5,16 +5,16 @@ namespace GlLib.Common.Registries
 {
     public class EntityRegistry
     {
+        public GameRegistry registry;
+
         public EntityRegistry(GameRegistry registry)
         {
-            _registry = registry;
+            this.registry = registry;
         }
-        
-        public GameRegistry _registry;
-        
+
         public void Register()
         {
-            _registry.RegisterEntity("entity.player", typeof(Player));
+            registry.RegisterEntity("entity.player", typeof(Player));
         }
     }
 }

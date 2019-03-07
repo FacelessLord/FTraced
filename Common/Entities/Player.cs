@@ -7,25 +7,14 @@ namespace GlLib.Common.Entities
 {
     public class Player : Entity
     {
-        public string _nickname = "Player";
-        public double _accelValue = 0.0005;
+        public double accelValue = 0.0005;
+        public string nickname = "Player";
 
         private PlayerData _playerData;
 
-        public PlayerData Data
-        {
-            get => _playerData;
-            set
-            {
-                _playerData = value;
-                _worldObj = value._world;
-                _position = value._position;
-            }
-        }
-
         public Player(string nickname, World world, RestrictedVector3D position) : base(world, position)
         {
-            _nickname = nickname;
+            this.nickname = nickname;
         }
 
         public Player(World world, RestrictedVector3D position) : base(world, position)
@@ -34,6 +23,16 @@ namespace GlLib.Common.Entities
 
         public Player()
         {
+        }
+
+        public PlayerData Data
+        {
+            get => _playerData;
+            set
+            {
+                _playerData = value;
+                position = value.position;
+            }
         }
 
         public override string GetName()
@@ -49,7 +48,7 @@ namespace GlLib.Common.Entities
         public override void Render(PlanarVector xAxis, PlanarVector yAxis)
         {
             GL.PushMatrix();
-            Texture btexture = Vertexer.LoadTexture("player.png");
+            var btexture = Vertexer.LoadTexture("player.png");
             Vertexer.BindTexture(btexture);
             //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
@@ -66,14 +65,14 @@ namespace GlLib.Common.Entities
 
         public override void LoadFromNbt(NbtTag tag, World world)
         {
-            _nickname = tag.GetString("Name");
+            nickname = tag.GetString("Name");
             Data = PlayerData.LoadFromNbt(tag);
             base.LoadFromNbt(tag, world);
         }
 
         public override void SaveToNbt(NbtTag tag)
         {
-            tag.SetString("Name", _nickname);
+            tag.SetString("Name", nickname);
             if (Data != null)
                 Data.SaveToNbt(tag);
             base.SaveToNbt(tag);

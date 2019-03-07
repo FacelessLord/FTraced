@@ -4,12 +4,12 @@ namespace GlLib.Common
 {
     public class Config
     {
-        public static bool _isIntegratedServer = true;
-        public static string _side = "both";
+        public static bool isIntegratedServer = true;
+        public static string side = "both";
+        public static string playerName = "Noname";
+        public static string playerPassword = "";
         public static bool IsClient => Thread.CurrentThread.Name == "Client";
         public static bool IsServer => Thread.CurrentThread.Name == "Server";
-        public static string _playerName = "Noname";
-        public static string _playerPassword = "";
 
         public static void ProcessArgument(string argument, string value)
         {
@@ -19,25 +19,25 @@ namespace GlLib.Common
                     switch (value)
                     {
                         case "client":
-                            _isIntegratedServer = false;
-                            _side = "client";
+                            isIntegratedServer = false;
+                            side = "client";
                             break;
                         case "server":
-                            _isIntegratedServer = false;
-                            _side = "server";
+                            isIntegratedServer = false;
+                            side = "server";
                             break;
                         case "both":
-                            _isIntegratedServer = true;
-                            _side = "both";
+                            isIntegratedServer = true;
+                            side = "both";
                             break;
                     }
 
                     break;
                 case "username":
-                    _playerName = value;
+                    playerName = value;
                     break;
                 case "password":
-                    _playerPassword = value;
+                    playerPassword = value;
                     break;
             }
         }

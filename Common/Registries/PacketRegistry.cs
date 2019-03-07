@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
-using GlLib.Common.Map;
 using GlLib.Common.Packets;
 
 namespace GlLib.Common.Registries
 {
     public class PacketRegistry
     {
+        private int _lastId;
+
+        public Dictionary<string, int> packets = new Dictionary<string, int>();
+
         public void Register()
         {
             RegisterPacket(new ConnectRequestPacket());
@@ -16,31 +19,31 @@ namespace GlLib.Common.Registries
             RegisterPacket(new PlayerDataPacket());
             RegisterPacket(new KeyPressedPacket());
             RegisterPacket(new SyncPacket());
+            RegisterPacket(new WorldMapRequest());
+            RegisterPacket(new WorldMapPacket());
         }
 
-        public  void RegisterPacket(Packet packet)
+        public void RegisterPacket(Packet packet)
         {
-            _packets.Add(packet.GetType().Name,GetNextId());
+            packets.Add(packet.GetType().Name, GetNextId());
         }
+
         public bool IsPacketRegistered(Packet packet)
         {
-            return _packets.ContainsKey(packet.GetType().Name);
+            return packets.ContainsKey(packet.GetType().Name);
         }
 
-        public Dictionary<string,int> _packets = new Dictionary<string,int>();
-        
-        private int _lastId = 0;
         public int GetNextId()
         {
             _lastId++;
-            return _lastId-1;
+            return _lastId - 1;
         }
 
         public int GetPacketId(Packet packet)
         {
-            if(!IsPacketRegistered(packet))
+            if (!IsPacketRegistered(packet))
                 throw new ArgumentException($"Tried to Send Not registered Packet {packet.GetType().Name}");
-            return _packets[packet.GetType().Name];
+            return packets[packet.GetType().Name];
         }
     }
 }

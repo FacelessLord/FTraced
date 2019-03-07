@@ -7,7 +7,7 @@
     "outputPath": "/home/lord_faceless/RiderProjects/GlLib/AirGame/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "/home/lord_faceless/.dotnet/sdk/NuGetFallbackFolder"
+      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "netcoreapp2.2"

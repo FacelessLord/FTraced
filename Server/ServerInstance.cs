@@ -1,35 +1,42 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.IO;
+using System.Net.Json;
 using GlLib.Client;
-using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
-using GlLib.Common.Packets;
-using GlLib.Common.Registries;
 using GlLib.Utils;
 
 namespace GlLib.Server
 {
     public class ServerInstance : SideService
     {
-        public List<ClientService> _clients = new List<ClientService>();
+        public List<ClientService> clients = new List<ClientService>();
+
+        public Dictionary<string, PlayerData> playerInfo = new Dictionary<string, PlayerData>();
+
+        public Dictionary<int, World> worlds = new Dictionary<int, World>();
+
+        public ServerInstance() : base(Side.Server)
+        {
+            Proxy.serverInstance = this;
+        }
 
 
         public override void OnStart()
         {
-            _serverId = new Random().Next();
+            serverId = new Random().Next();
+            UpdateServerConfiguration();
+
             CreateWorlds();
+            LoadWorlds();
         }
 
         public override void OnServiceUpdate()
         {
             Proxy.Sync();
-            foreach (var world in _worlds)
-            {
-                world.Value.Update();
-            }
+            foreach (var world in worlds) world.Value.Update();
         }
 
         public override void OnExit()
@@ -38,43 +45,86 @@ namespace GlLib.Server
 
         public void ConnectClient(ClientService client)
         {
-            _clients.Add(client);
-            client._player = new Player {Data = GetDataFor(client._nickName, client._password)};
-            client._player._worldObj.SpawnEntity(client._player);
-            client._player._worldObj.LoadWorld();
+            clients.Add(client);
+            client.player = new Player {Data = GetDataFor(client.nickName, client.password)};
 
             //todo something
         }
 
-        public void CreateWorlds()
+        public void RegisterWorld(int id, string worldName)
         {
-            _worlds.Add(0, new World("testmap1.json", 0));
+            registeredWorlds.Add(id, worldName);
         }
 
-        public Dictionary<int, World> _worlds = new Dictionary<int, World>();
+        public void CreateWorlds()
+        {
+            foreach (var world in registeredWorlds)
+            {
+                worlds.Add(0, new World(world.Value+".json", world.Key));
+            }
+        }
 
-        public Dictionary<string, PlayerData> _playerInfo = new Dictionary<string, PlayerData>();
+        public void LoadWorlds()
+        {
+            foreach (var world in worlds.Values)
+            {
+                var worldJson = File.ReadAllText("maps/" + world.mapName);
+                var parser = new JsonTextParser();
+                var obj = parser.Parse(worldJson);
+                var mainCollection = (JsonObjectCollection) obj;
+                WorldManager.LoadWorld(world, mainCollection);
+                world.LoadWorld();
+            }
+        }
 
         public PlayerData GetDataFor(string playerName, string password)
         {
             //todo use password
-            if (_playerInfo.ContainsKey(playerName))
-                return _playerInfo[playerName];
-            World spawnWorld = GetWorldById(0);
-            PlayerData data = new PlayerData(spawnWorld,
-                new RestrictedVector3D(spawnWorld._width * 8, spawnWorld._height * 8, 0), playerName);
-            _playerInfo.Add(playerName, data);
+            if (playerInfo.ContainsKey(playerName))
+                return playerInfo[playerName];
+            var spawnWorld = GetWorldById(0);
+            var data = new PlayerData(spawnWorld.worldId,
+                new RestrictedVector3D(spawnWorld.width * 8, spawnWorld.height * 8, 0), playerName);
+            playerInfo.Add(playerName, data);
             return data;
+        }
+
+        public void UpdateServerConfiguration()
+        {
+            if (!Directory.Exists("server"))
+            {
+                Directory.CreateDirectory("server");
+            }
+
+            if (!File.Exists("server/worlds.json"))
+            {
+                File.Create("server/worlds.json").Close();
+                File.WriteAllText("server/worlds.json", "0 NewWorld");
+                RegisterWorld(0, "server/NewWorld");
+            }
+            else
+            {
+                var text = File.ReadLines("server/worlds.json");
+                foreach (var line in text)
+                {
+                    int firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
+                    string number = line.Substring(0, firstSpaceIndex);
+                    string name = line.Substring(firstSpaceIndex + 1);
+                    RegisterWorld(int.Parse(number), name);
+                }
+            }
         }
 
         public World GetWorldById(int id)
         {
-            return _worlds[id];
+            return worlds[id];
         }
 
-        public ServerInstance() : base(Side.Server)
+        public Dictionary<int, string> registeredWorlds = new Dictionary<int, string>();
+
+        public string GetWorldName(int id)
         {
-            Proxy._serverInstance = this;
+            return registeredWorlds[id];
         }
     }
 }

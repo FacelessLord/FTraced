@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using GlLib.Client;
@@ -10,18 +9,18 @@ namespace GlLib.Server
 {
     public abstract class PacketHandler
     {
-        public volatile Queue<Packet> _receivedPackets = new Queue<Packet>();
-        
+        public volatile Queue<Packet> receivedPackets = new Queue<Packet>();
+
         public void ReceivePacket(Packet packet)
         {
 //            SidedConsole.WriteLine("PacketSent");
-            _receivedPackets.Enqueue(packet);
+            receivedPackets.Enqueue(packet);
         }
 
         public void StartPacketHandler()
         {
-            Thread handlerThread = new Thread( () => PacketLoop());
-            handlerThread.Name = ""+Proxy.GetSide()+"PacketHandler";
+            var handlerThread = new Thread(() => PacketLoop());
+            handlerThread.Name = "" + Proxy.GetSide() + "PacketHandler";
             handlerThread.Start();
         }
 
@@ -29,13 +28,13 @@ namespace GlLib.Server
         {
             SidedConsole.WriteLine("Handler Started");
             while (true)
-            {    
-                while (_receivedPackets.Count <= 0)
+            {
+                while (receivedPackets.Count <= 0)
                 {
                 }
-                
+
 //                SidedConsole.WriteLine("PacketProcessed");
-                HandlePacket(_receivedPackets.Dequeue());
+                HandlePacket(receivedPackets.Dequeue());
             }
         }
 
@@ -44,23 +43,23 @@ namespace GlLib.Server
 
     public class ServerPacketHandler : PacketHandler
     {
-        private ServerInstance _server;
+        private readonly ServerInstance _server;
 
         public ServerPacketHandler(SideService client)
         {
             _server = (ServerInstance) client;
         }
-        
+
         public override void HandlePacket(Packet packet)
         {
             _server.HandlePacket(packet);
         }
     }
-    
-    
+
+
     public class ClientPacketHandler : PacketHandler
     {
-        private ClientService _client;
+        private readonly ClientService _client;
 
         public ClientPacketHandler(SideService client)
         {

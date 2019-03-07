@@ -1,47 +1,55 @@
 using System.Net;
-using System.Threading;
 using GlLib.Client.Graphic;
-using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Common.Packets;
-using GlLib.Common.Registries;
-using GlLib.Server;
 using GlLib.Utils;
 
 namespace GlLib.Client
 {
     public class ClientService : SideService
     {
-        public string _nickName;
-        public string _password;
-        public volatile Player _player;
-
-        public bool IsConnectedToServer => _serverId > -1;
-
-        public World _currentWorld;
+        private World _currentWorld;
+        public string nickName;
+        public string password;
+        public volatile Player player;
 
         public ClientService(string nickName, string password) : base(Side.Client)
         {
-            _nickName = nickName;
-            _password = password;
-            _player = new Player();
+            this.nickName = nickName;
+            this.password = password;
+            player = new Player();
+        }
+
+        public bool IsConnectedToServer => serverId > -1;
+
+        public World CurrentWorld
+        {
+            get { return _currentWorld; }
+            set
+            {
+                _currentWorld = value;
+                player.worldObj = value;
+            }
         }
 
         public override void OnStart()
         {
+            ConnectToIntegratedServer();
+            GraphicWindow.RunWindow();
         }
 
         public override void OnServiceUpdate()
         {
-            if(_currentWorld != null)
-                _currentWorld.Update();
+            if (CurrentWorld != null)
+                CurrentWorld.Update();
         }
 
         public override void OnExit()
         {
         }
+
         public bool ConnectToServer(IPAddress ip)
         {
             //todo
@@ -50,38 +58,32 @@ namespace GlLib.Client
 
         public bool ConnectToIntegratedServer()
         {
-            //todo receiving world file
-//            _currentWorld = ServerInstance.GetWorldById(0);
-
             SidedConsole.WriteLine("Connect request");
-            IntegratedConnectionRequestPacket connectRequest = new IntegratedConnectionRequestPacket(this);
+            var connectRequest = new IntegratedConnectionRequestPacket(this);
             Proxy.SendPacketToServer(connectRequest);
-            Proxy.AwaitWhile(() =>
-            {
-                return !IsConnectedToServer;
-            });
+            Proxy.AwaitWhile(() => !IsConnectedToServer);
             SidedConsole.WriteLine("Connected");
 
-            return Config._isIntegratedServer;
+            LoadPlayerFromServer();
+            var mapRequest = new WorldMapRequest(this, player.Data.worldId);
+            Proxy.SendPacketToServer(mapRequest);
+            Proxy.AwaitWhile(() => CurrentWorld == null);
+            
+            CurrentWorld.SpawnEntity(player);
+            CurrentWorld.players.TryAdd(player.nickname, player);
+            
+            return Config.isIntegratedServer;
         }
 
         public void LoadPlayerFromServer()
         {
-            
             // Getting player data from server
             SidedConsole.WriteLine("Player data request");
-            PlayerDataRequestPacket playerDataRequest = new PlayerDataRequestPacket(_nickName, _password);
+            var playerDataRequest = new PlayerDataRequestPacket(this);
             Proxy.SendPacketToServer(playerDataRequest);
-            Proxy.AwaitWhile(() => _player.Data == null); //waiting for data to be received
+            Proxy.AwaitWhile(() => player.Data == null); //waiting for data to be received
 
             SidedConsole.WriteLine("Client setup");
-            _player._worldObj = _player.Data._world;
-            _currentWorld = _player.Data._world;
-            _player._position = _player.Data._position;
-            _player._nickname = _player.Data._nickname;
-                
-            _currentWorld.SpawnEntity(_player);
-            _currentWorld._players.TryAdd(_player._nickname,_player);
         }
     }
 }

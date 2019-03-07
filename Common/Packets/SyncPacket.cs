@@ -12,15 +12,14 @@ namespace GlLib.Common.Packets
 
         public SyncPacket()
         {
-            
         }
-        
+
         public SyncPacket(World world, Player player)
         {
             _playerTag = new NbtTag();
             player.SaveToNbt(_playerTag);
             _worldTag = new NbtTag();
-            if(world != null)
+            if (world != null)
                 world.SaveEntitiesToNbt(_worldTag);
         }
 
@@ -36,13 +35,12 @@ namespace GlLib.Common.Packets
             _playerTag = tag.RetrieveTag("Player");
         }
 
-        public override void OnClientReceive(SideService client)
+        public override void OnClientReceive(ClientService client)
         {
-            ClientService clientService = (ClientService) client;
-            clientService._currentWorld.LoadEntitiesFromNbt(_worldTag);
-            clientService._player = new Player();
-            clientService._player.LoadFromNbt(_playerTag, clientService._currentWorld);
-
+            var clientService = client;
+            clientService.CurrentWorld.LoadEntitiesFromNbt(_worldTag);
+            clientService.player = new Player();
+            clientService.player.LoadFromNbt(_playerTag, clientService.CurrentWorld);
         }
 
         public override bool RequiresReceiveMessage()
