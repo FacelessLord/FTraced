@@ -5,26 +5,26 @@ namespace GlLib.Common.Packets
 {
     public class KeyPressedPacket : Packet
     {
-        public Key _key;
-        
+        public Key key;
+
         public KeyPressedPacket()
         {
-            _key = Key.Unknown;
+            key = Key.Unknown;
         }
-        
+
         public KeyPressedPacket(Key key)
         {
-            _key = key;
+            this.key = key;
         }
-        
+
         public override void WriteToNbt(NbtTag tag)
         {
-            tag.SetInt("Key",(int)_key);
+            tag.SetInt("Key", (int) key);
         }
 
         public override void ReadFromNbt(NbtTag tag)
         {
-            _key = (Key)tag.GetInt("Key");
+            key = (Key) tag.GetInt("Key");
         }
     }
 }

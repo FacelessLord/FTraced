@@ -7,7 +7,7 @@ namespace GlLib.Common.Map.Blocks
             return "block.outdoor.grass.path";
         }
 
-        public override string GetTextureName(World world,int x, int y)
+        public override string GetTextureName(World world, int x, int y)
         {
             return "path.png";
         }

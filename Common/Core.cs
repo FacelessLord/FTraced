@@ -12,36 +12,34 @@ namespace GlLib.Common
         {
             foreach (var arg in args)
             {
-                Console.WriteLine("Arguments: ["+args.Aggregate((a,b) => a+","+b)+"]");
-                string[] argsParts = arg.Split("=");
-                (string variableName, string value) = (argsParts[0], argsParts[1]);
+                Console.WriteLine("Arguments: [" + args.Aggregate((a, b) => a + "," + b) + "]");
+                var argsParts = arg.Split("=");
+                var (variableName, value) = (argsParts[0], argsParts[1]);
                 Config.ProcessArgument(variableName, value);
             }
 
-            if (Config._isIntegratedServer)
+            if (Config.isIntegratedServer)
             {
-                ServerInstance server = new ServerInstance();
-                Thread serverThread = new Thread(() =>
+                var server = new ServerInstance();
+                var serverThread = new Thread(() =>
                 {
                     server.Start();
                     server.Loop();
                     server.Exit();
-                });
-                serverThread.Name = Side.Server.ToString();
+                }) {Name = Side.Server.ToString()};
 
-                ClientService client = new ClientService(Config._playerName, Config._playerPassword);
-                Thread clientThread = new Thread(() =>
+                var client = new ClientService(Config.playerName, Config.playerPassword);
+                var clientThread = new Thread(() =>
                 {
                     client.Start();
                     client.Loop();
                     client.Exit();
-                });
-                clientThread.Name = Side.Client.ToString();
+                }) {Name = Side.Client.ToString()};
                 serverThread.Start();
-                Proxy.AwaitWhile(() => server._state <= State.Starting);
+                Proxy.AwaitWhile(() => server.state <= State.Starting);
                 clientThread.Start();
                 //todo Main Menu
-                Proxy.AwaitWhile(() => client._state <= State.Starting);
+                Proxy.AwaitWhile(() => client.state <= State.Starting);
 //                ClientService._instance.ConnectToIntegratedServer();
             }
         }

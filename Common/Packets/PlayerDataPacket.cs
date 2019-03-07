@@ -5,29 +5,30 @@ namespace GlLib.Common.Packets
 {
     public class PlayerDataPacket : Packet
     {
+        public PlayerData playerData;
+
         public PlayerDataPacket()
         {
         }
 
-        public PlayerData _playerData;
         public PlayerDataPacket(PlayerData data)
         {
-            _playerData = data;
+            playerData = data;
         }
-        
+
         public override void WriteToNbt(NbtTag tag)
         {
-            _playerData.SaveToNbt(tag);
+            playerData.SaveToNbt(tag);
         }
 
         public override void ReadFromNbt(NbtTag tag)
         {
-            _playerData = PlayerData.LoadFromNbt(tag);
+            playerData = PlayerData.LoadFromNbt(tag);
         }
 
-        public override void OnClientReceive(SideService client)
+        public override void OnClientReceive(ClientService client)
         {
-            ((ClientService)client)._player.Data = _playerData;
+            client.player.Data = playerData;
         }
     }
 }

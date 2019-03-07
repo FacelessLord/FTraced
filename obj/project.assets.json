@@ -2841,7 +2841,7 @@
   },
   "packageFolders": {
     "/home/lord_faceless/.nuget/packages/": {},
-    "/home/lord_faceless/.dotnet/sdk/NuGetFallbackFolder": {}
+    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
@@ -2853,7 +2853,7 @@
       "outputPath": "/home/lord_faceless/RiderProjects/GlLib/AirGame/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/home/lord_faceless/.dotnet/sdk/NuGetFallbackFolder"
+        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "/home/lord_faceless/.config/NuGet/NuGet.Config"

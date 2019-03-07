@@ -2,20 +2,18 @@ using System;
 using System.Collections.Generic;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL4;
-
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GlLib.Client.Graphic
 {
-
     public class Texture : IDisposable
     {
-        int _handle;
+        private bool _disposedValue;
+        private readonly int _handle;
+        public int height;
 
-        public int _width;
-        public int _height;
+        public int width;
 
         //Create texture from path.
         public Texture(string path)
@@ -29,21 +27,21 @@ namespace GlLib.Client.Graphic
 
 
             //Load the image
-            Image<Rgba32> image = Image.Load(path);
-            _width = image.Width;
-            _height = image.Height;
-            SidedConsole.WriteLine($"Texture: path: {path}, width: {_width}, height: {_height}");
+            var image = Image.Load(path);
+            width = image.Width;
+            height = image.Height;
+            SidedConsole.WriteLine($"Texture: path: {path}, width: {width}, height: {height}");
             //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
             //This will correct that, making the texture display properly.
 //            image.Mutate(x => x.Flip(FlipMode.Vertical));
-            
+
             //Get an array of the pixels, in ImageSharp's internal format.
-            Rgba32[] tempPixels = image.GetPixelSpan().ToArray();
+            var tempPixels = image.GetPixelSpan().ToArray();
 
             //Convert ImageSharp's format into a byte array, so we can use it with OpenGL.
-            List<byte> pixels = new List<byte>();
+            var pixels = new List<byte>();
 
-            foreach (Rgba32 p in tempPixels)
+            foreach (var p in tempPixels)
             {
                 pixels.Add(p.R);
                 pixels.Add(p.G);
@@ -67,7 +65,8 @@ namespace GlLib.Client.Graphic
             //We set this to Repeat so that textures will repeat when wrapped. Not demonstrated here since the texture coordinates exactly match
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
+                (int) TextureMagFilter.Nearest);
 
             //Now that our pixels have been loaded and our settings are prepared, it's time to generate a texture. We do this with GL.TexImage2D
             //Arguments:
@@ -92,6 +91,13 @@ namespace GlLib.Client.Graphic
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         }
 
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         //Activate texture
         //Multiple textures can be bound, if your shader needs more than just one.
         //If you want to do that, use GL.ActiveTexture to set which slot GL.BindTexture binds to.
@@ -101,8 +107,6 @@ namespace GlLib.Client.Graphic
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, _handle);
         }
-
-        private bool _disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -122,13 +126,6 @@ namespace GlLib.Client.Graphic
         ~Texture()
         {
             GL.DeleteProgram(_handle);
-        }
-
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

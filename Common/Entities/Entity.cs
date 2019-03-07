@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
@@ -9,39 +8,39 @@ namespace GlLib.Common.Entities
 {
     public class Entity
     {
-        public World _worldObj;
-        public RestrictedVector3D _position;
+        public PlanarVector acceleration = new PlanarVector();
+        public Chunk chunkObj;
 
-        public RestrictedVector3D Position
-        {
-            get => _position;
-            set
-            {
-                _position = value;
-                _chunkObj = GetProjection(_position, _worldObj);
-            }
-        }
+        public bool isDead;
+        public PlanarVector maxVel = new PlanarVector(0.07, 0.07);
 
-        public PlanarVector _velocity = new PlanarVector();
-        public PlanarVector _acceleration = new PlanarVector();
-        public PlanarVector _maxVel = new PlanarVector(0.07,0.07);
-        public Chunk _chunkObj;
+        public NbtTag nbtTag = new NbtTag();
 
-        public NbtTag _nbtTag = new NbtTag();
+        public bool noClip;
+        public RestrictedVector3D position;
 
-        public bool _isDead = false;
-
-        public bool _noClip = false;
+        public PlanarVector velocity = new PlanarVector();
+        public World worldObj;
 
 
         public Entity(World world, RestrictedVector3D position)
         {
-            _worldObj = world;
-           Position = position;
+            worldObj = world;
+            Position = position;
         }
-        
+
         public Entity()
         {
+        }
+
+        public RestrictedVector3D Position
+        {
+            get => position;
+            set
+            {
+                position = value;
+                chunkObj = GetProjection(position, worldObj);
+            }
         }
 
         public AxisAlignedBb GetAaBb()
@@ -51,62 +50,44 @@ namespace GlLib.Common.Entities
 
         public TerrainBlock GetUnderlyingBlock()
         {
-            return _chunkObj[Position.Ix % 16, Position.Iy % 16];
+            return chunkObj[Position.Ix % 16, Position.Iy % 16];
         }
 
         public virtual void Update()
         {
             if (EventBus.OnEntityUpdate(this)) return;
-            
-            if (_acceleration._y == 0 && _acceleration._x == 0)
-            {
-                _velocity *= 0.95;
-            }
-            _velocity += _acceleration;
-            if (Math.Abs(_velocity._x) > _maxVel._x)
-            {
-                _velocity._x *= _maxVel._x / Math.Abs(_velocity._x);
-            }
-            if (Math.Abs(_velocity._y) > _maxVel._y)
-            {
-                _velocity._y *= _maxVel._y / Math.Abs(_velocity._y);
-            }
+
+            if (acceleration.y == 0 && acceleration.x == 0) velocity *= 0.95;
+            velocity += acceleration;
+            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
+            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
             MoveEntity();
 
-            List<Entity> entities = _worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), _position._z);
-            foreach (var entity in entities)
-            {
-                OnCollideWith(entity);
-            }
+            var entities = worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), position.z);
+            foreach (var entity in entities) OnCollideWith(entity);
         }
 
         private void MoveEntity()
         {
-            RestrictedVector3D oldPos = _position;
+            var oldPos = position;
             //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
 
-            Position += _velocity;
-            Chunk proj = this._chunkObj;
-            if (proj != null && proj._isLoaded)
+            Position += velocity;
+            var proj = chunkObj;
+            if (proj != null && proj.isLoaded)
             {
-                if (_chunkObj != proj)
-                {
-                    _worldObj.ChangeEntityChunk(this, proj);
-                }
+                if (chunkObj != proj) worldObj.ChangeEntityChunk(this, proj);
             }
             else
             {
                 Position = oldPos;
-                _velocity = new PlanarVector();
+                velocity = new PlanarVector();
             }
         }
 
-        public static Chunk GetProjection(RestrictedVector3D vector,World world)
+        public static Chunk GetProjection(RestrictedVector3D vector, World world)
         {
-            if (vector.Ix < 0 || vector.Iy < 0)
-            {
-                return null;
-            }
+            if (vector.Ix < 0 || vector.Iy < 0) return null;
             try
             {
                 return world[vector.Ix / 16, vector.Iy / 16];
@@ -119,17 +100,15 @@ namespace GlLib.Common.Entities
 
         public void SetDead(bool dead)
         {
-            _isDead = dead;
+            isDead = dead;
         }
 
         public virtual void OnCollideWith(Entity obj)
         {
-    
         }
 
         public virtual void Render(PlanarVector xAxis, PlanarVector yAxis)
         {
-           
         }
 
         public virtual string GetName()
@@ -139,47 +118,46 @@ namespace GlLib.Common.Entities
 
         public virtual void SaveToNbt(NbtTag tag)
         {
-            if(_position != null && _velocity != null && _maxVel != null && _acceleration != null && _worldObj != null)
+            if (position != null && velocity != null && maxVel != null && acceleration != null && worldObj != null)
             {
-                tag.SetString("Position", _position + "");
-                tag.SetString("Velocity", _velocity + "");
-                tag.SetString("MaxVelocity", _maxVel + "");
-                tag.SetString("Acceleration", _acceleration + "");
-                tag.SetInt("WorldId", _worldObj._worldId);
-                tag.SetBool("IsDead", _isDead);
-                tag.SetBool("noclip", _noClip);
-                if (_nbtTag != null)
-                    tag.AppendTag(_nbtTag, "EntityTag");
+                tag.SetString("Position", position + "");
+                tag.SetString("Velocity", velocity + "");
+                tag.SetString("MaxVelocity", maxVel + "");
+                tag.SetString("Acceleration", acceleration + "");
+                tag.SetInt("WorldId", worldObj.worldId);
+                tag.SetBool("IsDead", isDead);
+                tag.SetBool("noclip", noClip);
+                if (nbtTag != null)
+                    tag.AppendTag(nbtTag, "EntityTag");
             }
         }
 
-        public virtual void LoadFromNbt(NbtTag tag,World world)
+        public virtual void LoadFromNbt(NbtTag tag, World world)
         {
-            _position = RestrictedVector3D.FromString(tag.GetString("Position"));
-            _velocity = PlanarVector.FromString(tag.GetString("Velocity"));
-            _maxVel = PlanarVector.FromString(tag.GetString("MaxVelocity"));
-            _acceleration = PlanarVector.FromString(tag.GetString("Acceleration"));
-            _worldObj = world._worldId == tag.GetInt("WorldId") ? world : null;
-            _isDead = tag.GetBool("IsDead");
-            _noClip = tag.GetBool("noclip");
-            if(tag.CanRetrieveTag("EntityTag"))
-                _nbtTag = tag.RetrieveTag("EntityTag");
+            position = RestrictedVector3D.FromString(tag.GetString("Position"));
+            velocity = PlanarVector.FromString(tag.GetString("Velocity"));
+            maxVel = PlanarVector.FromString(tag.GetString("MaxVelocity"));
+            acceleration = PlanarVector.FromString(tag.GetString("Acceleration"));
+            worldObj = world.worldId == tag.GetInt("WorldId") ? world : null;
+            isDead = tag.GetBool("IsDead");
+            noClip = tag.GetBool("noclip");
+            if (tag.CanRetrieveTag("EntityTag"))
+                nbtTag = tag.RetrieveTag("EntityTag");
         }
 
         public static Entity LoadFromJson(JsonObjectCollection collection, World world, Chunk chunk)
         {
             double posX = 0;
             double posY = 0;
-            int z = 0;
+            var z = 0;
             double velX = 0;
             double velY = 0;
-            string id = "null";
-            string rawTag = "";
+            var id = "null";
+            var rawTag = "";
 
             foreach (var entityField in collection)
             {
                 if (entityField is JsonArrayCollection arr)
-                {
                     switch (arr.Name)
                     {
                         case "pos":
@@ -192,10 +170,8 @@ namespace GlLib.Common.Entities
                                 ((JsonNumericValue) arr[1]).Value);
                             break;
                     }
-                }
 
                 if (entityField is JsonStringValue str)
-                {
                     switch (str.Name)
                     {
                         case "id":
@@ -205,53 +181,52 @@ namespace GlLib.Common.Entities
                             rawTag = str.Value;
                             break;
                     }
-                }
             }
 
-            Entity entity = 
+            var entity =
                 Proxy.GetSideRegistry().GetEntityFromName(id, world, new RestrictedVector3D(posX, posY, z));
-            entity._velocity = new PlanarVector(velX, velY);
-            entity._chunkObj = chunk;
-            entity._nbtTag = NbtTag.FromString(rawTag);
-            entity.LoadFromNbt(entity._nbtTag,world);
+            entity.velocity = new PlanarVector(velX, velY);
+            entity.chunkObj = chunk;
+            entity.nbtTag = NbtTag.FromString(rawTag);
+            entity.LoadFromNbt(entity.nbtTag, world);
             return entity;
         }
 
         public JsonObjectCollection CreateJsonObj()
         {
-            JsonNumericValue xJs = new JsonNumericValue(_position._x);
-            JsonNumericValue yJs = new JsonNumericValue(_position._y);
-            JsonNumericValue zJs = new JsonNumericValue(_position._z);
-            JsonArrayCollection posColl = new JsonArrayCollection("pos", new[] {xJs, yJs, zJs});
-            JsonNumericValue vXJs = new JsonNumericValue(_velocity._x);
-            JsonNumericValue vYJs = new JsonNumericValue(_velocity._y);
-            JsonArrayCollection velColl = new JsonArrayCollection("vel", new[] {vXJs, vYJs});
-            JsonStringValue id = new JsonStringValue("id",GetName());
-            SaveToNbt(_nbtTag);
-            JsonStringValue tag = new JsonStringValue("tag",_nbtTag.ToString());
+            var xJs = new JsonNumericValue(position.x);
+            var yJs = new JsonNumericValue(position.y);
+            var zJs = new JsonNumericValue(position.z);
+            var posColl = new JsonArrayCollection("pos", new[] {xJs, yJs, zJs});
+            var vXJs = new JsonNumericValue(velocity.x);
+            var vYJs = new JsonNumericValue(velocity.y);
+            var velColl = new JsonArrayCollection("vel", new[] {vXJs, vYJs});
+            var id = new JsonStringValue("id", GetName());
+            SaveToNbt(nbtTag);
+            var tag = new JsonStringValue("tag", nbtTag.ToString());
 
-            return new JsonObjectCollection($"entity{GetHashCode()}", 
+            return new JsonObjectCollection($"entity{GetHashCode()}",
                 new JsonObject[] {posColl, velColl, id, tag});
         }
 
         protected bool Equals(Entity other)
         {
-            return Equals(_worldObj, other._worldObj) &&
-                   Equals(_position, other._position) &&
-                   Equals(_velocity, other._velocity) &&
-                   Equals(_acceleration, other._acceleration) &&
-                   Equals(_maxVel, other._maxVel) &&
-                   Equals(_chunkObj, other._chunkObj) &&
-                   Equals(_nbtTag, other._nbtTag) &&
-                   _isDead == other._isDead &&
-                   _noClip == other._noClip;
+            return Equals(worldObj, other.worldObj) &&
+                   Equals(position, other.position) &&
+                   Equals(velocity, other.velocity) &&
+                   Equals(acceleration, other.acceleration) &&
+                   Equals(maxVel, other.maxVel) &&
+                   Equals(chunkObj, other.chunkObj) &&
+                   Equals(nbtTag, other.nbtTag) &&
+                   isDead == other.isDead &&
+                   noClip == other.noClip;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Entity) obj);
         }
 
@@ -259,15 +234,15 @@ namespace GlLib.Common.Entities
         {
             unchecked
             {
-                var hashCode = (_worldObj != null ? _worldObj.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_position != null ? _position.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_velocity != null ? _velocity.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_acceleration != null ? _acceleration.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_maxVel != null ? _maxVel.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_chunkObj != null ? _chunkObj.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_nbtTag != null ? _nbtTag.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ _isDead.GetHashCode();
-                hashCode = (hashCode * 397) ^ _noClip.GetHashCode();
+                var hashCode = worldObj != null ? worldObj.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (position != null ? position.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (velocity != null ? velocity.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (acceleration != null ? acceleration.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (maxVel != null ? maxVel.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (chunkObj != null ? chunkObj.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (nbtTag != null ? nbtTag.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ isDead.GetHashCode();
+                hashCode = (hashCode * 397) ^ noClip.GetHashCode();
                 return hashCode;
             }
         }

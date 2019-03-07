@@ -1,35 +1,35 @@
-using System;
 using GlLib.Client;
+using GlLib.Server;
 using GlLib.Utils;
 
 namespace GlLib.Common.Packets
 {
     public class ConnectionEstablishedPacket : Packet
     {
+        public int serverId;
+
         public ConnectionEstablishedPacket()
         {
         }
 
-        public int _serverId;
-        
         public ConnectionEstablishedPacket(int serverId)
         {
-            _serverId = serverId;
+            this.serverId = serverId;
         }
-        
+
         public override void WriteToNbt(NbtTag tag)
         {
-            tag.SetInt("ServerId",_serverId);
+            tag.SetInt("ServerId", serverId);
         }
 
         public override void ReadFromNbt(NbtTag tag)
         {
-            _serverId = tag.GetInt("ServerId");
+            serverId = tag.GetInt("ServerId");
         }
-        
-        public override void OnClientReceive(SideService client)
+
+        public override void OnClientReceive(ClientService client)
         {
-            client._serverId = _serverId;
+            client.serverId = serverId;
         }
     }
 }

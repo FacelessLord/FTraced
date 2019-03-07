@@ -45,5 +45,4 @@ namespace GlLib.Common.Events
     public delegate bool EntityLeftChunkEvent(object sender, Entity entity);
 
     public delegate bool EntityUpdateEvent(object sender, Entity entity);
-
 }

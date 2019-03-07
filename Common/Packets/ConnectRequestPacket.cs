@@ -1,4 +1,3 @@
-using System;
 using GlLib.Client;
 using GlLib.Server;
 using GlLib.Utils;
@@ -7,40 +6,41 @@ namespace GlLib.Common.Packets
 {
     public class ConnectRequestPacket : Packet
     {
+        public string password;
+
+        public string playerNickname;
+
         public ConnectRequestPacket()
         {
         }
 
-        public string _playerNickname;
-        public string _password;
-
         public ConnectRequestPacket(string nickname, string password)
         {
-            _playerNickname = nickname;
-            _password = password;
+            playerNickname = nickname;
+            this.password = password;
         }
 
         public override void WriteToNbt(NbtTag tag)
         {
-            tag.SetString("Nickname", _playerNickname);
-            tag.SetString("Password", _password);
+            tag.SetString("Nickname", playerNickname);
+            tag.SetString("Password", password);
         }
 
         public override void ReadFromNbt(NbtTag tag)
         {
-            _playerNickname = tag.GetString("Nickname");
-            _password = tag.GetString("Password");
+            playerNickname = tag.GetString("Nickname");
+            password = tag.GetString("Password");
         }
 
-        public override void OnServerReceive(SideService server)
+        public override void OnServerReceive(ServerInstance server)
         {
-            ClientService client = new ClientService(_playerNickname, _password);
+            var client = new ClientService(playerNickname, password);
             ((ServerInstance) server).ConnectClient(client);
 
-            ConnectionEstablishedPacket connectionPacket =
-                new ConnectionEstablishedPacket(server._serverId);
+            var connectionPacket =
+                new ConnectionEstablishedPacket(server.serverId);
 
-            Proxy.SendPacketToPlayer(_playerNickname, connectionPacket);
+            Proxy.SendPacketToPlayer(playerNickname, connectionPacket);
         }
     }
 }

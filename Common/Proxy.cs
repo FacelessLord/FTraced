@@ -1,75 +1,60 @@
 using System;
 using System.Collections.Concurrent;
-using GlLib.Common.Packets;
-using GlLib.Utils;
-using System.Linq;
 using System.Threading;
 using GlLib.Client;
-using GlLib.Common.Entities;
 using GlLib.Common.Map;
+using GlLib.Common.Packets;
 using GlLib.Server;
+using GlLib.Utils;
 
 namespace GlLib.Common
 {
     public class Proxy
     {
+        public static ConcurrentDictionary<string, SideService> services =
+            new ConcurrentDictionary<string, SideService>();
+
+        public static ServerInstance serverInstance;
+
         public static void SendPacketToPlayer(string nickName, Packet packet)
         {
-            if (Config._isIntegratedServer)
-            {
-                foreach (var client in GetServer()._clients)
-                {
-                    if (client._nickName == nickName)
-                    {
-                        client._packetHandler.ReceivePacket(packet);
-                    }
-                }
-            }
+            if (Config.isIntegratedServer)
+                foreach (var client in GetServer().clients)
+                    if (client.nickName == nickName)
+                        client.packetHandler.ReceivePacket(packet);
 
             //todo not Integrated Server
         }
 
-        public static ConcurrentDictionary<string, SideService> _services =
-            new ConcurrentDictionary<string, SideService>();
-
         public static ClientService GetClient()
         {
-            SideService service = GetService();
-            if (service is ClientService client)
-            {
-                return client;
-            }
-            throw new InvalidOperationException(SidedConsole.GetSidePrefix()+"Client doesn't exist in this context");
-        }
-        
-        public static ServerInstance GetServer()
-        {
-            SideService service = GetService();
-            if (service is ServerInstance server)
-            {
-                return server;
-            }
-            throw new InvalidOperationException(SidedConsole.GetSidePrefix()+"Server doesn't exist in this context");
+            var service = GetService();
+            if (service is ClientService client) return client;
+            throw new InvalidOperationException(SidedConsole.GetSidePrefix() + "Client doesn't exist in this context");
         }
 
-        public static ServerInstance _serverInstance;
-        
+        public static ServerInstance GetServer()
+        {
+            var service = GetService();
+            if (service is ServerInstance server) return server;
+            throw new InvalidOperationException(SidedConsole.GetSidePrefix() + "Server doesn't exist in this context");
+        }
+
         public static SideService GetService()
         {
-            string key = GetSide().ToString();
-            if (_services.ContainsKey(key))
-                return _services[key];
-            throw new InvalidOperationException(SidedConsole.GetSidePrefix()+"Tried to get non-existing side");
+            var key = GetSide().ToString();
+            if (services.ContainsKey(key))
+                return services[key];
+            throw new InvalidOperationException(SidedConsole.GetSidePrefix() + "Tried to get non-existing side");
         }
 
         public static GameRegistry GetSideRegistry()
         {
-            return GetService()._registry;
+            return GetService().registry;
         }
 
         public static void SendPacketToAllAround(PlanarVector pos, double range, Packet packet)
         {
-
             //todo not Integrated Server
         }
 
@@ -80,10 +65,7 @@ namespace GlLib.Common
 
         public static void SendPacketToServer(Packet packet)
         {
-            if (Config._isIntegratedServer)
-            {
-                _serverInstance._packetHandler.ReceivePacket(packet);
-            }
+            if (Config.isIntegratedServer) serverInstance.packetHandler.ReceivePacket(packet);
 
             //todo not Integrated Server
         }
@@ -97,18 +79,18 @@ namespace GlLib.Common
 
         public static void Sync()
         {
-            foreach (var client in GetServer()._clients)
+            foreach (var client in GetServer().clients)
             {
-                Player player = client._player;
-                World world = client._currentWorld;
+                var player = client.player;
+                var world = client.CurrentWorld;
 
-                SendPacketToPlayer(player._nickname, new SyncPacket(world, player));
+                SendPacketToPlayer(player.nickname, new SyncPacket(world, player));
             }
         }
 
         public static Side GetSide()
         {
-            string packetHandler = "PacketHandler";
+            var packetHandler = "PacketHandler";
             if (Thread.CurrentThread.Name == Side.Server.ToString() ||
                 Thread.CurrentThread.Name == Side.Server + packetHandler)
                 return Side.Server;
@@ -121,8 +103,8 @@ namespace GlLib.Common
 
         public static void RegisterService(SideService sideService)
         {
-            _services.TryAdd(GetSide().ToString(), sideService);
-            SidedConsole.WriteLine(sideService._side+"-Side service registered");
+            services.TryAdd(GetSide().ToString(), sideService);
+            SidedConsole.WriteLine(sideService.side + "-Side service registered");
         }
     }
 }
