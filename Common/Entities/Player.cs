@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GlLib.Client.Graphic;
 using GlLib.Common.Map;
 using GlLib.Utils;
@@ -9,6 +10,7 @@ namespace GlLib.Common.Entities
     {
         public double accelValue = 0.0005;
         public string nickname = "Player";
+        public HashSet<string> usedBinds = new HashSet<string>();
 
         private PlayerData _playerData;
 

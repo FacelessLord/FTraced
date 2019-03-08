@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Common.Packets;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -13,7 +14,8 @@ namespace GlLib.Client.Graphic
     public class GraphicWindow : GameWindow
     {
         public static VSyncMode vSync = VSyncMode.On;
-
+        public static ClientService client;
+        
         public GraphicWindow(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
             MouseHandler.Setup();
@@ -23,10 +25,32 @@ namespace GlLib.Client.Graphic
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             MouseHandler.Update();
-            KeyboardHandler.Update();
             var input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape)) Exit();
             base.OnUpdateFrame(e);
+        }
+
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            KeyboardHandler.SetClicked(e.Key, true);
+
+            if (!KeyboardHandler.SetPressed(e.Key, true))
+            {
+                var pressedPkt = new KeyPressedPacket(client, e.Key);
+                Proxy.SendPacketToServer(pressedPkt);
+            }
+
+            //todo send ClickedPacket[Not necessary, clicks should be handled on Client side]
+        }
+
+        protected override void OnKeyUp(KeyboardKeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            KeyboardHandler.SetPressed(e.Key,false);
+            
+            var pressedPkt = new KeyUnpressedPacket(client, e.Key);
+            Proxy.SendPacketToServer(pressedPkt);
         }
 
         protected override void OnResize(EventArgs e)

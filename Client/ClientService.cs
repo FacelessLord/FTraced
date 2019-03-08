@@ -1,5 +1,6 @@
 using System.Net;
 using GlLib.Client.Graphic;
+using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
@@ -14,12 +15,15 @@ namespace GlLib.Client
         public string nickName;
         public string password;
         public volatile Player player;
+        
+        public ClientBinds binds = new ClientBinds();
 
         public ClientService(string nickName, string password) : base(Side.Client)
         {
             this.nickName = nickName;
             this.password = password;
             player = new Player();
+            binds.Register();
         }
 
         public bool IsConnectedToServer => serverId > -1;
@@ -37,6 +41,8 @@ namespace GlLib.Client
         public override void OnStart()
         {
             ConnectToIntegratedServer();
+            //todo think about it
+            GraphicWindow.client = this;
             GraphicWindow.RunWindow();
         }
 

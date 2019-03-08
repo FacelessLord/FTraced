@@ -43,8 +43,6 @@ namespace GlLib.Common
 
         public void Start()
         {
-            if (side == Side.Client)
-                KeyBinds.Register();
             blocks.Register();
             entities.Register();
             packetHandler.StartPacketHandler();

@@ -107,20 +107,6 @@
         1
       ],
       "block": "block.indoor.bricks"
-    },
-
-    "entity": {
-      "pos": [
-        7,
-        7,
-        0
-      ],
-      "id": "entity.player",
-      "tag": "Name|SFaceless",
-      "vel": [
-        0.0,
-        0.0
-      ]
     }
   }
 }

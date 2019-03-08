@@ -98,7 +98,7 @@ namespace GlLib.Common.Map
                 players.TryAdd(p.nickname, p);
             if (e.chunkObj == null)
                 e.chunkObj = Entity.GetProjection(e.position, this);
-            e.chunkObj.entities[e.position.z].Add(e);
+            e.chunkObj.entities[e.position.z].Add(e);//todo entity null
             SidedConsole.WriteLine($"Entity {e} spawned in world");
         }
 
@@ -206,9 +206,6 @@ namespace GlLib.Common.Map
             entityAddQueue.Clear();
             foreach (var player in players.Values)
             {
-                player.acceleration = new PlanarVector();
-                KeyBinds.Update(player);
-
 //                SidedConsole.WriteLine(player._nickname);
                 player.Update();
             }

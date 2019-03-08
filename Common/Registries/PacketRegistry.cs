@@ -17,10 +17,11 @@ namespace GlLib.Common.Registries
             RegisterPacket(new ConnectionEstablishedPacket());
             RegisterPacket(new PlayerDataRequestPacket());
             RegisterPacket(new PlayerDataPacket());
-            RegisterPacket(new KeyPressedPacket());
             RegisterPacket(new SyncPacket());
-            RegisterPacket(new WorldMapRequest());
+            RegisterPacket(new WorldMapRequest());;
             RegisterPacket(new WorldMapPacket());
+            RegisterPacket(new KeyPressedPacket());
+            RegisterPacket(new KeyUnpressedPacket());
         }
 
         public void RegisterPacket(Packet packet)

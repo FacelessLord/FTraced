@@ -6,8 +6,8 @@ namespace GlLib.Client.Input
 {
     public class KeyboardHandler
     {
-        public static Hashtable pressed = new Hashtable();
-        public static Hashtable clicked = new Hashtable();
+        public static readonly Hashtable PressedKeys = new Hashtable();
+        public static readonly Hashtable ClickedKeys = new Hashtable();
         public static List<Key> keys = new List<Key>();
 
         public static void RegisterKey(Key key)
@@ -16,9 +16,33 @@ namespace GlLib.Client.Input
             if (!keys.Contains(key))
             {
                 keys.Add(key);
-                pressed.Add(key, state.IsKeyDown(key));
-                clicked.Add(key, state.IsKeyDown(key));
+                PressedKeys.Add(key, state.IsKeyDown(key));
+                ClickedKeys.Add(key, state.IsKeyDown(key));
             }
+        }
+
+        public static bool SetPressed(Key key, bool pressed)
+        {
+            if (keys.Contains(key))
+                if (!PressedKeys.ContainsKey(key))
+                    PressedKeys.Add(key, pressed);
+                else
+                {
+                    bool oldValue = (bool) PressedKeys[key];
+                    PressedKeys[key] = pressed;
+                    return oldValue;
+                }
+
+            return false;
+        }
+
+        public static void SetClicked(Key key, bool clicked)
+        {
+            if (keys.Contains(key))
+                if (!ClickedKeys.ContainsKey(key))
+                    ClickedKeys.Add(key, clicked);
+                else
+                    ClickedKeys[key] = clicked;
         }
 
         public static void Update()
@@ -26,9 +50,7 @@ namespace GlLib.Client.Input
             var state = Keyboard.GetState();
             foreach (var key in keys)
             {
-                var old = state.IsKeyDown(key);
-                clicked[key] = !(bool) pressed[key] && old;
-                pressed[key] = old;
+                ClickedKeys[key] = false;
             }
         }
     }
