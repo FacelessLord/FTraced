@@ -1,5 +1,4 @@
 using GlLib.Client;
-using GlLib.Server;
 using GlLib.Utils;
 
 namespace GlLib.Common.Packets

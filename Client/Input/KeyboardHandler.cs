@@ -25,10 +25,12 @@ namespace GlLib.Client.Input
         {
             if (keys.Contains(key))
                 if (!PressedKeys.ContainsKey(key))
+                {
                     PressedKeys.Add(key, pressed);
+                }
                 else
                 {
-                    bool oldValue = (bool) PressedKeys[key];
+                    var oldValue = (bool) PressedKeys[key];
                     PressedKeys[key] = pressed;
                     return oldValue;
                 }
@@ -48,10 +50,7 @@ namespace GlLib.Client.Input
         public static void Update()
         {
             var state = Keyboard.GetState();
-            foreach (var key in keys)
-            {
-                ClickedKeys[key] = false;
-            }
+            foreach (var key in keys) ClickedKeys[key] = false;
         }
     }
 }

@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace GlLib.Common
 {
     public class Config
@@ -8,8 +6,6 @@ namespace GlLib.Common
         public static string side = "both";
         public static string playerName = "Noname";
         public static string playerPassword = "";
-        public static bool IsClient => Thread.CurrentThread.Name == "Client";
-        public static bool IsServer => Thread.CurrentThread.Name == "Server";
 
         public static void ProcessArgument(string argument, string value)
         {

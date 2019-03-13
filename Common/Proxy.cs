@@ -82,7 +82,7 @@ namespace GlLib.Common
             foreach (var client in GetServer().clients)
             {
                 var player = client.player;
-                var world = client.CurrentWorld;
+                var world = GetServer().GetWorldById(client.CurrentWorld.worldId);
 
                 SendPacketToPlayer(player.nickname, new SyncPacket(world, player));
             }

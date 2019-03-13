@@ -35,7 +35,7 @@ namespace GlLib.Common.Packets
         public override void OnServerReceive(ServerInstance server)
         {
             var client = new ClientService(playerNickname, password);
-            ((ServerInstance) server).ConnectClient(client);
+            server.ConnectClient(client);
 
             var connectionPacket =
                 new ConnectionEstablishedPacket(server.serverId);

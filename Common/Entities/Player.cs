@@ -8,11 +8,10 @@ namespace GlLib.Common.Entities
 {
     public class Player : Entity
     {
-        public double accelValue = 0.0005;
+        private PlayerData _playerData;
+        public double accelerationValue = 0.0005;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
-
-        private PlayerData _playerData;
 
         public Player(string nickname, World world, RestrictedVector3D position) : base(world, position)
         {
@@ -52,7 +51,6 @@ namespace GlLib.Common.Entities
             GL.PushMatrix();
             var btexture = Vertexer.LoadTexture("player.png");
             Vertexer.BindTexture(btexture);
-            //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
             Vertexer.StartDrawingQuads();
 
@@ -65,11 +63,11 @@ namespace GlLib.Common.Entities
             GL.PopMatrix();
         }
 
-        public override void LoadFromNbt(NbtTag tag, World world)
+        public override void LoadFromNbt(NbtTag tag)
         {
             nickname = tag.GetString("Name");
             Data = PlayerData.LoadFromNbt(tag);
-            base.LoadFromNbt(tag, world);
+            base.LoadFromNbt(tag);
         }
 
         public override void SaveToNbt(NbtTag tag)

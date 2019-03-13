@@ -1,6 +1,5 @@
 using GlLib.Client;
 using GlLib.Server;
-using GlLib.Utils;
 
 namespace GlLib.Common.Packets
 {
@@ -17,7 +16,7 @@ namespace GlLib.Common.Packets
         public override void OnServerReceive(ServerInstance server)
         {
             var playerDataPacket =
-                new PlayerDataPacket(((ServerInstance) server).GetDataFor(playerNickname, password));
+                new PlayerDataPacket(server.GetDataFor(playerNickname, password));
             Proxy.SendPacketToPlayer(playerNickname, playerDataPacket);
         }
     }

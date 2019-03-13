@@ -28,7 +28,7 @@ namespace GlLib.Common.Packets
 
         public static T FromNbt<T>(NbtTag tag) where T : Packet, new()
         {
-            T pkt = new T();
+            var pkt = new T();
             pkt.ReadFromNbt(tag);
             return pkt;
         }

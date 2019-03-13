@@ -19,7 +19,7 @@ namespace GlLib.Common.Packets
         {
             command = Proxy.GetClient().binds.GetCommand(key);
         }
-        
+
         public override bool RequiresReceiveMessage()
         {
             return false;

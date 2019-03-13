@@ -1,6 +1,3 @@
-using GlLib.Common;
-using GlLib.Common.Map;
-
 namespace GlLib.Utils
 {
     public class PlayerData

@@ -51,9 +51,9 @@ namespace GlLib.Common.Map
             {
                 var block = blocks[i + 8, j + 8];
                 if (block == null) continue;
-                if (!block.RequiresSpecialRenderer(world, i + 8, j + 8))
+                if (!block.RequiresSpecialRenderer((ClientWorld) world, i + 8, j + 8))
                 {
-                    var btexture = Vertexer.LoadTexture(block.GetTextureName(world, i + 8, j + 8));
+                    var btexture = Vertexer.LoadTexture(block.GetTextureName((ClientWorld) world, i + 8, j + 8));
                     Vertexer.BindTexture(btexture);
                     var coord = xAxis * i + yAxis * j;
                     GL.PushMatrix();
@@ -74,7 +74,7 @@ namespace GlLib.Common.Map
                 }
                 else
                 {
-                    block.GetSpecialRenderer(world, i, j).Render(world, i, j);
+                    block.GetSpecialRenderer((ClientWorld) world, i, j).Render((ClientWorld) world, i, j);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace GlLib.Common.Map
             foreach (var level in entities)
             foreach (var entity in level)
             {
-                var coord = xAxis * (entity.position.x - 8) + yAxis * (entity.position.y - 8);
+                var coord = xAxis * (entity.Position.x - 8) + yAxis * (entity.Position.y - 8);
                 GL.PushMatrix();
 
                 GL.Translate(coord.x, coord.y, 0);
@@ -92,7 +92,7 @@ namespace GlLib.Common.Map
             }
         }
 
-        public void LoadChunk(World world, int x, int y)
+        public void LoadChunk(int x, int y)
         {
             var mainCollection = world.jsonObj;
             JsonObjectCollection chunkCollection = null;
@@ -110,16 +110,23 @@ namespace GlLib.Common.Map
                 blocks = new TerrainBlock[16, 16];
                 foreach (var entry in chunkCollection)
                 {
-                    if (entry is JsonStringValue blockName)
-                        if (blockName.Value.StartsWith("block."))
+                    if (entry is JsonStringValue gameObject)
+                    {
+                        if (gameObject.Value.StartsWith("block."))
                         {
-                            var coords = blockName.Name.Split(',');
+                            var coords = gameObject.Name.Split(',');
                             var i = int.Parse(coords[0]);
                             var j = int.Parse(coords[1]);
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
-                            blocks[i, j] = Proxy.GetSideRegistry().GetBlockFromName(blockName.Value);
+                            blocks[i, j] = Proxy.GetSideRegistry().GetBlockFromName(gameObject.Value);
                         }
+                        else //Entity
+                        {
+                            var entity = Entity.LoadFromJson(gameObject, this);
+                            world.SpawnEntity(entity);
+                        }
+                    }
 
                     if (entry is JsonNumericValue num)
                     {
@@ -131,7 +138,6 @@ namespace GlLib.Common.Map
                     }
 
                     if (entry is JsonObjectCollection collection)
-                    {
                         if (collection.Name.StartsWith("Rect"))
                         {
                             var preBorders = collection[0];
@@ -151,12 +157,6 @@ namespace GlLib.Common.Map
                                 }
                             }
                         }
-                        else //Entity
-                        {
-                            var entity = Entity.LoadFromJson(collection, this.world, this);
-                            this.world.SpawnEntity(entity);
-                        }
-                    }
                 }
 
                 SidedConsole.WriteLine($"Chunk {chunkX}x{chunkY} is loaded");
@@ -164,20 +164,12 @@ namespace GlLib.Common.Map
             }
         }
 
-        public JsonObjectCollection SaveChunk(World world, int x, int y)
+        public JsonObjectCollection SaveChunkEntities(ServerWorld world, int x, int y)
         {
             var objects = new List<JsonObject>();
             foreach (var height in entities)
             foreach (var entity in height)
                 objects.Add(entity.CreateJsonObj());
-
-            for (var i = 0; i < 16; i++)
-            for (var j = 0; j < 16; j++)
-            {
-                var block = this[i, j];
-                if (block != null)
-                    objects.Add(new JsonNumericValue($"{i},{j}", block.id));
-            }
 
             return new JsonObjectCollection($"{x},{y}", objects);
         }

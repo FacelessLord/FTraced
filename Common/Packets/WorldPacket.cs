@@ -40,8 +40,7 @@ namespace GlLib.Common.Packets
 
         public override void OnClientReceive(ClientService client)
         {
-
-            client.CurrentWorld = new World(_mapName, _worldId);
+            client.CurrentWorld = new ClientWorld(_mapName, _worldId);
             var parser = new JsonTextParser();
             var obj = parser.Parse(_worldJson);
             var mainCollection = (JsonObjectCollection) obj;

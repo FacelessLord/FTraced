@@ -10,7 +10,6 @@ namespace GlLib.Common.Packets
 
         public Request()
         {
-
         }
 
         public Request(string nickname, string password)

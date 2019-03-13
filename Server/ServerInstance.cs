@@ -16,7 +16,9 @@ namespace GlLib.Server
 
         public Dictionary<string, PlayerData> playerInfo = new Dictionary<string, PlayerData>();
 
-        public Dictionary<int, World> worlds = new Dictionary<int, World>();
+        public Dictionary<int, string> registeredWorlds = new Dictionary<int, string>();
+
+        public Dictionary<int, ServerWorld> worlds = new Dictionary<int, ServerWorld>();
 
         public ServerInstance() : base(Side.Server)
         {
@@ -47,7 +49,8 @@ namespace GlLib.Server
         {
             clients.Add(client);
             client.player = new Player {Data = GetDataFor(client.nickName, client.password)};
-
+            var world = GetWorldById(client.player.Data.worldId);
+            world.SpawnEntity(client.player);
             //todo something
         }
 
@@ -58,17 +61,14 @@ namespace GlLib.Server
 
         public void CreateWorlds()
         {
-            foreach (var world in registeredWorlds)
-            {
-                worlds.Add(0, new World(world.Value+".json", world.Key));
-            }
+            foreach (var world in registeredWorlds) worlds.Add(0, new ServerWorld(world.Value, world.Key));
         }
 
         public void LoadWorlds()
         {
             foreach (var world in worlds.Values)
             {
-                var worldJson = File.ReadAllText("maps/" + world.mapName);
+                var worldJson = File.ReadAllText("maps/" + world.mapName + ".json");
                 var parser = new JsonTextParser();
                 var obj = parser.Parse(worldJson);
                 var mainCollection = (JsonObjectCollection) obj;
@@ -91,10 +91,7 @@ namespace GlLib.Server
 
         public void UpdateServerConfiguration()
         {
-            if (!Directory.Exists("server"))
-            {
-                Directory.CreateDirectory("server");
-            }
+            if (!Directory.Exists("server")) Directory.CreateDirectory("server");
 
             if (!File.Exists("server/worlds.json"))
             {
@@ -107,20 +104,18 @@ namespace GlLib.Server
                 var text = File.ReadLines("server/worlds.json");
                 foreach (var line in text)
                 {
-                    int firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
-                    string number = line.Substring(0, firstSpaceIndex);
-                    string name = line.Substring(firstSpaceIndex + 1);
+                    var firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
+                    var number = line.Substring(0, firstSpaceIndex);
+                    var name = line.Substring(firstSpaceIndex + 1);
                     RegisterWorld(int.Parse(number), name);
                 }
             }
         }
 
-        public World GetWorldById(int id)
+        public ServerWorld GetWorldById(int id)
         {
             return worlds[id];
         }
-
-        public Dictionary<int, string> registeredWorlds = new Dictionary<int, string>();
 
         public string GetWorldName(int id)
         {

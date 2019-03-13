@@ -34,7 +34,7 @@ namespace GlLib.Common.Packets
 
         public override bool RequiresReceiveMessage()
         {
-            return true;
+            return false;
         }
 
         public override void OnServerReceive(ServerInstance server)

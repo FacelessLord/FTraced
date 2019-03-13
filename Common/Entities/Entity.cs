@@ -17,11 +17,10 @@ namespace GlLib.Common.Entities
         public NbtTag nbtTag = new NbtTag();
 
         public bool noClip;
-        public RestrictedVector3D position;
+        protected RestrictedVector3D position;
 
         public PlanarVector velocity = new PlanarVector();
         public World worldObj;
-
 
         public Entity(World world, RestrictedVector3D position)
         {
@@ -76,7 +75,7 @@ namespace GlLib.Common.Entities
             var proj = chunkObj;
             if (proj != null && proj.isLoaded)
             {
-                if (chunkObj != proj) worldObj.ChangeEntityChunk(this, proj);
+                if (chunkObj != proj) ((ServerWorld) worldObj).ChangeEntityChunk(this, proj);
             }
             else
             {
@@ -118,6 +117,7 @@ namespace GlLib.Common.Entities
 
         public virtual void SaveToNbt(NbtTag tag)
         {
+            tag.SetString("EntityId", GetName());
             if (position != null && velocity != null && maxVel != null && acceleration != null && worldObj != null)
             {
                 tag.SetString("Position", position + "");
@@ -132,86 +132,39 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public virtual void LoadFromNbt(NbtTag tag, World world)
+        public virtual void LoadFromNbt(NbtTag tag)
         {
             position = RestrictedVector3D.FromString(tag.GetString("Position"));
             velocity = PlanarVector.FromString(tag.GetString("Velocity"));
             maxVel = PlanarVector.FromString(tag.GetString("MaxVelocity"));
             acceleration = PlanarVector.FromString(tag.GetString("Acceleration"));
-            worldObj = world.worldId == tag.GetInt("WorldId") ? world : null;
+            worldObj = Proxy.GetServer().GetWorldById(tag.GetInt("WorldId"));
             isDead = tag.GetBool("IsDead");
             noClip = tag.GetBool("noclip");
             if (tag.CanRetrieveTag("EntityTag"))
                 nbtTag = tag.RetrieveTag("EntityTag");
         }
 
-        public static Entity LoadFromJson(JsonObjectCollection collection, World world, Chunk chunk)
+        public static Entity LoadFromJson(JsonStringValue rawTag, Chunk chunk)
         {
-            double posX = 0;
-            double posY = 0;
-            var z = 0;
-            double velX = 0;
-            double velY = 0;
-            var id = "null";
-            var rawTag = "";
+            var entityTag = NbtTag.FromString(rawTag.Value);
 
-            foreach (var entityField in collection)
-            {
-                if (entityField is JsonArrayCollection arr)
-                    switch (arr.Name)
-                    {
-                        case "pos":
-                            (posX, posY, z) = (((JsonNumericValue) arr[0]).Value,
-                                ((JsonNumericValue) arr[1]).Value,
-                                (int) ((JsonNumericValue) arr[2]).Value);
-                            break;
-                        case "vel":
-                            (velX, velY) = (((JsonNumericValue) arr[0]).Value,
-                                ((JsonNumericValue) arr[1]).Value);
-                            break;
-                    }
-
-                if (entityField is JsonStringValue str)
-                    switch (str.Name)
-                    {
-                        case "id":
-                            id = str.Value;
-                            break;
-                        case "tag":
-                            rawTag = str.Value;
-                            break;
-                    }
-            }
-
-            var entity =
-                Proxy.GetSideRegistry().GetEntityFromName(id, world, new RestrictedVector3D(posX, posY, z));
-            entity.velocity = new PlanarVector(velX, velY);
-            entity.chunkObj = chunk;
-            entity.nbtTag = NbtTag.FromString(rawTag);
-            entity.LoadFromNbt(entity.nbtTag, world);
+            var entity = Proxy.GetSideRegistry().GetEntityFromName(entityTag.GetString("EntityId"));
+            entity.LoadFromNbt(entityTag);
             return entity;
         }
 
-        public JsonObjectCollection CreateJsonObj()
+        public JsonStringValue CreateJsonObj()
         {
-            var xJs = new JsonNumericValue(position.x);
-            var yJs = new JsonNumericValue(position.y);
-            var zJs = new JsonNumericValue(position.z);
-            var posColl = new JsonArrayCollection("pos", new[] {xJs, yJs, zJs});
-            var vXJs = new JsonNumericValue(velocity.x);
-            var vYJs = new JsonNumericValue(velocity.y);
-            var velColl = new JsonArrayCollection("vel", new[] {vXJs, vYJs});
-            var id = new JsonStringValue("id", GetName());
-            SaveToNbt(nbtTag);
-            var tag = new JsonStringValue("tag", nbtTag.ToString());
-
-            return new JsonObjectCollection($"entity{GetHashCode()}",
-                new JsonObject[] {posColl, velColl, id, tag});
+            var tag = new NbtTag();
+            SaveToNbt(tag);
+            return new JsonStringValue("Entity" + GetHashCode(), tag.ToString());
         }
 
         protected bool Equals(Entity other)
         {
-            return Equals(worldObj, other.worldObj) &&
+            return Equals(GetName(), other.GetName()) &&
+                   Equals(worldObj, other.worldObj) &&
                    Equals(position, other.position) &&
                    Equals(velocity, other.velocity) &&
                    Equals(acceleration, other.acceleration) &&

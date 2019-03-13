@@ -1,6 +1,5 @@
 using System.Threading;
 using GlLib.Client;
-using GlLib.Client.Input;
 using GlLib.Common.Map;
 using GlLib.Common.Packets;
 using GlLib.Common.Registries;

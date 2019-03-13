@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using GlLib.Common.Entities;
-using GlLib.Utils;
 using OpenTK.Input;
 
 namespace GlLib.Client.Input

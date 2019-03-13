@@ -1,0 +1,30 @@
+{
+	"0,0": {
+		
+	},
+	"0,1": {
+		
+	},
+	"0,2": {
+		
+	},
+	"1,0": {
+		
+	},
+	"1,1": {
+		"Entity-1943947836": "EntityId|Sentity.player|noclip|BFalse|Nickname|SNoname|IsDead|BFalse|WorldId|I0|Acceleration|S(0,0)|Velocity|S(0,0)|Name|SPlayer|MaxVelocity|S(0.07,0.07)|Position|S(24,24,0)",
+		"Entity-1943947836": "EntityId|Sentity.player|noclip|BFalse|Nickname|SNoname|IsDead|BFalse|WorldId|I0|Acceleration|S(0,0)|Velocity|S(0,0)|Name|SPlayer|MaxVelocity|S(0.07,0.07)|Position|S(24,24,0)"
+	},
+	"1,2": {
+		
+	},
+	"2,0": {
+		
+	},
+	"2,1": {
+		
+	},
+	"2,2": {
+		
+	}
+}

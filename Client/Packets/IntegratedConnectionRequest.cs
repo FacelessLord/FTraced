@@ -1,6 +1,5 @@
 using GlLib.Client;
 using GlLib.Server;
-using GlLib.Utils;
 
 namespace GlLib.Common.Packets
 {
@@ -19,7 +18,7 @@ namespace GlLib.Common.Packets
 
         public override void OnServerReceive(ServerInstance server)
         {
-            (server).ConnectClient(client);
+            server.ConnectClient(client);
 
             var connectionPacket =
                 new ConnectionEstablishedPacket(server.serverId);

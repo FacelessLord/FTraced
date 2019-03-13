@@ -4,6 +4,6 @@ namespace GlLib.Client.API
 {
     public interface IBlockRenderer
     {
-        void Render(World world, int x, int y);
+        void Render(ClientWorld world, int x, int y);
     }
 }

@@ -12,14 +12,14 @@ namespace GlLib.Common.Map
         /// <returns></returns>
         public abstract string GetName();
 
-        public abstract string GetTextureName(World world, int x, int y);
+        public abstract string GetTextureName(ClientWorld world, int x, int y);
 
-        public virtual bool RequiresSpecialRenderer(World world, int x, int y)
+        public virtual bool RequiresSpecialRenderer(ClientWorld world, int x, int y)
         {
             return false;
         }
 
-        public virtual IBlockRenderer GetSpecialRenderer(World world, int x, int y)
+        public virtual IBlockRenderer GetSpecialRenderer(ClientWorld world, int x, int y)
         {
             return null;
         }

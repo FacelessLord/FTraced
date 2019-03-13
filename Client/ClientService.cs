@@ -11,12 +11,12 @@ namespace GlLib.Client
 {
     public class ClientService : SideService
     {
-        private World _currentWorld;
+        private ClientWorld _currentWorld;
+
+        public ClientBinds binds = new ClientBinds();
         public string nickName;
         public string password;
         public volatile Player player;
-        
-        public ClientBinds binds = new ClientBinds();
 
         public ClientService(string nickName, string password) : base(Side.Client)
         {
@@ -28,9 +28,9 @@ namespace GlLib.Client
 
         public bool IsConnectedToServer => serverId > -1;
 
-        public World CurrentWorld
+        public ClientWorld CurrentWorld
         {
-            get { return _currentWorld; }
+            get => _currentWorld;
             set
             {
                 _currentWorld = value;
@@ -73,9 +73,8 @@ namespace GlLib.Client
             var mapRequest = new WorldMapRequest(this, player.Data.worldId);
             Proxy.SendPacketToServer(mapRequest);
             Proxy.AwaitWhile(() => CurrentWorld == null);
-            
+            //todo load entities
             CurrentWorld.SpawnEntity(player);
-            CurrentWorld.players.TryAdd(player.nickname, player);
             CurrentWorld.LoadWorld();
             return Config.isIntegratedServer;
         }

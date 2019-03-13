@@ -15,7 +15,7 @@ namespace GlLib.Client.Graphic
     {
         public static VSyncMode vSync = VSyncMode.On;
         public static ClientService client;
-        
+
         public GraphicWindow(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
             MouseHandler.Setup();
@@ -25,6 +25,7 @@ namespace GlLib.Client.Graphic
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             MouseHandler.Update();
+            KeyboardHandler.Update();
             var input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape)) Exit();
             base.OnUpdateFrame(e);
@@ -47,8 +48,8 @@ namespace GlLib.Client.Graphic
         protected override void OnKeyUp(KeyboardKeyEventArgs e)
         {
             base.OnKeyUp(e);
-            KeyboardHandler.SetPressed(e.Key,false);
-            
+            KeyboardHandler.SetPressed(e.Key, false);
+
             var pressedPkt = new KeyUnpressedPacket(client, e.Key);
             Proxy.SendPacketToServer(pressedPkt);
         }
@@ -91,7 +92,6 @@ namespace GlLib.Client.Graphic
         {
             foreach (var key in Vertexer.textures.Keys) Vertexer.textures[key].Dispose();
 
-            Proxy.GetClient().CurrentWorld.SaveWorld();
             base.OnUnload(e);
         }
 

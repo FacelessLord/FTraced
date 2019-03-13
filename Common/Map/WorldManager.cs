@@ -15,6 +15,11 @@ namespace GlLib.Common.Map
             for (var i = 0; i < world.width; i++)
             for (var j = 0; j < world.height; j++)
                 world[i, j] = new Chunk(world, i, j);
+            world.LoadWorld();
+        }
+
+        public static void LoadEntities(ServerWorld world, JsonObjectCollection entityCollection)
+        {
         }
     }
 }

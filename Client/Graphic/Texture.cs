@@ -9,8 +9,8 @@ namespace GlLib.Client.Graphic
 {
     public class Texture : IDisposable
     {
-        private bool _disposedValue;
         private readonly int _handle;
+        private bool _disposedValue;
         public int height;
 
         public int width;

@@ -14,7 +14,7 @@ namespace GlLib.Common.Packets
         {
         }
 
-        public SyncPacket(World world, Player player)
+        public SyncPacket(ServerWorld world, Player player)
         {
             _playerTag = new NbtTag();
             player.SaveToNbt(_playerTag);
@@ -40,7 +40,7 @@ namespace GlLib.Common.Packets
             var clientService = client;
             clientService.CurrentWorld.LoadEntitiesFromNbt(_worldTag);
             clientService.player = new Player();
-            clientService.player.LoadFromNbt(_playerTag, clientService.CurrentWorld);
+            clientService.player.LoadFromNbt(_playerTag);
         }
 
         public override bool RequiresReceiveMessage()

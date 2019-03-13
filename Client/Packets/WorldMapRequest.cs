@@ -8,8 +8,10 @@ namespace GlLib.Common.Packets
     {
         private int _worldId;
 
-        public WorldMapRequest(){}
-        
+        public WorldMapRequest()
+        {
+        }
+
         public WorldMapRequest(ClientService client, int worldId) : base(client)
         {
             _worldId = worldId;
@@ -30,8 +32,8 @@ namespace GlLib.Common.Packets
         public override void OnServerReceive(ServerInstance server)
         {
             base.OnServerReceive(server);
-            string worldName = server.GetWorldName(_worldId);
-            WorldMapPacket packet = new WorldMapPacket(worldName, _worldId);
+            var worldName = server.GetWorldName(_worldId);
+            var packet = new WorldMapPacket(worldName, _worldId);
             Proxy.SendPacketToPlayer(playerNickname, packet);
         }
     }
