@@ -16,6 +16,7 @@ namespace GlLib.Common.Map
         {
             var xAxis = new PlanarVector(Chunk.BlockWidth / 2, Chunk.BlockHeight / 2);
             var yAxis = new PlanarVector(Chunk.BlockWidth / 2, -Chunk.BlockHeight / 2);
+            
             GL.PushMatrix();
             GL.Translate(-Math.Max(width, height) * Chunk.BlockWidth * 5, 0, 0);
             for (var i = 0; i < width; i++)
@@ -23,6 +24,7 @@ namespace GlLib.Common.Map
                 if (this[i + x, j + y].isLoaded)
                     this[i + x, j + y].RenderChunk(i, j, xAxis, yAxis);
 
+            //rendering entities
             for (var i = 0; i < width; i++)
             for (var j = width - 1; j >= 0; j--)
                 if (this[i + x, j + y].isLoaded)

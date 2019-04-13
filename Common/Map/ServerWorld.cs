@@ -16,12 +16,7 @@ namespace GlLib.Common.Map
 
         public void SaveWorldEntities()
         {
-            var objects = new List<JsonObject>();
-            for (var i = 0; i < width; i++)
-            for (var j = 0; j < height; j++)
-                objects.Add(this[i, j].SaveChunkEntities(this, i, j));
-
-            var mainColl = new JsonObjectCollection(objects);
+            var mainColl = GetWorldEntitiesJson();
 
             var fs = File.OpenWrite("maps/" + mapName + "_entities.json");
             TextWriter tw = new StreamWriter(fs);
@@ -30,6 +25,16 @@ namespace GlLib.Common.Map
             fs.Flush();
             tw.Close();
             fs.Close();
+        }
+
+        public JsonObjectCollection GetWorldEntitiesJson()
+        {
+            var objects = new List<JsonObject>();
+            for (var i = 0; i < width; i++)
+            for (var j = 0; j < height; j++)
+                objects.Add(this[i, j].SaveChunkEntities());
+
+            return new JsonObjectCollection(objects);
         }
 
         public void Update()

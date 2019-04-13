@@ -26,6 +26,14 @@
   "frameworks": {
     "netcoreapp2.2": {
       "dependencies": {
+        "Microsoft.Build.Framework": {
+          "target": "Package",
+          "version": "[15.1.548, )"
+        },
+        "Microsoft.Build.Utilities.Core": {
+          "target": "Package",
+          "version": "[15.1.548, )"
+        },
         "Microsoft.NETCore.App": {
           "suppressParent": "All",
           "target": "Package",

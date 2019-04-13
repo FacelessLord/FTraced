@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Json;
 using System.Threading;
 using GlLib.Client;
 using GlLib.Server;
+using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -17,7 +19,7 @@ namespace GlLib.Common
                 var (variableName, value) = (argsParts[0], argsParts[1]);
                 Config.ProcessArgument(variableName, value);
             }
-
+            
             if (Config.isIntegratedServer)
             {
                 var server = new ServerInstance();

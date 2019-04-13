@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Json;
 using System.Threading;
@@ -50,7 +51,7 @@ namespace GlLib.Common.Map
             for (var i = 0; i < width; i++)
             for (var j = 0; j < height; j++)
                 if (!this[i, j].isLoaded)
-                    this[i, j].LoadChunk(i, j);
+                    this[i, j].LoadChunk();
         }
 
         public List<Entity> GetEntitiesWithinAaBb(AxisAlignedBb aabb)
@@ -106,43 +107,6 @@ namespace GlLib.Common.Map
             }
 
             return entities;
-        }
-
-        public virtual void SaveEntitiesToNbt(NbtTag tag)
-        {
-            var i = 0;
-            var entityTag = new NbtTag();
-
-            entityMutex.WaitOne();
-            foreach (var chunk in chunks)
-            foreach (var level in chunk.entities)
-            foreach (var entity in level)
-            {
-                var localTag = new NbtTag();
-                entity.SaveToNbt(localTag);
-                entityTag.AppendTag(localTag, "Entity" + i);
-                i++;
-            }
-
-            entityMutex.ReleaseMutex();
-
-            entityTag.SetInt("EntityCount", i);
-            tag.AppendTag(entityTag, "Entities");
-        }
-
-        public void LoadEntitiesFromNbt(NbtTag tag)
-        {
-            var entityTag = tag.RetrieveTag("Entities");
-            var entityCount = entityTag.GetInt("EntityCount");
-
-            entityMutex.WaitOne();
-            for (var i = 0; i < entityCount; i++)
-            {
-                var entity = new Entity();
-                entity.LoadFromNbt(entityTag.RetrieveTag("Entity" + i));
-            }
-
-            entityMutex.ReleaseMutex();
         }
     }
 }

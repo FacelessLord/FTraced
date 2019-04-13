@@ -92,14 +92,14 @@ namespace GlLib.Common.Map
             }
         }
 
-        public void LoadChunk(int x, int y)
+        public void LoadChunk()
         {
             var mainCollection = world.jsonObj;
             JsonObjectCollection chunkCollection = null;
 
             foreach (var obj in mainCollection)
                 if (obj is JsonObjectCollection chk)
-                    if (chk.Name == x + "," + y)
+                    if (chk.Name == chunkX + "," + chunkY)
                     {
                         chunkCollection = chk;
                         break;
@@ -164,14 +164,25 @@ namespace GlLib.Common.Map
             }
         }
 
-        public JsonObjectCollection SaveChunkEntities(ServerWorld world, int x, int y)
+        public JsonObjectCollection SaveChunkEntities()
         {
             var objects = new List<JsonObject>();
             foreach (var height in entities)
             foreach (var entity in height)
                 objects.Add(entity.CreateJsonObj());
 
-            return new JsonObjectCollection($"{x},{y}", objects);
+            return new JsonObjectCollection($"{chunkX},{chunkY}", objects);
+        }
+
+        public void LoadChunkEntities(JsonObjectCollection entityCollection)
+        {
+            foreach (var entityJson in entityCollection)
+            {
+                if (entityJson != null)
+                {
+                    world.SpawnEntity(Entity.LoadFromJson(entityJson as JsonStringValue, this));
+                }
+            }
         }
 
         public void Update()

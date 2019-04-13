@@ -18,8 +18,14 @@ namespace GlLib.Common.Map
             world.LoadWorld();
         }
 
-        public static void LoadEntities(ServerWorld world, JsonObjectCollection entityCollection)
+        public static void LoadEntitiesAtChunk(World world, int x, int y, JsonObjectCollection entityCollection)
         {
+            world[x,y].LoadChunkEntities(entityCollection);
+        }
+        
+        public static void LoadEntities(World world, JsonObjectCollection entityCollection)
+        {
+            //todo
         }
     }
 }

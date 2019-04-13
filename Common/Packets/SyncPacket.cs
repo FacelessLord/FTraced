@@ -1,3 +1,4 @@
+using System.Net.Json;
 using GlLib.Client;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
@@ -8,7 +9,7 @@ namespace GlLib.Common.Packets
     public class SyncPacket : Packet
     {
         private NbtTag _playerTag;
-        private NbtTag _worldTag;
+        private string _worldJson;
 
         public SyncPacket()
         {
@@ -18,28 +19,29 @@ namespace GlLib.Common.Packets
         {
             _playerTag = new NbtTag();
             player.SaveToNbt(_playerTag);
-            _worldTag = new NbtTag();
-            if (world != null)
-                world.SaveEntitiesToNbt(_worldTag);
+            _worldJson = world.GetWorldEntitiesJson().ToString();
         }
 
         public override void WriteToNbt(NbtTag tag)
         {
-            tag.AppendTag(_worldTag, "World");
+            tag.SetString("WorldJson", _worldJson);
             tag.AppendTag(_playerTag, "Player");
         }
 
         public override void ReadFromNbt(NbtTag tag)
         {
-            _worldTag = tag.RetrieveTag("World");
+            _worldJson = tag.GetString("WorldJson");
             _playerTag = tag.RetrieveTag("Player");
         }
 
         public override void OnClientReceive(ClientService client)
         {
             var clientService = client;
-            clientService.CurrentWorld.LoadEntitiesFromNbt(_worldTag);
-            clientService.player = new Player();
+            var parser = new JsonTextParser();
+            var entityCollection = (JsonObjectCollection) parser.Parse(_worldJson);
+            WorldManager.LoadEntities(clientService.CurrentWorld,entityCollection);
+            
+            clientService.player = new Player();//todo ClientPlayer
             clientService.player.LoadFromNbt(_playerTag);
         }
 

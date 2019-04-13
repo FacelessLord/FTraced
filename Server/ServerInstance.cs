@@ -51,7 +51,6 @@ namespace GlLib.Server
             client.player = new Player {Data = GetDataFor(client.nickName, client.password)};
             var world = GetWorldById(client.player.Data.worldId);
             world.SpawnEntity(client.player);
-            //todo something
         }
 
         public void RegisterWorld(int id, string worldName)

@@ -12,8 +12,8 @@
 		
 	},
 	"1,1": {
-		"Entity2080095295": "EntityId|Sentity.player|Position|S(24,24,0)|IsDead|BFalse|Name|SPlayer|MaxVelocity|S(0.07,0.07)|Velocity|S(0,0)|Nickname|SNoname|Acceleration|S(0,0)|WorldId|I0|noclip|BFalse",
-		"Entity2080095295": "EntityId|Sentity.player|Position|S(24,24,0)|IsDead|BFalse|Name|SPlayer|MaxVelocity|S(0.07,0.07)|Velocity|S(0,0)|Nickname|SNoname|Acceleration|S(0,0)|WorldId|I0|noclip|BFalse"
+		"Entity-175197773": "Velocity|S(0,0)|IsDead|BFalse|Nickname|SNoname|noclip|BFalse|Acceleration|S(0,0)|WorldId|I0|Name|SPlayer|EntityId|Sentity.player|MaxVelocity|S(0.07,0.07)|Position|S(24,24,0)",
+		"Entity-175197773": "Velocity|S(0,0)|IsDead|BFalse|Nickname|SNoname|noclip|BFalse|Acceleration|S(0,0)|WorldId|I0|Name|SPlayer|EntityId|Sentity.player|MaxVelocity|S(0.07,0.07)|Position|S(24,24,0)"
 	},
 	"1,2": {
 		
