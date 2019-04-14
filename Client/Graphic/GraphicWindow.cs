@@ -18,7 +18,7 @@ namespace GlLib.Client.Graphic
 
         public GraphicWindow(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
-            MouseHandler.Setup();
+            MouseHandler.Setup(); 
             SidedConsole.WriteLine("Window constructed");
         }
 
