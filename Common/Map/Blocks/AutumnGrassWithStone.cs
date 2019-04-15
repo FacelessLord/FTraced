@@ -9,9 +9,9 @@ namespace GlLib.Common.Map.Blocks
             return "block.outdoor.grass.autumn.stone";
         }
 
-        public override string GetTextureName(ClientWorld world, int x, int y)
+        public override string GetTextureName(World _world, int _x, int _y)
         {
-            return "grass_autumn_st_" + Math.Abs(Math.Round(Math.Cos(x) + Math.Sin(y)) % 2) + ".png";
+            return "grass_autumn_st_" + Math.Abs(Math.Round(Math.Cos(_x) + Math.Sin(_y)) % 2) + ".png";
         }
     }
 }

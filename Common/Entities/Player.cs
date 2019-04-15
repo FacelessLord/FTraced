@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GlLib.Client.Graphic;
 using GlLib.Common.Map;
@@ -9,16 +10,16 @@ namespace GlLib.Common.Entities
     public class Player : Entity
     {
         private PlayerData _playerData;
-        public double accelerationValue = 0.0005;
+        public double accelerationValue = 0.05;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
 
-        public Player(string nickname, World world, RestrictedVector3D position) : base(world, position)
+        public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
-            this.nickname = nickname;
+            this.nickname = _nickname;
         }
 
-        public Player(World world, RestrictedVector3D position) : base(world, position)
+        public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
         {
         }
 
@@ -33,6 +34,7 @@ namespace GlLib.Common.Entities
             {
                 _playerData = value;
                 position = value.position;
+                worldObj = Proxy.GetServer().GetWorldById(value.worldId);
             }
         }
 
@@ -46,7 +48,7 @@ namespace GlLib.Common.Entities
             base.Update();
         }
 
-        public override void Render(PlanarVector xAxis, PlanarVector yAxis)
+        public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
             var btexture = Vertexer.LoadTexture("player.png");
@@ -63,19 +65,24 @@ namespace GlLib.Common.Entities
             GL.PopMatrix();
         }
 
-        public override void LoadFromNbt(NbtTag tag)
+        public override void LoadFromNbt(NbtTag _tag)
         {
-            nickname = tag.GetString("Name");
-            Data = PlayerData.LoadFromNbt(tag);
-            base.LoadFromNbt(tag);
+            nickname = _tag.GetString("Name");
+            Data = PlayerData.LoadFromNbt(_tag);
+            base.LoadFromNbt(_tag);
         }
 
-        public override void SaveToNbt(NbtTag tag)
+        public override void SaveToNbt(NbtTag _tag)
         {
-            tag.SetString("Name", nickname);
+            _tag.SetString("Name", nickname);
             if (Data != null)
-                Data.SaveToNbt(tag);
-            base.SaveToNbt(tag);
+                Data.SaveToNbt(_tag);
+            base.SaveToNbt(_tag);
+        }
+
+        public void CheckVelocity()
+        {
+            if (velocity.Length > maxVel.Length) velocity *= maxVel.Length / velocity.Length;
         }
     }
 }

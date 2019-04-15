@@ -24,26 +24,26 @@ namespace GlLib.Common.Map
 
         public World world;
 
-        public Chunk(World world, int x, int y)
+        public Chunk(World _world, int _x, int _y)
         {
-            this.world = world;
-            chunkX = x;
-            chunkY = y;
+            this.world = _world;
+            chunkX = _x;
+            chunkY = _y;
             blocks = new TerrainBlock[16, 16];
             for (var i = 0; i < Heights; i++) entities[i] = new List<Entity>();
         }
 
-        public TerrainBlock this[int i, int j]
+        public TerrainBlock this[int _i, int _j]
         {
-            get => blocks[i, j];
-            set => blocks[i, j] = value;
+            get => blocks[_i, _j];
+            set => blocks[_i, _j] = value;
         }
 
-        public void RenderChunk(double centerX, double centerY, PlanarVector xAxis, PlanarVector yAxis)
+        public void RenderChunk(double _centerX, double _centerY, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
 
-            GL.Translate((centerX + centerY) * BlockWidth * 8, (centerX - centerY) * BlockHeight * 8, 0);
+            GL.Translate((_centerX + _centerY) * BlockWidth * 8, (_centerX - _centerY) * BlockHeight * 8, 0);
 
             //GL.Color3(0.75,0.75,0.75);
             for (var i = 7; i > -9; i--)
@@ -51,11 +51,11 @@ namespace GlLib.Common.Map
             {
                 var block = blocks[i + 8, j + 8];
                 if (block == null) continue;
-                if (!block.RequiresSpecialRenderer((ClientWorld) world, i + 8, j + 8))
+                if (!block.RequiresSpecialRenderer(world, i + 8, j + 8))
                 {
-                    var btexture = Vertexer.LoadTexture(block.GetTextureName((ClientWorld) world, i + 8, j + 8));
+                    var btexture = Vertexer.LoadTexture(block.GetTextureName(world, i + 8, j + 8));
                     Vertexer.BindTexture(btexture);
-                    var coord = xAxis * i + yAxis * j;
+                    var coord = _xAxis * i + _yAxis * j;
                     GL.PushMatrix();
 
                     GL.Translate(coord.x, coord.y, 0);
@@ -74,7 +74,7 @@ namespace GlLib.Common.Map
                 }
                 else
                 {
-                    block.GetSpecialRenderer((ClientWorld) world, i, j).Render((ClientWorld) world, i, j);
+                    block.GetSpecialRenderer(world, i, j).Render(world, i, j);
                 }
             }
 
@@ -83,11 +83,11 @@ namespace GlLib.Common.Map
             foreach (var level in entities)
             foreach (var entity in level)
             {
-                var coord = xAxis * (entity.Position.x - 8) + yAxis * (entity.Position.y - 8);
+                var coord = _xAxis * (entity.Position.x - 8) + _yAxis * (entity.Position.y - 8);
                 GL.PushMatrix();
 
                 GL.Translate(coord.x, coord.y, 0);
-                entity.Render(xAxis, yAxis);
+                entity.Render(_xAxis, _yAxis);
                 GL.PopMatrix();
             }
         }
@@ -119,7 +119,7 @@ namespace GlLib.Common.Map
                             var j = int.Parse(coords[1]);
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
-                            blocks[i, j] = Proxy.GetSideRegistry().GetBlockFromName(gameObject.Value);
+                            blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
                         }
                         else //Entity
                         {
@@ -134,7 +134,7 @@ namespace GlLib.Common.Map
                         var i = int.Parse(coords[0]);
                         var j = int.Parse(coords[1]);
 
-                        blocks[i, j] = Proxy.GetSideRegistry().GetBlockFromId((int) num.Value);
+                        blocks[i, j] = Proxy.GetRegistry().GetBlockFromId((int) num.Value);
                     }
 
                     if (entry is JsonObjectCollection collection)
@@ -146,7 +146,7 @@ namespace GlLib.Common.Map
                                 var preBlock = collection[1];
                                 if (preBlock is JsonStringValue rectBlockName)
                                 {
-                                    var block = Proxy.GetSideRegistry().GetBlockFromName(rectBlockName.Value);
+                                    var block = Proxy.GetRegistry().GetBlockFromName(rectBlockName.Value);
                                     var startX = (int) ((JsonNumericValue) borders[0]).Value;
                                     var startY = (int) ((JsonNumericValue) borders[1]).Value;
                                     var endX = (int) ((JsonNumericValue) borders[2]).Value;
@@ -174,9 +174,9 @@ namespace GlLib.Common.Map
             return new JsonObjectCollection($"{chunkX},{chunkY}", objects);
         }
 
-        public void LoadChunkEntities(JsonObjectCollection entityCollection)
+        public void LoadChunkEntities(JsonObjectCollection _entityCollection)
         {
-            foreach (var entityJson in entityCollection)
+            foreach (var entityJson in _entityCollection)
             {
                 if (entityJson != null)
                 {

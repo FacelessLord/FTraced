@@ -4,35 +4,35 @@ namespace GlLib.Utils
 {
     public static class MiscUtils
     {
-        public static string Compact(params object[] objects)
+        public static string Compact(params object[] _objects)
         {
             var delim = "|";
             var ret = new StringBuilder();
-            foreach (var obj in objects) ret.Append(obj + delim);
-            if (objects.Length > 0)
+            foreach (var obj in _objects) ret.Append(obj + delim);
+            if (_objects.Length > 0)
                 ret.Remove(ret.Length - 1, 1);
 
             return ret + "";
         }
 
-        public static string Compact(string delimiter, params object[] objects)
+        public static string Compact(string _delimiter, params object[] _objects)
         {
             var ret = new StringBuilder();
-            foreach (var obj in objects) ret.Append(obj + delimiter);
+            foreach (var obj in _objects) ret.Append(obj + _delimiter);
 
             ret.Remove(ret.Length - 1, 1);
 
             return ret + "";
         }
 
-        public static string[] Uncompact(string compString)
+        public static string[] Uncompact(string _compString)
         {
-            return compString.Split("|");
+            return _compString.Split("|");
         }
 
-        public static string[] Uncompact(string delimiter, string compString)
+        public static string[] Uncompact(string _delimiter, string _compString)
         {
-            return compString.Split(delimiter);
+            return _compString.Split(_delimiter);
         }
     }
 }

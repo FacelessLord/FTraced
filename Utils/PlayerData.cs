@@ -6,23 +6,23 @@ namespace GlLib.Utils
         public RestrictedVector3D position;
         public int worldId;
 
-        public PlayerData(int worldId, RestrictedVector3D position, string nickname)
+        public PlayerData(int _worldId, RestrictedVector3D _position, string _nickname)
         {
-            (this.worldId, this.position, this.nickname) = (worldId, position, nickname);
+            (this.worldId, this.position, this.nickname) = (worldId: _worldId, position: _position, nickname: _nickname);
         }
 
-        public void SaveToNbt(NbtTag tag)
+        public void SaveToNbt(NbtTag _tag)
         {
-            tag.SetInt("WorldId", worldId);
-            tag.SetString("Position", position.ToString());
-            tag.SetString("Nickname", nickname);
+            _tag.SetInt("WorldId", worldId);
+            _tag.SetString("Position", position.ToString());
+            _tag.SetString("Nickname", nickname);
         }
 
-        public static PlayerData LoadFromNbt(NbtTag tag)
+        public static PlayerData LoadFromNbt(NbtTag _tag)
         {
-            var worldId = tag.GetInt("WorldId");
-            var position = RestrictedVector3D.FromString(tag.GetString("Position"));
-            var nickname = tag.GetString("Nickname");
+            var worldId = _tag.GetInt("WorldId");
+            var position = RestrictedVector3D.FromString(_tag.GetString("Position"));
+            var nickname = _tag.GetString("Nickname");
             return new PlayerData(worldId, position, nickname);
         }
     }

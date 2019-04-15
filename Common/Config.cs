@@ -7,12 +7,12 @@ namespace GlLib.Common
         public static string playerName = "Noname";
         public static string playerPassword = "";
 
-        public static void ProcessArgument(string argument, string value)
+        public static void ProcessArgument(string _argument, string _value)
         {
-            switch (argument)
+            switch (_argument)
             {
                 case "side":
-                    switch (value)
+                    switch (_value)
                     {
                         case "client":
                             isIntegratedServer = false;
@@ -30,10 +30,10 @@ namespace GlLib.Common
 
                     break;
                 case "username":
-                    playerName = value;
+                    playerName = _value;
                     break;
                 case "password":
-                    playerPassword = value;
+                    playerPassword = _value;
                     break;
             }
         }

@@ -12,62 +12,62 @@ namespace GlLib.Utils
         {
         }
 
-        public RestrictedVector3D(double x, double y, int z)
+        public RestrictedVector3D(double _x, double _y, int _z)
         {
-            (this.x, this.y, this.z) = (x, y, z);
+            (this.x, this.y, this.z) = (x: _x, y: _y, z: _z);
         }
 
         public int Ix => (int) Math.Floor(x);
         public int Iy => (int) Math.Floor(y);
 
-        public static RestrictedVector3D operator +(RestrictedVector3D a, RestrictedVector3D b)
+        public static RestrictedVector3D operator +(RestrictedVector3D _a, RestrictedVector3D _b)
         {
-            if (a.z != b.z)
+            if (_a.z != _b.z)
                 throw new ArgumentException("Tried to sum vectors with different heights");
-            return new RestrictedVector3D(a.x + b.x, a.y + b.y, a.z);
+            return new RestrictedVector3D(_a.x + _b.x, _a.y + _b.y, _a.z);
         }
 
-        public static RestrictedVector3D operator +(RestrictedVector3D a, PlanarVector b)
+        public static RestrictedVector3D operator +(RestrictedVector3D _a, PlanarVector _b)
         {
-            return new RestrictedVector3D(a.x + b.x, a.y + b.y, a.z);
+            return new RestrictedVector3D(_a.x + _b.x, _a.y + _b.y, _a.z);
         }
 
-        public static RestrictedVector3D operator -(RestrictedVector3D a)
+        public static RestrictedVector3D operator -(RestrictedVector3D _a)
         {
-            return new RestrictedVector3D(-a.x, -a.y, a.z);
+            return new RestrictedVector3D(-_a.x, -_a.y, _a.z);
         }
 
-        public static RestrictedVector3D operator -(RestrictedVector3D a, PlanarVector b)
+        public static RestrictedVector3D operator -(RestrictedVector3D _a, PlanarVector _b)
         {
-            return a + -b;
+            return _a + -_b;
         }
 
-        public static RestrictedVector3D operator -(RestrictedVector3D a, RestrictedVector3D b)
+        public static RestrictedVector3D operator -(RestrictedVector3D _a, RestrictedVector3D _b)
         {
-            if (a.z != b.z)
+            if (_a.z != _b.z)
                 throw new ArgumentException("Tried to subtract vectors with different heights");
-            return a + -b;
+            return _a + -_b;
         }
 
-        public static RestrictedVector3D operator *(RestrictedVector3D a, double k)
+        public static RestrictedVector3D operator *(RestrictedVector3D _a, double _k)
         {
-            return new RestrictedVector3D(a.x * k, a.y * k, a.z);
+            return new RestrictedVector3D(_a.x * _k, _a.y * _k, _a.z);
         }
 
-        public static RestrictedVector3D operator *(double k, RestrictedVector3D a)
+        public static RestrictedVector3D operator *(double _k, RestrictedVector3D _a)
         {
-            return new RestrictedVector3D(a.x * k, a.y * k, a.z);
+            return new RestrictedVector3D(_a.x * _k, _a.y * _k, _a.z);
         }
 
-        public static RestrictedVector3D FromAngleAndHeight(double angle, int height)
+        public static RestrictedVector3D FromAngleAndHeight(double _angle, int _height)
         {
-            return new RestrictedVector3D(Math.Cos(angle), Math.Sin(angle), height);
+            return new RestrictedVector3D(Math.Cos(_angle), Math.Sin(_angle), _height);
         }
 
-        public RestrictedVector3D Rotate(double angle)
+        public RestrictedVector3D Rotate(double _angle)
         {
-            var cos = Math.Cos(angle);
-            var sin = Math.Sin(angle);
+            var cos = Math.Cos(_angle);
+            var sin = Math.Sin(_angle);
             return new RestrictedVector3D(x * cos - y * sin, x * sin + y * cos, z);
         }
 
@@ -76,11 +76,11 @@ namespace GlLib.Utils
             return $"({x},{y},{z})";
         }
 
-        public static RestrictedVector3D FromString(string s)
+        public static RestrictedVector3D FromString(string _s)
         {
-            if (s == "")
+            if (_s == "")
                 return new RestrictedVector3D();
-            var coords = s.Substring(1, s.Length - 2).Split(",");
+            var coords = _s.Substring(1, _s.Length - 2).Split(",");
             return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
         }
 
@@ -99,31 +99,31 @@ namespace GlLib.Utils
         {
         }
 
-        public PlanarVector(double x, double y)
+        public PlanarVector(double _x, double _y)
         {
-            (this.x, this.y) = (x, y);
+            (this.x, this.y) = (x: _x, y: _y);
         }
 
         public double Length => Math.Sqrt(x * x + y * y);
 
-        public static PlanarVector operator *(PlanarVector a, double k)
+        public static PlanarVector operator *(PlanarVector _a, double _k)
         {
-            return new PlanarVector(a.x * k, a.y * k);
+            return new PlanarVector(_a.x * _k, _a.y * _k);
         }
 
-        public static PlanarVector operator /(PlanarVector a, double k)
+        public static PlanarVector operator /(PlanarVector _a, double _k)
         {
-            return new PlanarVector(a.x / k, a.y / k);
+            return new PlanarVector(_a.x / _k, _a.y / _k);
         }
 
-        public static PlanarVector operator +(PlanarVector a, PlanarVector b)
+        public static PlanarVector operator +(PlanarVector _a, PlanarVector _b)
         {
-            return new PlanarVector(a.x + b.x, a.y + b.y);
+            return new PlanarVector(_a.x + _b.x, _a.y + _b.y);
         }
 
-        public static PlanarVector operator -(PlanarVector a)
+        public static PlanarVector operator -(PlanarVector _a)
         {
-            return new PlanarVector(-a.x, -a.y);
+            return new PlanarVector(-_a.x, -_a.y);
         }
 
         public override string ToString()
@@ -131,22 +131,22 @@ namespace GlLib.Utils
             return $"({x},{y})";
         }
 
-        public static PlanarVector FromString(string s)
+        public static PlanarVector FromString(string _s)
         {
-            if (s == "")
+            if (_s == "")
                 return new PlanarVector();
-            var coords = s.Substring(1, s.Length - 2).Split(",");
+            var coords = _s.Substring(1, _s.Length - 2).Split(",");
             return new PlanarVector(double.Parse(coords[0]), double.Parse(coords[1]));
         }
 
-        public AxisAlignedBb Expand(double width, double height)
+        public AxisAlignedBb Expand(double _width, double _height)
         {
-            return new AxisAlignedBb(x, y, x + width, y + height);
+            return new AxisAlignedBb(x, y, x + _width, y + _height);
         }
 
-        public AxisAlignedBb ExpandBothTo(double width, double height)
+        public AxisAlignedBb ExpandBothTo(double _width, double _height)
         {
-            return new AxisAlignedBb(x - width / 2, y / height, x + width / 2, y + height / 2);
+            return new AxisAlignedBb(x - _width / 2, y / _height, x + _width / 2, y + _height / 2);
         }
     }
 
@@ -157,15 +157,15 @@ namespace GlLib.Utils
         public double startX;
         public double startY;
 
-        public AxisAlignedBb(double startX, double startY, double endX, double endY)
+        public AxisAlignedBb(double _startX, double _startY, double _endX, double _endY)
         {
-            (this.startX, this.startY, this.endX, this.endY) = (startX, startY, endX, endY);
+            (this.startX, this.startY, this.endX, this.endY) = (startX: _startX, startY: _startY, endX: _endX, endY: _endY);
             CheckCoordinates();
         }
 
-        public AxisAlignedBb(PlanarVector start, PlanarVector end)
+        public AxisAlignedBb(PlanarVector _start, PlanarVector _end)
         {
-            (startX, startY, endX, endY) = (start.x, start.y, end.x, end.y);
+            (startX, startY, endX, endY) = (_start.x, _start.y, _end.x, _end.y);
             CheckCoordinates();
         }
 
@@ -177,22 +177,22 @@ namespace GlLib.Utils
         public double Width => endX - startX;
         public double Height => endY - startY;
 
-        public bool IntersectsWith(AxisAlignedBb box)
+        public bool IntersectsWith(AxisAlignedBb _box)
         {
             var cx1 = (startX + endX) / 2;
             var cy1 = (startY + endY) / 2;
-            var cx2 = (box.startX + box.endX) / 2;
-            var cy2 = (box.startY + box.endY) / 2;
+            var cx2 = (_box.startX + _box.endX) / 2;
+            var cy2 = (_box.startY + _box.endY) / 2;
 
-            var halfWidth = endX - cx1 + box.endX - cx2;
-            var halfHeight = endY - cy1 + box.endY - cy2;
+            var halfWidth = endX - cx1 + _box.endX - cx2;
+            var halfHeight = endY - cy1 + _box.endY - cy2;
 
             return Math.Abs(cx1 - cx2) < halfWidth && Math.Abs(cy1 - cy2) < halfHeight;
         }
 
-        public static AxisAlignedBb operator +(AxisAlignedBb a, PlanarVector v)
+        public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)
         {
-            return new AxisAlignedBb(a.startX + v.x, a.startY + v.y, a.endX + v.x, a.endY + v.y);
+            return new AxisAlignedBb(_a.startX + _v.x, _a.startY + _v.y, _a.endX + _v.x, _a.endY + _v.y);
         }
 
         public void CheckCoordinates()

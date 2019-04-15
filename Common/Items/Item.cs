@@ -6,22 +6,22 @@ namespace GlLib.Common.Items
     {
         public string unlocalizedName = "item.null";
 
-        public virtual string GetName(ItemStack itemStack)
+        public virtual string GetName(ItemStack _itemStack)
         {
             return unlocalizedName;
         }
 
-        public string GetTextureName(ItemStack itemStack)
+        public string GetTextureName(ItemStack _itemStack)
         {
             return unlocalizedName + ".png";
         }
 
-        public virtual bool RequiresSpecialRenderer(ItemStack itemStack)
+        public virtual bool RequiresSpecialRenderer(ItemStack _itemStack)
         {
             return false; //todo
         }
 
-        public virtual IItemRenderer GetSpecialRenderer(ItemStack itemStack)
+        public virtual IItemRenderer GetSpecialRenderer(ItemStack _itemStack)
         {
             return null; //todo
         }

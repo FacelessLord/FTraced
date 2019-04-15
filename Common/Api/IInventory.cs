@@ -5,9 +5,9 @@ namespace GlLib.Common.API
 {
     public interface IInventory
     {
-        ItemStack GetStackInSlot(int slot);
-        ItemStack SetInventoryContents(int slot, ItemStack itemStack);
-        void SaveInventoryTo(NbtTag tag);
-        void LoadInventoryFrom(NbtTag tag);
+        ItemStack GetStackInSlot(int _slot);
+        ItemStack SetInventoryContents(int _slot, ItemStack _itemStack);
+        void SaveInventoryTo(NbtTag _tag);
+        void LoadInventoryFrom(NbtTag _tag);
     }
 }

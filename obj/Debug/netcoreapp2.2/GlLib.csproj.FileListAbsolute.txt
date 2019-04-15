@@ -46,3 +46,7 @@
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/maps/testmap2.json
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/maps/NewWorld.json
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/maps/NewWorld_entities.json
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/canvas.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/dwarf.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/12_nebula_spritesheet.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/nebula.png

@@ -17,88 +17,88 @@ namespace GlLib.Utils
             foreach (var key in _table.Keys) yield return key + "";
         }
 
-        private void SetObject(string key, object obj)
+        private void SetObject(string _key, object _obj)
         {
-            if (_table.ContainsKey(key)) _table.Remove(key);
-            _table.Add(key, obj);
+            if (_table.ContainsKey(_key)) _table.Remove(_key);
+            _table.Add(_key, _obj);
         }
 
-        public void SetInt(string key, int num)
+        public void SetInt(string _key, int _num)
         {
-            SetObject(key, num);
+            SetObject(_key, _num);
         }
 
-        public void SetDouble(string key, double num)
+        public void SetDouble(string _key, double _num)
         {
-            SetObject(key, num);
+            SetObject(_key, _num);
         }
 
-        public void SetFloat(string key, float num)
+        public void SetFloat(string _key, float _num)
         {
-            SetObject(key, num);
+            SetObject(_key, _num);
         }
 
-        public void SetLong(string key, long num)
+        public void SetLong(string _key, long _num)
         {
-            SetObject(key, num);
+            SetObject(_key, _num);
         }
 
-        public void SetString(string key, string num)
+        public void SetString(string _key, string _num)
         {
-            SetObject(key, num);
+            SetObject(_key, _num);
         }
 
-        public void SetBool(string key, bool num)
+        public void SetBool(string _key, bool _num)
         {
-            SetObject(key, num);
+            SetObject(_key, _num);
         }
 
-        private object GetObject(string key)
+        private object GetObject(string _key)
         {
-            if (_table.ContainsKey(key))
-                return _table[key];
+            if (_table.ContainsKey(_key))
+                return _table[_key];
             return null;
         }
 
-        public int GetInt(string key)
+        public int GetInt(string _key)
         {
-            if (_table.ContainsKey(key))
-                return (int) _table[key];
+            if (_table.ContainsKey(_key))
+                return (int) _table[_key];
             return 0;
         }
 
-        public long GetLong(string key)
+        public long GetLong(string _key)
         {
-            if (_table.ContainsKey(key))
-                return (long) _table[key];
+            if (_table.ContainsKey(_key))
+                return (long) _table[_key];
             return 0;
         }
 
-        public float GetFloat(string key)
+        public float GetFloat(string _key)
         {
-            if (_table.ContainsKey(key))
-                return (float) _table[key];
+            if (_table.ContainsKey(_key))
+                return (float) _table[_key];
             return 0;
         }
 
-        public double GetDouble(string key)
+        public double GetDouble(string _key)
         {
-            if (_table.ContainsKey(key))
-                return (double) _table[key];
+            if (_table.ContainsKey(_key))
+                return (double) _table[_key];
             return 0;
         }
 
-        public bool GetBool(string key)
+        public bool GetBool(string _key)
         {
-            if (_table.ContainsKey(key))
-                return (bool) _table[key];
+            if (_table.ContainsKey(_key))
+                return (bool) _table[_key];
             return false;
         }
 
-        public string GetString(string key)
+        public string GetString(string _key)
         {
-            if (_table.ContainsKey(key))
-                return (string) _table[key];
+            if (_table.ContainsKey(_key))
+                return (string) _table[_key];
             return "";
         }
 
@@ -114,11 +114,11 @@ namespace GlLib.Utils
             return MiscUtils.Compact(entries.ToArray());
         }
 
-        public static NbtTag FromString(string rawTag)
+        public static NbtTag FromString(string _rawTag)
         {
             var tag = new NbtTag();
 
-            var entries = MiscUtils.Uncompact(rawTag);
+            var entries = MiscUtils.Uncompact(_rawTag);
             for (var i = 0; i < entries.Length / 2; i++)
             {
                 var valueType = entries[2 * i + 1][0];
@@ -149,20 +149,20 @@ namespace GlLib.Utils
             return tag;
         }
 
-        public void AppendTag(NbtTag tag, string prefix)
+        public void AppendTag(NbtTag _tag, string _prefix)
         {
-            foreach (var key in tag) SetObject(prefix + key, tag._table[key]);
+            foreach (var key in _tag) SetObject(_prefix + key, _tag._table[key]);
         }
 
-        public NbtTag RetrieveTag(string prefix)
+        public NbtTag RetrieveTag(string _prefix)
         {
             var tag = new NbtTag();
             var keysToRemove = new List<string>();
             foreach (var key in this)
-                if (key.StartsWith(prefix))
+                if (key.StartsWith(_prefix))
                 {
                     keysToRemove.Add(key);
-                    tag.SetObject(key.Substring(prefix.Length), _table[key]);
+                    tag.SetObject(key.Substring(_prefix.Length), _table[key]);
                 }
 
             foreach (var key in keysToRemove) _table.Remove(key);
@@ -170,10 +170,10 @@ namespace GlLib.Utils
             return tag;
         }
 
-        public bool CanRetrieveTag(string prefix)
+        public bool CanRetrieveTag(string _prefix)
         {
             foreach (var key in this)
-                if (key.StartsWith(prefix))
+                if (key.StartsWith(_prefix))
                     return true;
 
             return false;

@@ -10,7 +10,7 @@ namespace GlLib.Common.Map
         public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
         public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
 
-        public ServerWorld(string mapName, int worldId) : base(mapName, worldId)
+        public ServerWorld(string _mapName, int _worldId) : base(_mapName, _worldId)
         {
         }
 
@@ -56,11 +56,11 @@ namespace GlLib.Common.Map
             SaveWorldEntities();
         }
 
-        public void ChangeEntityChunk(Entity e, Chunk next)
+        public void ChangeEntityChunk(Entity _e, Chunk _next)
         {
-            entityRemoveQueue.Add((e, e.chunkObj));
-            entityAddQueue.Add((e, next));
-            e.chunkObj = next;
+            entityRemoveQueue.Add((e: _e, _e.chunkObj));
+            entityAddQueue.Add((e: _e, next: _next));
+            _e.chunkObj = _next;
         }
     }
 }

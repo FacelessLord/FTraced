@@ -4,7 +4,7 @@ namespace GlLib.Client.API
 {
     public interface IItemRenderer
     {
-        void Render(ItemStack itemStack, ItemRenderType type);
+        void Render(ItemStack _itemStack, ItemRenderType _type);
     }
 
     public enum ItemRenderType

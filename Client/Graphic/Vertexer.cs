@@ -22,31 +22,31 @@ namespace GlLib.Client.Graphic
             GL.Begin(PrimitiveType.Quads);
         }
 
-        public static void StartDrawing(PrimitiveType type)
+        public static void StartDrawing(PrimitiveType _type)
         {
-            GL.Begin(type);
+            GL.Begin(_type);
         }
 
-        public static void VertexAt(double x, double y)
+        public static void VertexAt(double _x, double _y)
         {
-            GL.Vertex2(x, y);
+            GL.Vertex2(_x, _y);
         }
 
-        public static void VertexAt(double x, double y, double z)
+        public static void VertexAt(double _x, double _y, double _z)
         {
-            GL.Vertex3(x, y, z);
+            GL.Vertex3(_x, _y, _z);
         }
 
-        public static void VertexWithUvAt(double x, double y, double u, double v)
+        public static void VertexWithUvAt(double _x, double _y, double _u, double _v)
         {
-            GL.TexCoord2(u, v);
-            GL.Vertex2(x, y);
+            GL.TexCoord2(_u, _v);
+            GL.Vertex2(_x, _y);
         }
 
-        public static void VertexWithUvAt(double x, double y, double z, double u, double v)
+        public static void VertexWithUvAt(double _x, double _y, double _z, double _u, double _v)
         {
-            GL.TexCoord2(u, v);
-            GL.Vertex3(x, y, z);
+            GL.TexCoord2(_u, _v);
+            GL.Vertex3(_x, _y, _z);
         }
 
         public static void Draw()
@@ -54,29 +54,29 @@ namespace GlLib.Client.Graphic
             GL.End();
         }
 
-        public static Texture LoadTexture(string path)
+        public static Texture LoadTexture(string _path)
         {
-            if (textures.ContainsKey(path))
-                return textures[path];
-            var texture = new Texture("textures/" + path);
-            textures.Add(path, texture);
+            if (textures.ContainsKey(_path))
+                return textures[_path];
+            var texture = new Texture("textures/" + _path);
+            textures.Add(_path, texture);
             return texture;
         }
 
-        public static void DrawTexturedModalRect(Texture texture, double x, double y, double u, double v, double width,
-            double height)
+        public static void DrawTexturedModalRect(Texture _texture, double _x, double _y, double _u, double _v, double _width,
+            double _height)
         {
             GL.PushMatrix();
-            texture.Bind();
-            var textureLeft = x;
-            var textureUp = y;
-            var textureRight = x + width;
-            var textureDown = y + height;
+            _texture.Bind();
+            var textureLeft = _x;
+            var textureUp = _y;
+            var textureRight = _x + _width;
+            var textureDown = _y + _height;
 
-            var uvLeft = u / texture.width;
-            var uvUp = v / texture.height;
-            var uvRight = (u + width) / texture.width;
-            var uvDown = (v + height) / texture.height;
+            var uvLeft = _u / _texture.width;
+            var uvUp = _v / _texture.height;
+            var uvRight = (_u + _width) / _texture.width;
+            var uvDown = (_v + _height) / _texture.height;
 
             StartDrawingQuads();
 
@@ -89,9 +89,9 @@ namespace GlLib.Client.Graphic
             GL.PopMatrix();
         }
 
-        public static void BindTexture(Texture text)
+        public static void BindTexture(Texture _text)
         {
-            text.Bind();
+            _text.Bind();
         }
     }
 }

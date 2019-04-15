@@ -16,7 +16,7 @@ namespace GlLib.Client.Graphic
         public int width;
 
         //Create texture from path.
-        public Texture(string path)
+        public Texture(string _path)
         {
             //Generate handle
             _handle = GL.GenTexture();
@@ -27,10 +27,10 @@ namespace GlLib.Client.Graphic
 
 
             //Load the image
-            var image = Image.Load(path);
+            var image = Image.Load(_path);
             width = image.Width;
             height = image.Height;
-            SidedConsole.WriteLine($"Texture: path: {path}, width: {width}, height: {height}");
+            SidedConsole.WriteLine($"Texture: path: {_path}, width: {width}, height: {height}");
             //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
             //This will correct that, making the texture display properly.
 //            image.Mutate(x => x.Flip(FlipMode.Vertical));
@@ -102,17 +102,17 @@ namespace GlLib.Client.Graphic
         //Multiple textures can be bound, if your shader needs more than just one.
         //If you want to do that, use GL.ActiveTexture to set which slot GL.BindTexture binds to.
         //The OpenGL standard requires that there be at least 16, but there can be more depending on your graphics card.
-        public void Bind(TextureUnit unit = TextureUnit.Texture0)
+        public void Bind(TextureUnit _unit = TextureUnit.Texture0)
         {
-            GL.ActiveTexture(unit);
+            GL.ActiveTexture(_unit);
             GL.BindTexture(TextureTarget.Texture2D, _handle);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool _disposing)
         {
             if (!_disposedValue)
             {
-                if (disposing)
+                if (_disposing)
                 {
                     // TODO: dispose managed state (managed objects).
                 }

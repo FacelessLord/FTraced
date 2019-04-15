@@ -22,28 +22,28 @@ namespace GlLib.Common.Map
         public int width;
         public int worldId;
 
-        public World(string mapName, int worldId)
+        public World(string _mapName, int _worldId)
         {
-            this.mapName = mapName;
-            this.worldId = worldId;
+            this.mapName = _mapName;
+            this.worldId = _worldId;
         }
 
-        public Chunk this[int i, int j]
+        public Chunk this[int _i, int _j]
         {
-            get => chunks[i, j];
-            set => chunks[i, j] = value;
+            get => chunks[_i, _j];
+            set => chunks[_i, _j] = value;
         }
 
-        public void SpawnEntity(Entity e)
+        public void SpawnEntity(Entity _e)
         {
-            if (EventBus.OnEntitySpawn(e)) return;
+            if (EventBus.OnEntitySpawn(_e)) return;
 
             entityMutex.WaitOne();
-            if (e.chunkObj == null)
-                e.chunkObj = Entity.GetProjection(e.Position, this);
-            e.chunkObj.entities[e.Position.z].Add(e); //todo entity null
+            if (_e.chunkObj == null)
+                _e.chunkObj = Entity.GetProjection(_e.Position, this);
+            _e.chunkObj.entities[_e.Position.z].Add(_e); //todo entity null
             entityMutex.ReleaseMutex();
-            SidedConsole.WriteLine($"Entity {e} spawned in world");
+            SidedConsole.WriteLine($"Entity {_e} spawned in world");
         }
 
         public void LoadWorld()
@@ -54,16 +54,16 @@ namespace GlLib.Common.Map
                     this[i, j].LoadChunk();
         }
 
-        public List<Entity> GetEntitiesWithinAaBb(AxisAlignedBb aabb)
+        public List<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
         {
             var entities = new List<Entity>();
 
             var chunks = new List<Chunk>();
 
-            var chkStartX = aabb.StartXi / 16;
-            var chkStartY = aabb.StartYi / 16;
-            var chkEndX = aabb.EndXi / 16;
-            var chkEndY = aabb.EndYi / 16;
+            var chkStartX = _aabb.StartXi / 16;
+            var chkStartY = _aabb.StartYi / 16;
+            var chkEndX = _aabb.EndXi / 16;
+            var chkEndY = _aabb.EndYi / 16;
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
@@ -80,16 +80,16 @@ namespace GlLib.Common.Map
             return entities;
         }
 
-        public List<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb aabb, int height)
+        public List<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
         {
             var entities = new List<Entity>();
 
             var chunks = new List<Chunk>();
 
-            var chkStartX = aabb.StartXi / 16;
-            var chkStartY = aabb.StartYi / 16;
-            var chkEndX = aabb.EndXi / 16;
-            var chkEndY = aabb.EndYi / 16;
+            var chkStartX = _aabb.StartXi / 16;
+            var chkStartY = _aabb.StartYi / 16;
+            var chkEndX = _aabb.EndXi / 16;
+            var chkEndY = _aabb.EndYi / 16;
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
@@ -100,9 +100,9 @@ namespace GlLib.Common.Map
 
             foreach (var chk in chunks)
             {
-                var chkEntities = chk.entities[height];
+                var chkEntities = chk.entities[_height];
                 foreach (var entity in chkEntities)
-                    if (entity.GetAaBb().IntersectsWith(aabb))
+                    if (entity.GetAaBb().IntersectsWith(_aabb))
                         entities.Add(entity);
             }
 

@@ -8,9 +8,9 @@ namespace GlLib.Common.Items
         public int stackSize;
         public NbtTag tag;
 
-        public ItemStack(Item item, int stackSize = 1, NbtTag tag = null)
+        public ItemStack(Item _item, int _stackSize = 1, NbtTag _tag = null)
         {
-            (this.item, this.stackSize, this.tag) = (item, stackSize, tag);
+            (this.item, this.stackSize, this.tag) = (item: _item, stackSize: _stackSize, tag: _tag);
         }
     }
 }
