@@ -4,90 +4,55 @@ using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
-using GlLib.Common.Packets;
+using GlLib.Server;
 using GlLib.Utils;
 
 namespace GlLib.Client
 {
     public class ClientService : SideService
     {
-        private ClientWorld _currentWorld;
+        public WorldRenderer worldRenderer;
 
-        public ClientBinds binds = new ClientBinds();
         public string nickName;
         public string password;
         public volatile Player player;
 
-        public ClientService(string nickName, string password) : base(Side.Client)
+        public ClientService(string _nickName, string _password) : base(Side.Client)
         {
-            this.nickName = nickName;
-            this.password = password;
-            player = new Player();
-            binds.Register();
+            this.nickName = _nickName;
+            this.password = _password;
         }
 
-        public bool IsConnectedToServer => serverId > -1;
-
-        public ClientWorld CurrentWorld
+        public void UpdateRendererData(World _world)
         {
-            get => _currentWorld;
-            set
-            {
-                _currentWorld = value;
-                player.worldObj = value;
-            }
+            worldRenderer = new WorldRenderer(_world);
         }
 
         public override void OnStart()
         {
-            ConnectToIntegratedServer();
-            //todo think about it
+            player = new Player();
+            player.nickname = nickName;
+            player.Data = Proxy.GetServer().GetDataFor(nickName, password);
+            Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
+            UpdateRendererData(Proxy.GetServer().GetWorldById(0));
+            KeyBinds.Register();
             GraphicWindow.client = this;
             GraphicWindow.RunWindow();
         }
 
         public override void OnServiceUpdate()
         {
-//            CurrentWorld?.Update();
+            foreach (var bind in KeyBinds.binds)
+            {
+                if(KeyboardHandler.PressedKeys.ContainsKey(bind.Key) && (bool) KeyboardHandler.PressedKeys[bind.Key])
+                {
+                    KeyBinds.binds[bind.Key].DynamicInvoke(player);
+                }
+            }
         }
 
         public override void OnExit()
         {
-        }
-
-        public bool ConnectToServer(IPAddress ip)
-        {
-            //todo
-            return false;
-        }
-
-        public bool ConnectToIntegratedServer()
-        {
-            SidedConsole.WriteLine("Connect request");
-            var connectRequest = new IntegratedConnectionRequestPacket(this);
-            Proxy.SendPacketToServer(connectRequest);
-            Proxy.AwaitWhile(() => !IsConnectedToServer);
-            SidedConsole.WriteLine("Connected");
-
-            LoadPlayerFromServer();
-            var mapRequest = new WorldMapRequest(this, player.Data.worldId);
-            Proxy.SendPacketToServer(mapRequest);
-            Proxy.AwaitWhile(() => CurrentWorld == null);
-            //todo load entities
-            CurrentWorld.SpawnEntity(player);
-            CurrentWorld.LoadWorld();
-            return Config.isIntegratedServer;
-        }
-
-        public void LoadPlayerFromServer()
-        {
-            // Getting player data from server
-            SidedConsole.WriteLine("Player data request");
-            var playerDataRequest = new PlayerDataRequestPacket(this);
-            Proxy.SendPacketToServer(playerDataRequest);
-            Proxy.AwaitWhile(() => player.Data == null); //waiting for data to be received
-
-            SidedConsole.WriteLine("Client setup");
         }
     }
 }

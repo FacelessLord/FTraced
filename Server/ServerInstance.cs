@@ -37,7 +37,6 @@ namespace GlLib.Server
 
         public override void OnServiceUpdate()
         {
-            Proxy.Sync();
             foreach (var world in worlds) world.Value.Update();
         }
 
@@ -45,17 +44,17 @@ namespace GlLib.Server
         {
         }
 
-        public void ConnectClient(ClientService client)
+        public void ConnectClient(ClientService _client)
         {
-            clients.Add(client);
-            client.player = new Player {Data = GetDataFor(client.nickName, client.password)};
-            var world = GetWorldById(client.player.Data.worldId);
-            world.SpawnEntity(client.player);
+            clients.Add(_client);
+            _client.player = new Player {Data = GetDataFor(_client.nickName, _client.password)};
+            var world = GetWorldById(_client.player.Data.worldId);
+            world.SpawnEntity(_client.player);
         }
 
-        public void RegisterWorld(int id, string worldName)
+        public void RegisterWorld(int _id, string _worldName)
         {
-            registeredWorlds.Add(id, worldName);
+            registeredWorlds.Add(_id, _worldName);
         }
 
         public void CreateWorlds()
@@ -76,15 +75,15 @@ namespace GlLib.Server
             }
         }
 
-        public PlayerData GetDataFor(string playerName, string password)
+        public PlayerData GetDataFor(string _playerName, string _password)
         {
             //todo use password
-            if (playerInfo.ContainsKey(playerName))
-                return playerInfo[playerName];
+            if (playerInfo.ContainsKey(_playerName))
+                return playerInfo[_playerName];
             var spawnWorld = GetWorldById(0);
             var data = new PlayerData(spawnWorld.worldId,
-                new RestrictedVector3D(spawnWorld.width * 8, spawnWorld.height * 8, 0), playerName);
-            playerInfo.Add(playerName, data);
+                new RestrictedVector3D(spawnWorld.width * 8, spawnWorld.height * 8, 0), _playerName);
+            playerInfo.Add(_playerName, data);
             return data;
         }
 
@@ -111,14 +110,14 @@ namespace GlLib.Server
             }
         }
 
-        public ServerWorld GetWorldById(int id)
+        public ServerWorld GetWorldById(int _id)
         {
-            return worlds[id];
+            return worlds[_id];
         }
 
-        public string GetWorldName(int id)
+        public string GetWorldName(int _id)
         {
-            return registeredWorlds[id];
+            return registeredWorlds[_id];
         }
     }
 }

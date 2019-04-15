@@ -1,7 +1,6 @@
 using System.Threading;
 using GlLib.Client;
 using GlLib.Common.Map;
-using GlLib.Common.Packets;
 using GlLib.Common.Registries;
 using GlLib.Server;
 using GlLib.Utils;
@@ -13,8 +12,6 @@ namespace GlLib.Common
         public const int FrameTime = 50;
         public Blocks blocks;
         public EntityRegistry entities;
-        public PacketHandler packetHandler;
-        public PacketRegistry packets;
 
         public GameRegistry registry;
 
@@ -22,30 +19,18 @@ namespace GlLib.Common
         public Side side;
         public State state = State.Off;
 
-        public SideService(Side side)
+        public SideService(Side _side)
         {
-            this.side = side;
+            this.side = _side;
             registry = new GameRegistry();
             blocks = new Blocks(registry);
             entities = new EntityRegistry(registry);
-            packets = new PacketRegistry();
-            switch (side)
-            {
-                case Side.Client:
-                    packetHandler = new ClientPacketHandler(this);
-                    break;
-                case Side.Server:
-                    packetHandler = new ServerPacketHandler(this);
-                    break;
-            }
         }
 
         public void Start()
         {
             blocks.Register();
             entities.Register();
-            packetHandler.StartPacketHandler();
-            packets.Register();
             Proxy.RegisterService(this);
             OnStart();
         }
@@ -68,18 +53,8 @@ namespace GlLib.Common
         }
 
         public abstract void OnServiceUpdate();
-
         public abstract void OnExit();
         public abstract void OnStart();
 
-        public virtual void HandlePacket(Packet packet)
-        {
-            if (packet.RequiresReceiveMessage())
-                SidedConsole.WriteLine($"Packet {packets.GetPacketId(packet)} has been received.");
-            if (side == Side.Server)
-                packet.OnServerReceive((ServerInstance) this);
-            if (side == Side.Client)
-                packet.OnClientReceive((ClientService) this);
-        }
     }
 }

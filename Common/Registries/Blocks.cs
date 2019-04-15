@@ -13,9 +13,9 @@ namespace GlLib.Common.Registries
 
         public GameRegistry registry;
 
-        public Blocks(GameRegistry registry)
+        public Blocks(GameRegistry _registry)
         {
-            this.registry = registry;
+            this.registry = _registry;
         }
 
         public void Register()
