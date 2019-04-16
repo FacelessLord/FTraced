@@ -12,7 +12,7 @@
 		
 	},
 	"1,1": {
-		"Entity1498664072": "WorldId|I0|Position|S(24,24,0)|Nickname|SNoname|noclip|BFalse|Name|SNoname|MaxVelocity|S(0.1,0.2)|EntityId|Sentity.player|Velocity|S(0,0)|IsDead|BFalse"
+		"Entity1527746422": "Position|S(24,24,0)|Nickname|SNoname|Velocity|S(0,0)|MaxVelocity|S(0.1,0.2)|noclip|BFalse|EntityId|Sentity.player|IsDead|BFalse|Name|SNoname|WorldId|I0"
 	},
 	"1,2": {
 		
@@ -26,7 +26,7 @@
 	"2,2": {
 		
 	}
-}},2": {
+}}"1,2": {
 		
 	},
 	"2,0": {
@@ -38,8 +38,7 @@
 	"2,2": {
 		
 	}
-}}
-}}}
+}}}}
 }{
 		
 	}

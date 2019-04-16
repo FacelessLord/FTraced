@@ -81,6 +81,7 @@ namespace GlLib.Client.Graphic
             GL.Translate(-Width / 2d, -Height / 2d, 0);
             var spriteTest = 
                 new Sprite(Vertexer.LoadTexture("nebula.png"),0,0,800,800, 8,8);
+            GL.Translate(counter*8,0,0);
             GL.Scale(0.25,0.25,1);
             spriteTest.Render(counter/2);
             counter = (counter + 1) % (8*8*2-3*2);
