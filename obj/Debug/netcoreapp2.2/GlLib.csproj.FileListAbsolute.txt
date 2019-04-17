@@ -50,3 +50,4 @@
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/dwarf.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/12_nebula_spritesheet.png
 /home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/nebula.png
+/home/lord_faceless/RiderProjects/GlLib/AirGame/bin/Debug/netcoreapp2.2/textures/monochromatic.png

@@ -12,21 +12,9 @@
 		
 	},
 	"1,1": {
-		"Entity1527746422": "Position|S(24,24,0)|Nickname|SNoname|Velocity|S(0,0)|MaxVelocity|S(0.1,0.2)|noclip|BFalse|EntityId|Sentity.player|IsDead|BFalse|Name|SNoname|WorldId|I0"
+		"Entity1069949673": "Nickname|SNoname|noclip|BFalse|Position|S(29.9729067586341,12.9853781504143,0)|MaxVelocity|S(0.1,0.2)|EntityId|Sentity.player|Velocity|S(-3.04891203981346E-67,-7.63221861599483E-68)|Name|SNoname|IsDead|BFalse|WorldId|I0"
 	},
 	"1,2": {
-		
-	},
-	"2,0": {
-		
-	},
-	"2,1": {
-		
-	},
-	"2,2": {
-		
-	}
-}}"1,2": {
 		
 	},
 	"2,0": {

@@ -1,6 +1,8 @@
 using System;
 using System.Threading;
+using GlLib.Client.Api;
 using GlLib.Client.API;
+using GlLib.Client.API.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Utils;
@@ -16,11 +18,17 @@ namespace GlLib.Client.Graphic
         public static VSyncMode vSync = VSyncMode.On;
         public static ClientService client;
         public int counter = 0;
+        public ISprite sprite;
 
-        public GraphicWindow(int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default, _title)
+        public GraphicWindow(int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
+            _title)
         {
-            MouseHandler.Setup(); 
+            MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
+            var spriteLayout =
+                new TextureLayout(Vertexer.LoadTexture("nebula.png"), 0, 0, 800, 800, 8, 8);
+//            sprite = new LinearSprite(spriteLayout,61,2);
+            sprite = new CircleSprite(32);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -39,7 +47,7 @@ namespace GlLib.Client.Graphic
             KeyboardHandler.SetPressed(_e.Key, true);
             //todo send ClickedPacket[Not necessary, clicks should be handled on Client side]
         }
-        
+
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
         {
             base.OnKeyUp(_e);
@@ -66,7 +74,7 @@ namespace GlLib.Client.Graphic
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
-            
+
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
 
@@ -77,16 +85,12 @@ namespace GlLib.Client.Graphic
             GL.Translate(Width / 2d, Height / 2d, 0);
 //            GL.Scale(1 / 3d, 1 / 3d, 1);
 //            SidedConsole.WriteLine(Proxy.GetClient().CurrentWorld);
+            GL.PushMatrix();
             Proxy.GetClient().worldRenderer.Render(0, 0);
-            GL.Translate(-Width / 2d, -Height / 2d, 0);
-            var spriteTest = 
-                new Sprite(Vertexer.LoadTexture("nebula.png"),0,0,800,800, 8,8);
-            GL.Translate(counter*8,0,0);
-            GL.Scale(0.25,0.25,1);
-            spriteTest.Render(counter/2);
-            counter = (counter + 1) % (8*8*2-3*2);
             GL.PopMatrix();
             
+            GL.PopMatrix();
+
             SwapBuffers();
         }
 
