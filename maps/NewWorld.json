@@ -96,17 +96,5 @@
       ],
       "block": "block.indoor.bricks"
     }
-  },
-
-  "0,0": {
-    "Rect0": {
-      "borders": [
-        0,
-        0,
-        2,
-        1
-      ],
-      "block": "block.indoor.bricks"
-    }
   }
 }

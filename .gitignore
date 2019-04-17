@@ -1,0 +1,5 @@
+bin/*
+
+obj/Debug/netcoreapp2\.2/
+
+maps/NewWorld_entities\.json
