@@ -33,7 +33,7 @@ namespace GlLib.Client.API
 
         public virtual void Render(int _stepCount)
         {
-            (double startU, double startV, double endU, float endV) = layout.GetFrameUv(_stepCount);
+            (double startU, double startV, double endU, float endV) = layout.GetFrameUvProportions(_stepCount);
 
             GL.PushMatrix();
             GL.Translate(-texture.width / 2, -texture.height / 2, 0);

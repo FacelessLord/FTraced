@@ -4,18 +4,28 @@ namespace GlLib.Client.API.Gui
 {
     public abstract class GuiObject
     {
-        public int xPosition;
-        public int yPosition;
-        public int objWidth;
-        public int objHeight;
+        public int x;
+        public int y;
+        public int width;
+        public int height;
+        public Color color;
 
         public GuiObject(int _x, int _y, int _width, int _height)
         {
-            (xPosition, yPosition) = (_x, _y);
-            (objWidth, objHeight) = (_width, _height);
+            (x, y) = (_x, _y);
+            (width, height) = (_width, _height);
+            color = Color.White;
+        }
+        
+        public GuiObject(int _x, int _y, int _width, int _height, Color _color) : this(_x, _y, _width, _height)
+        {
+            color = _color;
         }
 
-        public abstract void Update(GameWindow _window);
+        public virtual void Update(GameWindow _window)
+        {
+            
+        }
 
         public abstract void Render(GameWindow _window, int _centerX, int _centerY);
     }

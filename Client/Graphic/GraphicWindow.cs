@@ -15,20 +15,18 @@ namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
+        public static GraphicWindow instance;
         public static VSyncMode vSync = VSyncMode.On;
         public static ClientService client;
-        public int counter = 0;
-        public ISprite sprite;
+        public int guiTimeout = 0;
+        public Gui gui;
 
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
             _title)
         {
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
-            var spriteLayout =
-                new TextureLayout(Vertexer.LoadTexture("nebula.png"), 0, 0, 800, 800, 8, 8);
-//            sprite = new LinearSprite(spriteLayout,61,2);
-            sprite = new CircleSprite(32);
+            instance = this;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -45,6 +43,10 @@ namespace GlLib.Client.Graphic
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
+            if(KeyboardHandler.ClickedKeys.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+            {
+                KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
+            }
             //todo send ClickedPacket[Not necessary, clicks should be handled on Client side]
         }
 
@@ -58,6 +60,7 @@ namespace GlLib.Client.Graphic
         {
             base.OnResize(_e);
             GL.Viewport(0, 0, Width, Height);
+            gui?.Update(this);
         }
 
         protected override void OnLoad(EventArgs _e)
@@ -89,6 +92,8 @@ namespace GlLib.Client.Graphic
             Proxy.GetClient().worldRenderer.Render(0, 0);
             GL.PopMatrix();
             
+            GL.Translate(-Width / 2d, -Height / 2d, 0);
+            gui?.Render(this);
             GL.PopMatrix();
 
             SwapBuffers();
@@ -104,7 +109,7 @@ namespace GlLib.Client.Graphic
         public static void RunWindow()
         {
             var graphicThread = new Thread(() =>
-                new GraphicWindow(400, 300, "GLLib").Run(60));
+                new GraphicWindow(800, 600, "GLLib").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
         }

@@ -46,7 +46,7 @@ namespace GlLib.Client
             {
                 if(KeyboardHandler.PressedKeys.ContainsKey(bind.Key) && (bool) KeyboardHandler.PressedKeys[bind.Key])
                 {
-                    KeyBinds.binds[bind.Key].DynamicInvoke(player);
+                    KeyBinds.binds[bind.Key](player);
                 }
             }
         }
