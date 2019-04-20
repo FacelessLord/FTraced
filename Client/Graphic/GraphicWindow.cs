@@ -21,18 +21,22 @@ namespace GlLib.Client.Graphic
         public int guiTimeout = 0;
         public Gui gui;
 
+        public Hud hud;
+
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
             _title)
         {
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             instance = this;
+            hud = new Hud();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
             MouseHandler.Update();
             KeyboardHandler.Update();
+            hud.Update(this);
             var input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape)) Exit();
             base.OnUpdateFrame(_e);
@@ -94,6 +98,7 @@ namespace GlLib.Client.Graphic
             
             GL.Translate(-Width / 2d, -Height / 2d, 0);
             gui?.Render(this);
+            hud.Render(this);
             GL.PopMatrix();
 
             SwapBuffers();

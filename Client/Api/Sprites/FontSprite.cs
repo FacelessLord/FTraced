@@ -11,7 +11,8 @@ namespace GlLib.Client.Api.Sprites
         public Texture texture;
         public Layout layout;
 
-        public Dictionary<char, (int, int)> kerning = new Dictionary<char, (int, int)>();
+        public Dictionary<char, (int, int)> horizKerning = new Dictionary<char, (int, int)>();
+        public Dictionary<char, int> vertKerning = new Dictionary<char, int>();
         public Dictionary<char, int> registry = new Dictionary<char, int>();
 
         public FontSprite(Texture _texture, int _startU, int _startV, int _endU, int _endV, int _countX, int _countY)
@@ -27,27 +28,44 @@ namespace GlLib.Client.Api.Sprites
             layout = _layout;
             Setup();
         }
-
-        public void SetKern(char _character, (int left, int right) _kern)
+        
+        public void SetVerticalKern(char _character, int  _kern)
         {
-            kerning.Add(_character, _kern);
+            vertKerning.Add(_character, _kern);
         }
 
-        public void SetKern(char _character, int _left, int _right)
+        public void SetHorizontalKern(char _character, (int left, int right) _kern)
         {
-            if (kerning.ContainsKey(_character))
+            horizKerning.Add(_character, _kern);
+        }
+
+        public void SetHorizontalKern(char _character, int _left, int _right)
+        {
+            if (horizKerning.ContainsKey(_character))
             {
-                kerning[_character] = (_left, _right);
+                horizKerning[_character] = (_left, _right);
             }
             else
-                kerning.Add(_character, (_left, _right));
+                horizKerning.Add(_character, (_left, _right));
         }
 
-        public (int left, int right) GetKern(char _character)
+        public (int left, int right) GetHorizontalKern(char _character)
         {
-            if (kerning.ContainsKey(_character))
-                return kerning[_character];
-            return (0, 2);
+            if (horizKerning.ContainsKey(_character))
+            {
+                return horizKerning[_character];
+            }
+
+            return (1, 2);
+        }
+        public int GetVerticalKern(char _character)
+        {
+            if (vertKerning.ContainsKey(_character))
+            {
+                return vertKerning[_character];
+            }
+
+            return 0;
         }
 
         public void Setup()
@@ -67,7 +85,7 @@ namespace GlLib.Client.Api.Sprites
             l.AddRange(new List<char>
             {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+',
-                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~'
+                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~','\'','\"', ' ', '\n'
             });
 
             for (int i = 0; i < l.Count; i++)
@@ -78,21 +96,15 @@ namespace GlLib.Client.Api.Sprites
         public void Render(char _character)
         {
             (float startU, float startV, float endU, float endV) = layout.GetFrameUvProportions(registry[_character]);
-
-            var kern = GetKern(_character);
-            float leftKern = kern.left / (float) texture.width;
-            float rightKern = kern.right / (float) texture.width;
-
-            GL.Translate(-leftKern, 0, 0);
+            double dh = 0.5 / layout.height;
             Vertexer.StartDrawingQuads();
 
-            Vertexer.VertexWithUvAt(0, 0, startU, startV);
-            Vertexer.VertexWithUvAt(1, 0, endU, startV);
+            Vertexer.VertexWithUvAt(0, 0, startU, startV + dh);
+            Vertexer.VertexWithUvAt(1, 0, endU, startV + dh);
             Vertexer.VertexWithUvAt(1, 1, endU, endV);
             Vertexer.VertexWithUvAt(0, 1, startU, endV);
 
             Vertexer.Draw();
-            GL.Translate(-rightKern, 0, 0);
         }
 
         public virtual void DrawText(string _text, int _size, float _r = 0, float _g = 0, float _b = 0, float _a = 1.0f)
@@ -100,11 +112,33 @@ namespace GlLib.Client.Api.Sprites
             GL.PushMatrix();
             Vertexer.BindTexture(texture);
             GL.Color4(_r, _g, _b, _a);
-            GL.Scale(_size, _size, 1);
-            for(int i=0;i<_text.Length;i++)
+            GL.Scale(_size, _size+2, 1);
+            double d = 0;
+            for (int i = 0; i < _text.Length; i++)
             {
-                Render(_text[i]);
-                GL.Translate(1, 0, 0);
+                char character = _text[i];
+                var hKern = GetHorizontalKern(character);
+                var vKern = GetVerticalKern(character);
+                float leftKern = hKern.left / (float) _size;
+                float rightKern = hKern.right / (float) _size;
+                float vertKern = vKern / (float) _size;
+
+                if (character != '\n')
+                {
+                    GL.Translate(-leftKern, vertKern/2, 0);
+                    if (character != ' ')
+                    {
+                        Render(character);
+                    }
+
+                    d += 1.1 - rightKern - leftKern;
+                    GL.Translate(1.1 - rightKern, -vertKern/2, 0);
+                }
+                else
+                {
+                    GL.Translate(-d, 1.2, 0);
+                    d = 0;
+                }
             }
 
             GL.Color4(1.0, 1, 1, 1);

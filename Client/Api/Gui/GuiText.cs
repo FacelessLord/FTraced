@@ -13,15 +13,17 @@ namespace GlLib.Client.API.Gui
         public GuiSign(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             text = _text;
+            font = new AlagardFontSprite();
         }
 
         public GuiSign(string _text, int _x, int _y, int _width, int _height, Color _color)
             : base(_x, _y, _width, _height, _color)
         {
             text = _text;
+            font = new AlagardFontSprite();
         }
 
-        public static FontSprite font = new AlagardFontSprite();
+        public static FontSprite font;
 
         public override void Render(GameWindow _window, int _centerX, int _centerY)
         {
