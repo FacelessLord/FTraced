@@ -67,14 +67,14 @@ namespace GlLib.Common.Entities
 
         public override void LoadFromNbt(NbtTag _tag)
         {
-            nickname = _tag.GetString("Name");
+            nickname = _tag.GetString("name");
             Data = PlayerData.LoadFromNbt(_tag);
             base.LoadFromNbt(_tag);
         }
 
         public override void SaveToNbt(NbtTag _tag)
         {
-            _tag.SetString("Name", nickname);
+            _tag.SetString("name", nickname);
             if (Data != null)
                 Data.SaveToNbt(_tag);
             base.SaveToNbt(_tag);

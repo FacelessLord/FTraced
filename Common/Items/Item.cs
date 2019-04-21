@@ -4,16 +4,23 @@ namespace GlLib.Common.Items
 {
     public class Item
     {
+        public int id;
+
+        public string name;
+        public ItemRarity rarity;
+
+        public string sprite;
+        public ItemType type;
         public string unlocalizedName = "item.null";
 
-        public Item(int _id, string _name)
+        public Item(int _id, string _name, string _sprite, ItemRarity _rarity, ItemType _type = ItemType.Varia)
         {
+            rarity = _rarity;
             id = _id;
+            sprite = _sprite;
             name = _name;
+            type = _type;
         }
-
-        public string name { get; set; }
-        public int id { get; set; }
 
         public virtual string GetName(ItemStack _itemStack)
         {
