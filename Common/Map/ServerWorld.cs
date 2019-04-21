@@ -58,8 +58,8 @@ namespace GlLib.Common.Map
 
         public void ChangeEntityChunk(Entity _e, Chunk _next)
         {
-            entityRemoveQueue.Add((e: _e, _e.chunkObj));
-            entityAddQueue.Add((e: _e, next: _next));
+            entityRemoveQueue.Add((_e, _e.chunkObj));
+            entityAddQueue.Add((_e,  _next));
             _e.chunkObj = _next;
         }
     }

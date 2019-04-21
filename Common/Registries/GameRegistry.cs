@@ -20,7 +20,7 @@ namespace GlLib.Common.Map
                 blocksById.Add(id, _block);
                 _block.id = id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Block with name {_block.GetName()} had already been registerded");
                 throw;
@@ -34,7 +34,7 @@ namespace GlLib.Common.Map
                 SidedConsole.WriteLine("Register: " + _name);
                 entities.Add(_name, _entityType);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Entity with name {_name} had already been registered");
                 throw;

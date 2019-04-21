@@ -87,7 +87,7 @@ namespace GlLib.Common.Entities
             {
                 return _world[_vector.Ix / 16, _vector.Iy / 16];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

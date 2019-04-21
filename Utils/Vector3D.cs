@@ -14,7 +14,7 @@ namespace GlLib.Utils
 
         public RestrictedVector3D(double _x, double _y, int _z)
         {
-            (this.x, this.y, this.z) = (x: _x, y: _y, z: _z);
+            (x, y, z) = (_x, _y, _z);
         }
 
         public int Ix => (int) Math.Floor(x);
@@ -101,7 +101,7 @@ namespace GlLib.Utils
 
         public PlanarVector(double _x, double _y)
         {
-            (this.x, this.y) = (x: _x, y: _y);
+            (x, y) = (_x, _y);
         }
 
         public double Length => Math.Sqrt(x * x + y * y);
@@ -159,7 +159,7 @@ namespace GlLib.Utils
 
         public AxisAlignedBb(double _startX, double _startY, double _endX, double _endY)
         {
-            (this.startX, this.startY, this.endX, this.endY) = (startX: _startX, startY: _startY, endX: _endX, endY: _endY);
+            (startX, startY, endX, endY) = (_startX, _startY, _endX, _endY);
             CheckCoordinates();
         }
 

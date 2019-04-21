@@ -90,8 +90,6 @@ namespace GlLib.Client.Graphic
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             GL.Translate(Width / 2d, Height / 2d, 0);
-//            GL.Scale(1 / 3d, 1 / 3d, 1);
-//            SidedConsole.WriteLine(Proxy.GetClient().CurrentWorld);
             GL.PushMatrix();
             Proxy.GetClient().worldRenderer.Render(0, 0);
             GL.PopMatrix();

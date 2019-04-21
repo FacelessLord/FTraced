@@ -8,7 +8,7 @@ namespace GlLib.Utils
 
         public PlayerData(int _worldId, RestrictedVector3D _position, string _nickname)
         {
-            (this.worldId, this.position, this.nickname) = (worldId: _worldId, position: _position, nickname: _nickname);
+            (worldId, position, nickname) = (_worldId, _position,  _nickname);
         }
 
         public void SaveToNbt(NbtTag _tag)

@@ -10,7 +10,7 @@ namespace GlLib.Common.Items
 
         public ItemStack(Item _item, int _stackSize = 1, NbtTag _tag = null)
         {
-            (this.item, this.stackSize, this.tag) = (item: _item, stackSize: _stackSize, tag: _tag);
+            (item, stackSize, tag) = (_item, _stackSize, _tag);
         }
     }
 }
