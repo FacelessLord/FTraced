@@ -43,15 +43,6 @@ namespace GlLib.Server
         public override void OnExit()
         {
         }
-
-        public void ConnectClient(ClientService _client)
-        {
-            clients.Add(_client);
-            _client.player = new Player {Data = GetDataFor(_client.nickName, _client.password)};
-            var world = GetWorldById(_client.player.Data.worldId);
-            world.SpawnEntity(_client.player);
-        }
-
         public void RegisterWorld(int _id, string _worldName)
         {
             registeredWorlds.Add(_id, _worldName);
@@ -75,15 +66,14 @@ namespace GlLib.Server
             }
         }
 
-        public PlayerData GetDataFor(string _playerName, string _password)
+        public PlayerData GetDataFor(Player _player, string _password)
         {
             //todo use password
-            if (playerInfo.ContainsKey(_playerName))
-                return playerInfo[_playerName];
+            if (playerInfo.ContainsKey(_player.nickname))
+                return playerInfo[_player.nickname];
             var spawnWorld = GetWorldById(0);
-            var data = new PlayerData(spawnWorld.worldId,
-                new RestrictedVector3D(spawnWorld.width * 8, spawnWorld.height * 8, 0), _playerName);
-            playerInfo.Add(_playerName, data);
+            var data = new PlayerData();
+            playerInfo.Add(_player.nickname, data);
             return data;
         }
 

@@ -12,6 +12,7 @@ namespace GlLib.Client
     public class ClientService : SideService
     {
         public WorldRenderer worldRenderer;
+        public World world;
 
         public string nickName;
         public string password;
@@ -19,22 +20,24 @@ namespace GlLib.Client
 
         public ClientService(string _nickName, string _password) : base(Side.Client)
         {
-            this.nickName = _nickName;
-            this.password = _password;
+            nickName = _nickName;
+            password = _password;
         }
 
         public void UpdateRendererData(World _world)
         {
             worldRenderer = new WorldRenderer(_world);
+            world = _world;
         }
 
         public override void OnStart()
         {
             player = new Player();
-            player.nickname = nickName;
-            player.Data = Proxy.GetServer().GetDataFor(nickName, password);
-            Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             UpdateRendererData(Proxy.GetServer().GetWorldById(0));
+            player.nickname = nickName;
+            player.Position = new RestrictedVector3D(world.width * 8, world.height * 8,0);
+            player.data = Proxy.GetServer().GetDataFor(player, password);
+            Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             KeyBinds.Register();
             GraphicWindow.client = this;
             GraphicWindow.RunWindow();
@@ -44,7 +47,7 @@ namespace GlLib.Client
         {
             foreach (var bind in KeyBinds.binds)
             {
-                if(KeyboardHandler.PressedKeys.ContainsKey(bind.Key) && (bool) KeyboardHandler.PressedKeys[bind.Key])
+                if (KeyboardHandler.PressedKeys.ContainsKey(bind.Key) && (bool) KeyboardHandler.PressedKeys[bind.Key])
                 {
                     KeyBinds.binds[bind.Key](player);
                 }

@@ -24,8 +24,8 @@ namespace GlLib.Common.Map
 
         public World(string _mapName, int _worldId)
         {
-            this.mapName = _mapName;
-            this.worldId = _worldId;
+            mapName = _mapName;
+            worldId = _worldId;
         }
 
         public Chunk this[int _i, int _j]
@@ -39,6 +39,8 @@ namespace GlLib.Common.Map
             if (EventBus.OnEntitySpawn(_e)) return;
 
             entityMutex.WaitOne();
+            _e.worldObj = this;
+            
             if (_e.chunkObj == null)
                 _e.chunkObj = Entity.GetProjection(_e.Position, this);
             _e.chunkObj.entities[_e.Position.z].Add(_e); //todo entity null

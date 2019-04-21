@@ -123,7 +123,8 @@ namespace GlLib.Common.Map
                         }
                         else //Entity
                         {
-                            var entity = Entity.LoadFromJson(gameObject, this);
+                            var entity = new Entity();
+                            entity.LoadFromJsonObject(gameObject);
                             world.SpawnEntity(entity);
                         }
                     }
@@ -169,7 +170,7 @@ namespace GlLib.Common.Map
             var objects = new List<JsonObject>();
             foreach (var height in entities)
             foreach (var entity in height)
-                objects.Add(entity.CreateJsonObj());
+                objects.Add(entity.CreateJsonObject());
 
             return new JsonObjectCollection($"{chunkX},{chunkY}", objects);
         }
@@ -180,7 +181,9 @@ namespace GlLib.Common.Map
             {
                 if (entityJson != null)
                 {
-                    world.SpawnEntity(Entity.LoadFromJson(entityJson as JsonStringValue, this));
+                    var entity = new Entity();
+                    entity.LoadFromJsonObject(entityJson as JsonStringValue);
+                    world.SpawnEntity(entity);
                 }
             }
         }

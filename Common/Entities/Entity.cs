@@ -1,12 +1,13 @@
 using System;
 using System.Net.Json;
+using GlLib.Common.API;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
 namespace GlLib.Common.Entities
 {
-    public class Entity
+    public class Entity : IJsonSerializable
     {
         public Chunk chunkObj;
 
@@ -16,7 +17,7 @@ namespace GlLib.Common.Entities
         public NbtTag nbtTag = new NbtTag();
 
         public bool noClip;
-        protected RestrictedVector3D position;
+        protected RestrictedVector3D position = new RestrictedVector3D();
 
         public PlanarVector velocity = new PlanarVector();
         public World worldObj;
@@ -111,48 +112,37 @@ namespace GlLib.Common.Entities
             return "entity.null";
         }
 
-        public virtual void SaveToNbt(NbtTag _tag)
+        public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
-            _tag.SetString("EntityId", GetName());
-            if (position != null && velocity != null && maxVel != null && worldObj != null)
+            if (_jsonObject is JsonObjectCollection collection)
             {
-                _tag.SetString("Position", position + "");
-                _tag.SetString("Velocity", velocity + "");
-                _tag.SetString("MaxVelocity", maxVel + "");
-                _tag.SetInt("WorldId", worldObj.worldId);
-                _tag.SetBool("IsDead", isDead);
-                _tag.SetBool("noclip", noClip);
-                if (nbtTag != null)
-                    _tag.AppendTag(nbtTag, "EntityTag");
+                Position = RestrictedVector3D.FromString(((JsonStringValue)collection[1]).Value);
+                velocity = PlanarVector.FromString(((JsonStringValue)collection[2]).Value);
+                maxVel = PlanarVector.FromString(((JsonStringValue)collection[3]).Value);
+                worldObj = Proxy.GetServer().GetWorldById((int)((JsonNumericValue)collection[4]).Value);
+                isDead = ((JsonLiteralValue) collection[5]).Value == JsonAllowedLiteralValues.True;
+                noClip = ((JsonLiteralValue) collection[6]).Value == JsonAllowedLiteralValues.True;
+                if (collection.Count > 7)
+                    nbtTag = NbtTag.FromString(((JsonStringValue)collection[collection.Count-1]).Value);
             }
         }
 
-        public virtual void LoadFromNbt(NbtTag _tag)
+        public virtual JsonObject CreateJsonObject()
         {
-            position = RestrictedVector3D.FromString(_tag.GetString("Position"));
-            velocity = PlanarVector.FromString(_tag.GetString("Velocity"));
-            maxVel = PlanarVector.FromString(_tag.GetString("MaxVelocity"));
-            worldObj = Proxy.GetServer().GetWorldById(_tag.GetInt("WorldId"));
-            isDead = _tag.GetBool("IsDead");
-            noClip = _tag.GetBool("noclip");
-            if (_tag.CanRetrieveTag("EntityTag"))
-                nbtTag = _tag.RetrieveTag("EntityTag");
-        }
-
-        public static Entity LoadFromJson(JsonStringValue _rawTag, Chunk _chunk)
-        {
-            var entityTag = NbtTag.FromString(_rawTag.Value);
-
-            var entity = Proxy.GetRegistry().GetEntityFromName(entityTag.GetString("EntityId"));
-            entity.LoadFromNbt(entityTag);
-            return entity;
-        }
-
-        public JsonStringValue CreateJsonObj()
-        {
-            var tag = new NbtTag();
-            SaveToNbt(tag);
-            return new JsonStringValue("Entity" + GetHashCode(), tag.ToString());
+            JsonObjectCollection jsonObj = new JsonObjectCollection("entity");
+            jsonObj.Add(new JsonStringValue("entityId", GetName()));
+            if (position != null && velocity != null && maxVel != null && worldObj != null)
+            {
+                jsonObj.Add(new JsonStringValue("Position", Position + ""));
+                jsonObj.Add(new JsonStringValue("Velocity", velocity + ""));
+                jsonObj.Add(new JsonStringValue("MaxVelocity", maxVel + ""));
+                jsonObj.Add(new JsonNumericValue("WorldId", worldObj.worldId));
+                jsonObj.Add(new JsonLiteralValue(isDead+""));
+                jsonObj.Add(new JsonLiteralValue(noClip+""));
+                if (nbtTag != null)
+                    jsonObj.Add(new JsonStringValue("entityTag", nbtTag+""));
+            }
+            return jsonObj;
         }
 
         protected bool Equals(Entity _other)

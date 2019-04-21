@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Json;
 using GlLib.Client.Graphic;
 using GlLib.Common.Map;
 using GlLib.Utils;
@@ -9,7 +10,7 @@ namespace GlLib.Common.Entities
 {
     public class Player : Entity
     {
-        private PlayerData _playerData;
+        public PlayerData data;
         public double accelerationValue = 0.05;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
@@ -25,17 +26,6 @@ namespace GlLib.Common.Entities
 
         public Player()
         {
-        }
-
-        public PlayerData Data
-        {
-            get => _playerData;
-            set
-            {
-                _playerData = value;
-                position = value.position;
-                worldObj = Proxy.GetServer().GetWorldById(value.worldId);
-            }
         }
 
         public override string GetName()
@@ -65,19 +55,31 @@ namespace GlLib.Common.Entities
             GL.PopMatrix();
         }
 
-        public override void LoadFromNbt(NbtTag _tag)
+        public override void LoadFromJsonObject(JsonObject _jsonObject)
         {
-            nickname = _tag.GetString("Name");
-            Data = PlayerData.LoadFromNbt(_tag);
-            base.LoadFromNbt(_tag);
+            base.LoadFromJsonObject(_jsonObject);
+            if (_jsonObject is JsonObjectCollection collection)
+            {
+                nickname = ((JsonStringValue) collection[7]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[8]).Value));
+            }
         }
 
-        public override void SaveToNbt(NbtTag _tag)
+        public override JsonObject CreateJsonObject()
         {
-            _tag.SetString("Name", nickname);
-            if (Data != null)
-                Data.SaveToNbt(_tag);
-            base.SaveToNbt(_tag);
+            JsonObject obj = base.CreateJsonObject();
+            if (obj is JsonObjectCollection collection)
+            {
+                collection.Add(new JsonStringValue("nickName", nickname));
+                if (data != null)
+                {
+                    NbtTag tag = new NbtTag();
+                    data.SaveToNbt(tag);
+                    collection.Add(new JsonStringValue("tag", tag.ToString()));
+                }
+            }
+
+            return obj;
         }
 
         public void CheckVelocity()
