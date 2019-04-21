@@ -12,7 +12,7 @@
 		
 	},
 	"1,1": {
-		"Entity-693494137": "name|SNoname|IsDead|BFalse|Velocity|S(0,0)|Nickname|SNoname|MaxVelocity|S(0,1,0,2)|EntityId|Sentity.player|noclip|BFalse|WorldId|I0|Position|S(24,24,0)"
+		"Entity-617532955": "EntityId|Sentity.player|name|SNoname|Velocity|S(0,0)|Position|S(24,24,0)|MaxVelocity|S(0,1,0,2)|noclip|BFalse|Nickname|SNoname|WorldId|I0|IsDead|BFalse"
 	},
 	"1,2": {
 		

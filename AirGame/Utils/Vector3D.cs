@@ -37,6 +37,16 @@ namespace GlLib.Utils
             return new RestrictedVector3D(-_a.x, -_a.y, _a.z);
         }
 
+        public static bool operator ==(RestrictedVector3D _a, RestrictedVector3D _b)
+        {
+            return _b.Equals(_a);
+        }
+
+        public static bool operator !=(RestrictedVector3D _a, RestrictedVector3D _b)
+        {
+            return !_b.Equals(_a);
+        }
+
         public static RestrictedVector3D operator -(RestrictedVector3D _a, PlanarVector _b)
         {
             return _a + -_b;
@@ -84,6 +94,16 @@ namespace GlLib.Utils
             return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
         }
 
+        public override bool Equals(object _obj)
+        {
+            var item = _obj as RestrictedVector3D;
+            if (item is null)
+                return false;
+            return Math.Abs(item.x - this.x) < 1e-3
+                   && Math.Abs(item.y - this.y) < 1e-3
+                   && item.z == this.z;
+        }
+
         public PlanarVector ToPlanar()
         {
             return new PlanarVector(x, y);
@@ -120,7 +140,17 @@ namespace GlLib.Utils
         {
             return new PlanarVector(_a.x + _b.x, _a.y + _b.y);
         }
+        // TODO operator '-'
 
+        public static bool operator ==(PlanarVector _a, PlanarVector _b)
+        {
+            return _b.Equals(_a);
+        }
+
+        public static bool operator !=(PlanarVector _a, PlanarVector _b)
+        {
+            return !_b.Equals(_a);
+        }
         public static PlanarVector operator -(PlanarVector _a)
         {
             return new PlanarVector(-_a.x, -_a.y);
@@ -142,6 +172,14 @@ namespace GlLib.Utils
         public AxisAlignedBb Expand(double _width, double _height)
         {
             return new AxisAlignedBb(x, y, x + _width, y + _height);
+        }
+        public override bool Equals(object _obj)
+        {
+            var item = _obj as PlanarVector;
+            if (item is null)
+                return false;
+            return Math.Abs(item.x - this.x) < 1e-3
+                   && Math.Abs(item.y - this.y) < 1e-3;
         }
 
         public AxisAlignedBb ExpandBothTo(double _width, double _height)
