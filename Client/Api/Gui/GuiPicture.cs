@@ -5,27 +5,27 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.API.Gui
 {
-    public class GuiRectangle : GuiObject
+    public class GuiPicture : GuiObject
     {
-        public GuiRectangle(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
+        public GuiPicture(Texture _texture, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            monochrome = Vertexer.LoadTexture("monochromatic.png");
+            texture = _texture;
         }
 
-        public GuiRectangle(int _x, int _y, int _width, int _height, Color _color)
+        public GuiPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
             : base(_x, _y, _width, _height, _color)
         {
-            monochrome = Vertexer.LoadTexture("monochromatic.png");
+            texture = _texture;
         }
 
-        public Texture monochrome;
+        public Texture texture;
 
         public override void Render(GameWindow _window, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
 
-            Vertexer.BindTexture(monochrome);
+            Vertexer.BindTexture(texture);
 
             Vertexer.StartDrawingQuads();
 

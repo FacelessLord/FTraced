@@ -16,9 +16,9 @@ namespace GlLib.Client.API.Gui
 
         public void Add(GuiObject _obj)
         {
-            SidedConsole.WriteLine(""+_obj);
+            SidedConsole.WriteLine("" + _obj);
             screenObjects.Add(_obj);
-            
+
         }
 
         public void AddRectangle(int _x, int _y, int _width, int _height)
@@ -29,6 +29,16 @@ namespace GlLib.Client.API.Gui
         public void AddRectangle(int _x, int _y, int _width, int _height, Color _color)
         {
             Add(new GuiRectangle(_x, _y, _width, _height, _color));
+        }
+
+        public void AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
+        {
+            Add(new GuiPicture(_texture, _x, _y, _width, _height));
+        }
+
+        public void AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
+        {
+            Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }
 
         public void AddText(string _text, int _x, int _y, int _width, int _height)
