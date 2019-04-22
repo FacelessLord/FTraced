@@ -147,7 +147,6 @@ namespace Tests.ulits
                 CheckIfIntersectsIsFalse(pair.Item1, pair.Item2);
         }
 
-
         #endregion
     }
 }

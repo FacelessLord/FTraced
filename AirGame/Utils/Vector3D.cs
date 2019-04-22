@@ -148,7 +148,7 @@ namespace GlLib.Utils
         {
             if (_a is null || _b is null)
                 return false;
-            return _b.Equals(_a) ;
+            return _b.Equals(_a);
         }
 
         public static bool operator !=(PlanarVector _a, PlanarVector _b)

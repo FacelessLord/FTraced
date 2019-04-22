@@ -185,7 +185,6 @@ namespace Tests.ulits
 
         #region Other Methods
 
-
         [Test]
         public void Planar_From_String()
         {
@@ -237,7 +236,6 @@ namespace Tests.ulits
             //Assert
             Assert.AreEqual(v1, v2);
         }
-
 
         #endregion
 
@@ -308,6 +306,5 @@ namespace Tests.ulits
         #endregion
 
         #endregion
-
     }
 }
