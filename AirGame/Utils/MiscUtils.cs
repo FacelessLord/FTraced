@@ -4,11 +4,11 @@ namespace GlLib.Utils
 {
     public static class MiscUtils
     {
+        private const string Delim = "|";
         public static string Compact(params object[] _objects)
         {
-            var delim = "|";
             var ret = new StringBuilder();
-            foreach (var obj in _objects) ret.Append(obj + delim);
+            foreach (var obj in _objects) ret.Append(obj + Delim);
             if (_objects.Length > 0)
                 ret.Remove(ret.Length - 1, 1);
 
@@ -27,7 +27,7 @@ namespace GlLib.Utils
 
         public static string[] Uncompact(string _compString)
         {
-            return _compString.Split("|");
+            return _compString.Split(Delim);
         }
 
         public static string[] Uncompact(string _delimiter, string _compString)

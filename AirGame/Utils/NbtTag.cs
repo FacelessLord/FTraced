@@ -6,6 +6,7 @@ namespace GlLib.Utils
     public class NbtTag : IEnumerable<string>
     {
         private readonly Hashtable _table = new Hashtable();
+        public int Count => this._table.Count;
 
         IEnumerator IEnumerable.GetEnumerator()
         {
