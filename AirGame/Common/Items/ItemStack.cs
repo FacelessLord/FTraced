@@ -1,22 +1,22 @@
 using System.Net.Json;
+using GlLib.Common.API;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
 namespace GlLib.Common.Items
 {
-    public class ItemStack
+    public class ItemStack : IJsonSerializable
     {
         public Item item;
         public int stackSize;
-        public NbtTag tag;
-        public string unlocalizedName = "stackItem.null";
+        public NbtTag stackTag;
 
         public ItemStack(Item _item, int _stackSize = 1, NbtTag _tag = null)
         {
-            (item, stackSize, tag) = (_item, _stackSize, _tag);
+            (item, stackSize, stackTag) = (_item, _stackSize, _tag);
         }
 
-        public static ItemStack LoadFromJson(JsonStringValue _rawTag, Chunk _chunk)
+        public static ItemStack LoadFromJson(JsonStringValue _rawTag)
         {
             var itemTag = NbtTag.FromString(_rawTag.Value);
             var item = Proxy.GetRegistry().GetItemFromId(itemTag.GetInt("ItemId"));
@@ -31,17 +31,17 @@ namespace GlLib.Common.Items
                 _tag.SetString("Item", item + "");
                 _tag.SetInt("StackSize", stackSize);
 
-                if (tag != null)
-                    _tag.AppendTag(tag, "ItemTag");
+                if (stackTag != null)
+                    _tag.AppendTag(stackTag, "ItemTag");
             }
         }
 
         private string GetName()
         {
-            return unlocalizedName;
+            return item.GetName(this);
         }
 
-        public JsonStringValue CreateJsonObj()
+        public JsonObject CreateJsonObject()
         {
             var tag = new NbtTag();
             SaveToNbt(tag);
@@ -54,8 +54,19 @@ namespace GlLib.Common.Items
             {
                 var hashCode = item != null ? item.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ stackSize.GetHashCode();
-                hashCode = (hashCode * 397) ^ (tag != null ? tag.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (stackTag != null ? stackTag.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+
+        public void LoadFromJsonObject(JsonObject _jsonObject)
+        {
+            if (_jsonObject is JsonStringValue jsonString)
+            {
+                var jsonStack = LoadFromJson(jsonString);
+                item = jsonStack.item;
+                stackSize = jsonStack.stackSize;
+                stackTag = jsonStack.stackTag;
             }
         }
     }

@@ -27,8 +27,7 @@ namespace GlLib.Common.Items
             return unlocalizedName;
         }
 
-
-        public string GetTextureName(ItemStack _itemStack)
+        public virtual string GetTextureName(ItemStack _itemStack)
         {
             return unlocalizedName + ".png";
         }
@@ -45,7 +44,7 @@ namespace GlLib.Common.Items
 
         public override string ToString()
         {
-            return ""; // todo
+            return unlocalizedName; // todo
         }
     }
 }
