@@ -101,9 +101,25 @@ namespace GlLib.Utils
             var item = _obj as RestrictedVector3D;
             if (item is null)
                 return false;
-            return Math.Abs(item.x - x) < 1e-3
-                   && Math.Abs(item.y - y) < 1e-3
-                   && item.z == z;
+            return Equals(item);
+        }
+
+        protected bool Equals(RestrictedVector3D _item)
+        {
+            return Math.Abs(_item.x - x) < 1e-3
+                   && Math.Abs(_item.y - y) < 1e-3
+                   && _item.z == z;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = x.GetHashCode();
+                hashCode = (hashCode * 397) ^ y.GetHashCode();
+                hashCode = (hashCode * 397) ^ z;
+                return hashCode;
+            }
         }
 
         public PlanarVector ToPlanar()
@@ -184,8 +200,21 @@ namespace GlLib.Utils
             var item = _obj as PlanarVector;
             if (item is null)
                 return false;
-            return Math.Abs(item.x - x) < 1e-3
-                   && Math.Abs(item.y - y) < 1e-3;
+            return Equals(item);
+        }
+
+        protected bool Equals(PlanarVector _item)
+        {
+            return Math.Abs(_item.x - x) < 1e-3
+                   && Math.Abs(_item.y - y) < 1e-3;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (x.GetHashCode() * 397) ^ y.GetHashCode();
+            }
         }
 
         public AxisAlignedBb ExpandBothTo(double _width, double _height)
@@ -241,16 +270,32 @@ namespace GlLib.Utils
         }
 
 
-        public override bool Equals(object obj)
+        public override bool Equals(object _obj)
         {
-            //TODO
-            return base.Equals(obj);
+            var item = _obj as AxisAlignedBb;
+            if (item is null)
+                return false;
+            return Equals(item);
+        }
+
+        protected bool Equals(AxisAlignedBb _item)
+        {
+            return Math.Abs(_item.startX - startX) < 1e-3
+                   && Math.Abs(_item.startY - startY) < 1e-3
+                   &&Math.Abs(_item.endX - endX) < 1e-3
+                   &&Math.Abs(_item.endY - endY) < 1e-3;
         }
 
         public override int GetHashCode()
         {
-            //TODO
-            return base.GetHashCode();
+            unchecked
+            {
+                var hashCode = endX.GetHashCode();
+                hashCode = (hashCode * 397) ^ endY.GetHashCode();
+                hashCode = (hashCode * 397) ^ startX.GetHashCode();
+                hashCode = (hashCode * 397) ^ startY.GetHashCode();
+                return hashCode;
+            }
         }
 
         public override string ToString()
