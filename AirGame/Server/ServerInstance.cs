@@ -84,8 +84,8 @@ namespace GlLib.Server
             if (!File.Exists("server/worlds.json"))
             {
                 File.Create("server/worlds.json").Close();
-                File.WriteAllText("server/worlds.json", "0 NewWorld");
-                RegisterWorld(0, "server/NewWorld");
+                File.WriteAllText("server/worlds.json", "0 Overworld");
+                RegisterWorld(0, "Overworld");
             }
             else
             {

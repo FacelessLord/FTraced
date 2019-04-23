@@ -37,6 +37,18 @@ namespace GlLib.Utils
             return new RestrictedVector3D(-_a.x, -_a.y, _a.z);
         }
 
+        public static bool operator ==(RestrictedVector3D _a, RestrictedVector3D _b)
+        {
+            if (_a is null || _b is null)
+                return false;
+            return _b.Equals(_a);
+        }
+
+        public static bool operator !=(RestrictedVector3D _a, RestrictedVector3D _b)
+        {
+            return !(_b == _a);
+        }
+
         public static RestrictedVector3D operator -(RestrictedVector3D _a, PlanarVector _b)
         {
             return _a + -_b;
@@ -84,6 +96,16 @@ namespace GlLib.Utils
             return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
         }
 
+        public override bool Equals(object _obj)
+        {
+            var item = _obj as RestrictedVector3D;
+            if (item is null)
+                return false;
+            return Math.Abs(item.x - x) < 1e-3
+                   && Math.Abs(item.y - y) < 1e-3
+                   && item.z == z;
+        }
+
         public PlanarVector ToPlanar()
         {
             return new PlanarVector(x, y);
@@ -120,6 +142,19 @@ namespace GlLib.Utils
         {
             return new PlanarVector(_a.x + _b.x, _a.y + _b.y);
         }
+        // TODO operator '-'
+
+        public static bool operator ==(PlanarVector _a, PlanarVector _b)
+        {
+            if (_a is null || _b is null)
+                return false;
+            return _b.Equals(_a);
+        }
+
+        public static bool operator !=(PlanarVector _a, PlanarVector _b)
+        {
+            return !(_b == _a);
+        }
 
         public static PlanarVector operator -(PlanarVector _a)
         {
@@ -144,6 +179,15 @@ namespace GlLib.Utils
             return new AxisAlignedBb(x, y, x + _width, y + _height);
         }
 
+        public override bool Equals(object _obj)
+        {
+            var item = _obj as PlanarVector;
+            if (item is null)
+                return false;
+            return Math.Abs(item.x - x) < 1e-3
+                   && Math.Abs(item.y - y) < 1e-3;
+        }
+
         public AxisAlignedBb ExpandBothTo(double _width, double _height)
         {
             return new AxisAlignedBb(x - _width / 2, y / _height, x + _width / 2, y + _height / 2);
@@ -159,7 +203,8 @@ namespace GlLib.Utils
 
         public AxisAlignedBb(double _startX, double _startY, double _endX, double _endY)
         {
-            (startX, startY, endX, endY) = (_startX, _startY, _endX, _endY);
+            (startX, startY, endX, endY) =
+                (_startX, _startY, _endX, _endY);
             CheckCoordinates();
         }
 
@@ -195,7 +240,26 @@ namespace GlLib.Utils
             return new AxisAlignedBb(_a.startX + _v.x, _a.startY + _v.y, _a.endX + _v.x, _a.endY + _v.y);
         }
 
-        public void CheckCoordinates()
+
+        public override bool Equals(object obj)
+        {
+            //TODO
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            //TODO
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            //TODO
+            return $"Bounding {startX},{startY},{EndXi},{EndYi}";
+        }
+
+        private void CheckCoordinates()
         {
             if (startX > endX) (startX, endX) = (endX, startY);
 
