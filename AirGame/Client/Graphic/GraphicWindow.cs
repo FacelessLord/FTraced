@@ -47,7 +47,7 @@ namespace GlLib.Client.Graphic
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
-            if(KeyboardHandler.ClickedKeys.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+            if(KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             }

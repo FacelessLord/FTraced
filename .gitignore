@@ -5,7 +5,7 @@
 Tests/Tests/bin/Debug/
 Tests/Tests/bin/\.vs
 Tests/Tests/bin/[Bb]in/
-Tests/Tests/[Oo]bj/
+Tests/Tests/obj/
 
 #AirGame ignore
 AirGame/\.vs
