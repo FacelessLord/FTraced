@@ -37,7 +37,12 @@ namespace GlLib.Client
             player.nickname = nickName;
             player.Position = new RestrictedVector3D(world.width * 8, world.height * 8,0);
             player.data = Proxy.GetServer().GetDataFor(player, password);
+
+            var testEntity = new Entity(Proxy.GetServer().GetWorldById(0),
+                new RestrictedVector3D(world.width * 8, world.height * 8, 0));
+
             Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
+            testEntity.worldObj.SpawnEntity(testEntity);
             KeyBinds.Register();
             GraphicWindow.client = this;
             GraphicWindow.RunWindow();

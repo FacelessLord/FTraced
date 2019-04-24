@@ -14,25 +14,25 @@ namespace GlLib.Client.Graphic
             this._world = _world;
         }
 
-        public void Render(int _x, int _y)
+        public void Render(double _x, double _y)
         {
             int width = _world.width;
             int height = _world.height;
-            var xAxis = new PlanarVector(Chunk.BlockWidth / 2, Chunk.BlockHeight / 2);
-            var yAxis = new PlanarVector(Chunk.BlockWidth / 2, -Chunk.BlockHeight / 2);
+            var xAxis = new PlanarVector(Chunk.BlockWidth,0 );
+            var yAxis = new PlanarVector(0, Chunk.BlockHeight);
 
             GL.PushMatrix();
-            GL.Translate(-Math.Max(width, height) * Chunk.BlockWidth * 5, 0, 0);
+            GL.Translate(_x,_y, 0);
             for (var i = 0; i < width; i++)
-            for (var j = width - 1; j >= 0; j--)
-                if (_world[i + _x, j + _y].isLoaded)
-                    _world[i + _x, j + _y].RenderChunk(i, j, xAxis, yAxis);
+            for (var j = height - 1; j >= 0; j--)
+                if (_world[i, j].isLoaded)
+                    _world[i, j].RenderChunk(i, j, xAxis, yAxis);
 
             //rendering entities
             for (var i = 0; i < width; i++)
-            for (var j = width - 1; j >= 0; j--)
-                if (_world[i + _x, j + _y].isLoaded)
-                    foreach (var level in _world[i + _x, j + _y].entities)
+            for (var j = height - 1; j >= 0; j--)
+                if (_world[i, j].isLoaded)
+                    foreach (var level in _world[i, j].entities)
                     foreach (var entity in level)
                     {
                         var coord = xAxis * (entity.Position.x - 8) + yAxis * (entity.Position.y - 8);

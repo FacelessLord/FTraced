@@ -1,9 +1,11 @@
 using System;
 using System.Net.Json;
+using GlLib.Client.Graphic;
 using GlLib.Common.API;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Common.Entities
 {
@@ -105,6 +107,19 @@ namespace GlLib.Common.Entities
 
         public virtual void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
+            GL.PushMatrix();
+            var btexture = Vertexer.LoadTexture("monochromatic.png");
+            Vertexer.BindTexture(btexture);
+
+            Vertexer.StartDrawingQuads();
+
+            Vertexer.VertexWithUvAt(10, -10, 1, 0);
+            Vertexer.VertexWithUvAt(10, 10, 1, 1);
+            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
+            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
+
+            Vertexer.Draw();
+            GL.PopMatrix();
         }
 
         public virtual string GetName()
