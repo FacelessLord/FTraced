@@ -21,14 +21,15 @@ namespace GlLib.Client.Graphic
             var xAxis = new PlanarVector(Chunk.BlockWidth,0 );
             var yAxis = new PlanarVector(0, Chunk.BlockHeight);
 
-            GL.PushMatrix();
-            GL.Translate(_x,_y, 0);
             for (var i = 0; i < width; i++)
             for (var j = height - 1; j >= 0; j--)
                 if (_world[i, j].isLoaded)
                     _world[i, j].RenderChunk(i, j, xAxis, yAxis);
 
             //rendering entities
+
+            GL.PushMatrix();
+            //GL.Translate(_x, _y, 0);
             for (var i = 0; i < width; i++)
             for (var j = height - 1; j >= 0; j--)
                 if (_world[i, j].isLoaded)
