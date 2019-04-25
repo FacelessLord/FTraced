@@ -8,7 +8,7 @@ namespace Tests.ulits
     public class NbtTagTests
     {
         /// <summary>
-        ///     In this tests I've think  that primitive types are classical primitive types and string.
+        ///     In this tests I've think that primitive types are classical primitive types and string.
         /// </summary>
         [SetUp]
         public void Setup()
@@ -153,7 +153,6 @@ namespace Tests.ulits
             tag = NbtTag.FromString(expectedTagString);
             tag.RetrieveTag("SomeN").ToString().Should().Be("SomeName|SMask");
             tag.ToString().Should().Be("SomeID|I23");
-
         }
 
         [Test]
