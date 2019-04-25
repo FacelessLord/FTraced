@@ -5,6 +5,7 @@ using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -20,6 +21,8 @@ namespace GlLib.Client.Graphic
         public static ClientService client;
         public int guiTimeout = 0;
         public Gui gui;
+        public double dx = 900;
+        public double dy = 900;
 
         public Hud hud;
 
@@ -47,7 +50,7 @@ namespace GlLib.Client.Graphic
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
-            if(KeyboardHandler.ClickedKeys.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+            if(KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             }
@@ -83,18 +86,21 @@ namespace GlLib.Client.Graphic
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
 
             GL.PushMatrix();
-            GL.Scale(1d / Width, 1d / Height, 1);
+            GL.Scale(1d /4/Width, 1d /4/Height, 1);
 
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            GL.Translate(Width / 2d, Height / 2d, 0);
             GL.PushMatrix();
-            Proxy.GetClient().worldRenderer.Render(0, 0);
+            Proxy.GetClient().worldRenderer.Render(dx,dy);
             GL.PopMatrix();
-            
-            GL.Translate(-Width / 2d, -Height / 2d, 0);
+
+            //GUI render is not connected to the world
+            GL.LoadIdentity();
+            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
+            GL.PushMatrix();
+            GL.Scale(1d / Width, 1d / Height, 1);
             gui?.Render(this);
             hud.Render(this);
             GL.PopMatrix();

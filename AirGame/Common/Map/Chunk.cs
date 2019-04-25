@@ -43,7 +43,7 @@ namespace GlLib.Common.Map
         {
             GL.PushMatrix();
 
-            GL.Translate((_centerX + _centerY) * BlockWidth * 8, (_centerX - _centerY) * BlockHeight * 8, 0);
+            GL.Translate(( _centerX) * BlockWidth * 16, (_centerY) * BlockHeight * 16, 0);
 
             //GL.Color3(0.75,0.75,0.75);
             for (var i = 7; i > -9; i--)
@@ -79,17 +79,6 @@ namespace GlLib.Common.Map
             }
 
             GL.PopMatrix();
-
-            foreach (var level in entities)
-            foreach (var entity in level)
-            {
-                var coord = _xAxis * (entity.Position.x - 8) + _yAxis * (entity.Position.y - 8);
-                GL.PushMatrix();
-
-                GL.Translate(coord.x, coord.y, 0);
-                entity.Render(_xAxis, _yAxis);
-                GL.PopMatrix();
-            }
         }
 
         public void LoadChunk()
@@ -110,9 +99,9 @@ namespace GlLib.Common.Map
                 blocks = new TerrainBlock[16, 16];
                 foreach (var entry in chunkCollection)
                 {
-                    if (entry is JsonStringValue gameObject)
+                    switch (entry)
                     {
-                        if (gameObject.Value.StartsWith("block."))
+                        case JsonStringValue gameObject when gameObject.Value.StartsWith("block."):
                         {
                             var coords = gameObject.Name.Split(',');
                             var i = int.Parse(coords[0]);
@@ -120,44 +109,50 @@ namespace GlLib.Common.Map
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
                             blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
+                            break;
                         }
-                        else //Entity
+                        //Entity
+                        case JsonStringValue gameObject:
                         {
                             var entity = new Entity();
                             entity.LoadFromJsonObject(gameObject);
                             world.SpawnEntity(entity);
+                            break;
                         }
-                    }
-
-                    if (entry is JsonNumericValue num)
-                    {
-                        var coords = num.Name.Split(',');
-                        var i = int.Parse(coords[0]);
-                        var j = int.Parse(coords[1]);
-
-                        blocks[i, j] = Proxy.GetRegistry().GetBlockFromId((int) num.Value);
-                    }
-
-                    if (entry is JsonObjectCollection collection)
-                        if (collection.Name.StartsWith("Rect"))
+                        case JsonNumericValue num:
                         {
-                            var preBorders = collection[0];
-                            if (preBorders is JsonArrayCollection borders)
+                            var coords = num.Name.Split(',');
+                            var i = int.Parse(coords[0]);
+                            var j = int.Parse(coords[1]);
+
+                            blocks[i, j] = Proxy.GetRegistry().GetBlockFromId((int) num.Value);
+                            break;
+                        }
+                        case JsonObjectCollection collection:
+                        {
+                            if (collection.Name.StartsWith("Rect"))
                             {
-                                var preBlock = collection[1];
-                                if (preBlock is JsonStringValue rectBlockName)
+                                var preBorders = collection[0];
+                                if (preBorders is JsonArrayCollection borders)
                                 {
-                                    var block = Proxy.GetRegistry().GetBlockFromName(rectBlockName.Value);
-                                    var startX = (int) ((JsonNumericValue) borders[0]).Value;
-                                    var startY = (int) ((JsonNumericValue) borders[1]).Value;
-                                    var endX = (int) ((JsonNumericValue) borders[2]).Value;
-                                    var endY = (int) ((JsonNumericValue) borders[3]).Value;
-                                    for (var i = startX; i <= endX; i++)
-                                    for (var j = startY; j <= endY; j++)
-                                        blocks[i, j] = block;
+                                    var preBlock = collection[1];
+                                    if (preBlock is JsonStringValue rectBlockName)
+                                    {
+                                        var block = Proxy.GetRegistry().GetBlockFromName(rectBlockName.Value);
+                                        var startX = (int) ((JsonNumericValue) borders[0]).Value;
+                                        var startY = (int) ((JsonNumericValue) borders[1]).Value;
+                                        var endX = (int) ((JsonNumericValue) borders[2]).Value;
+                                        var endY = (int) ((JsonNumericValue) borders[3]).Value;
+                                        for (var i = startX; i <= endX; i++)
+                                        for (var j = startY; j <= endY; j++)
+                                            blocks[i, j] = block;
+                                    }
                                 }
                             }
+
+                            break;
                         }
+                    }
                 }
 
                 SidedConsole.WriteLine($"Chunk {chunkX}x{chunkY} is loaded");
