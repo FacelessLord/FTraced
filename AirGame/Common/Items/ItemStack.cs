@@ -25,11 +25,11 @@ namespace GlLib.Common.Items
 
         public virtual void SaveToNbt(NbtTag _tag)
         {
-            _tag.SetString("ItemStack", GetName());
+            _tag.Set("ItemStack", GetName());
             if (item != null)
             {
-                _tag.SetString("Item", item + "");
-                _tag.SetInt("StackSize", stackSize);
+                _tag.Set("Item", item + "");
+                _tag.Set("StackSize", stackSize);
 
                 if (tag != null)
                     _tag.AppendTag(tag, "ItemTag");

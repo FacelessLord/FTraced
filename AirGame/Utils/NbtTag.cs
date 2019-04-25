@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -5,8 +6,16 @@ namespace GlLib.Utils
 {
     public class NbtTag : IEnumerable<string>
     {
-        private readonly Hashtable _table = new Hashtable();
-        public int Count => this._table.Count;
+        private readonly Hashtable _table;
+        private int _suppressExistenceErrorsNumber;
+
+        public NbtTag()
+        {
+            _suppressExistenceErrorsNumber = 0;
+            _table = new Hashtable();
+        }
+
+        public int Count => _table.Count;
 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -18,90 +27,62 @@ namespace GlLib.Utils
             foreach (var key in _table.Keys) yield return key + "";
         }
 
-        private void SetObject(string _key, object _obj)
+        public void Set<T>(string _key, T _obj)
         {
+            if (!typeof(T).IsPrimitive && !(_obj is string))
+                _suppressExistenceErrorsNumber++;
             if (_table.ContainsKey(_key)) _table.Remove(_key);
             _table.Add(_key, _obj);
         }
 
-        public void SetInt(string _key, int _num)
+        public T Get<T>(string _key)
         {
-            SetObject(_key, _num);
-        }
+            try
+            {
+                if (_table.ContainsKey(_key))
+                    return (T) _table[_key];
+            }
+            catch (InvalidCastException e)
+            {
+                _suppressExistenceErrorsNumber++;
+                SidedConsole.WriteLine("Cast error: " + e.Message);
+            }
 
-        public void SetDouble(string _key, double _num)
-        {
-            SetObject(_key, _num);
-        }
-
-        public void SetFloat(string _key, float _num)
-        {
-            SetObject(_key, _num);
-        }
-
-        public void SetLong(string _key, long _num)
-        {
-            SetObject(_key, _num);
-        }
-
-        public void SetString(string _key, string _num)
-        {
-            SetObject(_key, _num);
-        }
-
-        public void SetBool(string _key, bool _num)
-        {
-            SetObject(_key, _num);
-        }
-
-        private object GetObject(string _key)
-        {
-            if (_table.ContainsKey(_key))
-                return _table[_key];
-            return null;
+            return default(T);
         }
 
         public int GetInt(string _key)
         {
-            if (_table.ContainsKey(_key))
-                return (int) _table[_key];
-            return 0;
+            return Get<int>(_key);
         }
 
+
+#if false
         public long GetLong(string _key)
         {
-            if (_table.ContainsKey(_key))
-                return (long) _table[_key];
-            return 0;
+            return Get<long>(_key);
         }
 
         public float GetFloat(string _key)
         {
-            if (_table.ContainsKey(_key))
-                return (float) _table[_key];
-            return 0;
+            return Get<float>(_key);
         }
 
         public double GetDouble(string _key)
         {
-            if (_table.ContainsKey(_key))
-                return (double) _table[_key];
-            return 0;
+            return Get<double>(_key);
         }
 
         public bool GetBool(string _key)
         {
-            if (_table.ContainsKey(_key))
-                return (bool) _table[_key];
-            return false;
+            return Get<bool>(_key);
         }
 
         public string GetString(string _key)
         {
-            if (_table.ContainsKey(_key))
-                return (string) _table[_key];
-            return "";
+            return Get<string>(_key);
         }
+#endif
 
         public override string ToString()
         {
@@ -144,6 +125,9 @@ namespace GlLib.Utils
                     case 'S':
                         tag._table[entries[2 * i]] = value;
                         break;
+                    default:
+                        tag._suppressExistenceErrorsNumber++;
+                        continue;
                 }
             }
 
@@ -152,7 +136,7 @@ namespace GlLib.Utils
 
         public void AppendTag(NbtTag _tag, string _prefix)
         {
-            foreach (var key in _tag) SetObject(_prefix + key, _tag._table[key]);
+            foreach (var key in _tag) Set(_prefix + key, _tag._table[key]);
         }
 
         public NbtTag RetrieveTag(string _prefix)
@@ -163,12 +147,17 @@ namespace GlLib.Utils
                 if (key.StartsWith(_prefix))
                 {
                     keysToRemove.Add(key);
-                    tag.SetObject(key.Substring(_prefix.Length), _table[key]);
+                    tag.Set(key.Substring(_prefix.Length), _table[key]);
                 }
 
             foreach (var key in keysToRemove) _table.Remove(key);
 
             return tag;
+        }
+
+        public int GetErrorNumber()
+        {
+            return _suppressExistenceErrorsNumber;
         }
 
         public bool CanRetrieveTag(string _prefix)
