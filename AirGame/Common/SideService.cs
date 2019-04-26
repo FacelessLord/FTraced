@@ -1,9 +1,6 @@
 using System.Threading;
-using GlLib.Client;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;
-using GlLib.Server;
-using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -21,7 +18,7 @@ namespace GlLib.Common
 
         public SideService(Side _side)
         {
-            this.side = _side;
+            side = _side;
             registry = new GameRegistry();
             blocks = new Blocks(registry);
             entities = new EntityRegistry(registry);
@@ -55,6 +52,5 @@ namespace GlLib.Common
         public abstract void OnServiceUpdate();
         public abstract void OnExit();
         public abstract void OnStart();
-
     }
 }

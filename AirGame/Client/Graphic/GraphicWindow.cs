@@ -1,16 +1,13 @@
-using System;
-using System.Threading;
-using GlLib.Client.Api;
-using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
-using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using System;
+using System.Threading;
 
 namespace GlLib.Client.Graphic
 {
@@ -81,18 +78,22 @@ namespace GlLib.Client.Graphic
             base.OnRenderFrame(_e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.MatrixMode(MatrixMode.Projection);
+            GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
 
             GL.PushMatrix();
-            GL.Scale(1d /4/Width, 1d /4/Height, 1);
+            GL.Scale(1d /Width, 1d /Height, 1);
 
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
+            SidedConsole.WriteLine(Proxy.GetClient().player.Position);
+
             GL.PushMatrix();
+            GL.Translate((Proxy.GetClient().player.Position.x - 3*dx/4), 
+                (dy / 30 - Proxy.GetClient().player.Position.y),0);
             Proxy.GetClient().worldRenderer.Render(dx,dy);
             GL.PopMatrix();
 
