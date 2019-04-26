@@ -51,7 +51,6 @@ namespace GlLib.Client.Graphic
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             }
-            //todo send ClickedPacket[Not necessary, clicks should be handled on Client side]
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)

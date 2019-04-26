@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using GlLib.Utils;
 using NUnit.Framework;
 
-namespace Tests.ulits
+namespace Tests.utils
 {
     public class NbtTagTests
     {
@@ -28,7 +29,7 @@ namespace Tests.ulits
             tag.Set("SomeID", _value);
 
             tag.Get<T>("SomeID").Should().Be(_value, "Work of this func");
-            tag.GetErrorNumber().Should().Be(0, "It were primitive types");
+            tag.GetErrorNumber.Should().Be(0, "It were primitive types");
         }
 
         #endregion
@@ -47,7 +48,7 @@ namespace Tests.ulits
             tag.Set("Something", _obj);
 
             tag.Count.Should().Be(1, "We've added primitive type. Count of tags was increased");
-            tag.GetErrorNumber().Should().Be(0, "We've added primitive type. There is no Errors");
+            tag.GetErrorNumber.Should().Be(0, "We've added primitive type. There is no Errors");
         }
 
         [Test]
@@ -60,7 +61,7 @@ namespace Tests.ulits
 
             tag.Count.Should().Be(1, "We've added nonprimitive type. Method \"set\" " +
                                      "should try set this type.");
-            tag.GetErrorNumber().Should().Be(1, "We've added nonprimitive type.");
+            tag.GetErrorNumber.Should().Be(1, "We've added nonprimitive type.");
         }
 
         #endregion
@@ -74,7 +75,7 @@ namespace Tests.ulits
             tag.Set("SomeId", 3);
 
             tag.Count.Should().Be(1, "We've added primitive type: int. Count of tags was increased");
-            tag.GetErrorNumber().Should().Be(0, "We've added primitive type: int. There is no Errors");
+            tag.GetErrorNumber.Should().Be(0, "We've added primitive type: int. There is no Errors");
         }
 
         [Test]
@@ -105,7 +106,7 @@ namespace Tests.ulits
             var tag = NbtTag.FromString(expectedTagString);
 
             tag.Count.Should().Be(2, "There are two items");
-            tag.GetErrorNumber().Should().Be(0, "This items are primitive");
+            tag.GetErrorNumber.Should().Be(0, "This items are primitive");
             tag.Get<int>("SomeID").Should().Be(23);
             tag.Get<string>("SomeName").Should().Be("Mask");
         }
@@ -118,7 +119,7 @@ namespace Tests.ulits
             var tag = NbtTag.FromString(expectedTagString);
 
             tag.Count.Should().Be(0, "There are no items");
-            tag.GetErrorNumber().Should().BeGreaterThan(0);
+            tag.GetErrorNumber.Should().BeGreaterThan(0);
         }
 
         [Test]
@@ -129,9 +130,10 @@ namespace Tests.ulits
             var tag = NbtTag.FromString(expectedTagString);
 
             tag.Count.Should().Be(2, "There are two items");
-            tag.GetErrorNumber().Should().BeGreaterThan(0);
+            tag.GetErrorNumber.Should().BeGreaterThan(0);
+            tag.Keys().Should().BeEquivalentTo(new List<string> {"SomeID", ""});
             tag.Get<int>("SomeID").Should().Be(23);
-            tag.Get<string>("SomeName").Should().Be("Mask");
+            tag.Get<string>("SomeName").Should().Be(null);
         }
 
         #endregion
@@ -147,11 +149,14 @@ namespace Tests.ulits
             tag.CanRetrieveTag("Some").Should().BeTrue("Some -> SomeID");
             tag.CanRetrieveTag("SomeN").Should().BeTrue("SomeN -> SomeName");
 
-            tag.RetrieveTag("Some").ToString().Should().Be("SomeID|I23|SomeName|SMask");
+            var someTag = tag.RetrieveTag("Some");
+            someTag.Count.Should().Be(2, "tag contains two elements from starting tag");
+            someTag.Get<int>("ID").Should().Be(23, "SomeID -> 23");
+            someTag.Get<string>("Name").Should().Be("Mask", "SomeName -> Mask");
             tag.Count.Should().Be(0);
 
             tag = NbtTag.FromString(expectedTagString);
-            tag.RetrieveTag("SomeN").ToString().Should().Be("SomeName|SMask");
+            tag.RetrieveTag("SomeN").ToString().Should().Be("ame|SMask");
             tag.ToString().Should().Be("SomeID|I23");
         }
 
