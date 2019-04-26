@@ -67,19 +67,26 @@ namespace GlLib.Common.Entities
 
         private void MoveEntity()
         {
-            var oldPos = position;
-            //PlanarVector dVelocity = _velocity / (_velocity.Length * 10);
-
-            Position += velocity;
-            var proj = chunkObj;
-            if (proj != null && proj.isLoaded)
+            var oldPos = Position;
+            var oldChunk = chunkObj;
+            int accuracy = 20;
+            var dvel = velocity / accuracy;
+            for(int i=0;i<accuracy;i++)
             {
-                if (chunkObj != proj) ((ServerWorld) worldObj).ChangeEntityChunk(this, proj);
-            }
-            else
-            {
-                Position = oldPos;
-                velocity = new PlanarVector();
+                Position += dvel;
+                if (chunkObj != null && chunkObj.isLoaded)
+                {
+                    if (chunkObj != oldChunk) ((ServerWorld) worldObj).ChangeEntityChunk(this, chunkObj);
+                }
+                else
+                {
+                    Position = oldPos;
+                    velocity = new PlanarVector();
+                    break;
+                }
+                
+                oldPos = Position;
+                oldChunk = chunkObj;
             }
         }
 

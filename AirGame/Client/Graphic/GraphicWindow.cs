@@ -8,28 +8,30 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
 using System.Threading;
+using GlLib.Client.Api.Cameras;
 
 namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
         public static GraphicWindow instance;
-        public static VSyncMode vSync = VSyncMode.On;
-        public static ClientService client;
+        public VSyncMode vSync = VSyncMode.On;
+        public ClientService client;
         public int guiTimeout = 0;
         public Gui gui;
-        public double dx = 900;
-        public double dy = 900;
+        public ICamera camera;
 
         public Hud hud;
 
-        public GraphicWindow(int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
+        public GraphicWindow(ClientService _client, int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
             _title)
         {
+            client = _client;
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             instance = this;
             hud = new Hud();
+            camera = new EntityTrackingCamera(client.player);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -91,9 +93,11 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine(Proxy.GetClient().player.Position);
 
             GL.PushMatrix();
-            GL.Translate((Proxy.GetClient().player.Position.x - 3*dx/4), 
-                (dy / 30 - Proxy.GetClient().player.Position.y),0);
-            Proxy.GetClient().worldRenderer.Render(dx,dy);
+//            GL.Translate((Proxy.GetClient().player.Position.x - client.world.width * 16), 
+//                (30 + Proxy.GetClient().player.Position.y),0);
+            camera.Update(this);
+            camera.PerformTranslation(this);
+            Proxy.GetClient().worldRenderer.Render(000,000);
             GL.PopMatrix();
 
             //GUI render is not connected to the world
@@ -115,10 +119,10 @@ namespace GlLib.Client.Graphic
             base.OnUnload(_e);
         }
 
-        public static void RunWindow()
+        public static void RunWindow(ClientService _client)
         {
             var graphicThread = new Thread(() =>
-                new GraphicWindow(800, 600, "GLLib").Run(60));
+                new GraphicWindow(_client,800, 600, "GLLib").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
         }

@@ -17,7 +17,7 @@ namespace GlLib.Client.Input
         public static Action<Player> moveLeft = _p =>
         {
             _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-            GraphicWindow.instance.dx -= _p.accelerationValue*64;
+//            GraphicWindow.instance.dx -= _p.accelerationValue*64;
             _p.CheckVelocity();
         };
 
@@ -25,21 +25,21 @@ namespace GlLib.Client.Input
         {
             _p.velocity += new PlanarVector(0, -_p.accelerationValue);
             _p.CheckVelocity();
-            GraphicWindow.instance.dy -= _p.accelerationValue*64;
+//            GraphicWindow.instance.dy -= _p.accelerationValue*64;
         };
 
         public static Action<Player> moveRight = _p =>
         {
             _p.velocity += new PlanarVector(_p.accelerationValue, 0);
             _p.CheckVelocity();
-            GraphicWindow.instance.dx += _p.accelerationValue*64;
+//            GraphicWindow.instance.dx += _p.accelerationValue*64;
         };
 
         public static Action<Player> moveDown = _p =>
         {
             _p.velocity += new PlanarVector(0, _p.accelerationValue);
             _p.CheckVelocity();
-            GraphicWindow.instance.dy += _p.accelerationValue*64;
+//            GraphicWindow.instance.dy += _p.accelerationValue*64;
         };
 
         public static Action<Player> openInventory = _p =>

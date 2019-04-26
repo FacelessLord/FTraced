@@ -7,33 +7,33 @@ namespace GlLib.Client.Graphic
 {
     public class WorldRenderer
     {
-        private World _world;
+        private World world;
 
         public WorldRenderer(World _world)
         {
-            this._world = _world;
+            world = _world;
         }
 
         public void Render(double _x, double _y)
         {
-            int width = _world.width;
-            int height = _world.height;
+            int width = world.width;
+            int height = world.height;
             var xAxis = new PlanarVector(Chunk.BlockWidth,0 );
             var yAxis = new PlanarVector(0, Chunk.BlockHeight);
 
             for (var i = 0; i < width; i++)
             for (var j = height - 1; j >= 0; j--)
-                if (_world[i, j].isLoaded)
-                    _world[i, j].RenderChunk(i, j, xAxis, yAxis);
+                if (world[i, j].isLoaded)
+                    world[i, j].RenderChunk(i, j, xAxis, yAxis);
 
             //rendering entities
-
+            world.entityMutex.WaitOne();
             GL.PushMatrix();
             //GL.Translate(_x, _y, 0);
             for (var i = 0; i < width; i++)
             for (var j = height - 1; j >= 0; j--)
-                if (_world[i, j].isLoaded)
-                    foreach (var level in _world[i, j].entities)
+                if (world[i, j].isLoaded)
+                    foreach (var level in world[i, j].entities)
                     foreach (var entity in level)
                     {
                         var coord = xAxis * (entity.Position.x - 8) + yAxis * (entity.Position.y - 8);
@@ -46,6 +46,7 @@ namespace GlLib.Client.Graphic
                     }
 
             GL.PopMatrix();
+            world.entityMutex.ReleaseMutex();
         }
     }
 }
