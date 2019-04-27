@@ -13,18 +13,6 @@
 	},
 	"1,1": {
 		"entity": {
-			"entityId": "entity.player",
-			"Position": "(23.3087650001665,22.1371718516411,0)",
-			"Velocity": "(7.15097454101595E-09,-3.17292539340103E-09)",
-			"MaxVelocity": "(0.3,0.3)",
-			"WorldId": 0,
-			false,
-			false,
-			"entityTag": "",
-			"nickName": "Noname",
-			"tag": ""
-		},
-		"entity": {
 			"entityId": "entity.null",
 			"Position": "(24,24,0)",
 			"Velocity": "(0,0)",
@@ -33,6 +21,18 @@
 			false,
 			false,
 			"entityTag": ""
+		},
+		"entity": {
+			"entityId": "entity.player",
+			"Position": "(20.1990326798944,21.3856591779733,0)",
+			"Velocity": "(-1.8449589922601E-07,2.17053999089423E-07)",
+			"MaxVelocity": "(0.3,0.3)",
+			"WorldId": 0,
+			false,
+			false,
+			"entityTag": "",
+			"nickName": "Noname",
+			"tag": ""
 		}
 	},
 	"1,2": {
@@ -47,7 +47,7 @@
 	"2,2": {
 		
 	}
-}}		"entity": {
+}}}		"entity": {
 			"entityId": "entity.null",
 			"Position": "(24,24,0)",
 			"Velocity": "(0,0)",

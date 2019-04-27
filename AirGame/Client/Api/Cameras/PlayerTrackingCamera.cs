@@ -6,23 +6,21 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Api.Cameras
 {
-    public class EntityTrackingCamera : ICamera
+    public class PlayerTrackingCamera : ICamera
     {
-        public Entity trackedEntity;
         public double posX;
         public double posY;
 
-        public EntityTrackingCamera(Entity _entity)
+        public PlayerTrackingCamera()
         {
-            trackedEntity = _entity;
-            posX = _entity.Position.x;
-            posY = _entity.Position.y;
+            posX = Proxy.GetClient().player.Position.x;
+            posY = Proxy.GetClient().player.Position.y;
         }
 
         public void Update(GraphicWindow _window)
         {
-            posX = trackedEntity.Position.x;
-            posY = trackedEntity.Position.y;
+            posX = Proxy.GetClient().player.Position.x;
+            posY = Proxy.GetClient().player.Position.y;
         }
 
         public void PerformTranslation(GraphicWindow _window)

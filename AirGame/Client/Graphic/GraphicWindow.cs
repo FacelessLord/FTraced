@@ -31,7 +31,7 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine("Window constructed");
             instance = this;
             hud = new Hud();
-            camera = new EntityTrackingCamera(client.player);
+            camera = new PlayerTrackingCamera();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -91,12 +91,13 @@ namespace GlLib.Client.Graphic
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            SidedConsole.WriteLine(Proxy.GetClient().player.Position);
+            SidedConsole.WriteLine(client.player.Position);
 
             GL.PushMatrix();
             GL.Translate(Width / 2d, Height / 2d,0);
             camera.Update(this);
             camera.PerformTranslation(this);
+            SidedConsole.WriteLine(client.player.Position);
             Proxy.GetClient().worldRenderer.Render(000,000);
             GL.PopMatrix();
 
