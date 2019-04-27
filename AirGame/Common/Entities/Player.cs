@@ -11,13 +11,13 @@ namespace GlLib.Common.Entities
     public class Player : Entity
     {
         public PlayerData data;
-        public double accelerationValue = 0.05;
+        public double accelerationValue = 0.1;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
 
         public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
-            this.nickname = _nickname;
+            nickname = _nickname;
         }
 
         public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
@@ -84,7 +84,8 @@ namespace GlLib.Common.Entities
 
         public void CheckVelocity()
         {
-            if (velocity.Length > maxVel.Length) velocity *= maxVel.Length / velocity.Length;
+            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
+            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
         }
     }
 }

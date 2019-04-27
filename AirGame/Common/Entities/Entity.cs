@@ -14,7 +14,7 @@ namespace GlLib.Common.Entities
         public Chunk chunkObj;
 
         public bool isDead;
-        public PlanarVector maxVel = new PlanarVector(0.1, 0.2);
+        public PlanarVector maxVel = new PlanarVector(0.15, 0.15);
 
         public NbtTag nbtTag = new NbtTag();
 
@@ -71,9 +71,9 @@ namespace GlLib.Common.Entities
             var oldChunk = chunkObj;
             int accuracy = 20;
             var dvel = velocity / accuracy;
-            for(int i=0;i<accuracy;i++)
+            for (int i = 0; i < accuracy; i++)
             {
-                Position += dvel;
+                Position = Position + dvel;
                 if (chunkObj != null && chunkObj.isLoaded)
                 {
                     if (chunkObj != oldChunk) ((ServerWorld) worldObj).ChangeEntityChunk(this, chunkObj);
@@ -84,7 +84,7 @@ namespace GlLib.Common.Entities
                     velocity = new PlanarVector();
                     break;
                 }
-                
+
                 oldPos = Position;
                 oldChunk = chunkObj;
             }
@@ -138,14 +138,14 @@ namespace GlLib.Common.Entities
         {
             if (_jsonObject is JsonObjectCollection collection)
             {
-                Position = RestrictedVector3D.FromString(((JsonStringValue)collection[1]).Value);
-                velocity = PlanarVector.FromString(((JsonStringValue)collection[2]).Value);
-                maxVel = PlanarVector.FromString(((JsonStringValue)collection[3]).Value);
-                worldObj = Proxy.GetServer().GetWorldById((int)((JsonNumericValue)collection[4]).Value);
+                Position = RestrictedVector3D.FromString(((JsonStringValue) collection[1]).Value);
+                velocity = PlanarVector.FromString(((JsonStringValue) collection[2]).Value);
+                maxVel = PlanarVector.FromString(((JsonStringValue) collection[3]).Value);
+                worldObj = Proxy.GetServer().GetWorldById((int) ((JsonNumericValue) collection[4]).Value);
                 isDead = ((JsonLiteralValue) collection[5]).Value == JsonAllowedLiteralValues.True;
                 noClip = ((JsonLiteralValue) collection[6]).Value == JsonAllowedLiteralValues.True;
                 if (collection.Count > 7)
-                    nbtTag = NbtTag.FromString(((JsonStringValue)collection[collection.Count-1]).Value);
+                    nbtTag = NbtTag.FromString(((JsonStringValue) collection[collection.Count - 1]).Value);
             }
         }
 
@@ -159,11 +159,12 @@ namespace GlLib.Common.Entities
                 jsonObj.Add(new JsonStringValue("Velocity", velocity + ""));
                 jsonObj.Add(new JsonStringValue("MaxVelocity", maxVel + ""));
                 jsonObj.Add(new JsonNumericValue("WorldId", worldObj.worldId));
-                jsonObj.Add(new JsonLiteralValue(isDead+""));
-                jsonObj.Add(new JsonLiteralValue(noClip+""));
+                jsonObj.Add(new JsonLiteralValue(isDead + ""));
+                jsonObj.Add(new JsonLiteralValue(noClip + ""));
                 if (nbtTag != null)
-                    jsonObj.Add(new JsonStringValue("entityTag", nbtTag+""));
+                    jsonObj.Add(new JsonStringValue("entityTag", nbtTag + ""));
             }
+
             return jsonObj;
         }
 
