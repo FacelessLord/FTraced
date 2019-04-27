@@ -22,9 +22,8 @@ namespace GlLib.Client.Api.Cameras
         {
             var width = trackedEntity.worldObj.width;
             var height = trackedEntity.worldObj.height;
-            GL.Translate(-(trackedEntity.Position.x - width * 4 * 1.5) * 64,
-                -(trackedEntity.Position.y - height * 4 * 1.5) * 32, 0);
-            GL.Translate(-trackedEntity.velocity.x*128d, -trackedEntity.velocity.y*64d, 0);
+            GL.Translate(-(trackedEntity.Position.x) * 64,
+                -(trackedEntity.Position.y) * 32, 0);
         }
     }
 }

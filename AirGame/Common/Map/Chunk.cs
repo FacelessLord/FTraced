@@ -55,7 +55,7 @@ namespace GlLib.Common.Map
                 {
                     var btexture = Vertexer.LoadTexture(block.GetTextureName(world, i + 8, j + 8));
                     Vertexer.BindTexture(btexture);
-                    var coord = _xAxis * i + _yAxis * j;
+                    var coord = _xAxis * (i+8) + _yAxis * (j+8);
                     GL.PushMatrix();
 
                     GL.Translate(coord.x, coord.y, 0);

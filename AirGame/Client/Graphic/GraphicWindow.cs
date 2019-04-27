@@ -95,6 +95,7 @@ namespace GlLib.Client.Graphic
             GL.PushMatrix();
 //            GL.Translate((Proxy.GetClient().player.Position.x - client.world.width * 16), 
 //                (30 + Proxy.GetClient().player.Position.y),0);
+            GL.Translate(Width / 2d, Height / 2d,0);
             camera.Update(this);
             camera.PerformTranslation(this);
             Proxy.GetClient().worldRenderer.Render(000,000);

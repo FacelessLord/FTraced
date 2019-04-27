@@ -18,7 +18,7 @@ namespace GlLib.Client.Graphic
         {
             int width = world.width;
             int height = world.height;
-            var xAxis = new PlanarVector(Chunk.BlockWidth,0 );
+            var xAxis = new PlanarVector(Chunk.BlockWidth, 0);
             var yAxis = new PlanarVector(0, Chunk.BlockHeight);
 
             for (var i = 0; i < width; i++)
@@ -32,21 +32,23 @@ namespace GlLib.Client.Graphic
             //GL.Translate(_x, _y, 0);
             for (var i = 0; i < width; i++)
             for (var j = height - 1; j >= 0; j--)
-                if (world[i, j].isLoaded)
-                    foreach (var level in world[i, j].entities)
+            {
+                var chunk = world[i, j];
+                if (chunk.isLoaded)
+                    foreach (var level in chunk.entities)
                     foreach (var entity in level)
                     {
-                        var coord = xAxis * (entity.Position.x - 8) + yAxis * (entity.Position.y - 8);
+                        var coord = xAxis * (entity.Position.x) + yAxis * (entity.Position.y);
                         GL.PushMatrix();
 
                         GL.Translate(coord.x, coord.y, 0);
-                        GL.Scale(1.5,1.5,1);
+                        GL.Scale(1.5, 1.5, 1);
                         entity.Render(xAxis, yAxis);
                         GL.PopMatrix();
                     }
+            }
 
             GL.PopMatrix();
-            world.entityMutex.ReleaseMutex();
         }
     }
 }
