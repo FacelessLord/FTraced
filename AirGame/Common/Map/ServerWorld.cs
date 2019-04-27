@@ -45,10 +45,11 @@ namespace GlLib.Common.Map
             foreach (var pair in entityAddQueue) pair.chk.entities[pair.e.Position.z].Add(pair.e);
 
             entityAddQueue.Clear();
+            entityMutex.WaitOne();
             foreach (var chunk in chunks)
                 if (chunk.isLoaded)
                     chunk.Update();
-
+            entityMutex.ReleaseMutex();
             SaveWorldEntities();
         }
 
