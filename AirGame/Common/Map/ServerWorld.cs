@@ -52,9 +52,9 @@ namespace GlLib.Common.Map
             SaveWorldEntities();
         }
 
-        public void ChangeEntityChunk(Entity _e, Chunk _next)
+        public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
         {
-            entityRemoveQueue.Add((_e, _e.chunkObj));
+            entityRemoveQueue.Add((_e, _old));
             entityAddQueue.Add((_e, _next));
             _e.chunkObj = _next;
         }

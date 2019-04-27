@@ -14,12 +14,13 @@ namespace GlLib.Common.Entities
         public Chunk chunkObj;
 
         public bool isDead;
-        public PlanarVector maxVel = new PlanarVector(0.15, 0.15);
+        public PlanarVector maxVel = new PlanarVector(0.3, 0.3);
 
         public NbtTag nbtTag = new NbtTag();
 
         public bool noClip;
         protected RestrictedVector3D position = new RestrictedVector3D();
+        protected RestrictedVector3D oldPosition = new RestrictedVector3D();
 
         public PlanarVector velocity = new PlanarVector();
         public World worldObj;
@@ -34,11 +35,14 @@ namespace GlLib.Common.Entities
         {
         }
 
+        public RestrictedVector3D OldPosition => oldPosition;
+
         public RestrictedVector3D Position
         {
             get => position;
             set
             {
+                oldPosition = position;
                 position = value;
                 chunkObj = GetProjection(position, worldObj);
             }
@@ -58,7 +62,6 @@ namespace GlLib.Common.Entities
         {
             if (EventBus.OnEntityUpdate(this)) return;
 
-            if (velocity.Length > maxVel.Length) velocity *= maxVel.Length / velocity.Length;
             MoveEntity();
             velocity *= 0.85;
             var entities = worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), position.z);
@@ -76,7 +79,7 @@ namespace GlLib.Common.Entities
                 Position = Position + dvel;
                 if (chunkObj != null && chunkObj.isLoaded)
                 {
-                    if (chunkObj != oldChunk) ((ServerWorld) worldObj).ChangeEntityChunk(this, chunkObj);
+                    if (chunkObj != oldChunk) ((ServerWorld) worldObj).ChangeEntityChunk(this, oldChunk, chunkObj);
                 }
                 else
                 {
@@ -114,6 +117,7 @@ namespace GlLib.Common.Entities
 
         public virtual void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
+            SidedConsole.WriteLine("Entity Render");
             GL.PushMatrix();
             var btexture = Vertexer.LoadTexture("monochromatic.png");
             Vertexer.BindTexture(btexture);

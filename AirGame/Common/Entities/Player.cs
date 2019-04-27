@@ -11,7 +11,7 @@ namespace GlLib.Common.Entities
     public class Player : Entity
     {
         public PlayerData data;
-        public double accelerationValue = 0.1;
+        public double accelerationValue = 0.2;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
 
@@ -40,6 +40,7 @@ namespace GlLib.Common.Entities
 
         public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
+            SidedConsole.WriteLine("Player Render");
             GL.PushMatrix();
             var btexture = Vertexer.LoadTexture("player.png");
             Vertexer.BindTexture(btexture);

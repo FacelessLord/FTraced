@@ -77,6 +77,7 @@ namespace GlLib.Client.Graphic
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
             base.OnRenderFrame(_e);
+            SidedConsole.WriteLine("Render Frame");
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.MatrixMode(MatrixMode.Modelview);
@@ -93,8 +94,6 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine(Proxy.GetClient().player.Position);
 
             GL.PushMatrix();
-//            GL.Translate((Proxy.GetClient().player.Position.x - client.world.width * 16), 
-//                (30 + Proxy.GetClient().player.Position.y),0);
             GL.Translate(Width / 2d, Height / 2d,0);
             camera.Update(this);
             camera.PerformTranslation(this);
@@ -123,7 +122,7 @@ namespace GlLib.Client.Graphic
         public static void RunWindow(ClientService _client)
         {
             var graphicThread = new Thread(() =>
-                new GraphicWindow(_client,800, 600, "GLLib").Run(60));
+                new GraphicWindow(_client,800, 600, "Tracing of F").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
         }

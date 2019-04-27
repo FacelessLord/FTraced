@@ -8,22 +8,26 @@ namespace GlLib.Client.Api.Cameras
     public class EntityTrackingCamera : ICamera
     {
         public Entity trackedEntity;
+        public double posX;
+        public double posY;
 
         public EntityTrackingCamera(Entity _entity)
         {
             trackedEntity = _entity;
+            posX = _entity.OldPosition.x;
+            posY = _entity.OldPosition.y;
         }
 
         public void Update(GraphicWindow _window)
         {
+//            posX = trackedEntity.OldPosition.x;
+//            posY = trackedEntity.OldPosition.y;
         }
 
         public void PerformTranslation(GraphicWindow _window)
         {
-            var width = trackedEntity.worldObj.width;
-            var height = trackedEntity.worldObj.height;
-            GL.Translate(-(trackedEntity.Position.x) * 64,
-                -(trackedEntity.Position.y) * 32, 0);
+            GL.Translate(-posX * 64,
+                -posY * 32, 0);
         }
     }
 }

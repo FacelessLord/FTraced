@@ -1,4 +1,5 @@
 using System;
+using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
@@ -27,7 +28,6 @@ namespace GlLib.Client.Graphic
                     world[i, j].RenderChunk(i, j, xAxis, yAxis);
 
             //rendering entities
-            world.entityMutex.WaitOne();
             GL.PushMatrix();
             //GL.Translate(_x, _y, 0);
             for (var i = 0; i < width; i++)
