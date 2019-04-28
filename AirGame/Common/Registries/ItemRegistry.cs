@@ -7,7 +7,7 @@ namespace GlLib.Common.Registries
         public GameRegistry registry;
 
         public Item test = 
-            new Item("item.test", "one_and_a_half_sword.png", ItemRarity.Legendary, ItemType.Weapon);
+            new Item("item.test", ItemRarity.Legendary, ItemType.Weapon);
 
         public ItemRegistry(GameRegistry _registry)
         {

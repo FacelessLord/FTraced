@@ -14,8 +14,8 @@
 	"1,1": {
 		"entity": {
 			"entityId": "entity.player",
-			"Position": "(22.366098963513,20.9011331843772,0)",
-			"Velocity": "(8.51554730692959E-05,-0.000169977656615816)",
+			"Position": "(24,24,0)",
+			"Velocity": "(0,0)",
 			"MaxVelocity": "(0.3,0.3)",
 			"WorldId": 0,
 			false,
@@ -47,7 +47,19 @@
 	"2,2": {
 		
 	}
-}}}		"entity": {
+}	"1,2": {
+		
+	},
+	"2,0": {
+		
+	},
+	"2,1": {
+		
+	},
+	"2,2": {
+		
+	}
+}		"entity": {
 			"entityId": "entity.null",
 			"Position": "(24,24,0)",
 			"Velocity": "(0,0)",

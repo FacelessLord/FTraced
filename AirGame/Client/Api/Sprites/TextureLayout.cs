@@ -36,7 +36,6 @@ namespace GlLib.Client.Api.Sprites
             (double startU, double startV, double endU, float endV) = layout.GetFrameUvProportions(_stepCount);
 
             GL.PushMatrix();
-            GL.Translate(-texture.width / 2, -texture.height / 2, 0);
             Vertexer.BindTexture(texture);
             Vertexer.StartDrawingQuads();
 

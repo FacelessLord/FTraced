@@ -25,10 +25,10 @@ namespace GlLib.Client.API.Gui
 
         public override void Render(GameWindow _window, int _centerX, int _centerY)
         {
-            var start = Vertexer.LoadTexture("bar_start.png");
-            var center = Vertexer.LoadTexture("bar_center.png");
-            var end = Vertexer.LoadTexture("bar_end.png");
-            var filler = Vertexer.LoadTexture("bar_filler.png");
+            var start = Vertexer.LoadTexture("gui/bar_start.png");
+            var center = Vertexer.LoadTexture("gui/bar_center.png");
+            var end = Vertexer.LoadTexture("gui/bar_end.png");
+            var filler = Vertexer.LoadTexture("gui/bar_filler.png");
 
             Vertexer.BindTexture(start);
             Vertexer.StartDrawingQuads();

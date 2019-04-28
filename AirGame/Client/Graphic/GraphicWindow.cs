@@ -104,8 +104,8 @@ namespace GlLib.Client.Graphic
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
-            gui?.Render(this);
             hud.Render(this);
+            gui?.Render(this);
             GL.PopMatrix();
 
             SwapBuffers();

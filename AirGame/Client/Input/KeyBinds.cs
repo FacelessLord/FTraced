@@ -49,8 +49,7 @@ namespace GlLib.Client.Input
                 GraphicWindow.instance.gui = new Gui();
                 GraphicWindow.instance.gui
                     .AddRectangle(GraphicWindow.instance.Width / 38, GraphicWindow.instance.Height / 9,
-                        4 * GraphicWindow.instance.Width / 9, 2 * GraphicWindow.instance.Height / 5,
-                        Color.FromArgb(127, 200, 200, 200));
+                        4 * GraphicWindow.instance.Width / 9, 2 * GraphicWindow.instance.Height / 5);
                 var text = "Some text here";
                 GraphicWindow.instance.gui.AddText(text, 100, 100, 200, 200);
 
