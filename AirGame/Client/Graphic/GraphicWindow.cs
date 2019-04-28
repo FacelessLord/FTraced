@@ -77,7 +77,6 @@ namespace GlLib.Client.Graphic
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
             base.OnRenderFrame(_e);
-            SidedConsole.WriteLine("Render Frame");
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.MatrixMode(MatrixMode.Modelview);
@@ -91,13 +90,12 @@ namespace GlLib.Client.Graphic
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            SidedConsole.WriteLine(client.player.Position);
+//            SidedConsole.WriteLine(client.player.Position);
 
             GL.PushMatrix();
             GL.Translate(Width / 2d, Height / 2d,0);
             camera.Update(this);
             camera.PerformTranslation(this);
-            SidedConsole.WriteLine(client.player.Position);
             Proxy.GetClient().worldRenderer.Render(000,000);
             GL.PopMatrix();
 

@@ -9,7 +9,7 @@ namespace GlLib.Common.Registries
 
         public EntityRegistry(GameRegistry _registry)
         {
-            this.registry = _registry;
+            registry = _registry;
         }
 
         public void Register()

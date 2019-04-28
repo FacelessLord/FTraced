@@ -63,7 +63,7 @@ namespace GlLib.Client.Api.Sprites
             SetHorizontalKern('x', 2, 2);
             SetHorizontalKern('y', 3, 2);
 
-            SetHorizontalKern('1', 3, 3);
+            SetHorizontalKern('1', 2, 3);
             SetHorizontalKern('!', 3, 3);
             SetHorizontalKern('*', 3, 2);
             SetHorizontalKern('(', 3, 2);

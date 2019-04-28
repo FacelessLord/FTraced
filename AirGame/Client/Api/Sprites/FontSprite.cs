@@ -107,6 +107,21 @@ namespace GlLib.Client.Api.Sprites
             Vertexer.Draw();
         }
 
+        public double GetTextWidth(string _text, int _size)
+        {
+            double d = 0;
+            for (int i = 0; i < _text.Length; i++)
+            {
+                char character = _text[i];
+                var hKern = GetHorizontalKern(character);
+                float leftKern = hKern.left / (float) _size;
+                float rightKern = hKern.right / (float) _size;
+                d += 1.05 - rightKern - leftKern;
+            }
+
+            return d;
+        }
+
         public virtual void DrawText(string _text, int _size, float _r = 0, float _g = 0, float _b = 0, float _a = 1.0f)
         {
             GL.PushMatrix();
@@ -131,7 +146,7 @@ namespace GlLib.Client.Api.Sprites
                         Render(character);
                     }
 
-                    d += 1.1 - rightKern - leftKern;
+                    d += 1.05 - rightKern - leftKern;
                     GL.Translate(1.1 - rightKern, -vertKern/2, 0);
                 }
                 else

@@ -50,6 +50,26 @@ namespace GlLib.Client.API.Gui
         {
             Add(new GuiSign(_text, _x, _y, _width, _height, _color));
         }
+        
+        public void AddHorizontalBar(int _x, int _y, int _width, int _height)
+        {
+            Add(new GuiHorizontalBar(_x, _y, _width, _height));
+        }
+
+        public void AddHorizontalBar(int _x, int _y, int _width, int _height, Color _color)
+        {
+            Add(new GuiHorizontalBar(_x, _y, _width, _height, _color));
+        }
+        
+        public void AddNumeric(int _x, int _y, int _width, int _height)
+        {
+            Add(new GuiNumeric(_x, _y, _width, _height));
+        }
+
+        public void AddNumeric(int _x, int _y, int _width, int _height, Color _color)
+        {
+            Add(new GuiNumeric(_x, _y, _width, _height, _color));
+        }
 
         public void Update(GameWindow _window)
         {

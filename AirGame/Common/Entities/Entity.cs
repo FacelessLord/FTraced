@@ -117,7 +117,6 @@ namespace GlLib.Common.Entities
 
         public virtual void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            SidedConsole.WriteLine("Entity Render");
             GL.PushMatrix();
             var btexture = Vertexer.LoadTexture("monochromatic.png");
             Vertexer.BindTexture(btexture);

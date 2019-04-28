@@ -40,7 +40,6 @@ namespace GlLib.Common.Entities
 
         public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            SidedConsole.WriteLine("Player Render");
             GL.PushMatrix();
             var btexture = Vertexer.LoadTexture("player.png");
             Vertexer.BindTexture(btexture);

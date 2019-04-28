@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using GlLib.Client;
 using GlLib.Common.Map;
+using GlLib.Common.Registries;
 using GlLib.Server;
 using GlLib.Utils;
 

@@ -25,7 +25,6 @@ namespace GlLib.Client.Api.Cameras
 
         public void PerformTranslation(GraphicWindow _window)
         {
-            SidedConsole.WriteLine(posX+"|"+posY);
             GL.Translate(-posX * 64, -posY * 32, 0);
         }
     }
