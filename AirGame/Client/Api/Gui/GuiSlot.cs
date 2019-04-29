@@ -10,10 +10,10 @@ namespace GlLib.Client.API.Gui
     {
         public IInventory inventory;
         public int slot;
-        public const int SlotStandartSize = 16;
+        public const int SlotSize = 48;
 
-        public GuiSlot(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, SlotStandartSize,
-            SlotStandartSize)
+        public GuiSlot(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, SlotSize,
+            SlotSize)
         {
             slotTexture = Vertexer.LoadTexture("gui/slot.png");
             inventory = _inventory;
@@ -21,7 +21,7 @@ namespace GlLib.Client.API.Gui
         }
 
         public GuiSlot(IInventory _inventory, int _slot, int _x, int _y, Color _color) : base(
-            _x, _y, SlotStandartSize, SlotStandartSize, _color)
+            _x, _y, SlotSize, SlotSize, _color)
         {
             slotTexture = Vertexer.LoadTexture("gui/slot.png");
             inventory = _inventory;
@@ -39,10 +39,10 @@ namespace GlLib.Client.API.Gui
 
             Vertexer.StartDrawingQuads();
 
-            Vertexer.VertexWithUvAt(x, y, 0, 0);
-            Vertexer.VertexWithUvAt(x + width, y, 1, 0);
-            Vertexer.VertexWithUvAt(x + width, y + height, 1, 1);
-            Vertexer.VertexWithUvAt(x, y + height, 0, 1);
+            Vertexer.VertexWithUvAt(0, 0, 0, 0);
+            Vertexer.VertexWithUvAt(width, 0, 1, 0);
+            Vertexer.VertexWithUvAt(width, height, 1, 1);
+            Vertexer.VertexWithUvAt(0, height, 0, 1);
 
             Vertexer.Draw();
 

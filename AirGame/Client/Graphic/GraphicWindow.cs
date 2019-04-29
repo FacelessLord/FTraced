@@ -9,6 +9,7 @@ using OpenTK.Input;
 using System;
 using System.Threading;
 using GlLib.Client.Api.Cameras;
+using GlLib.Client.Api.Sprites;
 
 namespace GlLib.Client.Graphic
 {
@@ -23,7 +24,8 @@ namespace GlLib.Client.Graphic
 
         public Hud hud;
 
-        public GraphicWindow(ClientService _client, int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
+        public GraphicWindow(ClientService _client, int _width, int _height, string _title) : base(_width, _height,
+            GraphicsMode.Default,
             _title)
         {
             client = _client;
@@ -32,6 +34,8 @@ namespace GlLib.Client.Graphic
             instance = this;
             hud = new Hud();
             camera = new PlayerTrackingCamera();
+            TextureLayout layout = new TextureLayout(Vertexer.LoadTexture("player_sprite.png"),0,0,256,64,16,2);
+            client.player.playerSprite = new LinearSprite(layout, 22, 1);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -49,7 +53,7 @@ namespace GlLib.Client.Graphic
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
-            if(KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+            if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             }
@@ -84,7 +88,7 @@ namespace GlLib.Client.Graphic
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
 
             GL.PushMatrix();
-            GL.Scale(1d /Width, 1d /Height, 1);
+            GL.Scale(1d / Width, 1d / Height, 1);
 
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
@@ -93,10 +97,10 @@ namespace GlLib.Client.Graphic
 //            SidedConsole.WriteLine(client.player.Position);
 
             GL.PushMatrix();
-            GL.Translate(Width / 2d, Height / 2d,0);
+            GL.Translate(Width / 2d, Height / 2d, 0);
             camera.Update(this);
             camera.PerformTranslation(this);
-            Proxy.GetClient().worldRenderer.Render(000,000);
+            Proxy.GetClient().worldRenderer.Render(000, 000);
             GL.PopMatrix();
 
             //GUI render is not connected to the world
@@ -104,7 +108,9 @@ namespace GlLib.Client.Graphic
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
+            hud.Update(this);
             hud.Render(this);
+            gui?.Update(this);
             gui?.Render(this);
             GL.PopMatrix();
 
@@ -121,7 +127,7 @@ namespace GlLib.Client.Graphic
         public static void RunWindow(ClientService _client)
         {
             var graphicThread = new Thread(() =>
-                new GraphicWindow(_client,800, 600, "Tracing of F").Run(60));
+                new GraphicWindow(_client, 800, 600, "Tracing of F").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
         }

@@ -119,7 +119,7 @@ namespace GlLib.Client.Api.Sprites
                 d += 1.05 - rightKern - leftKern;
             }
 
-            return d;
+            return d*_size;
         }
 
         public virtual void DrawText(string _text, int _size, float _r = 0, float _g = 0, float _b = 0, float _a = 1.0f)

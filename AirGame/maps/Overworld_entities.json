@@ -9,13 +9,10 @@
 		
 	},
 	"1,0": {
-		
-	},
-	"1,1": {
 		"entity": {
 			"entityId": "entity.player",
-			"Position": "(24,24,0)",
-			"Velocity": "(0,0)",
+			"Position": "(31.5127500000006,10.3999999999997,0)",
+			"Velocity": "(3.74858179641956E-27,-5.1883485071551E-27)",
 			"MaxVelocity": "(0.3,0.3)",
 			"WorldId": 0,
 			false,
@@ -23,7 +20,9 @@
 			"entityTag": "",
 			"nickName": "Noname",
 			"tag": ""
-		},
+		}
+	},
+	"1,1": {
 		"entity": {
 			"entityId": "entity.null",
 			"Position": "(24,24,0)",
@@ -47,19 +46,8 @@
 	"2,2": {
 		
 	}
-}	"1,2": {
-		
-	},
-	"2,0": {
-		
-	},
-	"2,1": {
-		
-	},
-	"2,2": {
-		
-	}
-}		"entity": {
+}}}}
+}}		"entity": {
 			"entityId": "entity.null",
 			"Position": "(24,24,0)",
 			"Velocity": "(0,0)",

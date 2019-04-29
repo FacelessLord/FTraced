@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using GlLib.Client.Api.Gui;
+using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Common.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK;
@@ -46,13 +49,7 @@ namespace GlLib.Client.Input
         {
             if (GraphicWindow.instance.gui == null)
             {
-                GraphicWindow.instance.gui = new Gui();
-                GraphicWindow.instance.gui
-                    .AddRectangle(GraphicWindow.instance.Width / 38, GraphicWindow.instance.Height / 9,
-                        4 * GraphicWindow.instance.Width / 9, 2 * GraphicWindow.instance.Height / 5);
-                var text = "Some text here";
-                GraphicWindow.instance.gui.AddText(text, 100, 100, 200, 200);
-
+                GraphicWindow.instance.gui = new PlayerInventoryGui(_p);
             }
             else
             {

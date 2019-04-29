@@ -33,16 +33,20 @@ namespace GlLib.Client.Api.Sprites
 
         public virtual void Render(int _stepCount)
         {
-            (double startU, double startV, double endU, float endV) = layout.GetFrameUvProportions(_stepCount);
+            (float startU, float startV, float endU, float endV) = layout.GetFrameUvProportions(_stepCount);
 
+            float du = endU - startU;
+            float dv = endV - startV;
+            
             GL.PushMatrix();
+            GL.Scale(2,2,1);
             Vertexer.BindTexture(texture);
             Vertexer.StartDrawingQuads();
 
             Vertexer.VertexWithUvAt(0, 0, startU, startV);
-            Vertexer.VertexWithUvAt(texture.width, 0, endU, startV);
-            Vertexer.VertexWithUvAt(texture.width, texture.height, endU, endV);
-            Vertexer.VertexWithUvAt(0, texture.height, startU, endV);
+            Vertexer.VertexWithUvAt(texture.width*du, 0, endU, startV);
+            Vertexer.VertexWithUvAt(texture.width*du, texture.height*dv, endU, endV);
+            Vertexer.VertexWithUvAt(0, texture.height * dv, startU, endV);
 
             Vertexer.Draw();
             GL.PopMatrix();

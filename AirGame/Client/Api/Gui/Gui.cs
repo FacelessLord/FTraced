@@ -14,64 +14,64 @@ namespace GlLib.Client.API.Gui
             screenObjects = new List<GuiObject>();
         }
 
-        public void Add(GuiObject _obj)
+        public GuiObject Add(GuiObject _obj)
         {
             SidedConsole.WriteLine("" + _obj);
             screenObjects.Add(_obj);
-
+            return _obj;
         }
 
-        public void AddRectangle(int _x, int _y, int _width, int _height)
+        public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height)
         {
-            Add(new GuiRectangle(_x, _y, _width, _height));
+            return (GuiRectangle) Add(new GuiRectangle(_x, _y, _width, _height));
         }
 
-        public void AddRectangle(int _x, int _y, int _width, int _height, Color _color)
+        public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height, Color _color)
         {
-            Add(new GuiRectangle(_x, _y, _width, _height, _color));
+            return (GuiRectangle) Add(new GuiRectangle(_x, _y, _width, _height, _color));
         }
 
-        public void AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
+        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
         {
-            Add(new GuiPicture(_texture, _x, _y, _width, _height));
+            return (GuiPicture) Add(new GuiPicture(_texture, _x, _y, _width, _height));
         }
 
-        public void AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
+        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
         {
-            Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
+            return (GuiPicture) Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }
 
-        public void AddText(string _text, int _x, int _y, int _width, int _height)
+        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height)
         {
-            Add(new GuiSign(_text, _x, _y, _width, _height));
+            return (GuiSign) Add(new GuiSign(_text, _x, _y, _width, _height));
         }
 
-        public void AddText(string _text, int _x, int _y, int _width, int _height, Color _color)
+        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height, Color _color)
         {
-            Add(new GuiSign(_text, _x, _y, _width, _height, _color));
+            return (GuiSign) Add(new GuiSign(_text, _x, _y, _width, _height, _color));
         }
         
-        public void AddHorizontalBar(int _x, int _y, int _width, int _height)
+        public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height)
         {
-            Add(new GuiHorizontalBar(_x, _y, _width, _height));
+            return (GuiHorizontalBar) Add(new GuiHorizontalBar(_x, _y, _width, _height));
         }
 
-        public void AddHorizontalBar(int _x, int _y, int _width, int _height, Color _color)
+        public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height, Color _color)
         {
-            Add(new GuiHorizontalBar(_x, _y, _width, _height, _color));
+            return (GuiHorizontalBar) Add(new GuiHorizontalBar(_x, _y, _width, _height, _color));
         }
         
-        public void AddNumeric(int _x, int _y, int _width, int _height)
+        public GuiNumeric AddNumeric(int _x, int _y, int _width, int _height)
         {
-            Add(new GuiNumeric(_x, _y, _width, _height));
+            return (GuiNumeric) Add(new GuiNumeric(_x, _y, _width, _height));
         }
 
-        public void AddNumeric(int _x, int _y, int _width, int _height, Color _color)
+        public GuiNumeric AddNumeric(int _x, int _y, int _width, int _height, Color _color)
         {
-            Add(new GuiNumeric(_x, _y, _width, _height, _color));
+            return (GuiNumeric) Add(new GuiNumeric(_x, _y, _width, _height, _color));
         }
 
-        public void Update(GameWindow _window)
+        public virtual void Update(GameWindow _window)
         {
             foreach (var obj in screenObjects)
             {

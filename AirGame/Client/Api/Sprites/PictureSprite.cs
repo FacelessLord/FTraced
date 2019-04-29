@@ -10,8 +10,8 @@ namespace GlLib.Client.Api.Sprites
         public int width;
         public int height;
 
-        public PictureSprite(string _textureName, int _width = GuiSlot.SlotStandartSize, int _height
-            = GuiSlot.SlotStandartSize)
+        public PictureSprite(string _textureName, int _width = GuiSlot.SlotSize, int _height
+            = GuiSlot.SlotSize)
         {
             texture = Vertexer.LoadTexture(_textureName);
             width = _width;

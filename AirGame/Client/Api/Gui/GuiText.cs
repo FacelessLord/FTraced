@@ -27,9 +27,11 @@ namespace GlLib.Client.API.Gui
 
         public override void Render(GameWindow _window, int _centerX, int _centerY)
         {
+            var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
+            var heightCenter = (height - 11d) / 2;
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
-            GL.Translate(x, y, 0);
+            GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
             GL.Color4(1.0, 1, 1, 1);
 
