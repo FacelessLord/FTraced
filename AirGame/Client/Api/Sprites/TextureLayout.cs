@@ -24,11 +24,23 @@ namespace GlLib.Client.Api.Sprites
             texture = _texture;
             layout = new Layout(_texture.width, _texture.height, _startU, _startV, _endU, _endV, _countX, _countY);
         }
+        
+        public TextureLayout(string _texture, int _startU, int _startV, int _endU, int _endV, int _countX, int _countY)
+        {
+            texture = Vertexer.LoadTexture(_texture);
+            layout = new Layout(texture.width, texture.height, _startU, _startV, _endU, _endV, _countX, _countY);
+        }
 
         public TextureLayout(Texture _texture, Layout _layout)
         {
             texture = _texture;
             layout = _layout;
+        }
+
+        public TextureLayout(string _texture, int _countX, int _countY)
+        {
+            texture = Vertexer.LoadTexture(_texture);
+            layout = new Layout(texture.width, texture.height, _countX, _countY);
         }
 
         public virtual void Render(int _stepCount)

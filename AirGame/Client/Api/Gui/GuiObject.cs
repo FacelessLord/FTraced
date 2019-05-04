@@ -31,9 +31,14 @@ namespace GlLib.Client.API.Gui
 
         public abstract void Render(GameWindow _window, int _centerX, int _centerY);
 
+        public virtual AxisAlignedBb GetObjectBox(GameWindow _window)
+        {
+           return new AxisAlignedBb(x, y, x + width, y + height);
+        }
+
         public virtual bool IsMouseOver(GameWindow _window, int _mouseX, int _mouseY)
         {
-            var objBox = new AxisAlignedBb(x, y, x + width, y + height);
+            var objBox = GetObjectBox(_window);
             var mouseVec = new PlanarVector(_mouseX, _mouseY);
             return objBox.IsVectorInside(mouseVec);
         }

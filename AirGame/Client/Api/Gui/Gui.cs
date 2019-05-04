@@ -17,7 +17,6 @@ namespace GlLib.Client.API.Gui
 
         public GuiObject Add(GuiObject _obj)
         {
-            SidedConsole.WriteLine("" + _obj);
             screenObjects.Add(_obj);
             return _obj;
         }

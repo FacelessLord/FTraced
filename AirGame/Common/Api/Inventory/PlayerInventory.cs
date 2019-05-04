@@ -6,7 +6,7 @@ namespace GlLib.Common.Api.Inventory
     {
         public override int GetMaxSize()
         {
-            return 2;
+            return 10;
         }
         
         public override string GetInventoryName()
