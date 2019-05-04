@@ -4,6 +4,7 @@ using System.Net.Json;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Inventory;
 using GlLib.Client.Graphic;
+using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;

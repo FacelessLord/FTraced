@@ -78,6 +78,25 @@ namespace GlLib.Client.Graphic
             VSync = VSyncMode.On;
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs _e)
+        {
+            base.OnMouseDown(_e);
+            gui?.OnMouseClick(this, _e.Button, _e.X, _e.Y);
+        }
+
+        protected override void OnMouseMove(MouseMoveEventArgs _e)
+        {
+            base.OnMouseMove(_e);
+            if((bool) MouseHandler.pressed[MouseButton.Left])
+                gui?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs _e)
+        {
+            base.OnMouseUp(_e);
+            gui?.OnMouseRelease(this, _e.Button, _e.X, _e.Y);
+        }
+
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
             base.OnRenderFrame(_e);

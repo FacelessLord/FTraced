@@ -37,6 +37,9 @@ namespace GlLib.Client.Api.Gui
                     4 * w / 9 - d - slotSize * 5 / 4, slotSize / 2);
                 signs.Add(text);
             }
+
+            var button = new GuiButton(200, 100, 200, 50);
+            Add(button);
         }
 
 

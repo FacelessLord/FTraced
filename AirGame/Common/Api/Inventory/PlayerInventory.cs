@@ -1,6 +1,6 @@
-using GlLib.Common.Items;
+using GlLib.Client.API.Inventory;
 
-namespace GlLib.Client.API.Inventory
+namespace GlLib.Common.Api.Inventory
 {
     public class PlayerInventory : InventoryList
     {

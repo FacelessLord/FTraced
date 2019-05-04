@@ -251,6 +251,11 @@ namespace GlLib.Utils
         public double Width => endX - startX;
         public double Height => endY - startY;
 
+        public bool IsVectorInside(PlanarVector _vector)
+        {
+            return _vector.x <= endX && _vector.x >= startX && _vector.y <= endY && _vector.y >= startY;
+        }
+
         public bool IntersectsWith(AxisAlignedBb _box)
         {
             var cx1 = (startX + endX) / 2;

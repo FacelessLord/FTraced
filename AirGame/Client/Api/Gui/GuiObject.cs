@@ -1,4 +1,6 @@
+using GlLib.Utils;
 using OpenTK;
+using OpenTK.Input;
 
 namespace GlLib.Client.API.Gui
 {
@@ -16,7 +18,7 @@ namespace GlLib.Client.API.Gui
             (width, height) = (_width, _height);
             color = Color.White;
         }
-        
+
         public GuiObject(int _x, int _y, int _width, int _height, Color _color) : this(_x, _y, _width, _height)
         {
             color = _color;
@@ -24,9 +26,29 @@ namespace GlLib.Client.API.Gui
 
         public virtual void Update(GameWindow _window)
         {
-            
+
         }
 
         public abstract void Render(GameWindow _window, int _centerX, int _centerY);
+
+        public virtual bool IsMouseOver(GameWindow _window, int _mouseX, int _mouseY)
+        {
+            var objBox = new AxisAlignedBb(x, y, x + width, y + height);
+            var mouseVec = new PlanarVector(_mouseX, _mouseY);
+            return objBox.IsVectorInside(mouseVec);
+        }
+
+        public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        {
+
+        }
+
+        public virtual void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
+        {
+        }
+
+        public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        {
+        }
     }
 }
