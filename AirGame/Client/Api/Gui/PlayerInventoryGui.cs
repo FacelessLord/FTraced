@@ -26,24 +26,25 @@ namespace GlLib.Client.Api.Gui
             var texture = Vertexer.LoadTexture("gui/window_back.png");
             var background =
                 new TextureLayout(texture, 0, 0, 96, 96, 3, 3);
-            var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, 2 * h / 5);
+            var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, d + 2 * h / 5);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
 
             for (int i = 0; i < _p.inventory.GetMaxSize(); i++)
             {
-                var itemPanel = new GuiPanel(d, d+slotSize * i, panel.width - d*2 - panel.bar.width, slotSize);
-//                itemPanel.enableBackground = false;
+                var itemPanel = new GuiPanel(0, slotSize * i, panel.width - panel.bar.width-d,
+                    slotSize);
+                itemPanel.enableBackground = false;
                 panel.Add(itemPanel);
-                var rect = new GuiRectangle(background, slotSize, slotSize / 4,
+//                var rect = new GuiRectangle(background, slotSize, slotSize / 4,
+//                    itemPanel.width - slotSize, slotSize / 2);
+//                itemPanel.Add(rect);
+                var slot = new GuiSlot(_p.inventory, i, 0, 0);
+                itemPanel.Add(slot);
+                var text = new GuiSign("", slotSize, slotSize / 4,
                     4 * w / 9 - d - slotSize * 5 / 4, slotSize / 2);
-                itemPanel.Add(rect);
-//                var slot = new GuiSlot(_p.inventory, i, 0, 0);
-//                panel.Add(slot);
-//                var text = new GuiSign("", slotSize, slotSize / 4,
-//                    4 * w / 9 - d - slotSize * 5 / 4, slotSize / 2);
-//                panel.Add(text);
-//                signs.Add(text);
+                itemPanel.Add(text);
+                signs.Add(text);
             }
         }
 

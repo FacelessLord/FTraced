@@ -266,7 +266,7 @@ namespace GlLib.Utils
             var halfWidth = endX - cx1 + _box.endX - cx2;
             var halfHeight = endY - cy1 + _box.endY - cy2;
 
-            return Math.Abs(cx1 - cx2) < halfWidth && Math.Abs(cy1 - cy2) < halfHeight;
+            return Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight;
         }
 
         public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)

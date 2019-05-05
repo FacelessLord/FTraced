@@ -46,6 +46,8 @@ namespace GlLib.Client.Api.Gui
             }
         }
 
+        public static int d = 4;
+
         public override void Render(GameWindow _window, int _centerX, int _centerY)
         {
             int centerX = width / 2;
@@ -56,13 +58,13 @@ namespace GlLib.Client.Api.Gui
             if (bar != null)
             {
                 if (enableBackground)
-                    GuiUtils.DrawSizedSquare(rectangleLayout, 0, 0, width - bar.width, height);
+                    GuiUtils.DrawSizedSquare(rectangleLayout, -d, -d, width - bar.width + 8 - d, height + 8 - d, 32);
                 bar.Render(_window, centerX, centerY);
             }
             else
             {
                 if (enableBackground)
-                    GuiUtils.DrawSizedSquare(rectangleLayout, 0, 0, width, height);
+                    GuiUtils.DrawSizedSquare(rectangleLayout, -d, -d, width + 8 - d, height + 8 - d, 32);
             }
 
             GL.Translate(-dx, -dy, 0);
@@ -123,6 +125,7 @@ namespace GlLib.Client.Api.Gui
         public GuiObject Add(GuiObject _obj)
         {
             screenObjects.Add(_obj);
+
             return _obj;
         }
 
