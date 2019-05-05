@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Sockets;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Client.API.Inventory;
@@ -26,26 +27,29 @@ namespace GlLib.Client.Api.Gui
             var texture = Vertexer.LoadTexture("gui/window_back.png");
             var background =
                 new TextureLayout(texture, 0, 0, 96, 96, 3, 3);
-            var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, d + 2 * h / 5);
+            var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, 2 * h / 5);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
 
             for (int i = 0; i < _p.inventory.GetMaxSize(); i++)
             {
-                var itemPanel = new GuiPanel(0, slotSize * i, panel.width - panel.bar.width-d,
-                    slotSize);
-                itemPanel.enableBackground = false;
-                panel.Add(itemPanel);
-//                var rect = new GuiRectangle(background, slotSize, slotSize / 4,
-//                    itemPanel.width - slotSize, slotSize / 2);
-//                itemPanel.Add(rect);
-                var slot = new GuiSlot(_p.inventory, i, 0, 0);
-                itemPanel.Add(slot);
-                var text = new GuiSign("", slotSize, slotSize / 4,
+                int dy = slotSize / 2 + 2;
+                var rect = new GuiRectangle(background, slotSize / 2, dy * i,
+                    panel.width - slotSize / 2 - panel.bar.width - d, slotSize / 2);
+                panel.Add(rect);
+                var slotRect = new GuiRectangle(background, 0, dy * i,
+                    slotSize / 2, slotSize / 2);
+                panel.Add(slotRect);
+                var slot = new GuiPicture(Vertexer.LoadTexture("gui/gui_sword.png"), 0, dy * i, slotSize / 2,
+                    slotSize / 2);
+                panel.Add(slot);
+                var text = new GuiSign("", slotSize, dy * i,
                     4 * w / 9 - d - slotSize * 5 / 4, slotSize / 2);
-                itemPanel.Add(text);
+                panel.Add(text);
                 signs.Add(text);
             }
+
+            panel.bar.maxValue = (int) panel.GetPanelBox().Height;
         }
 
 
