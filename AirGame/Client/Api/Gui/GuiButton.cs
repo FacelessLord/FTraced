@@ -63,11 +63,12 @@ namespace GlLib.Client.Api.Gui
             GL.PopMatrix();
         }
 
-        public override void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public override GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
             base.OnMouseClick(_window, _button, _mouseX, _mouseY);
             if (state == ButtonState.Enabled)
                 state = ButtonState.Pressed;
+            return this;
         }
 
         public override void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)

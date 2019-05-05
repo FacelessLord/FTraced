@@ -80,7 +80,7 @@ namespace GlLib.Client.Api.Gui
         }
 
 
-        public override void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public override GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
             foreach (var obj in screenObjects)
             {
@@ -90,8 +90,9 @@ namespace GlLib.Client.Api.Gui
 
             if (bar != null)
                 if (bar.IsMouseOver(_window, -x + _mouseX, -y + _mouseY))
-                    bar.OnMouseClick(_window, _button, -x + _mouseX, -y + _mouseY);
-
+                    return bar.OnMouseClick(_window, _button, -x + _mouseX, -y + _mouseY);
+            
+            return null;
         }
 
         public override void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)

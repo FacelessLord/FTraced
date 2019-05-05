@@ -5,6 +5,7 @@ using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace GlLib.Client.Api.Gui
 {
@@ -58,6 +59,11 @@ namespace GlLib.Client.Api.Gui
         {
             return new AxisAlignedBb(x + width / 3, y + scrollerPos + width,
                 x + 2 * width / 3, y + scrollerPos + 2 * width);
+        }
+
+        public override GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        {
+            return this;
         }
 
         public override void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)

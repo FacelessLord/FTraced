@@ -90,23 +90,23 @@ namespace GlLib.Client.API.Gui
             }
         }
 
+        public GuiObject focusedObject;
 
         public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
             foreach (var obj in screenObjects)
             {
-                if (obj.IsMouseOver(_window, _mouseX, _mouseY))
-                    obj.OnMouseClick(_window, _button, _mouseX, _mouseY);
+                if (focusedObject == null)
+                {
+                    if (obj.IsMouseOver(_window, _mouseX, _mouseY))
+                        focusedObject = obj.OnMouseClick(_window, _button, _mouseX, _mouseY);
+                }
             }
         }
 
         public virtual void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
         {
-            foreach (var obj in screenObjects)
-            {
-                if (obj.IsMouseOver(_window, _mouseX, _mouseY))
-                    obj.OnMouseDrag(_window, _mouseX, _mouseY, _dx, _dy);
-            }
+            focusedObject?.OnMouseDrag(_window, _mouseX, _mouseY, _dx, _dy);
         }
 
         public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
@@ -116,6 +116,8 @@ namespace GlLib.Client.API.Gui
                 if (obj.IsMouseOver(_window, _mouseX, _mouseY))
                     obj.OnMouseRelease(_window, _button, _mouseX, _mouseY);
             }
+
+            focusedObject = null;
         }
     }
 }
