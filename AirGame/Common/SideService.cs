@@ -38,7 +38,7 @@ namespace GlLib.Common
         public void Loop()
         {
             state = State.Loop;
-            while (true)
+            while (!Proxy.Exit)
             {
                 OnServiceUpdate();
                 Thread.Sleep(FrameTime);

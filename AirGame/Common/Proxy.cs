@@ -14,6 +14,14 @@ namespace GlLib.Common
         public static ConcurrentDictionary<string, SideService> services =
             new ConcurrentDictionary<string, SideService>();
 
+        private static bool _exit;
+
+        public static bool Exit
+        {
+            get => _exit;
+            set => _exit = value;
+        }
+
         public static ServerInstance serverInstance;
         public static ClientService clientInstance;
 

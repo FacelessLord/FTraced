@@ -6,8 +6,16 @@ namespace GlLib.Common.Registries
     {
         public GameRegistry registry;
 
-        public Item test = 
-            new Item("item.test", ItemRarity.Legendary, ItemType.Weapon);
+        public Item sword = 
+            new Item("item.sword", ItemRarity.Legendary, ItemType.Weapon);
+        public Item apple = 
+            new Item("item.apple", ItemRarity.Legendary, ItemType.Food);
+        public Item ring = 
+            new Item("item.ring", ItemRarity.Legendary, ItemType.Ring);
+        public Item armor = 
+            new Item("item.armor", ItemRarity.Legendary, ItemType.Armor);
+        public Item varia = 
+            new Item("item.varia", ItemRarity.Legendary);
 
         public ItemRegistry(GameRegistry _registry)
         {
@@ -16,7 +24,7 @@ namespace GlLib.Common.Registries
 
         public void Register()
         {
-            registry.RegisterItem(test);
+            registry.RegisterItem(sword);
         }
     }
 }

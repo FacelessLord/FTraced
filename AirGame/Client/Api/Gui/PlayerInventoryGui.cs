@@ -23,33 +23,38 @@ namespace GlLib.Client.Api.Gui
 //            AddRectangle(100, 16, 4 * w / 9, 2 * h / 5);
 
             var d = 4;
-            var slotSize = GuiSlot.SlotSize;
+            var slotSize = GuiSlotTypeRenderer.SlotSize;
             var texture = Vertexer.LoadTexture("gui/window_back.png");
             var background =
                 new TextureLayout(texture, 0, 0, 96, 96, 3, 3);
             var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, 2 * h / 5);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
-
             for (int i = 0; i < _p.inventory.GetMaxSize(); i++)
             {
-                int dy = slotSize / 2 + 2;
-                var rect = new GuiRectangle(background, slotSize / 2, dy * i,
-                    panel.width - slotSize / 2 - panel.bar.width - d, slotSize / 2);
+                int dy = slotSize + 2;
+                var rect = new GuiRectangle(background, slotSize, dy * i,
+                    panel.width - slotSize - panel.bar.width - d, slotSize);
                 panel.Add(rect);
                 var slotRect = new GuiRectangle(background, 0, dy * i,
-                    slotSize / 2, slotSize / 2);
+                    slotSize, slotSize);
                 panel.Add(slotRect);
-                var slot = new GuiPicture(Vertexer.LoadTexture("gui/gui_sword.png"), 0, dy * i, slotSize / 2,
-                    slotSize / 2);
+                var slot = new GuiSlotTypeRenderer(inventory, i, 0, dy * i);
                 panel.Add(slot);
                 var text = new GuiSign("", slotSize, dy * i,
-                    4 * w / 9 - d - slotSize * 5 / 4, slotSize / 2);
+                    4 * w / 9 - d - slotSize * 5 / 2, slotSize);
                 panel.Add(text);
                 signs.Add(text);
             }
 
-            panel.bar.maxValue = (int) panel.GetPanelBox().Height;
+            panel.bar.maxValue = (int) (panel.GetPanelBox().Height - panel.GetViewbox().Height);
+
+            var itemPanel = new GuiPanel(100, 32 + 2 * h / 5, 50 + 4 * w / 9, h / 5);
+            Add(itemPanel);
+
+            var dh = (itemPanel.height - GuiSlot.SlotSize) / 2;
+            var itemSlot = new GuiPlayerSlot(_p.inventory, 5, dh);
+            itemPanel.Add(itemSlot);
         }
 
 

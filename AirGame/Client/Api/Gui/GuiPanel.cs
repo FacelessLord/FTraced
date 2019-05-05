@@ -139,8 +139,8 @@ namespace GlLib.Client.Api.Gui
         {
             int minX = screenObjects.Select(_o => _o.x).Min();
             int minY = screenObjects.Select(_o => _o.y).Min();
-            int maxX = screenObjects.Select(_o => _o.x + _o.width).Min();
-            int maxY = screenObjects.Select(_o => _o.y + _o.height).Min();
+            int maxX = screenObjects.Select(_o => _o.x + _o.width).Max();
+            int maxY = screenObjects.Select(_o => _o.y + _o.height).Max();
 
             return new AxisAlignedBb(minX, minY, maxX, maxY);
         }

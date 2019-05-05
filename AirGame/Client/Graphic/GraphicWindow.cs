@@ -44,7 +44,11 @@ namespace GlLib.Client.Graphic
             KeyboardHandler.Update();
             hud.Update(this);
             var input = Keyboard.GetState();
-            if (input.IsKeyDown(Key.Escape)) Exit();
+            if (input.IsKeyDown(Key.Escape))
+            {
+                Exit();
+                Proxy.Exit = true;
+            }
             base.OnUpdateFrame(_e);
         }
 

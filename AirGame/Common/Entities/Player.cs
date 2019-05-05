@@ -32,7 +32,11 @@ namespace GlLib.Common.Entities
 
         public Player()
         {
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.test));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.varia));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.apple));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.sword));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.armor));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.ring));
         }
 
         public override string GetName()

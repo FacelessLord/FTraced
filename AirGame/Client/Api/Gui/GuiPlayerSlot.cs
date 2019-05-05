@@ -8,26 +8,23 @@ using OpenTK.Input;
 
 namespace GlLib.Client.API.Gui
 {
-    public class GuiSlot : GuiObject
+    public class GuiPlayerSlot : GuiObject
     {
-        public IInventory inventory;
-        public int slot;
+        public PlayerInventory inventory;
         public const int SlotSize = 96;
 
-        public GuiSlot(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, SlotSize,
+        public GuiPlayerSlot(PlayerInventory _inventory,int _x, int _y) : base(_x, _y, SlotSize,
             SlotSize)
         {
             slotTexture = Vertexer.LoadTexture("gui/slot.png");
             inventory = _inventory;
-            slot = _slot;
         }
 
-        public GuiSlot(IInventory _inventory, int _slot, int _x, int _y, Color _color) : base(
+        public GuiPlayerSlot(PlayerInventory _inventory, int _x, int _y, Color _color) : base(
             _x, _y, SlotSize, SlotSize, _color)
         {
             slotTexture = Vertexer.LoadTexture("gui/slot.png");
             inventory = _inventory;
-            slot = _slot;
         }
 
         public Texture slotTexture;
@@ -48,7 +45,7 @@ namespace GlLib.Client.API.Gui
 
             Vertexer.Draw();
 
-            ItemStack stack = inventory.GetStackInSlot(slot);
+            ItemStack stack = inventory.GetStackInSlot(inventory.currentSlot);
             stack?.item.GetItemSprite(stack).Render();
 
             GL.PopMatrix();
