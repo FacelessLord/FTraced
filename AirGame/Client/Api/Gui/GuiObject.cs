@@ -24,35 +24,35 @@ namespace GlLib.Client.API.Gui
             color = _color;
         }
 
-        public virtual void Update(GameWindow _window)
+        public virtual void Update(GuiFrame _gui)
         {
 
         }
 
-        public abstract void Render(GameWindow _window, int _centerX, int _centerY);
+        public abstract void Render(GuiFrame _gui, int _centerX, int _centerY);
 
-        public virtual AxisAlignedBb GetObjectBox(GameWindow _window)
+        public virtual AxisAlignedBb GetObjectBox(GuiFrame _guiFrame)
         {
            return new AxisAlignedBb(x, y, x + width, y + height);
         }
 
-        public virtual bool IsMouseOver(GameWindow _window, int _mouseX, int _mouseY)
+        public virtual bool IsMouseOver(GuiFrame _guiFrame, int _mouseX, int _mouseY)
         {
-            var objBox = GetObjectBox(_window);
+            var objBox = GetObjectBox(_guiFrame);
             var mouseVec = new PlanarVector(_mouseX, _mouseY);
             return objBox.IsVectorInside(mouseVec);
         }
 
-        public virtual GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public virtual GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
             return null;
         }
 
-        public virtual void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
+        public virtual void OnMouseDrag(GuiFrame _gui, int _mouseX, int _mouseY, int _dx, int _dy)
         {
         }
 
-        public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public virtual void OnMouseRelease(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
         }
     }

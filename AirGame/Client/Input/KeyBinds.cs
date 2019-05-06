@@ -47,13 +47,13 @@ namespace GlLib.Client.Input
 
         public static Action<Player> openInventory = _p =>
         {
-            if (GraphicWindow.instance.gui == null)
+            if (GraphicWindow.instance.guiFrame == null)
             {
-                GraphicWindow.instance.gui = new PlayerInventoryGui(_p);
+                GraphicWindow.instance.guiFrame = new PlayerFrameInventoryGuiFrame(_p);
             }
             else
             {
-                GraphicWindow.instance.gui = null;
+                GraphicWindow.instance.guiFrame = null;
             }
         };
 

@@ -36,7 +36,7 @@ namespace GlLib.Client.API.Gui
         public TextureLayout background;
         public float grainSize = 16f;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);

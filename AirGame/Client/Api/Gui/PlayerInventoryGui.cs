@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
-using GlLib.Client.API.Inventory;
 using GlLib.Client.Graphic;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -12,11 +11,11 @@ using OpenTK;
 
 namespace GlLib.Client.Api.Gui
 {
-    public class PlayerInventoryGui : GuiInventory
+    public class PlayerFrameInventoryGuiFrame : GuiFrameInventory
     {
         public List<GuiSign> signs = new List<GuiSign>();
 
-        public PlayerInventoryGui(Player _p) : base(_p.inventory)
+        public PlayerFrameInventoryGuiFrame(Player _p) : base(_p.inventory)
         {
             var w = GraphicWindow.instance.Width;
             var h = GraphicWindow.instance.Height;

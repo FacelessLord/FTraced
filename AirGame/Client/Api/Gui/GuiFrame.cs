@@ -1,23 +1,26 @@
 using System.Collections.Generic;
 using GlLib.Client.Graphic;
+using GlLib.Common.Api.Inventory;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Input;
 
 namespace GlLib.Client.API.Gui
 {
-    public class Gui
+    public class GuiFrame
     {
-        public List<GuiObject> screenObjects;
+        public List<GuiObject> ScreenObjects{ get; set; }
 
-        public Gui()
+        public Slot SelectedSlot { get; set; }
+
+        public GuiFrame()
         {
-            screenObjects = new List<GuiObject>();
+            ScreenObjects = new List<GuiObject>();
         }
 
         public GuiObject Add(GuiObject _obj)
         {
-            screenObjects.Add(_obj);
+            ScreenObjects.Add(_obj);
             return _obj;
         }
 
@@ -73,9 +76,9 @@ namespace GlLib.Client.API.Gui
 
         public virtual void Update(GameWindow _window)
         {
-            foreach (var obj in screenObjects)
+            foreach (var obj in ScreenObjects)
             {
-                obj.Update(_window);
+                obj.Update(this);
             }
         }
 
@@ -84,9 +87,9 @@ namespace GlLib.Client.API.Gui
             int centerX = _window.Width / 2;
             int centerY = _window.Height / 2;
 
-            foreach (var obj in screenObjects)
+            foreach (var obj in ScreenObjects)
             {
-                obj.Render(_window, centerX, centerY);
+                obj.Render(this, centerX, centerY);
             }
         }
 
@@ -94,27 +97,27 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
-            foreach (var obj in screenObjects)
+            foreach (var obj in ScreenObjects)
             {
                 if (focusedObject == null)
                 {
-                    if (obj.IsMouseOver(_window, _mouseX, _mouseY))
-                        focusedObject = obj.OnMouseClick(_window, _button, _mouseX, _mouseY);
+                    if (obj.IsMouseOver(this, _mouseX, _mouseY))
+                        focusedObject = obj.OnMouseClick(this, _button, _mouseX, _mouseY);
                 }
             }
         }
 
         public virtual void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
         {
-            focusedObject?.OnMouseDrag(_window, _mouseX, _mouseY, _dx, _dy);
+            focusedObject?.OnMouseDrag(this, _mouseX, _mouseY, _dx, _dy);
         }
 
         public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
-            foreach (var obj in screenObjects)
+            foreach (var obj in ScreenObjects)
             {
-                if (obj.IsMouseOver(_window, _mouseX, _mouseY))
-                    obj.OnMouseRelease(_window, _button, _mouseX, _mouseY);
+                if (obj.IsMouseOver(this, _mouseX, _mouseY))
+                    obj.OnMouseRelease(this, _button, _mouseX, _mouseY);
             }
 
             focusedObject = null;

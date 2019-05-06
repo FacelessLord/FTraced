@@ -1,3 +1,4 @@
+
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
 using GlLib.Client.API.Gui;
@@ -40,7 +41,7 @@ namespace GlLib.Client.Api.Gui
         public TextureLayout SpritePressed;
         public TextureLayout SpriteDisabled;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
@@ -63,24 +64,24 @@ namespace GlLib.Client.Api.Gui
             GL.PopMatrix();
         }
 
-        public override GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
-            base.OnMouseClick(_window, _button, _mouseX, _mouseY);
+            base.OnMouseClick(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Enabled)
                 state = ButtonState.Pressed;
             return this;
         }
 
-        public override void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
+        public override void OnMouseDrag(GuiFrame _gui, int _mouseX, int _mouseY, int _dx, int _dy)
         {
-            base.OnMouseDrag(_window, _mouseX, _mouseY, _dx, _dy);
+            base.OnMouseDrag(_gui, _mouseX, _mouseY, _dx, _dy);
             x += _dx;
             y += _dy;
         }
 
-        public override void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public override void OnMouseRelease(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
-            base.OnMouseRelease(_window, _button, _mouseX, _mouseY);
+            base.OnMouseRelease(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Pressed)
                 state = ButtonState.Enabled;
         }

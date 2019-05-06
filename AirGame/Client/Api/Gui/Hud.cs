@@ -5,7 +5,7 @@ using OpenTK;
 
 namespace GlLib.Client.API.Gui
 {
-    public class Hud : Gui
+    public class Hud : GuiFrame
     {
         public Hud()
         {

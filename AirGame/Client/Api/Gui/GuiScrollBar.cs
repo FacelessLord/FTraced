@@ -36,7 +36,7 @@ namespace GlLib.Client.Api.Gui
         public TextureLayout ScrollBar;
         public TextureLayout Scroller;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
@@ -55,20 +55,20 @@ namespace GlLib.Client.Api.Gui
             return maxValue * scrollerPos / maximum;
         }
 
-        public override AxisAlignedBb GetObjectBox(GameWindow _window)
+        public override AxisAlignedBb GetObjectBox(GuiFrame _gui)
         {
             return new AxisAlignedBb(x + width / 3, y + scrollerPos + width,
                 x + 2 * width / 3, y + scrollerPos + 2 * width);
         }
 
-        public override GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
             return this;
         }
 
-        public override void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
+        public override void OnMouseDrag(GuiFrame _gui, int _mouseX, int _mouseY, int _dx, int _dy)
         {
-            base.OnMouseDrag(_window, _mouseX, _mouseY, _dx, _dy);
+            base.OnMouseDrag(_gui, _mouseX, _mouseY, _dx, _dy);
             scrollerPos += _dy;
             if (scrollerPos < 0)
                 scrollerPos = 0;

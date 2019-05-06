@@ -18,12 +18,12 @@ namespace GlLib.Client.API.Gui
         public double value = 100;
         public double maxValue = 100;
 
-        public override void Update(GameWindow _window)
+        public override void Update(GuiFrame _gui)
         {
-            base.Update(_window);
+            base.Update(_gui);
         }
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             var start = Vertexer.LoadTexture("gui/bar_start.png");
             var center = Vertexer.LoadTexture("gui/bar_center.png");

@@ -23,12 +23,12 @@ namespace GlLib.Client.API.Gui
         public double value = 75;
         public double maxValue = 100;
 
-        public override void Update(GameWindow _window)
+        public override void Update(GuiFrame _gui)
         {
-            base.Update(_window);
+            base.Update(_gui);
         }
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             string text = value + "/" + maxValue;

@@ -19,7 +19,7 @@ namespace GlLib.Client.Graphic
         public VSyncMode vSync = VSyncMode.On;
         public ClientService client;
         public int guiTimeout = 0;
-        public Gui gui;
+        public GuiFrame guiFrame;
         public ICamera camera;
 
         public Hud hud;
@@ -73,7 +73,7 @@ namespace GlLib.Client.Graphic
         {
             base.OnResize(_e);
             GL.Viewport(0, 0, Width, Height);
-            gui?.Update(this);
+            guiFrame?.Update(this);
         }
 
         protected override void OnLoad(EventArgs _e)
@@ -85,20 +85,20 @@ namespace GlLib.Client.Graphic
         protected override void OnMouseDown(MouseButtonEventArgs _e)
         {
             base.OnMouseDown(_e);
-            gui?.OnMouseClick(this, _e.Button, _e.X, _e.Y);
+            guiFrame?.OnMouseClick(this, _e.Button, _e.X, _e.Y);
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs _e)
         {
             base.OnMouseMove(_e);
             if((bool) MouseHandler.pressed[MouseButton.Left])
-                gui?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
+                guiFrame?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs _e)
         {
             base.OnMouseUp(_e);
-            gui?.OnMouseRelease(this, _e.Button, _e.X, _e.Y);
+            guiFrame?.OnMouseRelease(this, _e.Button, _e.X, _e.Y);
         }
 
         protected override void OnRenderFrame(FrameEventArgs _e)
@@ -133,8 +133,8 @@ namespace GlLib.Client.Graphic
             GL.Scale(1d / Width, 1d / Height, 1);
             hud.Update(this);
             hud.Render(this);
-            gui?.Update(this);
-            gui?.Render(this);
+            guiFrame?.Update(this);
+            guiFrame?.Render(this);
             GL.PopMatrix();
 
             SwapBuffers();

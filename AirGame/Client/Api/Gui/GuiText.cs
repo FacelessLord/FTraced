@@ -25,7 +25,7 @@ namespace GlLib.Client.API.Gui
 
         public static FontSprite font;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
             var heightCenter = (height - 11d) / 2;

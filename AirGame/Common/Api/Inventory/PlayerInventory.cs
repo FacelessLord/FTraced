@@ -1,5 +1,3 @@
-using GlLib.Client.API.Inventory;
-
 namespace GlLib.Common.Api.Inventory
 {
     public class PlayerInventory : InventoryList

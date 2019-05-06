@@ -1,6 +1,5 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
-using GlLib.Client.API.Inventory;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
@@ -32,18 +31,33 @@ namespace GlLib.Client.Api.Gui
             slot = _slot;
         }
 
-        public override GuiObject OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
-            if (inventory is PlayerInventory pi)
+            if (inventory is PlayerInventory pi && _button == MouseButton.Right)
             {
                 pi.currentSlot = slot;
+            }
+            else
+            {
+                if (_gui.SelectedSlot != null)
+                {
+                    ItemStack slotStack = inventory.GetStackInSlot(slot);
+                    ItemStack selectedStack = _gui.SelectedSlot.GetStack();
+                    _gui.SelectedSlot.SetStack(slotStack);
+                    inventory.SetItemStack(selectedStack, slot);
+                    _gui.SelectedSlot = null;
+                }
+                else
+                {
+                    _gui.SelectedSlot = new Slot(inventory, slot);
+                }
             }
             return this;
         }
         
         public TextureLayout slotTexture;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             if(inventory.GetStackInSlot(slot) != null)
             {

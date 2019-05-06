@@ -1,4 +1,3 @@
-using GlLib.Client.API.Inventory;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
@@ -32,7 +31,7 @@ namespace GlLib.Client.API.Gui
 
         public Texture slotTexture;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Translate(x, y, 0);
