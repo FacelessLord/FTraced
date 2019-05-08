@@ -48,7 +48,6 @@ namespace GlLib.Client.Input
 
         public static void Update()
         {
-            var state = Keyboard.GetState();
             foreach (var key in keys) ClickedKeys[key] = false;
         }
     }

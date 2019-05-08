@@ -23,6 +23,8 @@ namespace GlLib.Common.Entities
         public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
             nickname = _nickname;
+            TextureLayout layout = new TextureLayout(Vertexer.LoadTexture("player_sprite.png"), 0, 0, 256, 64, 16, 2);
+            playerSprite = new LinearSprite(layout, 22, 1);
         }
 
         public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
@@ -53,18 +55,6 @@ namespace GlLib.Common.Entities
         public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
-//            var btexture = Vertexer.LoadTexture("player.png");
-//            Vertexer.BindTexture(btexture);
-//
-//            Vertexer.StartDrawingQuads();
-//
-//            Vertexer.VertexWithUvAt(10, -10, 1, 0);
-//            Vertexer.VertexWithUvAt(10, 10, 1, 1);
-//            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
-//            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
-//
-//            Vertexer.Draw();
-
             playerSprite.Render();
             GL.PopMatrix();
         }

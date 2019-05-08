@@ -4,6 +4,7 @@ using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Common;
 using GlLib.Common.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
@@ -20,7 +21,6 @@ namespace GlLib.Client.Input
         public static Action<Player> moveLeft = _p =>
         {
             _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-//            GraphicWindow.instance.dx -= _p.accelerationValue*64;
             _p.CheckVelocity();
         };
 
@@ -28,34 +28,23 @@ namespace GlLib.Client.Input
         {
             _p.velocity += new PlanarVector(0, -_p.accelerationValue);
             _p.CheckVelocity();
-//            GraphicWindow.instance.dy -= _p.accelerationValue*64;
         };
 
         public static Action<Player> moveRight = _p =>
         {
             _p.velocity += new PlanarVector(_p.accelerationValue, 0);
             _p.CheckVelocity();
-//            GraphicWindow.instance.dx += _p.accelerationValue*64;
         };
 
         public static Action<Player> moveDown = _p =>
         {
             _p.velocity += new PlanarVector(0, _p.accelerationValue);
             _p.CheckVelocity();
-//            GraphicWindow.instance.dy += _p.accelerationValue*64;
         };
 
         public static Action<Player> openInventory = _p =>
         {
-            if (GraphicWindow.instance.guiFrame == null)
-            {
-                GraphicWindow.instance.guiFrame = new PlayerFrameInventoryGuiFrame(_p);
-            }
-            else
-            {
-                if(GraphicWindow.instance.guiFrame.focusedObject == null)
-                    GraphicWindow.instance.guiFrame = null;
-            }
+            Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
         };
 
         public static void Register()

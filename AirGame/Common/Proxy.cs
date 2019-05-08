@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using GlLib.Client;
+using GlLib.Client.Graphic;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;
 using GlLib.Server;
@@ -22,21 +23,28 @@ namespace GlLib.Common
             set => _exit = value;
         }
 
-        public static ServerInstance serverInstance;
-        public static ClientService clientInstance;
+        private static ServerInstance _serverInstance;
+        private static ClientService _clientInstance;
+        private static GraphicWindow _gameWindow;
+        private static readonly Profiler Profiler = new Profiler();
 
         public static ClientService GetClient()
         {
-            return clientInstance;
+            return _clientInstance;
         }
 
         public static ServerInstance GetServer()
         {
-            return serverInstance;
+            return _serverInstance;
         }
         public static GameRegistry GetRegistry()
         {
-            return serverInstance.registry;
+            return _serverInstance.registry;
+        }
+
+        public static GraphicWindow GetWindow()
+        {
+            return _gameWindow;
         }
         
         public static void AwaitWhile(Func<bool> _condition)
@@ -65,12 +73,17 @@ namespace GlLib.Common
             SidedConsole.WriteLine(_sideService.side + "-Side service registered");
             if (_sideService is ServerInstance server)
             {
-                serverInstance = server;
+                _serverInstance = server;
             }
             if (_sideService is ClientService client)
             {
-                clientInstance = client;
+                _clientInstance = client;
             }
+        }
+
+        public static void RegisterWindow(GraphicWindow _window)
+        {
+            _gameWindow = _window;
         }
     }
 }

@@ -7,15 +7,15 @@ namespace GlLib.Client.API.Gui
 {
     public class GuiPicture : GuiObject
     {
-        public GuiPicture(Texture _texture, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
+        public GuiPicture(string _texture, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            texture = _texture;
+            texture = Vertexer.LoadTexture(_texture);
         }
 
-        public GuiPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
+        public GuiPicture(string _texture, int _x, int _y, int _width, int _height, Color _color)
             : base(_x, _y, _width, _height, _color)
         {
-            texture = _texture;
+            texture = Vertexer.LoadTexture(_texture);
         }
 
         public Texture texture;

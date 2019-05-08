@@ -22,7 +22,6 @@ namespace GlLib.Server
 
         public ServerInstance() : base(Side.Server)
         {
-            Proxy.serverInstance = this;
         }
 
 

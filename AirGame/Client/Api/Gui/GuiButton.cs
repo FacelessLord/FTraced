@@ -12,34 +12,39 @@ namespace GlLib.Client.Api.Gui
     public class GuiButton : GuiObject
     {
         public ButtonState state = ButtonState.Enabled;
+        public string text = "";
 
-        public GuiButton(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
+        public GuiButton(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
+            text = _text;
             var texture = Vertexer.LoadTexture("gui/button.png");
             var textureSelected = Vertexer.LoadTexture("gui/button_selected.png");
             var textureDisabled = Vertexer.LoadTexture("gui/button_disabled.png");
             var layout = new Layout(texture.width, texture.height, 3, 3);
-            SpriteEnabled = new TextureLayout(texture, layout);
-            SpritePressed = new TextureLayout(textureSelected, layout);
-            SpriteDisabled = new TextureLayout(textureDisabled, layout);
+            spriteEnabled = new TextureLayout(texture, layout);
+            spritePressed = new TextureLayout(textureSelected, layout);
+            spriteDisabled = new TextureLayout(textureDisabled, layout);
+            font = new AlagardFontSprite();
 
         }
 
-        public GuiButton(int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width, _height, _color)
+        public GuiButton(string _text,int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width, _height, _color)
         {
-
+            text = _text;
             var texture = Vertexer.LoadTexture("gui/button.png");
             var textureSelected = Vertexer.LoadTexture("gui/button_selected.png");
             var textureDisabled = Vertexer.LoadTexture("gui/button_disabled.png");
             var layout = new Layout(texture.width, texture.height, 3, 3);
-            SpriteEnabled = new TextureLayout(texture, layout);
-            SpritePressed = new TextureLayout(textureSelected, layout);
-            SpriteDisabled = new TextureLayout(textureDisabled, layout);
+            spriteEnabled = new TextureLayout(texture, layout);
+            spritePressed = new TextureLayout(textureSelected, layout);
+            spriteDisabled = new TextureLayout(textureDisabled, layout);
+            font = new AlagardFontSprite();
         }
 
-        public TextureLayout SpriteEnabled;
-        public TextureLayout SpritePressed;
-        public TextureLayout SpriteDisabled;
+        public static FontSprite font;
+        public TextureLayout spriteEnabled;
+        public TextureLayout spritePressed;
+        public TextureLayout spriteDisabled;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
@@ -49,16 +54,20 @@ namespace GlLib.Client.Api.Gui
             switch (state)
             {
                 case ButtonState.Enabled:
-                    GuiUtils.DrawSizedSquare(SpriteEnabled, x, y, width, height, 16);
+                    GuiUtils.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
                     break;
                 case ButtonState.Pressed:
-                    GuiUtils.DrawSizedSquare(SpritePressed, x, y, width, height, 16);
+                    GuiUtils.DrawSizedSquare(spritePressed, x, y, width, height, 16);
                     break;
                 case ButtonState.Disabled:
-                    GuiUtils.DrawSizedSquare(SpriteDisabled, x, y, width, height, 16);
+                    GuiUtils.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
                     break;
             }
-
+            
+            var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
+            var heightCenter = (height - 11d) / 2;
+            GL.Translate(x + widthCenter, y + heightCenter, 0);
+            font.DrawText(text, 11);
             GL.Color4(1.0, 1, 1, 1);
 
             GL.PopMatrix();

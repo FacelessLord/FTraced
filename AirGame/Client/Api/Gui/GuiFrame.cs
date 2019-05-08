@@ -34,12 +34,12 @@ namespace GlLib.Client.API.Gui
             return Add(new GuiRectangle(_x, _y, _width, _height, _color));
         }
 
-        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
+        public GuiPicture AddPicture(string _texture, int _x, int _y, int _width, int _height)
         {
             return Add(new GuiPicture(_texture, _x, _y, _width, _height));
         }
 
-        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
+        public GuiPicture AddPicture(string _texture, int _x, int _y, int _width, int _height, Color _color)
         {
             return Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }

@@ -14,6 +14,8 @@ namespace GlLib.Client
         public WorldRenderer worldRenderer;
         public World world;
 
+        public GraphicWindow window;
+
         public string nickName;
         public string password;
         public volatile Player player;
@@ -43,8 +45,7 @@ namespace GlLib.Client
 
             Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             testEntity.worldObj.SpawnEntity(testEntity);
-            KeyBinds.Register();
-            GraphicWindow.RunWindow(this);
+            
         }
 
         public override void OnServiceUpdate()

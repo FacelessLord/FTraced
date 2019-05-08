@@ -17,8 +17,8 @@ namespace GlLib.Client.Api.Gui
 
         public GuiScrollBar(int _maxValue, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            ScrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
-            Scroller = new TextureLayout("gui/scroller.png", 3, 3);
+            scrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
+            scroller = new TextureLayout("gui/scroller.png", 3, 3);
             maximum = height - 7 * width / 3;
             maxValue = _maxValue;
         }
@@ -27,23 +27,23 @@ namespace GlLib.Client.Api.Gui
             _height,
             _color)
         {
-            ScrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
-            Scroller = new TextureLayout("gui/scroller.png", 3, 3);
+            scrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
+            scroller = new TextureLayout("gui/scroller.png", 3, 3);
             maximum = height - 7 * width / 3;
             maxValue = _maxValue;
         }
 
-        public TextureLayout ScrollBar;
-        public TextureLayout Scroller;
+        public TextureLayout scrollBar;
+        public TextureLayout scroller;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
 
-            GuiUtils.DrawSizedSquare(ScrollBar, x, y, width, height, width / 3f, width);
+            GuiUtils.DrawSizedSquare(scrollBar, x, y, width, height, width / 3f, width);
             GL.Translate(0, scrollerPos + 2 * width / 3, 0);
-            GuiUtils.DrawSizedSquare(Scroller, x, y, width, width, width / 3f);
+            GuiUtils.DrawSizedSquare(scroller, x, y, width, width, width / 3f);
 
 
             GL.Color4(1.0, 1, 1, 1);

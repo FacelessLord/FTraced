@@ -17,8 +17,8 @@ namespace GlLib.Client.Api.Gui
 
         public PlayerFrameInventoryGuiFrame(Player _p) : base(_p.inventory)
         {
-            var w = GraphicWindow.instance.Width;
-            var h = GraphicWindow.instance.Height;
+            var w = Proxy.GetWindow().Width;
+            var h = Proxy.GetWindow().Height;
 //            AddRectangle(100, 16, 4 * w / 9, 2 * h / 5);
 
             var d = 4;

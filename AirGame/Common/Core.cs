@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading;
 using GlLib.Client;
+using GlLib.Client.Api.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Server;
 using GlLib.Utils;
 using GlLib.Common.Events;
@@ -20,14 +22,23 @@ namespace GlLib.Common
                 var (variableName, value) = (argsParts[0], argsParts[1]);
                 Config.ProcessArgument(variableName, value);
             }
+
+            GraphicWindow.RunWindow();
+            SidedConsole.WriteLine("Core finished");
+            // ClientService._instance.ConnectToIntegratedServer();
+        }
+
+        public static void StartWorld()
+        {
             var server = new ServerInstance();
+            Proxy.RegisterService(server);
             var serverThread = new Thread(() =>
             {
                 server.Start();
                 server.Loop();
                 server.Exit();
             }) {Name = Side.Server.ToString()};
-    
+
             var client = new ClientService(Config.playerName, Config.playerPassword);
             Proxy.RegisterService(client);
             var clientThread = new Thread(() =>
@@ -37,12 +48,9 @@ namespace GlLib.Common
                 client.Exit();
             }) {Name = Side.Client.ToString()};
             serverThread.Start();
-            Proxy.AwaitWhile(() => server.state <= State.Starting);
+            Proxy.AwaitWhile(() => server.profiler.state < State.Loop);
             clientThread.Start();
-            //todo Main Menu
-            Proxy.AwaitWhile(() => client.state <= State.Starting);
-            SidedConsole.WriteLine("Core finished");
-            // ClientService._instance.ConnectToIntegratedServer();
+            Proxy.AwaitWhile(() => client.profiler.state < State.Loop);
         }
     }
 }
