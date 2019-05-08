@@ -18,7 +18,7 @@ namespace GlLib.Client.API.Gui
             ScreenObjects = new List<GuiObject>();
         }
 
-        public GuiObject Add(GuiObject _obj)
+        public T Add<T>(T _obj) where T:GuiObject
         {
             ScreenObjects.Add(_obj);
             return _obj;
@@ -26,52 +26,52 @@ namespace GlLib.Client.API.Gui
 
         public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height)
         {
-            return (GuiRectangle) Add(new GuiRectangle(_x, _y, _width, _height));
+            return Add(new GuiRectangle(_x, _y, _width, _height));
         }
 
         public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height, Color _color)
         {
-            return (GuiRectangle) Add(new GuiRectangle(_x, _y, _width, _height, _color));
+            return Add(new GuiRectangle(_x, _y, _width, _height, _color));
         }
 
         public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
         {
-            return (GuiPicture) Add(new GuiPicture(_texture, _x, _y, _width, _height));
+            return Add(new GuiPicture(_texture, _x, _y, _width, _height));
         }
 
         public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
         {
-            return (GuiPicture) Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
+            return Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }
 
         public GuiSign AddText(string _text, int _x, int _y, int _width, int _height)
         {
-            return (GuiSign) Add(new GuiSign(_text, _x, _y, _width, _height));
+            return Add(new GuiSign(_text, _x, _y, _width, _height));
         }
 
         public GuiSign AddText(string _text, int _x, int _y, int _width, int _height, Color _color)
         {
-            return (GuiSign) Add(new GuiSign(_text, _x, _y, _width, _height, _color));
+            return Add(new GuiSign(_text, _x, _y, _width, _height, _color));
         }
 
         public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height)
         {
-            return (GuiHorizontalBar) Add(new GuiHorizontalBar(_x, _y, _width, _height));
+            return Add(new GuiHorizontalBar(_x, _y, _width, _height));
         }
 
         public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height, Color _color)
         {
-            return (GuiHorizontalBar) Add(new GuiHorizontalBar(_x, _y, _width, _height, _color));
+            return Add(new GuiHorizontalBar(_x, _y, _width, _height, _color));
         }
 
         public GuiNumeric AddNumeric(int _x, int _y, int _width, int _height)
         {
-            return (GuiNumeric) Add(new GuiNumeric(_x, _y, _width, _height));
+            return Add(new GuiNumeric(_x, _y, _width, _height));
         }
 
         public GuiNumeric AddNumeric(int _x, int _y, int _width, int _height, Color _color)
         {
-            return (GuiNumeric) Add(new GuiNumeric(_x, _y, _width, _height, _color));
+            return Add(new GuiNumeric(_x, _y, _width, _height, _color));
         }
 
         public virtual void Update(GameWindow _window)
@@ -97,6 +97,8 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
+            if(focusedObject != null && !focusedObject.UnfocusOnRelease())
+                focusedObject = null;
             foreach (var obj in ScreenObjects)
             {
                 if (focusedObject == null)
@@ -105,6 +107,11 @@ namespace GlLib.Client.API.Gui
                         focusedObject = obj.OnMouseClick(this, _button, _mouseX, _mouseY);
                 }
             }
+        }
+
+        public virtual void OnKeyTyped(GameWindow _window, KeyPressEventArgs _keyEvent)
+        {
+            focusedObject?.OnKeyTyped(this, _keyEvent);
         }
 
         public virtual void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
@@ -120,7 +127,13 @@ namespace GlLib.Client.API.Gui
                     obj.OnMouseRelease(this, _button, _mouseX, _mouseY);
             }
 
-            focusedObject = null;
+            if(focusedObject.UnfocusOnRelease())
+                focusedObject = null;
+        }
+
+        public virtual void OnKeyDown(GraphicWindow _window, KeyboardKeyEventArgs _e)
+        {
+            focusedObject?.OnKeyDown(this, _e);
         }
     }
 }

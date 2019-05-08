@@ -54,6 +54,12 @@ namespace GlLib.Client.Api.Gui
             var dh = (itemPanel.height - GuiSlot.SlotSize) / 2;
             var itemSlot = new GuiPlayerSlot(_p.inventory, 5, dh);
             itemPanel.Add(itemSlot);
+
+            var inputRect = new GuiRectangle(20, 20, 204, 204);
+            Add(inputRect);
+            var input = new GuiText("", 24, 24, 200, 200);
+            input.oneLineMode = false;
+            Add(input);
         }
 
 

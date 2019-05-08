@@ -53,7 +53,8 @@ namespace GlLib.Client.Input
             }
             else
             {
-                GraphicWindow.instance.guiFrame = null;
+                if(GraphicWindow.instance.guiFrame.focusedObject == null)
+                    GraphicWindow.instance.guiFrame = null;
             }
         };
 

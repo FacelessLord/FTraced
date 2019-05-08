@@ -52,6 +52,11 @@ namespace GlLib.Client.Graphic
             base.OnUpdateFrame(_e);
         }
 
+        protected override void OnKeyPress(KeyPressEventArgs _e)
+        {
+            guiFrame?.OnKeyTyped(this,_e);
+        }
+
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
             base.OnKeyDown(_e);
@@ -61,6 +66,7 @@ namespace GlLib.Client.Graphic
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             }
+            guiFrame?.OnKeyDown(this,_e);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)

@@ -3,6 +3,7 @@ using GlLib.Client.API;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace GlLib.Client.Api.Sprites
 {
@@ -87,7 +88,7 @@ namespace GlLib.Client.Api.Sprites
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+',
                 '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~','\'','\"', ' ', '\n'
             });
-
+            
             for (int i = 0; i < l.Count; i++)
                 registry.Add(l[i], i);
         }
@@ -116,7 +117,7 @@ namespace GlLib.Client.Api.Sprites
                 var hKern = GetHorizontalKern(character);
                 float leftKern = hKern.left / (float) _size;
                 float rightKern = hKern.right / (float) _size;
-                d += 1.05 - rightKern - leftKern;
+                d += 1.0 - rightKern - leftKern;
             }
 
             return d*_size;
@@ -146,8 +147,8 @@ namespace GlLib.Client.Api.Sprites
                         Render(character);
                     }
 
-                    d += 1.05 - rightKern - leftKern;
-                    GL.Translate(1.1 - rightKern, -vertKern/2, 0);
+                    d += 1.00 - rightKern - leftKern;
+                    GL.Translate(1.0 - rightKern, -vertKern/2, 0);
                 }
                 else
                 {

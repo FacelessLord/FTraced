@@ -55,5 +55,20 @@ namespace GlLib.Client.API.Gui
         public virtual void OnMouseRelease(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
         }
+
+        public virtual void OnKeyTyped(GuiFrame _guiFrame, KeyPressEventArgs _e)
+        {
+            
+        }
+
+        public virtual bool UnfocusOnRelease()
+        {
+            return true;
+        }
+
+        public virtual void OnKeyDown(GuiFrame _guiFrame, KeyboardKeyEventArgs _keyboardKeyEventArgs)
+        {
+            
+        }
     }
 }
