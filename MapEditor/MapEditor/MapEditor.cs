@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace MapEditor
 {
-    static class Program
+    static class MapEditor
     {
         /// <summary>
         /// Главная точка входа для приложения.
@@ -16,7 +16,7 @@ namespace MapEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Window());
         }
     }
 }
