@@ -7,6 +7,7 @@ namespace MapEditor.Common
     {
         private const int ColumnWeight = 32;
         private const int ChunkSize = 16;
+        private ServerBlock[,] Blocks; 
 
         public RenderPanel()
         {
