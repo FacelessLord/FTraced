@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Json;
+using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
+using GlLib.Common.Api.Inventory;
+using GlLib.Common.Items;
 using GlLib.Common.Map;
+using GlLib.Common.Registries;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
@@ -11,13 +15,14 @@ namespace GlLib.Common.Entities
     public class Player : Entity
     {
         public PlayerData data;
-        public double accelerationValue = 0.05;
+        public double accelerationValue = 0.2;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
+        public PlayerInventory inventory = new PlayerInventory();
 
         public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
-            this.nickname = _nickname;
+            nickname = _nickname;
         }
 
         public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
@@ -26,6 +31,11 @@ namespace GlLib.Common.Entities
 
         public Player()
         {
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.varia));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.apple));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.sword));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.armor));
+            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.ring));
         }
 
         public override string GetName()
@@ -38,20 +48,24 @@ namespace GlLib.Common.Entities
             base.Update();
         }
 
+        public ISprite playerSprite;
+
         public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
-            var btexture = Vertexer.LoadTexture("player.png");
-            Vertexer.BindTexture(btexture);
+//            var btexture = Vertexer.LoadTexture("player.png");
+//            Vertexer.BindTexture(btexture);
+//
+//            Vertexer.StartDrawingQuads();
+//
+//            Vertexer.VertexWithUvAt(10, -10, 1, 0);
+//            Vertexer.VertexWithUvAt(10, 10, 1, 1);
+//            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
+//            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
+//
+//            Vertexer.Draw();
 
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(10, -10, 1, 0);
-            Vertexer.VertexWithUvAt(10, 10, 1, 1);
-            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
-            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
-
-            Vertexer.Draw();
+            playerSprite.Render();
             GL.PopMatrix();
         }
 
@@ -84,7 +98,8 @@ namespace GlLib.Common.Entities
 
         public void CheckVelocity()
         {
-            if (velocity.Length > maxVel.Length) velocity *= maxVel.Length / velocity.Length;
+            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
+            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
         }
     }
 }

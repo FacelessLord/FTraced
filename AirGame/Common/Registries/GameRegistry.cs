@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using GlLib.Common.Entities;
 using GlLib.Common.Items;
+using GlLib.Common.Map;
 using GlLib.Utils;
 
-namespace GlLib.Common.Map
+namespace GlLib.Common.Registries
 {
     public class GameRegistry
     {
@@ -18,14 +19,15 @@ namespace GlLib.Common.Map
         {
             try
             {
-                var id = blocks.Count;
-                items.Add(_item.name, _item);
+                SidedConsole.WriteLine("Registered: " + _item.GetName(new ItemStack(_item)));
+                var id = items.Count;
+                items.Add(_item.unlocalizedName, _item);
                 itemsById.Add(id, _item);
                 _item.id = id;
             }
             catch (Exception e)
             {
-                SidedConsole.WriteLine($"Item with name {_item.name} had already been registered");
+                SidedConsole.WriteLine($"Item with name {_item.unlocalizedName} had already been registered");
                 throw;
             }
         }
@@ -34,6 +36,7 @@ namespace GlLib.Common.Map
         {
             try
             {
+                SidedConsole.WriteLine("Registered: " + _block.GetName());
                 var id = blocks.Count;
                 blocks.Add(_block.GetName(), _block);
                 blocksById.Add(id, _block);
@@ -50,7 +53,7 @@ namespace GlLib.Common.Map
         {
             try
             {
-                SidedConsole.WriteLine("Register: " + _name);
+                SidedConsole.WriteLine("Registered: " + _name);
                 entities.Add(_name, _entityType);
             }
             catch (Exception e)

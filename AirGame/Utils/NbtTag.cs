@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GlLib.Utils
 {
@@ -17,6 +18,11 @@ namespace GlLib.Utils
 
         public int Count => _table.Count;
 
+        public IEnumerable<string> Keys()
+        {
+            return _table.Keys.Cast<string>();
+        }
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -103,6 +109,8 @@ namespace GlLib.Utils
             var entries = MiscUtils.Uncompact(_rawTag);
             for (var i = 0; i < entries.Length / 2; i++)
             {
+                if (entries[2 * i + 1] == "") continue;
+                
                 var valueType = entries[2 * i + 1][0];
                 var value = entries[2 * i + 1].Substring(1);
                 switch (valueType)
@@ -155,10 +163,7 @@ namespace GlLib.Utils
             return tag;
         }
 
-        public int GetErrorNumber()
-        {
-            return _suppressExistenceErrorsNumber;
-        }
+        public int GetErrorNumber => _suppressExistenceErrorsNumber;
 
         public bool CanRetrieveTag(string _prefix)
         {

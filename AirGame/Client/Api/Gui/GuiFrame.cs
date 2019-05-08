@@ -1,0 +1,139 @@
+using System.Collections.Generic;
+using GlLib.Client.Graphic;
+using GlLib.Common.Api.Inventory;
+using GlLib.Utils;
+using OpenTK;
+using OpenTK.Input;
+
+namespace GlLib.Client.API.Gui
+{
+    public class GuiFrame
+    {
+        public List<GuiObject> ScreenObjects{ get; set; }
+
+        public Slot SelectedSlot { get; set; }
+
+        public GuiFrame()
+        {
+            ScreenObjects = new List<GuiObject>();
+        }
+
+        public T Add<T>(T _obj) where T:GuiObject
+        {
+            ScreenObjects.Add(_obj);
+            return _obj;
+        }
+
+        public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height)
+        {
+            return Add(new GuiRectangle(_x, _y, _width, _height));
+        }
+
+        public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height, Color _color)
+        {
+            return Add(new GuiRectangle(_x, _y, _width, _height, _color));
+        }
+
+        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
+        {
+            return Add(new GuiPicture(_texture, _x, _y, _width, _height));
+        }
+
+        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
+        {
+            return Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
+        }
+
+        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height)
+        {
+            return Add(new GuiSign(_text, _x, _y, _width, _height));
+        }
+
+        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height, Color _color)
+        {
+            return Add(new GuiSign(_text, _x, _y, _width, _height, _color));
+        }
+
+        public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height)
+        {
+            return Add(new GuiHorizontalBar(_x, _y, _width, _height));
+        }
+
+        public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height, Color _color)
+        {
+            return Add(new GuiHorizontalBar(_x, _y, _width, _height, _color));
+        }
+
+        public GuiNumeric AddNumeric(int _x, int _y, int _width, int _height)
+        {
+            return Add(new GuiNumeric(_x, _y, _width, _height));
+        }
+
+        public GuiNumeric AddNumeric(int _x, int _y, int _width, int _height, Color _color)
+        {
+            return Add(new GuiNumeric(_x, _y, _width, _height, _color));
+        }
+
+        public virtual void Update(GameWindow _window)
+        {
+            foreach (var obj in ScreenObjects)
+            {
+                obj.Update(this);
+            }
+        }
+
+        public virtual void Render(GameWindow _window)
+        {
+            int centerX = _window.Width / 2;
+            int centerY = _window.Height / 2;
+
+            foreach (var obj in ScreenObjects)
+            {
+                obj.Render(this, centerX, centerY);
+            }
+        }
+
+        public GuiObject focusedObject;
+
+        public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        {
+            if(focusedObject != null && !focusedObject.UnfocusOnRelease())
+                focusedObject = null;
+            foreach (var obj in ScreenObjects)
+            {
+                if (focusedObject == null)
+                {
+                    if (obj.IsMouseOver(this, _mouseX, _mouseY))
+                        focusedObject = obj.OnMouseClick(this, _button, _mouseX, _mouseY);
+                }
+            }
+        }
+
+        public virtual void OnKeyTyped(GameWindow _window, KeyPressEventArgs _keyEvent)
+        {
+            focusedObject?.OnKeyTyped(this, _keyEvent);
+        }
+
+        public virtual void OnMouseDrag(GameWindow _window, int _mouseX, int _mouseY, int _dx, int _dy)
+        {
+            focusedObject?.OnMouseDrag(this, _mouseX, _mouseY, _dx, _dy);
+        }
+
+        public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
+        {
+            foreach (var obj in ScreenObjects)
+            {
+                if (obj.IsMouseOver(this, _mouseX, _mouseY))
+                    obj.OnMouseRelease(this, _button, _mouseX, _mouseY);
+            }
+
+            if(focusedObject.UnfocusOnRelease())
+                focusedObject = null;
+        }
+
+        public virtual void OnKeyDown(GraphicWindow _window, KeyboardKeyEventArgs _e)
+        {
+            focusedObject?.OnKeyDown(this, _e);
+        }
+    }
+}

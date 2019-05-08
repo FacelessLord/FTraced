@@ -40,7 +40,7 @@ namespace GlLib.Common.Map
 
             entityMutex.WaitOne();
             _e.worldObj = this;
-            
+
             if (_e.chunkObj == null)
                 _e.chunkObj = Entity.GetProjection(_e.Position, this);
             _e.chunkObj.entities[_e.Position.z].Add(_e); //todo entity null
@@ -96,8 +96,11 @@ namespace GlLib.Common.Map
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
             {
-                var chk = this[i, j];
-                if (chk != null) chunks.Add(chk);
+                if (i >= 0 && j >= 0 && i < width && j < _height)
+                {
+                    var chk = this[i, j];
+                    if (chk != null) chunks.Add(chk);
+                }
             }
 
             foreach (var chk in chunks)

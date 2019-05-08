@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using GlLib.Client.Api.Gui;
+using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Common.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK;
@@ -17,7 +20,7 @@ namespace GlLib.Client.Input
         public static Action<Player> moveLeft = _p =>
         {
             _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-            GraphicWindow.instance.dx -= _p.accelerationValue*64;
+//            GraphicWindow.instance.dx -= _p.accelerationValue*64;
             _p.CheckVelocity();
         };
 
@@ -25,39 +28,33 @@ namespace GlLib.Client.Input
         {
             _p.velocity += new PlanarVector(0, -_p.accelerationValue);
             _p.CheckVelocity();
-            GraphicWindow.instance.dy -= _p.accelerationValue*64;
+//            GraphicWindow.instance.dy -= _p.accelerationValue*64;
         };
 
         public static Action<Player> moveRight = _p =>
         {
             _p.velocity += new PlanarVector(_p.accelerationValue, 0);
             _p.CheckVelocity();
-            GraphicWindow.instance.dx += _p.accelerationValue*64;
+//            GraphicWindow.instance.dx += _p.accelerationValue*64;
         };
 
         public static Action<Player> moveDown = _p =>
         {
             _p.velocity += new PlanarVector(0, _p.accelerationValue);
             _p.CheckVelocity();
-            GraphicWindow.instance.dy += _p.accelerationValue*64;
+//            GraphicWindow.instance.dy += _p.accelerationValue*64;
         };
 
         public static Action<Player> openInventory = _p =>
         {
-            if (GraphicWindow.instance.gui == null)
+            if (GraphicWindow.instance.guiFrame == null)
             {
-                GraphicWindow.instance.gui = new Gui();
-                GraphicWindow.instance.gui
-                    .AddRectangle(GraphicWindow.instance.Width / 38, GraphicWindow.instance.Height / 9,
-                        4 * GraphicWindow.instance.Width / 9, 2 * GraphicWindow.instance.Height / 5,
-                        Color.FromArgb(127, 200, 200, 200));
-                var text = "Some text here";
-                GraphicWindow.instance.gui.AddText(text, 100, 100, 200, 200);
-
+                GraphicWindow.instance.guiFrame = new PlayerFrameInventoryGuiFrame(_p);
             }
             else
             {
-                GraphicWindow.instance.gui = null;
+                if(GraphicWindow.instance.guiFrame.focusedObject == null)
+                    GraphicWindow.instance.guiFrame = null;
             }
         };
 

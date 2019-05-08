@@ -20,7 +20,7 @@ namespace GlLib.Client.API.Gui
 
         public Texture texture;
 
-        public override void Render(GameWindow _window, int _centerX, int _centerY)
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);

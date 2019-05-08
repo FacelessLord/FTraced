@@ -9,6 +9,7 @@ namespace GlLib.Common
         public const int FrameTime = 50;
         public Blocks blocks;
         public EntityRegistry entities;
+        public ItemRegistry items;
 
         public GameRegistry registry;
 
@@ -22,12 +23,14 @@ namespace GlLib.Common
             registry = new GameRegistry();
             blocks = new Blocks(registry);
             entities = new EntityRegistry(registry);
+            items = new ItemRegistry(registry);
         }
 
         public void Start()
         {
             blocks.Register();
             entities.Register();
+            items.Register();
             Proxy.RegisterService(this);
             OnStart();
         }
@@ -35,7 +38,7 @@ namespace GlLib.Common
         public void Loop()
         {
             state = State.Loop;
-            while (true)
+            while (!Proxy.Exit)
             {
                 OnServiceUpdate();
                 Thread.Sleep(FrameTime);

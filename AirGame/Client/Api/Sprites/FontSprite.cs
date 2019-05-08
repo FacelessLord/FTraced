@@ -3,6 +3,7 @@ using GlLib.Client.API;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace GlLib.Client.Api.Sprites
 {
@@ -87,7 +88,7 @@ namespace GlLib.Client.Api.Sprites
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+',
                 '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~','\'','\"', ' ', '\n'
             });
-
+            
             for (int i = 0; i < l.Count; i++)
                 registry.Add(l[i], i);
         }
@@ -105,6 +106,21 @@ namespace GlLib.Client.Api.Sprites
             Vertexer.VertexWithUvAt(0, 1, startU, endV);
 
             Vertexer.Draw();
+        }
+
+        public double GetTextWidth(string _text, int _size)
+        {
+            double d = 0;
+            for (int i = 0; i < _text.Length; i++)
+            {
+                char character = _text[i];
+                var hKern = GetHorizontalKern(character);
+                float leftKern = hKern.left / (float) _size;
+                float rightKern = hKern.right / (float) _size;
+                d += 1.0 - rightKern - leftKern;
+            }
+
+            return d*_size;
         }
 
         public virtual void DrawText(string _text, int _size, float _r = 0, float _g = 0, float _b = 0, float _a = 1.0f)
@@ -131,8 +147,8 @@ namespace GlLib.Client.Api.Sprites
                         Render(character);
                     }
 
-                    d += 1.1 - rightKern - leftKern;
-                    GL.Translate(1.1 - rightKern, -vertKern/2, 0);
+                    d += 1.00 - rightKern - leftKern;
+                    GL.Translate(1.0 - rightKern, -vertKern/2, 0);
                 }
                 else
                 {

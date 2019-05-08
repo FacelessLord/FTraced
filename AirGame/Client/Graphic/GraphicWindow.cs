@@ -8,28 +8,34 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
 using System.Threading;
+using GlLib.Client.Api.Cameras;
+using GlLib.Client.Api.Sprites;
 
 namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
         public static GraphicWindow instance;
-        public static VSyncMode vSync = VSyncMode.On;
-        public static ClientService client;
+        public VSyncMode vSync = VSyncMode.On;
+        public ClientService client;
         public int guiTimeout = 0;
-        public Gui gui;
-        public double dx = 900;
-        public double dy = 900;
+        public GuiFrame guiFrame;
+        public ICamera camera;
 
         public Hud hud;
 
-        public GraphicWindow(int _width, int _height, string _title) : base(_width, _height, GraphicsMode.Default,
+        public GraphicWindow(ClientService _client, int _width, int _height, string _title) : base(_width, _height,
+            GraphicsMode.Default,
             _title)
         {
+            client = _client;
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             instance = this;
             hud = new Hud();
+            camera = new PlayerTrackingCamera();
+            TextureLayout layout = new TextureLayout(Vertexer.LoadTexture("player_sprite.png"),0,0,256,64,16,2);
+            client.player.playerSprite = new LinearSprite(layout, 22, 1);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -38,8 +44,17 @@ namespace GlLib.Client.Graphic
             KeyboardHandler.Update();
             hud.Update(this);
             var input = Keyboard.GetState();
-            if (input.IsKeyDown(Key.Escape)) Exit();
+            if (input.IsKeyDown(Key.Escape))
+            {
+                Exit();
+                Proxy.Exit = true;
+            }
             base.OnUpdateFrame(_e);
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs _e)
+        {
+            guiFrame?.OnKeyTyped(this,_e);
         }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
@@ -47,11 +62,11 @@ namespace GlLib.Client.Graphic
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
-            if(KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+            if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             }
-            //todo send ClickedPacket[Not necessary, clicks should be handled on Client side]
+            guiFrame?.OnKeyDown(this,_e);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
@@ -64,13 +79,32 @@ namespace GlLib.Client.Graphic
         {
             base.OnResize(_e);
             GL.Viewport(0, 0, Width, Height);
-            gui?.Update(this);
+            guiFrame?.Update(this);
         }
 
         protected override void OnLoad(EventArgs _e)
         {
             base.OnLoad(_e);
             VSync = VSyncMode.On;
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs _e)
+        {
+            base.OnMouseDown(_e);
+            guiFrame?.OnMouseClick(this, _e.Button, _e.X, _e.Y);
+        }
+
+        protected override void OnMouseMove(MouseMoveEventArgs _e)
+        {
+            base.OnMouseMove(_e);
+            if((bool) MouseHandler.pressed[MouseButton.Left])
+                guiFrame?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs _e)
+        {
+            base.OnMouseUp(_e);
+            guiFrame?.OnMouseRelease(this, _e.Button, _e.X, _e.Y);
         }
 
         protected override void OnRenderFrame(FrameEventArgs _e)
@@ -83,18 +117,19 @@ namespace GlLib.Client.Graphic
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
 
             GL.PushMatrix();
-            GL.Scale(1d /Width, 1d /Height, 1);
+            GL.Scale(1d / Width, 1d / Height, 1);
 
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            SidedConsole.WriteLine(Proxy.GetClient().player.Position);
+//            SidedConsole.WriteLine(client.player.Position);
 
             GL.PushMatrix();
-            GL.Translate((Proxy.GetClient().player.Position.x - 3*dx/4), 
-                (dy / 30 - Proxy.GetClient().player.Position.y),0);
-            Proxy.GetClient().worldRenderer.Render(dx,dy);
+            GL.Translate(Width / 2d, Height / 2d, 0);
+            camera.Update(this);
+            camera.PerformTranslation(this);
+            Proxy.GetClient().worldRenderer.Render(000, 000);
             GL.PopMatrix();
 
             //GUI render is not connected to the world
@@ -102,8 +137,10 @@ namespace GlLib.Client.Graphic
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
-            gui?.Render(this);
+            hud.Update(this);
             hud.Render(this);
+            guiFrame?.Update(this);
+            guiFrame?.Render(this);
             GL.PopMatrix();
 
             SwapBuffers();
@@ -116,10 +153,10 @@ namespace GlLib.Client.Graphic
             base.OnUnload(_e);
         }
 
-        public static void RunWindow()
+        public static void RunWindow(ClientService _client)
         {
             var graphicThread = new Thread(() =>
-                new GraphicWindow(800, 600, "GLLib").Run(60));
+                new GraphicWindow(_client, 800, 600, "Tracing of F").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
         }

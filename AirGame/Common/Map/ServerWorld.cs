@@ -45,21 +45,17 @@ namespace GlLib.Common.Map
             foreach (var pair in entityAddQueue) pair.chk.entities[pair.e.Position.z].Add(pair.e);
 
             entityAddQueue.Clear();
-
-            entityMutex.WaitOne();
-            foreach (var chunk in chunks)
-                if (chunk.isLoaded)
-                    chunk.Update();
-
-            entityMutex.ReleaseMutex();
-
+            lock(chunks)
+                foreach (var chunk in chunks)
+                    if (chunk.isLoaded)
+                        chunk.Update();
             SaveWorldEntities();
         }
 
-        public void ChangeEntityChunk(Entity _e, Chunk _next)
+        public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
         {
-            entityRemoveQueue.Add((_e, _e.chunkObj));
-            entityAddQueue.Add((_e,  _next));
+            entityRemoveQueue.Add((_e, _old));
+            entityAddQueue.Add((_e, _next));
             _e.chunkObj = _next;
         }
     }

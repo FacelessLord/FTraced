@@ -1,3 +1,4 @@
+using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
 
 namespace GlLib.Common.Items
@@ -6,19 +7,16 @@ namespace GlLib.Common.Items
     {
         public int id;
 
-        public string name;
         public ItemRarity rarity;
 
         public string sprite;
         public ItemType type;
         public string unlocalizedName = "item.null";
 
-        public Item(int _id, string _name, string _sprite, ItemRarity _rarity, ItemType _type = ItemType.Varia)
+        public Item(string _name, ItemRarity _rarity, ItemType _type = ItemType.Varia)
         {
             rarity = _rarity;
-            id = _id;
-            sprite = _sprite;
-            name = _name;
+            unlocalizedName = _name;
             type = _type;
         }
 
@@ -27,10 +25,14 @@ namespace GlLib.Common.Items
             return unlocalizedName;
         }
 
-
-        public string GetTextureName(ItemStack _itemStack)
+        public virtual string GetTextureName(ItemStack _itemStack)
         {
             return unlocalizedName + ".png";
+        }
+
+        public virtual ISprite GetItemSprite(ItemStack _itemStack)
+        {
+            return new PictureSprite(GetTextureName(_itemStack));
         }
 
         public virtual bool RequiresSpecialRenderer(ItemStack _itemStack)
@@ -45,7 +47,7 @@ namespace GlLib.Common.Items
 
         public override string ToString()
         {
-            return ""; // todo
+            return unlocalizedName; // todo
         }
     }
 }

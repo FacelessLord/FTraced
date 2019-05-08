@@ -30,7 +30,7 @@ namespace Tests.Client
         {
             var layout = new Layout(0, 0, 0, 0, 0, 0, 0, 0);
             Action getFrame = () => { layout.GetFrameUvProportions(1); };
-            getFrame.Should().NotThrow();
+            getFrame.Should().Throw<DivideByZeroException>();
         }
 
         [Test]

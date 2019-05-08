@@ -2,7 +2,7 @@
 using GlLib.Utils;
 using NUnit.Framework;
 
-namespace Tests.ulits
+namespace Tests.utils
 {
     public class AxisAlignedBbTests
     {
