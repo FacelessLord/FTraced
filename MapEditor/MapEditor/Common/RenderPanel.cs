@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace MapEditor.Common
@@ -9,7 +10,7 @@ namespace MapEditor.Common
         public  TerrainBlock Brush { get; set; }
         private const int ColumnWeight = 44;
         private const int ChunkSize = 16;
-        private TerrainBlock[,] Blocks = new TerrainBlock[ChunkSize, ChunkSize];
+        internal TerrainBlock[,] blocks = new TerrainBlock[ChunkSize, ChunkSize];
         private bool drawing = false;
 
         public RenderPanel()
@@ -29,7 +30,7 @@ namespace MapEditor.Common
             if (!drawing) return;
             try
             {
-                Blocks[_e.X / ColumnWeight, _e.Y / ColumnWeight] = Brush;
+                blocks[_e.X / ColumnWeight, _e.Y / ColumnWeight] = Brush;
             }
             catch (Exception e)
             {
@@ -39,7 +40,7 @@ namespace MapEditor.Common
 
         protected override void OnMouseClick(MouseEventArgs _e)
         {
-            Blocks[_e.X / ColumnWeight , _e.Y / ColumnWeight] = Brush;
+            blocks[_e.X / ColumnWeight , _e.Y / ColumnWeight] = Brush;
         }
 
         protected override void OnMouseDown(MouseEventArgs _e)
@@ -62,14 +63,14 @@ namespace MapEditor.Common
                 _e.DrawLine(p, 0, i * ColumnWeight, ColumnWeight * ChunkSize, i * ColumnWeight);
             }
 
-            for (int i = 0; i < Blocks.GetLength(0); i++)
-            for (int j = 0; j < Blocks.GetLength(1); j++)
+            for (int i = 0; i < blocks.GetLength(0); i++)
+            for (int j = 0; j < blocks.GetLength(1); j++)
             {
-                if (!(Blocks[i,j] is null))
+                if (!(blocks[i,j] is null))
                 {
                     var position = new Point(i * ColumnWeight + 1, j * ColumnWeight + 1);
-                    var image = Image.FromFile("textures/" + Blocks[i, j].GetTextureName(0,0));
-                    _e.DrawImage(image, position);
+                    var image = (Bitmap) Image.FromFile("textures/" + blocks[i, j].GetTextureName(1,1)).Clone();
+                    _e.DrawImage(image, position.X,position.Y, ColumnWeight - 1, ColumnWeight -1 );
                 }
             }
 

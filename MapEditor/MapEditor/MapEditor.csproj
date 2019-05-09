@@ -53,6 +53,9 @@
     <Compile Include="Blocks\GrassBlock.cs" />
     <Compile Include="Blocks\Path.cs" />
     <Compile Include="Blocks\TerrainBlock.cs" />
+    <Compile Include="Common\ChunkMapRender.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Common\RenderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -88,9 +91,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-	<None Include="textures\*">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
+    <None Include="textures\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

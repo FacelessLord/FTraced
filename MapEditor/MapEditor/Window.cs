@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using MapEditor.Common;
 
@@ -9,20 +10,26 @@ namespace MapEditor
     public class Window : Form
     {
         private readonly TerrainBlock[] Brushes = {new Bricks(), new GrassBlock()};
-        private PictureBox BrushPicture;
+        private PictureBox BrushPicture { get; set; }
 
-        private ListView brushView;
-        private IContainer components;
+        private ListView BrushView { get; set; }
 
-        private RenderPanel PaintField;
+        private ChunkMapRender ChunkMap { get; set; }
+        private IContainer Components { get; set; }
+
+        private MenuStrip MenuStrip { get; set; }
+        private OpenFileDialog OpenFileDialog { get; set; }
+
+        internal RenderPanel PaintField { get; set; }
+        private SaveFileDialog SaveFileDialog { get; set; }
 
         public Window()
         {
-            SetStyle(
-                ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint
-                                           | ControlStyles.UserPaint, true);
+            //SetStyle(
+            //    ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint
+            //                               | ControlStyles.UserPaint, true);
             UpdateStyles();
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+
             var timer = new Timer
             {
                 Interval = 60
@@ -30,105 +37,151 @@ namespace MapEditor
             timer.Tick += TimerTick;
             timer.Start();
             InitializeComponent();
-            brushView.SmallImageList = new ImageList();
-            PaintField.Paint += OnPaint;
-            brushView.ItemActivate += ItemActivate;
+
+            BrushView.SmallImageList = new ImageList();
+            PaintField.Paint += OnFieldPaint;
+            BrushView.ItemActivate += BrushItemActivate;
+            ChunkMap.Paint += ChunkMap_Paint;
             Load += OnLoad;
+        }
+
+        private void ChunkMap_Paint(object _sender, PaintEventArgs _e)
+        {
+            var g = _e.Graphics;
+            ChunkMap.DrawField(g);
         }
 
         private void TimerTick(object _sender, EventArgs _e)
         {
             BrushPicture.Image = Image.FromFile(
                 "textures/"
-                + PaintField.Brush.GetTextureName(0,0));
+                + PaintField.Brush.GetTextureName(0, 0));
             PaintField.Invalidate();
+            ChunkMap.Invalidate();
         }
 
-        protected override void OnMouseMove(MouseEventArgs _e)
-        {
-            //MousePosition = new Point(_e.X , _e.Y);
-        }
+        protected override void OnMouseMove(MouseEventArgs _e) { }
 
-        protected void OnPaint(object _sender, PaintEventArgs _e)
+        protected void OnFieldPaint(object _sender, PaintEventArgs _e)
         {
             var g = _e.Graphics;
             PaintField.DrawField(g);
         }
 
-        private void OnLoad(object sender, EventArgs e)
+        private void OnLoad(object _sender, EventArgs _e)
         {
-            var items = brushView.Items;
+            var items = BrushView.Items;
             int imageNumber = 0;
 
             foreach (var value in Brushes)
                 try
                 {
                     var image = Image.FromFile("textures/" + value.GetTextureName(0, 0));
-                    brushView.SmallImageList.Images.Add(image);
+                    BrushView.SmallImageList.Images.Add(image);
                     items.Add(value.GetName(), imageNumber);
                     imageNumber++;
                 }
                 catch (Exception exp)
                 {
-                    MessageBox.Show("Images adding exception: " + exp.Message);
+                    MessageBox.Show(@"Images adding exception: " + exp.Message);
                 }
         }
 
-        private void ItemActivate(object sender, EventArgs e)
+        private void BrushItemActivate(object sender, EventArgs e)
         {
-            PaintField.Brush = Brushes[brushView.SelectedItems[0].Index];
+            PaintField.Brush = Brushes[BrushView.SelectedItems[0].Index];
         }
 
         private void InitializeComponent()
         {
-
-            this.brushView = new System.Windows.Forms.ListView();
-            this.BrushPicture = new System.Windows.Forms.PictureBox();
-            this.PaintField = new RenderPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.BrushPicture)).BeginInit();
-            this.SuspendLayout();
+            BrushView = new ListView();
+            BrushPicture = new PictureBox();
+            PaintField = new RenderPanel();
+            ChunkMap = new ChunkMapRender(PaintField, this);
+            SaveFileDialog = new SaveFileDialog();
+            OpenFileDialog = new OpenFileDialog();
+            MenuStrip = new MenuStrip();
+            ((ISupportInitialize) BrushPicture).BeginInit();
+            SuspendLayout();
             // 
             // brushView
             // 
-            this.brushView.Location = new System.Drawing.Point(16, 100);
-            this.brushView.Name = "brushView";
-            this.brushView.Size = new System.Drawing.Size(151, 300);
-            this.brushView.TabIndex = 1;
-            this.brushView.UseCompatibleStateImageBehavior = false;
-            this.brushView.View = System.Windows.Forms.View.List;
+            BrushView.Location = new Point(16, 100);
+            BrushView.Name = "BrushView";
+            BrushView.Size = new Size(151, 300);
+            BrushView.TabIndex = 1;
+            BrushView.UseCompatibleStateImageBehavior = false;
+            BrushView.View = View.List;
             // 
             // BrushPicture
             // 
-            this.BrushPicture.Location = new System.Drawing.Point(50, 12);
-            this.BrushPicture.Name = "BrushPicture";
-            this.BrushPicture.Size = new System.Drawing.Size(66, 65);
-            this.BrushPicture.TabIndex = 2;
-            this.BrushPicture.TabStop = false;
-            this.BrushPicture.SizeMode = PictureBoxSizeMode.Zoom;
+            BrushPicture.Location = new Point(50, 12);
+            BrushPicture.Name = "BrushPicture";
+            BrushPicture.Size = new Size(66, 65);
+            BrushPicture.SizeMode = PictureBoxSizeMode.Zoom;
+            BrushPicture.TabIndex = 2;
+            BrushPicture.TabStop = false;
             // 
-            // PaintField
+            // paintField
             // 
-            this.PaintField.AutoScroll = true;
-            this.PaintField.Location = new System.Drawing.Point(180, 0);
-            this.PaintField.MousePosition = new System.Drawing.Point(0, 0);
-            this.PaintField.Name = "PaintField";
-            this.PaintField.Size = new System.Drawing.Size(705, 705);
-            this.PaintField.TabIndex = 0;
+            PaintField.Location = new Point(180, 0);
+            PaintField.MousePosition = new Point(0, 0);
+            PaintField.Name = "PaintField";
+            PaintField.Size = new Size(705, 705);
+            PaintField.TabIndex = 0;
+            // 
+            // ChunkMap
+            // 
+            ChunkMap.Location = new Point(920, 23);
+            ChunkMap.Name = "ChunkMap";
+            PaintField.MousePosition = new Point(0, 0);
+            ChunkMap.Size = new Size(256, 256);
+            ChunkMap.TabIndex = 0;
+            // 
+            // openFileDialog1
+            // 
+            OpenFileDialog.FileName = "openFileDialog1";
+            OpenFileDialog.FileOk += openFileDialog1_FileOk;
+            // 
+            // menuStrip
+            // 
+            MenuStrip.Location = new Point(0, 0);
+            MenuStrip.Name = "MenuStrip";
+            MenuStrip.Size = new Size(1284, 24);
+            MenuStrip.TabIndex = 4;
+            MenuStrip.Text = @"menuStrip";
             // 
             // Window
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 711);
-            this.Controls.Add(this.BrushPicture);
-            this.Controls.Add(this.brushView);
-            this.Controls.Add(this.PaintField);
-            this.MaximumSize = new System.Drawing.Size(1300, 750);
-            this.MinimumSize = new System.Drawing.Size(1300, 750);
-            this.Name = "Window";
-            ((System.ComponentModel.ISupportInitialize)(this.BrushPicture)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1284, 711);
+            Controls.Add(ChunkMap);
+            Controls.Add(BrushPicture);
+            Controls.Add(BrushView);
+            Controls.Add(PaintField);
+            Controls.Add(MenuStrip);
+            MainMenuStrip = MenuStrip;
+            MaximumSize = new Size(1300, 750);
+            MinimumSize = new Size(1300, 726);
+            Name = "Window";
+            ((ISupportInitialize) BrushPicture).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
 
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            SaveFileDialog.Filter = @"txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            SaveFileDialog.FilterIndex = 2;
+            SaveFileDialog.RestoreDirectory = true;
+
+            if (SaveFileDialog.ShowDialog() == DialogResult.OK)
+                // Can use dialog.FileName
+                using (Stream stream = SaveFileDialog.OpenFile())
+                {
+                    // Save data
+                }
         }
     }
 }
