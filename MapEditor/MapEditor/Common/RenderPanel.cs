@@ -2,30 +2,34 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using MapEditor.BlocksStruct;
 
 namespace MapEditor.Common
 {
     public class RenderPanel : Panel
     {
-        public  TerrainBlock Brush { get; set; }
+        public IBlock Brush { get; internal set; }
         private const int ColumnWeight = 44;
         private const int ChunkSize = 16;
-        internal TerrainBlock[,] blocks = new TerrainBlock[ChunkSize, ChunkSize];
+        internal IBlock[,] blocks = new IBlock[ChunkSize, ChunkSize];
         private bool drawing = false;
 
         public RenderPanel()
         {
-            Brush = new GrassBlock();
+            Brush = new BlocksStruct.Bricks();
             //Problem with graphics painter 
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer |
                      ControlStyles.AllPaintingInWmPaint, true);
         }
 
-        public new Point MousePosition { get; set; }
+        public new Point? MousePosition { get; internal set; }
 
         protected override void OnMouseMove(MouseEventArgs _e)
         {
-            MousePosition = new Point(_e.X / ColumnWeight * ColumnWeight, _e.Y / ColumnWeight * ColumnWeight);
+
+            if (_e.X / ColumnWeight < ChunkSize && _e.Y / ColumnWeight < ChunkSize)
+                MousePosition = new Point(_e.X / ColumnWeight * ColumnWeight, _e.Y / ColumnWeight * ColumnWeight);
+            else MousePosition = null;
             base.OnMouseMove(_e);
             if (!drawing) return;
             try
@@ -40,7 +44,14 @@ namespace MapEditor.Common
 
         protected override void OnMouseClick(MouseEventArgs _e)
         {
-            blocks[_e.X / ColumnWeight , _e.Y / ColumnWeight] = Brush;
+            try
+            {
+                blocks[_e.X / ColumnWeight, _e.Y / ColumnWeight] = Brush;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         protected override void OnMouseDown(MouseEventArgs _e)
@@ -69,14 +80,16 @@ namespace MapEditor.Common
                 if (!(blocks[i,j] is null))
                 {
                     var position = new Point(i * ColumnWeight + 1, j * ColumnWeight + 1);
-                    var image = (Bitmap) Image.FromFile("textures/" + blocks[i, j].GetTextureName(1,1)).Clone();
+                    var image = (Bitmap) Image.FromFile(blocks[i, j].GetTexturePath()).Clone();
                     _e.DrawImage(image, position.X,position.Y, ColumnWeight - 1, ColumnWeight -1 );
                 }
             }
 
+            if (MousePosition is null)
+                return;
             p = new Pen(Color.Green, 5);
             var rectSize = new Size(ColumnWeight, ColumnWeight);
-            var rect = new Rectangle(MousePosition, rectSize);
+            var rect = new Rectangle((Point) MousePosition, rectSize);
             _e.DrawRectangle(p, rect);
         }
     }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using MapEditor.BlocksStruct;
 
 namespace MapEditor.Common
 {
@@ -16,10 +16,10 @@ namespace MapEditor.Common
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer |
                      ControlStyles.AllPaintingInWmPaint, true);
 
-            Chunks = new TerrainBlock[6, 6][,];
+            Chunks = new IBlock[6, 6][,];
             for (int i = 0; i < ChunkCount; i++)
             for (int j = 0; j < ChunkCount; j++)
-                Chunks[i, j] = new TerrainBlock[16, 16];
+                Chunks[i, j] = new IBlock[16, 16];
         }
 
         public Window Parent { get; set; }
@@ -27,31 +27,31 @@ namespace MapEditor.Common
         private RenderPanel Translate { get; }
         protected Point ChosenChunk { get; set; }
 
-        private TerrainBlock[,][,] Chunks { get; }
+        private IBlock[,][,] Chunks { get; }
 
 
-        public new Point MousePosition { get; set; }
+        public new Point? MousePosition { get; set; }
 
         protected override void OnMouseMove(MouseEventArgs _e)
         {
             base.OnMouseMove(_e);
-
-            MousePosition = new Point(_e.X / ColumnWeight * ColumnWeight, _e.Y / ColumnWeight * ColumnWeight);
+            if (_e.X / ColumnWeight <= ChunkCount - 1
+                && _e.Y / ColumnWeight <= ChunkCount - 1)
+                MousePosition = new Point(_e.X / ColumnWeight * ColumnWeight,
+                    _e.Y / ColumnWeight * ColumnWeight);
+            else
+                MousePosition = null;
         }
 
         protected override void OnMouseClick(MouseEventArgs _e)
         {
-            Chunks[ChosenChunk.X, ChosenChunk.Y] = Translate.blocks;
-            try
+            if (_e.X / ColumnWeight <= ChunkCount - 1
+                && _e.Y / ColumnWeight <= ChunkCount - 1)
             {
+                Chunks[ChosenChunk.X, ChosenChunk.Y] = Translate.blocks;
                 ChosenChunk = new Point(_e.X / ColumnWeight, _e.Y / ColumnWeight);
+                Translate.blocks = Chunks[ChosenChunk.X, ChosenChunk.Y];
             }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-            Translate.blocks = Chunks[ChosenChunk.X, ChosenChunk.Y];
         }
 
 
@@ -59,7 +59,7 @@ namespace MapEditor.Common
         {
             var p = new Pen(Color.Black, 3);
             var rectSize = new Size(ColumnWeight, ColumnWeight);
-            var rect = new Rectangle(MousePosition, rectSize);
+            var rect = new Rectangle();
 
 
             for (int i = 0; i <= 16; i++)
@@ -75,7 +75,6 @@ namespace MapEditor.Common
             for (int i = 0; i < Chunks[x, y].GetLength(0); i++)
             for (int j = 0; j < Chunks[x, y].GetLength(1); j++)
                 if (!(Chunks[x, y][i, j] is null))
-                {
                     using (Brush brush = new SolidBrush(Color.FromArgb(1, 0, 0, 0)))
                     {
                         _e.FillRectangle(brush,
@@ -84,11 +83,14 @@ namespace MapEditor.Common
                             rectSize.Width,
                             rectSize.Height);
                     }
-                }
 
             //MousePosition
-            p = new Pen(Color.Green, 5);
-            _e.DrawRectangle(p, rect);
+            if (!(MousePosition is null))
+            {
+                rect = new Rectangle((Point) MousePosition, rectSize);
+                p = new Pen(Color.Green, 5);
+                _e.DrawRectangle(p, rect);
+            }
 
             //ChosenChunk
             p = new Pen(Color.Red, 5);

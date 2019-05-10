@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -47,12 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blocks\AutumnGrassBlock.cs" />
-    <Compile Include="Blocks\AutumnGrassWithStone.cs" />
-    <Compile Include="Blocks\Bricks.cs" />
-    <Compile Include="Blocks\GrassBlock.cs" />
-    <Compile Include="Blocks\Path.cs" />
-    <Compile Include="Blocks\TerrainBlock.cs" />
+    <Compile Include="BlocksStruct\BlocksConstruction.cs" />
+    <Compile Include="BlocksStruct\Bricks.cs" />
+    <Compile Include="BlocksStruct\Grass.cs" />
+    <Compile Include="BlocksStruct\IBlock.cs" />
     <Compile Include="Common\ChunkMapRender.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -91,7 +89,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="textures\*">
+    <None Include="textures\blocks\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />

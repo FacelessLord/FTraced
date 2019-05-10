@@ -3,13 +3,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using MapEditor.BlocksStruct;
 using MapEditor.Common;
 
 namespace MapEditor
 {
     public class Window : Form
     {
-        private readonly TerrainBlock[] Brushes = {new Bricks(), new GrassBlock()};
+        private readonly IBlock[] Brushes = {new BlocksStruct.Bricks(), new Grass()};
         private PictureBox BrushPicture { get; set; }
 
         private ListView BrushView { get; set; }
@@ -20,8 +21,10 @@ namespace MapEditor
         private MenuStrip MenuStrip { get; set; }
         private OpenFileDialog OpenFileDialog { get; set; }
 
-        internal RenderPanel PaintField { get; set; }
+        private RenderPanel PaintField { get; set; }
         private SaveFileDialog SaveFileDialog { get; set; }
+
+        private Button AddBrush { get; set; }
 
         public Window()
         {
@@ -32,7 +35,7 @@ namespace MapEditor
 
             var timer = new Timer
             {
-                Interval = 60
+                Interval = 40
             };
             timer.Tick += TimerTick;
             timer.Start();
@@ -43,6 +46,12 @@ namespace MapEditor
             BrushView.ItemActivate += BrushItemActivate;
             ChunkMap.Paint += ChunkMap_Paint;
             Load += OnLoad;
+            AddBrush.Click += AddBrush_Click;
+        }
+
+        private void AddBrush_Click(object _sender, EventArgs _e)
+        {
+            MessageBox.Show("");
         }
 
         private void ChunkMap_Paint(object _sender, PaintEventArgs _e)
@@ -53,9 +62,7 @@ namespace MapEditor
 
         private void TimerTick(object _sender, EventArgs _e)
         {
-            BrushPicture.Image = Image.FromFile(
-                "textures/"
-                + PaintField.Brush.GetTextureName(0, 0));
+            BrushPicture.Image = Image.FromFile(PaintField.Brush.GetTexturePath());
             PaintField.Invalidate();
             ChunkMap.Invalidate();
         }
@@ -76,7 +83,7 @@ namespace MapEditor
             foreach (var value in Brushes)
                 try
                 {
-                    var image = Image.FromFile("textures/" + value.GetTextureName(0, 0));
+                    var image = Image.FromFile(value.GetTexturePath());
                     BrushView.SmallImageList.Images.Add(image);
                     items.Add(value.GetName(), imageNumber);
                     imageNumber++;
@@ -92,6 +99,8 @@ namespace MapEditor
             PaintField.Brush = Brushes[BrushView.SelectedItems[0].Index];
         }
 
+
+        
         private void InitializeComponent()
         {
             BrushView = new ListView();
@@ -101,14 +110,23 @@ namespace MapEditor
             SaveFileDialog = new SaveFileDialog();
             OpenFileDialog = new OpenFileDialog();
             MenuStrip = new MenuStrip();
+            AddBrush = new Button();
             ((ISupportInitialize) BrushPicture).BeginInit();
             SuspendLayout();
+            //
+            // AddBrush button
+            //
+            AddBrush.Location = new Point(15, 402);
+            AddBrush.Name = "AddBrushButton";
+            AddBrush.Size = new Size(70, 25);
+            AddBrush.Text = "Add Brush";
+            AddBrush.DialogResult = DialogResult.Yes;
             // 
             // brushView
             // 
             BrushView.Location = new Point(16, 100);
             BrushView.Name = "BrushView";
-            BrushView.Size = new Size(151, 300);
+            BrushView.Size = new Size(150, 300);
             BrushView.TabIndex = 1;
             BrushView.UseCompatibleStateImageBehavior = false;
             BrushView.View = View.List;
@@ -161,6 +179,7 @@ namespace MapEditor
             Controls.Add(BrushView);
             Controls.Add(PaintField);
             Controls.Add(MenuStrip);
+            Controls.Add(AddBrush);
             MainMenuStrip = MenuStrip;
             MaximumSize = new Size(1300, 750);
             MinimumSize = new Size(1300, 726);
