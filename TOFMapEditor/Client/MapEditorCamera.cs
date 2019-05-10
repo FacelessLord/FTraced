@@ -9,8 +9,8 @@ namespace TOFMapEditor.Client
 {
     internal class MapEditorCamera : ICameraMapEditorCamera
     {
-        public double posX;
-        public double posY;
+        private double posX;
+        private double posY;
 
 
         public void Update(GameWindow _window)

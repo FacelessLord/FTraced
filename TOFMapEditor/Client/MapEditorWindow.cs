@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Net.Json;
 using System.Threading;
 using GlLib.Client;
 using GlLib.Client.Api.Cameras;
@@ -7,6 +9,7 @@ using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -17,6 +20,8 @@ namespace TOFMapEditor.Client
 {
     public class MapEditorWindow : GameWindow
     {
+        private World World { get; set; }
+        private WorldRenderer worldRenderer { get; set; }
         public ICameraMapEditorCamera camera;
         public GuiFrame guiFrame;
         public int guiTimeout = 0;
@@ -27,6 +32,15 @@ namespace TOFMapEditor.Client
         public MapEditorWindow( int _width, int _height, string _title)
             : base(_width, _height, GraphicsMode.Default, _title)
         {
+            World = new ServerWorld("Overworld", 1, true);
+            var worldJson = File.ReadAllText("maps/" + World.mapName + ".json");
+            var parser = new JsonTextParser();
+            var obj = parser.Parse(worldJson);
+            var mainCollection = (JsonObjectCollection)obj;
+            WorldManager.LoadWorld(World, mainCollection);
+            World.LoadWorld();
+
+            worldRenderer = new WorldRenderer(World);
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             hud = new MapEditorHud();
@@ -117,14 +131,13 @@ namespace TOFMapEditor.Client
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-            //            SidedConsole.WriteLine(client.player.Position);
+            GL.PopMatrix();
 
             GL.PushMatrix();
             GL.Translate(Width / 2d, Height / 2d, 0);
             camera.Update(this);
             camera.PerformTranslation(this);
-            //Proxy.GetClient().worldRenderer.Render(000, 000);
+            worldRenderer.Render(000, 000);
             GL.PopMatrix();
 
             //GUI render is not connected to the world
@@ -150,9 +163,10 @@ namespace TOFMapEditor.Client
 
         public static void RunWindow()
         {
-            var graphicThread = new Thread(() =>
-                new MapEditorWindow(800, 600, "Tracing of F").Run(60));
-            graphicThread.Name = Side.Graphics.ToString();
+            var graphicThread = new Thread(() 
+                    => new MapEditorWindow(800, 600, "Tracing of F")
+                        .Run(60))
+                        { Name = Side.Graphics.ToString()};
             graphicThread.Start();
         }
     }

@@ -10,7 +10,8 @@ namespace GlLib.Common.Map
         public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
         public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
 
-        public ServerWorld(string _mapName, int _worldId) : base(_mapName, _worldId)
+        public ServerWorld(string _mapName, int _worldId, bool _fromStash) 
+            : base(_mapName, _worldId, _fromStash)
         {
         }
 

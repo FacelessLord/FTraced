@@ -15,4 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\AirGame\GlLib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Net.Json">
+      <HintPath>..\AirGame\bin\Debug\netcoreapp2.2\System.Net.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

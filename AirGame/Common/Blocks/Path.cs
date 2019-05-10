@@ -2,14 +2,22 @@ namespace GlLib.Common.Map.Blocks
 {
     public class Path : TerrainBlock
     {
-        public override string GetName()
+        public override string Name
         {
-            return "block.outdoor.grass.path";
+            get => "block.outdoor.grass.path";
+            protected set
+            {
+                //TODO 
+            }
         }
 
-        public override string GetTextureName(World _world, int _x, int _y)
+        public override string TextureName
         {
-            return "path.png";
+            get => "path.png";
+            internal set
+            {
+                //TODO 
+            }
         }
     }
 }

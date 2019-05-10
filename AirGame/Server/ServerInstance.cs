@@ -50,7 +50,7 @@ namespace GlLib.Server
 
         public void CreateWorlds()
         {
-            foreach (var world in registeredWorlds) worlds.Add(0, new ServerWorld(world.Value, world.Key));
+            foreach (var world in registeredWorlds) worlds.Add(0, new ServerWorld(world.Value, world.Key, false));
         }
 
         public void LoadWorlds()
