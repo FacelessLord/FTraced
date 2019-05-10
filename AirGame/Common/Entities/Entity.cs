@@ -1,6 +1,8 @@
 using System;
 using System.Net.Json;
+using GlLib.Client.API;
 using GlLib.Client.Graphic;
+using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.API;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
@@ -24,6 +26,8 @@ namespace GlLib.Common.Entities
 
         public PlanarVector velocity = new PlanarVector();
         public World worldObj;
+        
+        private EntityRenderer _renderer = new StandartRenderer();
 
         public Entity(World _world, RestrictedVector3D _position)
         {
@@ -115,21 +119,14 @@ namespace GlLib.Common.Entities
         {
         }
 
-        public virtual void Render(PlanarVector _xAxis, PlanarVector _yAxis)
+        public EntityRenderer GetRenderer()
         {
-            GL.PushMatrix();
-            var btexture = Vertexer.LoadTexture("monochromatic.png");
-            Vertexer.BindTexture(btexture);
+            return _renderer;
+        }
 
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(10, -10, 1, 0);
-            Vertexer.VertexWithUvAt(10, 10, 1, 1);
-            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
-            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
-
-            Vertexer.Draw();
-            GL.PopMatrix();
+        public void SetCustomRenderer(EntityRenderer _renderer)
+        {
+            this._renderer = _renderer;
         }
 
         public virtual string GetName()

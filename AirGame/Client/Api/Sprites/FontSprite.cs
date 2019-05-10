@@ -125,8 +125,8 @@ namespace GlLib.Client.Api.Sprites
 
         public virtual void DrawText(string _text, int _size, float _r = 0, float _g = 0, float _b = 0, float _a = 1.0f)
         {
-            GL.PushMatrix();
             Vertexer.BindTexture(texture);
+            GL.PushMatrix();
             GL.Color4(_r, _g, _b, _a);
             GL.Scale(_size, _size+2, 1);
             double d = 0;

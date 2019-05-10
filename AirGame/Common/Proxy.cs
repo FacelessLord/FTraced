@@ -20,7 +20,11 @@ namespace GlLib.Common
         public static bool Exit
         {
             get => _exit;
-            set => _exit = value;
+            set
+            {
+                SidedConsole.WriteLine("Exiting...");
+                _exit = value;
+            }
         }
 
         private static ServerInstance _serverInstance;

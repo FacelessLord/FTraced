@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
@@ -24,6 +25,7 @@ namespace GlLib.Client
         {
             nickName = _nickName;
             password = _password;
+            
         }
 
         public void UpdateRendererData(World _world)
@@ -34,18 +36,28 @@ namespace GlLib.Client
 
         public override void OnStart()
         {
+//            SidedConsole.WriteLine("Setting World");
+            world = Proxy.GetServer().GetWorldById(0);
+            UpdateRendererData(world);
+//            SidedConsole.WriteLine("Setting Player");
             player = new Player();
-            UpdateRendererData(Proxy.GetServer().GetWorldById(0));
+//            SidedConsole.WriteLine("Setting Player Name");
             player.nickname = nickName;
-            player.Position = new RestrictedVector3D(world.width * 8, world.height * 8,0);
+//            SidedConsole.WriteLine("Setting Player Pos");
+            player.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+//            SidedConsole.WriteLine("Setting Player Data");
             player.data = Proxy.GetServer().GetDataFor(player, password);
+
             
+//            SidedConsole.WriteLine("Setting Entity");
             var testEntity = new Entity(Proxy.GetServer().GetWorldById(0),
                 new RestrictedVector3D(world.width * 8, world.height * 8, 0));
 
+//            SidedConsole.WriteLine("Spawning Entities");
             Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             testEntity.worldObj.SpawnEntity(testEntity);
-            
+//            SidedConsole.WriteLine("Loading window");
+            Proxy.GetWindow().OnClientStarted();
         }
 
         public override void OnServiceUpdate()

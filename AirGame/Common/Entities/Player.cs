@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.API;
 using GlLib.Client.Graphic;
+using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
@@ -23,18 +25,19 @@ namespace GlLib.Common.Entities
         public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
             nickname = _nickname;
-            TextureLayout layout = new TextureLayout(Vertexer.LoadTexture("player_sprite.png"), 0, 0, 256, 64, 16, 2);
-            playerSprite = new LinearSprite(layout, 22, 1);
+            SetCustomRenderer(new PlayerRenderer());
         }
 
         public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
         {
+            SetCustomRenderer(new PlayerRenderer());
         }
 
         public Player()
         {
-            TextureLayout layout = new TextureLayout("player_sprite.png", 16, 16);
-            playerSprite = new LinearSprite(layout, 22, 1);
+            SidedConsole.WriteLine("Setting Player Renderer");
+            SetCustomRenderer(new PlayerRenderer());
+            SidedConsole.WriteLine("Setting Player Inventory");
             inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.varia));
             inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.apple));
             inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.sword));
@@ -51,16 +54,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
         }
-
-        public ISprite playerSprite;
-
-        public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
-        {
-            GL.PushMatrix();
-            playerSprite.Render();
-            GL.PopMatrix();
-        }
-
+        
         public override void LoadFromJsonObject(JsonObject _jsonObject)
         {
             base.LoadFromJsonObject(_jsonObject);

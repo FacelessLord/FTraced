@@ -28,6 +28,8 @@ namespace GlLib.Common
 
         public void Start()
         {
+            profiler.SetState(State.Loading);
+            profiler.SetState(State.LoadingRegistries);
             blocks.Register();
             entities.Register();
             items.Register();

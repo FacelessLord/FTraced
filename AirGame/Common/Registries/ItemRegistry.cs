@@ -25,6 +25,10 @@ namespace GlLib.Common.Registries
         public void Register()
         {
             registry.RegisterItem(sword);
+            registry.RegisterItem(apple);
+            registry.RegisterItem(ring);
+            registry.RegisterItem(armor);
+            registry.RegisterItem(varia);
         }
     }
 }

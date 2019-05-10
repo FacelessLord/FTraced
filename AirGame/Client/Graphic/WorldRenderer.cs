@@ -39,12 +39,15 @@ namespace GlLib.Client.Graphic
                         foreach (var level in chunk.entities)
                         foreach (var entity in level)
                         {
+                            if(!entity.GetRenderer().isSetUp)
+                                entity.GetRenderer().CallSetup(entity);
+                            
                             var coord = xAxis * (entity.Position.x) + yAxis * (entity.Position.y);
                             GL.PushMatrix();
 
                             GL.Translate(coord.x, coord.y, 0);
                             GL.Scale(1.5, 1.5, 1);
-                            entity.Render(xAxis, yAxis);
+                            entity.GetRenderer().Render(entity, xAxis, yAxis);
                             GL.PopMatrix();
                         }
                 }

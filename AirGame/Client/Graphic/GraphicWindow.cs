@@ -17,20 +17,22 @@ namespace GlLib.Client.Graphic
     public class GraphicWindow : GameWindow
     {
         public bool enableHud = false;
-        
+
         public GuiFrame guiFrame;
         public ICamera camera;
 
         public Hud hud;
+        public bool serverStarted = false;
 
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height,
             GraphicsMode.Default,
             _title)
         {
-            MouseHandler.Setup();
-            SidedConsole.WriteLine("Window constructed");
             Proxy.RegisterWindow(this);
+            MouseHandler.Setup();
             KeyBinds.Register();
+            Core.profiler.SetState(State.MainMenu);
+            SidedConsole.WriteLine("Window constructed");
         }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
@@ -43,12 +45,13 @@ namespace GlLib.Client.Graphic
                 Exit();
                 Proxy.Exit = true;
             }
+
             base.OnUpdateFrame(_e);
         }
 
         protected override void OnKeyPress(KeyPressEventArgs _e)
         {
-            guiFrame?.OnKeyTyped(this,_e);
+            guiFrame?.OnKeyTyped(this, _e);
         }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
@@ -60,7 +63,8 @@ namespace GlLib.Client.Graphic
             {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient()?.player);
             }
-            guiFrame?.OnKeyDown(this,_e);
+
+            guiFrame?.OnKeyDown(this, _e);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
@@ -92,7 +96,7 @@ namespace GlLib.Client.Graphic
         protected override void OnMouseMove(MouseMoveEventArgs _e)
         {
             base.OnMouseMove(_e);
-            if((bool) MouseHandler.pressed[MouseButton.Left])
+            if ((bool) MouseHandler.pressed[MouseButton.Left])
                 guiFrame?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
         }
 
@@ -106,26 +110,31 @@ namespace GlLib.Client.Graphic
         {
             base.OnRenderFrame(_e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            if (serverStarted)
+                RenderWorld();
             
+            GL.Clear(ClearBufferMask.DepthBufferBit);
             //GUI render is not connected to the world
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
-            
+
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-            
-            if(enableHud)
+
+            if (enableHud)
             {
                 hud.Update(this);
                 hud.Render(this);
             }
+
             guiFrame?.Update(this);
             guiFrame?.Render(this);
             GL.PopMatrix();
+            GL.Disable(EnableCap.Blend);
 
             SwapBuffers();
         }
@@ -134,6 +143,7 @@ namespace GlLib.Client.Graphic
         {
             hud = new Hud();
             camera = new PlayerTrackingCamera();
+            serverStarted = true;
         }
 
         public void RenderWorld()
@@ -154,6 +164,8 @@ namespace GlLib.Client.Graphic
             camera.PerformTranslation(this);
             Proxy.GetClient().worldRenderer.Render(000, 000);
             GL.PopMatrix();
+            
+            GL.Disable(EnableCap.Blend);
         }
 
         protected override void OnUnload(EventArgs _e)
@@ -179,7 +191,7 @@ namespace GlLib.Client.Graphic
             }
             else
             {
-                if(guiFrame.focusedObject == null)
+                if (guiFrame.focusedObject == null)
                     guiFrame = null;
             }
         }

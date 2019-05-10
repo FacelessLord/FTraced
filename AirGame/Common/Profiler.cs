@@ -1,4 +1,5 @@
 using System;
+using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -10,6 +11,7 @@ namespace GlLib.Common
 
         public void SetState(State _state, int _maxOperationCount = -1)
         {
+            SidedConsole.WriteLine("State Changed: " + _state);
             state = _state;
             maxOperationCount = _maxOperationCount;
             operationCount = 0;
@@ -43,7 +45,6 @@ namespace GlLib.Common
         Connection,
         Loading,
         Loop,
-        ServiceStop,
         Exiting
     }
 }

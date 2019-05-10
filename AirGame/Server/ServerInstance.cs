@@ -30,6 +30,7 @@ namespace GlLib.Server
             serverId = new Random().Next();
             UpdateServerConfiguration();
 
+            profiler.SetState(State.LoadingWorld);
             CreateWorlds();
             LoadWorlds();
         }

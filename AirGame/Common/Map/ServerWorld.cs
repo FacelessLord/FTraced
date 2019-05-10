@@ -16,6 +16,7 @@ namespace GlLib.Common.Map
 
         public void SaveWorldEntities()
         {
+            Proxy.GetServer().profiler.SetState(State.SavingWorld);
             var mainColl = GetWorldEntitiesJson();
 
             var fs = File.OpenWrite("maps/" + mapName + "_entities.json");
@@ -25,6 +26,7 @@ namespace GlLib.Common.Map
             fs.Flush();
             tw.Close();
             fs.Close();
+            Proxy.GetServer().profiler.SetState(State.Loop);
         }
 
         public JsonObjectCollection GetWorldEntitiesJson()
