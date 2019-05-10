@@ -106,24 +106,17 @@ namespace GlLib.Client.Graphic
         {
             base.OnRenderFrame(_e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
+            
+            //GUI render is not connected to the world
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
-
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
-
+            
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-            
-            //GUI render is not connected to the world
-            GL.LoadIdentity();
-            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
-            GL.PushMatrix();
-            GL.Scale(1d / Width, 1d / Height, 1);
             
             if(enableHud)
             {
@@ -145,6 +138,16 @@ namespace GlLib.Client.Graphic
 
         public void RenderWorld()
         {
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
+
+            GL.Scale(1d / Width, 1d / Height, 1);
+
+            Vertexer.EnableTextures();
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
             GL.PushMatrix();
             GL.Translate(Width / 2d, Height / 2d, 0);
             camera.Update(this);

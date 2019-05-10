@@ -1,8 +1,10 @@
 
+using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -12,7 +14,8 @@ namespace GlLib.Client.Api.Gui
     public class GuiButton : GuiObject
     {
         public ButtonState state = ButtonState.Enabled;
-        public string text = "";
+        public string text;
+        public Action<GuiFrame, GuiButton> action = (_f, _b) => { };
 
         public GuiButton(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
@@ -49,7 +52,6 @@ namespace GlLib.Client.Api.Gui
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
 
             switch (state)
             {
@@ -62,22 +64,30 @@ namespace GlLib.Client.Api.Gui
                 case ButtonState.Disabled:
                     GuiUtils.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
                     break;
+
             }
-            
+
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
             var heightCenter = (height - 11d) / 2;
+            GL.PushMatrix();
+            GL.Color4(color.R, color.G, color.B, color.A);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
             GL.Color4(1.0, 1, 1, 1);
+            GL.PopMatrix();
 
             GL.PopMatrix();
+//            SidedConsole.WriteLine("Render Ended");
         }
 
         public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
             base.OnMouseClick(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Enabled)
+            {
+                action(_gui, this);
                 state = ButtonState.Pressed;
+            }
             return this;
         }
 

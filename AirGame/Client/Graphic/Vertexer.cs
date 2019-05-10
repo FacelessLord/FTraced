@@ -66,7 +66,6 @@ namespace GlLib.Client.Graphic
         public static void DrawTexturedModalRect(Texture _texture, double _x, double _y, double _u, double _v, double _width,
             double _height)
         {
-            GL.PushMatrix();
             _texture.Bind();
             var textureLeft = _x;
             var textureUp = _y;
@@ -86,7 +85,6 @@ namespace GlLib.Client.Graphic
             VertexWithUvAt(textureLeft, textureDown, uvLeft, uvDown);
 
             Draw();
-            GL.PopMatrix();
         }
 
         public static void BindTexture(Texture _text)

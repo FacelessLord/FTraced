@@ -52,21 +52,18 @@ namespace GlLib.Client.Api.Gui
                     _gui.SelectedSlot = new Slot(inventory, slot);
                 }
             }
+
             return this;
         }
-        
+
         public TextureLayout slotTexture;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
-            if(inventory.GetStackInSlot(slot) != null)
+            if (inventory.GetStackInSlot(slot) != null)
             {
-                GL.PushMatrix();
-                GL.Translate(x + 1, y + 1, 0);
-
-                GuiUtils.DrawLayoutPart(slotTexture, (int) inventory.GetStackInSlot(slot).item.type, width, height);
-
-                GL.PopMatrix();
+                GuiUtils.DrawLayoutPart(slotTexture, x + 1, y + 1, (int) inventory.GetStackInSlot(slot).item.type,
+                    width, height);
             }
         }
     }

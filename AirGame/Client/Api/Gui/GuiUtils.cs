@@ -15,54 +15,37 @@ namespace GlLib.Client.API.Gui
         public static void DrawSizedSquare(TextureLayout _layout, int _x, int _y, int _width, int _height,
             float _grainSizeX, float _grainSizeY)
         {
+
+            float bordW = _width - _grainSizeX * 2;
+            float bordH = _height - _grainSizeY * 2;
+            Vertexer.BindTexture(_layout.texture);
+            GL.PushMatrix();
             GL.Translate(_x, _y, 0);
-            DrawLayoutPart(_layout, 0, _grainSizeX, _grainSizeY);
+            DrawLayoutPart(_layout, 0, 0, 0, _grainSizeX, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX, 0, 1, bordW, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX + bordW, 0, 2, _grainSizeX, _grainSizeY);
 
-            GL.Translate(_grainSizeX, 0, 0);
-            DrawLayoutPart(_layout, 1, _width - 2 * _grainSizeX + 2, _grainSizeY);
-            GL.Translate(-_grainSizeX, 0, 0);
+            DrawLayoutPart(_layout, 0, _grainSizeY, 3, _grainSizeX, bordH);
+            DrawLayoutPart(_layout, _grainSizeX, _grainSizeY, 4, bordW, bordH);
+            DrawLayoutPart(_layout, _grainSizeX + bordW, _grainSizeY, 5, _grainSizeX, bordH);
 
-            GL.Translate(_width - _grainSizeX + 2, 0, 0);
-            DrawLayoutPart(_layout, 2, _grainSizeX, _grainSizeY);
-            GL.Translate(-_width + _grainSizeX - 2, 0, 0);
+            DrawLayoutPart(_layout, 0, _grainSizeY + bordH, 6, _grainSizeX, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX, _grainSizeY + bordH, 7, bordW, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX + bordW, _grainSizeY + bordH, 8, _grainSizeX, _grainSizeY);
 
-            GL.Translate(0, _grainSizeY, 0);
-            DrawLayoutPart(_layout, 3, _grainSizeX, _height - 2 * _grainSizeY + 2);
-            GL.Translate(0, -_grainSizeY, 0);
-
-            GL.Translate(_grainSizeX, _grainSizeY, 0);
-            DrawLayoutPart(_layout, 4, _width - 2 * _grainSizeX + 2, _height - 2 * _grainSizeY + 2);
-            GL.Translate(-_grainSizeX, -_grainSizeY, 0);
-
-            GL.Translate(_width - _grainSizeX + 2, _grainSizeY, 0);
-            DrawLayoutPart(_layout, 5, _grainSizeX, _height - 2 * _grainSizeY + 2);
-            GL.Translate(-_width + _grainSizeX - 2, -_grainSizeY, 0);
-
-            GL.Translate(0, _height - _grainSizeY + 2, 0);
-            DrawLayoutPart(_layout, 6, _grainSizeX, _grainSizeY);
-            GL.Translate(0, -_height + _grainSizeY - 2, 0);
-
-            GL.Translate(_grainSizeX, _height - _grainSizeY + 2, 0);
-            DrawLayoutPart(_layout, 7, _width - 2 * _grainSizeX + 2, _grainSizeY);
-            GL.Translate(-_grainSizeX, -_height + _grainSizeY - 2, 0);
-
-            GL.Translate(_width - _grainSizeX + 2, _height - _grainSizeY + 2, 0);
-            DrawLayoutPart(_layout, 8, _grainSizeX, _grainSizeY);
-            GL.Translate(-_width + _grainSizeX - 2, -_height + _grainSizeY - 2, 0);
-            GL.Translate(-_x, -_y, 0);
-
+            GL.PopMatrix();
         }
 
-        public static void DrawLayoutPart(TextureLayout _layout, int _frame, float _width, float _height)
+        public static void DrawLayoutPart(TextureLayout _layout, float _x, float _y, int _frame, float _width,
+            float _height)
         {
             (float startX, float startY, float endX, float endY) = _layout.layout.GetFrameUvProportions(_frame);
 
-            Vertexer.BindTexture(_layout.texture);
             Vertexer.StartDrawingQuads();
-            Vertexer.VertexWithUvAt(0, 0, startX, startY);
-            Vertexer.VertexWithUvAt(_width, 0, endX, startY);
-            Vertexer.VertexWithUvAt(_width, _height, endX, endY);
-            Vertexer.VertexWithUvAt(0, _height, startX, endY);
+            Vertexer.VertexWithUvAt(_x, _y, startX, startY);
+            Vertexer.VertexWithUvAt(_width + _x, _y, endX, startY);
+            Vertexer.VertexWithUvAt(_width + _x, _height + _y, endX, endY);
+            Vertexer.VertexWithUvAt(_x, _height + _y, startX, endY);
             Vertexer.Draw();
         }
     }
