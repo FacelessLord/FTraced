@@ -33,6 +33,8 @@ namespace GlLib.Common.Entities
 
         public Player()
         {
+            TextureLayout layout = new TextureLayout("player_sprite.png", 16, 16);
+            playerSprite = new LinearSprite(layout, 22, 1);
             inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.varia));
             inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.apple));
             inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.sword));
