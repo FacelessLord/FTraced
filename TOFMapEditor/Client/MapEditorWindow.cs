@@ -22,7 +22,7 @@ namespace TOFMapEditor.Client
     {
         private World World { get; set; }
         private WorldRenderer worldRenderer { get; set; }
-        public ICameraMapEditorCamera camera;
+        public ICamera camera;
         public GuiFrame guiFrame;
         public int guiTimeout = 0;
 

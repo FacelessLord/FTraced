@@ -9,7 +9,7 @@ namespace GlLib.Common
 {
     internal class Stash
     {
-        public Hashtable blocks = new Hashtable();
+        public static Hashtable blocks = new Hashtable();
         public static void UpdateStash()
         {
             if (!Directory.Exists(@"stash")) Directory.CreateDirectory("stash");
@@ -37,8 +37,8 @@ namespace GlLib.Common
 
         internal static TerrainBlock GetBlockFromName(string _value)
         {
-            if (blocks.ContainsKey(_blockName))
-                return (TerrainBlock)blocks[_blockName];
+            if (blocks.ContainsKey(_value))
+                return (TerrainBlock)blocks[_value];
             return null;
         }
     }

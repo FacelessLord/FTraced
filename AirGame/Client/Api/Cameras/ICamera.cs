@@ -1,11 +1,12 @@
 using GlLib.Client.Graphic;
+using OpenTK;
 
 namespace GlLib.Client.Api.Cameras
 {
     public interface ICamera
     {
-        void Update(GraphicWindow _window);
+        void Update(GameWindow _window);
 
-        void PerformTranslation(GraphicWindow _window);
+        void PerformTranslation(GameWindow _window);
     }
 }

@@ -25,7 +25,7 @@ namespace GlLib.Common.Map
 
         public World(string _mapName, int _worldId, bool _fromStash=false)
         {
-            FromStash = FromStash; 
+            FromStash = _fromStash; 
             mapName = _mapName;
             worldId = _worldId;
         }
