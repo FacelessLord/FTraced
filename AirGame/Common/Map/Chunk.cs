@@ -43,7 +43,7 @@ namespace GlLib.Common.Map
         {
             GL.PushMatrix();
 
-            GL.Translate(( _centerX) * BlockWidth * 16, (_centerY) * BlockHeight * 16, 0);
+            GL.Translate((_centerX) * BlockWidth * 16, (_centerY) * BlockHeight * 16, 0);
 
             //GL.Color3(0.75,0.75,0.75);
             for (var i = 7; i > -9; i--)
@@ -55,7 +55,7 @@ namespace GlLib.Common.Map
                 {
                     var btexture = Vertexer.LoadTexture(block.GetTextureName(world, i + 8, j + 8));
                     Vertexer.BindTexture(btexture);
-                    var coord = _xAxis * (i+8) + _yAxis * (j+8);
+                    var coord = _xAxis * (i + 8) + _yAxis * (j + 8);
                     GL.PushMatrix();
 
                     GL.Translate(coord.x, coord.y, 0);
@@ -81,23 +81,12 @@ namespace GlLib.Common.Map
             GL.PopMatrix();
         }
 
-        public void LoadChunk()
+        public void LoadFromJson(JsonObjectCollection _chunkCollection)
         {
-            var mainCollection = world.jsonObj;
-            JsonObjectCollection chunkCollection = null;
-
-            foreach (var obj in mainCollection)
-                if (obj is JsonObjectCollection chk)
-                    if (chk.Name == chunkX + "," + chunkY)
-                    {
-                        chunkCollection = chk;
-                        break;
-                    }
-
-            if (chunkCollection != null)
+            if (_chunkCollection != null)
             {
                 blocks = new TerrainBlock[16, 16];
-                foreach (var entry in chunkCollection)
+                foreach (var entry in _chunkCollection)
                 {
                     switch (entry)
                     {
@@ -109,14 +98,6 @@ namespace GlLib.Common.Map
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
                             blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
-                            break;
-                        }
-                        //Entity
-                        case JsonStringValue gameObject:
-                        {
-                            var entity = new Entity();
-                            entity.LoadFromJsonObject(gameObject);
-                            world.SpawnEntity(entity);
                             break;
                         }
                         case JsonNumericValue num:
@@ -150,6 +131,21 @@ namespace GlLib.Common.Map
                                 }
                             }
 
+                            if (collection.Name.StartsWith("entity"))
+                            {
+                                var entity = new Entity();
+                                entity.LoadFromJsonObject(collection);
+
+                                if (entity is Player p)
+                                {
+                                    //TODO nick check
+                                    Proxy.GetClient().player = p;
+                                }
+
+                                world.SpawnEntity(entity);
+                                break;
+                            }
+
                             break;
                         }
                     }
@@ -160,27 +156,14 @@ namespace GlLib.Common.Map
             }
         }
 
-        public JsonObjectCollection SaveChunkEntities()
+        public List<JsonObject> SaveChunkEntities()
         {
             var objects = new List<JsonObject>();
             foreach (var height in entities)
             foreach (var entity in height)
                 objects.Add(entity.CreateJsonObject());
 
-            return new JsonObjectCollection($"{chunkX},{chunkY}", objects);
-        }
-
-        public void LoadChunkEntities(JsonObjectCollection _entityCollection)
-        {
-            foreach (var entityJson in _entityCollection)
-            {
-                if (entityJson != null)
-                {
-                    var entity = new Entity();
-                    entity.LoadFromJsonObject(entityJson as JsonStringValue);
-                    world.SpawnEntity(entity);
-                }
-            }
+            return objects;
         }
 
         public void Update()

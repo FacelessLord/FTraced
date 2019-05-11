@@ -18,7 +18,7 @@ namespace GlLib.Server
 
         public Dictionary<int, string> registeredWorlds = new Dictionary<int, string>();
 
-        public Dictionary<int, ServerWorld> worlds = new Dictionary<int, ServerWorld>();
+        public Dictionary<int, World> worlds = new Dictionary<int, World>();
 
         public ServerInstance() : base(Side.Server)
         {
@@ -50,19 +50,14 @@ namespace GlLib.Server
 
         public void CreateWorlds()
         {
-            foreach (var world in registeredWorlds) worlds.Add(0, new ServerWorld(world.Value, world.Key));
+            foreach (var world in registeredWorlds) worlds.Add(0, new World(world.Value, world.Key));
         }
 
         public void LoadWorlds()
         {
             foreach (var world in worlds.Values)
             {
-                var worldJson = File.ReadAllText("maps/" + world.mapName + ".json");
-                var parser = new JsonTextParser();
-                var obj = parser.Parse(worldJson);
-                var mainCollection = (JsonObjectCollection) obj;
-                WorldManager.LoadWorld(world, mainCollection);
-                world.LoadWorld();
+                WorldManager.LoadWorld(world);
             }
         }
 
@@ -100,7 +95,7 @@ namespace GlLib.Server
             }
         }
 
-        public ServerWorld GetWorldById(int _id)
+        public World GetWorldById(int _id)
         {
             return worlds[_id];
         }

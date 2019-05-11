@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Json;
 using System.Threading;
 using GlLib.Common.Entities;
@@ -8,8 +9,11 @@ using GlLib.Utils;
 
 namespace GlLib.Common.Map
 {
-    public abstract class World
+    public class World
     {
+        public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
+        public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
+
         public Chunk[,] chunks;
 
         public Mutex entityMutex = new Mutex();
@@ -34,6 +38,24 @@ namespace GlLib.Common.Map
             set => chunks[_i, _j] = value;
         }
 
+        public void Update()
+        {
+            entityMutex.WaitOne();
+            foreach (var pair in entityRemoveQueue) pair.chk.entities[pair.e.Position.z].Remove(pair.e);
+
+            entityRemoveQueue.Clear();
+            foreach (var pair in entityAddQueue) pair.chk.entities[pair.e.Position.z].Add(pair.e);
+
+            entityAddQueue.Clear();
+            lock (chunks)
+                foreach (var chunk in chunks)
+                    if (chunk.isLoaded)
+                        chunk.Update();
+            entityMutex.ReleaseMutex();
+            WorldManager.SaveWorld(this);
+            Proxy.GetServer().profiler.SetState(State.Loop);
+        }
+
         public void SpawnEntity(Entity _e)
         {
             if (EventBus.OnEntitySpawn(_e)) return;
@@ -48,15 +70,14 @@ namespace GlLib.Common.Map
             SidedConsole.WriteLine($"Entity {_e} spawned in world");
         }
 
-        public void LoadWorld()
+        public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
         {
-            for (var i = 0; i < width; i++)
-            for (var j = 0; j < height; j++)
-                if (!this[i, j].isLoaded)
-                    this[i, j].LoadChunk();
+            entityRemoveQueue.Add((_e, _old));
+            entityAddQueue.Add((_e, _next));
+            _e.chunkObj = _next;
         }
 
-        public List<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
+        public IEnumerable<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
         {
             var entities = new List<Entity>();
 
@@ -74,15 +95,10 @@ namespace GlLib.Common.Map
                 if (chk != null) chunks.Add(chk);
             }
 
-            foreach (var chk in chunks)
-            foreach (var height in chk.entities)
-            foreach (var entity in height)
-                entities.Add(entity);
-
-            return entities;
+            return chunks.SelectMany(_c => _c.entities).SelectMany(_el => _el);
         }
 
-        public List<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
+        public IEnumerable<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
         {
             var entities = new List<Entity>();
 
@@ -103,15 +119,8 @@ namespace GlLib.Common.Map
                 }
             }
 
-            foreach (var chk in chunks)
-            {
-                var chkEntities = chk.entities[_height];
-                foreach (var entity in chkEntities)
-                    if (entity.GetAaBb().IntersectsWith(_aabb))
-                        entities.Add(entity);
-            }
-
-            return entities;
+            return chunks.SelectMany(_c => _c.entities[_height])
+                .Where(_entity => _entity.GetAaBb().IntersectsWith(_aabb));
         }
     }
 }

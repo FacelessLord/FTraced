@@ -16,7 +16,6 @@ namespace GlLib.Client.Graphic
 
         public void Render(double _x, double _y)
         {
-
             lock (_world.chunks)
             {
                 int width = _world.width;
@@ -36,12 +35,13 @@ namespace GlLib.Client.Graphic
                 {
                     var chunk = _world[i, j];
                     if (chunk.isLoaded)
+                    {
                         foreach (var level in chunk.entities)
                         foreach (var entity in level)
                         {
-                            if(!entity.GetRenderer().isSetUp)
+                            if (!entity.GetRenderer().isSetUp)
                                 entity.GetRenderer().CallSetup(entity);
-                            
+
                             var coord = xAxis * (entity.Position.x) + yAxis * (entity.Position.y);
                             GL.PushMatrix();
 
@@ -50,6 +50,7 @@ namespace GlLib.Client.Graphic
                             entity.GetRenderer().Render(entity, xAxis, yAxis);
                             GL.PopMatrix();
                         }
+                    }
                 }
             }
 
