@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
@@ -54,7 +55,7 @@ namespace GlLib.Common.Map
                 if (block == null) continue;
                 if (!block.RequiresSpecialRenderer(world, i + 8, j + 8))
                 {
-                    var btexture = Vertexer.LoadTexture(block.GetTextureName(world, i + 8, j + 8));
+                    var btexture = Vertexer.LoadTexture(block.TextureName);
                     Vertexer.BindTexture(btexture);
                     var coord = _xAxis * (i + 8) + _yAxis * (j + 8);
                     GL.PushMatrix();
@@ -84,6 +85,9 @@ namespace GlLib.Common.Map
 
         public void LoadFromJson(JsonObjectCollection _chunkCollection, bool loadEntities)
         {
+            var stashedBlocks = new Hashtable();
+            if (world.FromStash)
+                stashedBlocks = Stash.GetBlocks();
             if (_chunkCollection != null)
             {
                 blocks = new TerrainBlock[16, 16];
@@ -98,7 +102,12 @@ namespace GlLib.Common.Map
                             var j = int.Parse(coords[1]);
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
-                            blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
+                            if (world.FromStash)
+                                blocks[i, j] = (TerrainBlock) stashedBlocks[gameObject.Value];
+
+                            else
+                                blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
+
                             break;
                         }
                         case JsonNumericValue num:
@@ -107,9 +116,16 @@ namespace GlLib.Common.Map
                             var i = int.Parse(coords[0]);
                             var j = int.Parse(coords[1]);
 
-                            blocks[i, j] = Proxy.GetRegistry().GetBlockFromId((int) num.Value);
+                            if (world.FromStash)
+                            {
+                                blocks[i, j] = (TerrainBlock) stashedBlocks[(int) num.Value];
+                            }
+                            else
+                                blocks[i, j] = Proxy.GetRegistry().GetBlockFromId((int) num.Value);
+
                             break;
                         }
+
                         case JsonObjectCollection collection:
                         {
                             if (collection.Name.StartsWith("Rect"))

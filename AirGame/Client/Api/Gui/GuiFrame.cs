@@ -130,7 +130,7 @@ namespace GlLib.Client.API.Gui
             }
         }
 
-        public virtual void OnKeyDown(GraphicWindow _window, KeyboardKeyEventArgs _e)
+        public virtual void OnKeyDown(GameWindow _window, KeyboardKeyEventArgs _e)
         {
             focusedObject?.OnKeyDown(this, _e);
         }

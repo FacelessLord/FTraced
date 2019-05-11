@@ -2,6 +2,7 @@ using GlLib.Client.Graphic;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Utils;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Api.Cameras
@@ -17,13 +18,13 @@ namespace GlLib.Client.Api.Cameras
             posY = Proxy.GetClient().player.Position.y;
         }
 
-        public void Update(GraphicWindow _window)
+        public void Update(GameWindow _window)
         {
             posX = Proxy.GetClient().player.Position.x;
             posY = Proxy.GetClient().player.Position.y;
         }
 
-        public void PerformTranslation(GraphicWindow _window)
+        public void PerformTranslation(GameWindow _window)
         {
             GL.Translate(-posX * 64, -posY * 32, 0);
         }

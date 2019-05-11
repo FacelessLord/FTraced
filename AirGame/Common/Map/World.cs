@@ -22,12 +22,14 @@ namespace GlLib.Common.Map
         public JsonObjectCollection jsonObj;
 
         public string mapName;
+        public bool FromStash { get; }
 
         public int width;
         public int worldId;
 
-        public World(string _mapName, int _worldId)
+        public World(string _mapName, int _worldId, bool _fromStash=false)
         {
+            FromStash = _fromStash; 
             mapName = _mapName;
             worldId = _worldId;
         }

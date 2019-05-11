@@ -58,15 +58,15 @@ namespace GlLib.Common.Registries
         {
             try
             {
-                SidedConsole.WriteLine("Registered: " + _block.GetName());
+                SidedConsole.WriteLine("Registered: " + _block.Name);
                 var id = blocks.Count;
-                blocks.Add(_block.GetName(), _block);
+                blocks.Add(_block.Name, _block);
                 blocksById.Add(id, _block);
                 _block.id = id;
             }
             catch (Exception e)
             {
-                SidedConsole.WriteLine($"Block with name {_block.GetName()} had already been registered");
+                SidedConsole.WriteLine($"Block with name {_block.Name} had already been registered");
                 throw;
             }
         }
