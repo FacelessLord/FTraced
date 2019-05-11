@@ -20,6 +20,8 @@ namespace GlLib.Common.Registries
         public Hashtable items = new Hashtable();
         public Hashtable itemsById = new Hashtable();
 
+        private bool _loaded = false;
+
         public GameRegistry()
         {
             blockRegistry = new BlocksRegistry(this);
@@ -32,6 +34,7 @@ namespace GlLib.Common.Registries
             blockRegistry.Register();
             entitieRegistry.Register();
             itemRegistry.Register();
+            _loaded = true;
         }
 
         public void RegisterItem(Item _item)
@@ -109,6 +112,7 @@ namespace GlLib.Common.Registries
         {
             string entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
+            SidedConsole.WriteLine(entityId+", "+_loaded);
             entity.LoadFromJsonObject(_collection);
             return entity;
         }

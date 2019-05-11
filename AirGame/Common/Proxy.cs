@@ -23,6 +23,7 @@ namespace GlLib.Common
             set
             {
                 SidedConsole.WriteLine("Exiting...");
+                GetWindow().Exit();
                 _exit = value;
             }
         }

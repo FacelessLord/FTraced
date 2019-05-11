@@ -1,15 +1,13 @@
 using System.Collections.Generic;
-using System.Net.Sockets;
+using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
-using GlLib.Client.Graphic;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Items;
-using GlLib.Utils;
 using OpenTK;
 
-namespace GlLib.Client.Api.Gui
+namespace GlLib.Client.Graphic.Gui
 {
     public class PlayerFrameInventoryGuiFrame : GuiFrameInventory
     {

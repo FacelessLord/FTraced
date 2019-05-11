@@ -4,6 +4,7 @@ using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.API;
 using GlLib.Common.Entities;
@@ -47,6 +48,8 @@ namespace GlLib.Client.Input
             Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
         };
 
+        public static Action<Player> exit = _p => Proxy.Exit = true;
+
         public static void Register()
         {
             Bind(Key.Up, moveUp);
@@ -54,6 +57,7 @@ namespace GlLib.Client.Input
             Bind(Key.Down, moveDown);
             Bind(Key.Right, moveRight);
             BindClick(Key.I, openInventory);
+            BindClick(Key.Escape, exit);
         }
 
         public static void Bind(Key _key, Action<Player> _action)
@@ -61,7 +65,7 @@ namespace GlLib.Client.Input
             binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
         }
-        
+
         public static void BindClick(Key _key, Action<Player> _action)
         {
             clickBinds.Add(_key, _action);

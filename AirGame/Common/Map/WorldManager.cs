@@ -18,7 +18,6 @@ namespace GlLib.Common.Map
         {
             var mainColl = GetEntitiesJson(_world);
             File.WriteAllText("maps/" + _world.mapName + "_entities.json", mainColl + "");
-            Proxy.GetServer().profiler.SetState(State.Loop);
         }
 
         private static JsonObjectCollection GetEntitiesJson(World _world)
@@ -36,10 +35,12 @@ namespace GlLib.Common.Map
 
         public static void LoadWorld(World _world)
         {
-            LoadChunks(_world, ReadWorldJson(_world));
             var entityJson = ReadEntities(_world);
+            LoadChunks(_world, ReadWorldJson(_world), entityJson == null);
             if (entityJson != null)
+            {
                 LoadEntities(_world, entityJson);
+            }
         }
 
         public static JsonObjectCollection ReadWorldJson(World _world)
@@ -62,7 +63,7 @@ namespace GlLib.Common.Map
             return null;
         }
 
-        private static void LoadChunks(World _world, JsonObjectCollection _worldCollection)
+        private static void LoadChunks(World _world, JsonObjectCollection _worldCollection, bool loadEntities)
         {
             _world.jsonObj = _worldCollection;
             _world.width = (int) ((JsonNumericValue) _worldCollection[0]).Value;
@@ -82,7 +83,7 @@ namespace GlLib.Common.Map
                 int i = int.Parse(parts[0].Trim());
                 int j = int.Parse(parts[1].Trim());
                 if (!_world[i, j].isLoaded)
-                    _world[i, j].LoadFromJson((JsonObjectCollection) _o);
+                    _world[i, j].LoadFromJson((JsonObjectCollection) _o, loadEntities);
             });
         }
 
@@ -92,14 +93,7 @@ namespace GlLib.Common.Map
             {
                 if (entityJson != null)
                 {
-                    var entity = new Entity();
-                    entity.LoadFromJsonObject(entityJson as JsonObjectCollection);
-                    if (entity is Player p)
-                    {
-                        //TODO nick check
-                        Proxy.GetClient().player = p;
-                    }
-
+                    var entity = Proxy.GetRegistry().GetEntityFromJson(entityJson as JsonObjectCollection);
                     _world.SpawnEntity(entity);
                 }
             }

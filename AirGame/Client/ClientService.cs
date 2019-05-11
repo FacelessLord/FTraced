@@ -59,16 +59,8 @@ namespace GlLib.Client
                 player.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
 //            SidedConsole.WriteLine("Setting Player Data");
                 player.data = Proxy.GetServer().GetDataFor(player, password);
+                Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             }
-
-            
-//            SidedConsole.WriteLine("Setting Entity");
-            var testEntity = new Entity(Proxy.GetServer().GetWorldById(0),
-                new RestrictedVector3D(world.width * 8, world.height * 8, 0));
-
-//            SidedConsole.WriteLine("Spawning Entities");
-            Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
-            testEntity.worldObj.SpawnEntity(testEntity);
 //            SidedConsole.WriteLine("Loading window");
             Proxy.GetWindow().OnClientStarted();
         }

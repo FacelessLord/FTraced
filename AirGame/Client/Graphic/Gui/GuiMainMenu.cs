@@ -1,8 +1,9 @@
+using GlLib.Client.Api.Gui;
 using GlLib.Client.API.Gui;
 using GlLib.Common;
 using OpenTK;
 
-namespace GlLib.Client.Api.Gui
+namespace GlLib.Client.Graphic.Gui
 {
     public class GuiMainMenu : GuiFrame
     {

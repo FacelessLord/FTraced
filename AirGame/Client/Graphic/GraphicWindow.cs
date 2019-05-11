@@ -11,6 +11,7 @@ using System.Threading;
 using GlLib.Client.Api.Cameras;
 using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.Graphic.Gui;
 
 namespace GlLib.Client.Graphic
 {
@@ -39,12 +40,6 @@ namespace GlLib.Client.Graphic
         {
             MouseHandler.Update();
             KeyboardHandler.Update();
-            var input = Keyboard.GetState();
-            if (input.IsKeyDown(Key.Escape))
-            {
-                Exit();
-                Proxy.Exit = true;
-            }
 
             base.OnUpdateFrame(_e);
         }

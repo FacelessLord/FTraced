@@ -82,7 +82,7 @@ namespace GlLib.Common.Map
             GL.PopMatrix();
         }
 
-        public void LoadFromJson(JsonObjectCollection _chunkCollection)
+        public void LoadFromJson(JsonObjectCollection _chunkCollection, bool loadEntities)
         {
             if (_chunkCollection != null)
             {
@@ -132,7 +132,7 @@ namespace GlLib.Common.Map
                                 }
                             }
 
-                            if (collection.Name.StartsWith("entity"))
+                            if (collection.Name.StartsWith("entity") && loadEntities)
                             {
                                 var entity = Proxy.GetRegistry().GetEntityFromJson(collection);
                                 world.SpawnEntity(entity);

@@ -66,7 +66,6 @@ namespace GlLib.Server
             //todo use password
             if (playerInfo.ContainsKey(_player.nickname))
                 return playerInfo[_player.nickname];
-            var spawnWorld = GetWorldById(0);
             var data = new PlayerData();
             playerInfo.Add(_player.nickname, data);
             return data;

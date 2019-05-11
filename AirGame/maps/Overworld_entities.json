@@ -10,50 +10,8 @@
 		"entityTag": ""
 	},
 	"entity": {
-		"entityId": "entity.null",
-		"Position": "(26.748115252853,26.9215666148173,0)",
-		"Velocity": "(-3.00842110100606E-13,1.84754660865535E-13)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(24,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
 		"entityId": "entity.player",
-		"Position": "(40,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": "",
-		"nickName": "",
-		"tag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(40,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.player",
-		"Position": "(40,24,0)",
+		"Position": "(47.9934081857069,0.00018626665214462,0)",
 		"Velocity": "(0,0)",
 		"MaxVelocity": "(0.3,0.3)",
 		"WorldId": 0,
