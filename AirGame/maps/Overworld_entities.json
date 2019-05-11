@@ -11,48 +11,8 @@
 	},
 	"entity": {
 		"entityId": "entity.null",
-		"Position": "(28.2859874999998,19.6999999999995,0)",
-		"Velocity": "(-3.74333164918652E-21,-1.95404251669817E-21)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(24,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(24,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(24,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(27.8564387279863,30.0361779197201,0)",
-		"Velocity": "(4.2732376780502E-08,6.95825390278884E-08)",
+		"Position": "(26.748115252853,26.9215666148173,0)",
+		"Velocity": "(-3.00842110100606E-13,1.84754660865535E-13)",
 		"MaxVelocity": "(0.3,0.3)",
 		"WorldId": 0,
 		"IsDead": "False",
@@ -71,28 +31,18 @@
 	},
 	"entity": {
 		"entityId": "entity.player",
-		"Position": "(24,24,0)",
+		"Position": "(40,24,0)",
 		"Velocity": "(0,0)",
 		"MaxVelocity": "(0.3,0.3)",
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
 		"entityTag": "",
-		"nickName": "Noname",
+		"nickName": "",
 		"tag": ""
 	},
 	"entity": {
 		"entityId": "entity.null",
-		"Position": "(24,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
 		"Position": "(40,24,0)",
 		"Velocity": "(0,0)",
 		"MaxVelocity": "(0.3,0.3)",
@@ -102,23 +52,15 @@
 		"entityTag": ""
 	},
 	"entity": {
-		"entityId": "entity.null",
+		"entityId": "entity.player",
 		"Position": "(40,24,0)",
 		"Velocity": "(0,0)",
 		"MaxVelocity": "(0.3,0.3)",
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
-		"entityTag": ""
-	},
-	"entity": {
-		"entityId": "entity.null",
-		"Position": "(40,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.3,0.3)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
+		"entityTag": "",
+		"nickName": "",
+		"tag": ""
 	}
 }

@@ -7,9 +7,6 @@ namespace GlLib.Common
     public abstract class SideService
     {
         public const int FrameTime = 50;
-        public Blocks blocks;
-        public EntityRegistry entities;
-        public ItemRegistry items;
 
         public GameRegistry registry;
         public Profiler profiler = new Profiler();
@@ -21,18 +18,13 @@ namespace GlLib.Common
         {
             side = _side;
             registry = new GameRegistry();
-            blocks = new Blocks(registry);
-            entities = new EntityRegistry(registry);
-            items = new ItemRegistry(registry);
         }
 
         public void Start()
         {
             profiler.SetState(State.Loading);
             profiler.SetState(State.LoadingRegistries);
-            blocks.Register();
-            entities.Register();
-            items.Register();
+            registry.Load();
             Proxy.RegisterService(this);
             OnStart();
         }

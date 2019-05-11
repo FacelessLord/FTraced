@@ -3,7 +3,7 @@ using GlLib.Common.Map.Blocks;
 
 namespace GlLib.Common.Registries
 {
-    public class Blocks
+    public class BlocksRegistry
     {
         public static readonly TerrainBlock Grass = new GrassBlock();
         public static readonly TerrainBlock AutumnGrass = new AutumnGrassBlock();
@@ -13,7 +13,7 @@ namespace GlLib.Common.Registries
 
         public GameRegistry registry;
 
-        public Blocks(GameRegistry _registry)
+        public BlocksRegistry(GameRegistry _registry)
         {
             this.registry = _registry;
         }

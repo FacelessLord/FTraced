@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
+using GlLib.Common.Registries;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
@@ -133,17 +134,8 @@ namespace GlLib.Common.Map
 
                             if (collection.Name.StartsWith("entity"))
                             {
-                                var entity = new Entity();
-                                entity.LoadFromJsonObject(collection);
-
-                                if (entity is Player p)
-                                {
-                                    //TODO nick check
-                                    Proxy.GetClient().player = p;
-                                }
-
+                                var entity = Proxy.GetRegistry().GetEntityFromJson(collection);
                                 world.SpawnEntity(entity);
-                                break;
                             }
 
                             break;

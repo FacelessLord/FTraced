@@ -38,11 +38,11 @@ namespace GlLib.Common.Entities
             SidedConsole.WriteLine("Setting Player Renderer");
             SetCustomRenderer(new PlayerRenderer());
             SidedConsole.WriteLine("Setting Player Inventory");
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.varia));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.apple));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.sword));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.armor));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.ring));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.varia));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.apple));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.sword));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.armor));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
         }
 
         public override string GetName()

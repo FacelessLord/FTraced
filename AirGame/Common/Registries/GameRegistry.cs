@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Net.Json;
 using GlLib.Common.Entities;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
@@ -9,11 +10,29 @@ namespace GlLib.Common.Registries
 {
     public class GameRegistry
     {
+        public BlocksRegistry blockRegistry;
+        public EntityRegistry entitieRegistry;
+        public ItemRegistry itemRegistry;
+
         public Hashtable blocks = new Hashtable();
         public Hashtable blocksById = new Hashtable();
         public Hashtable entities = new Hashtable();
         public Hashtable items = new Hashtable();
         public Hashtable itemsById = new Hashtable();
+
+        public GameRegistry()
+        {
+            blockRegistry = new BlocksRegistry(this);
+            entitieRegistry = new EntityRegistry(this);
+            itemRegistry = new ItemRegistry(this);
+        }
+
+        public void Load()
+        {
+            blockRegistry.Register();
+            entitieRegistry.Register();
+            itemRegistry.Register();
+        }
 
         public void RegisterItem(Item _item)
         {
@@ -84,6 +103,14 @@ namespace GlLib.Common.Registries
             }
 
             return null;
+        }
+
+        public Entity GetEntityFromJson(JsonObjectCollection _collection)
+        {
+            string entityId = ((JsonStringValue) _collection[0]).Value;
+            var entity = GetEntityFromName(entityId);
+            entity.LoadFromJsonObject(_collection);
+            return entity;
         }
 
         public Item GetItemFromId(int _itemId)
