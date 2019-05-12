@@ -1,11 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Net.Json;
-using System.Threading;
-using GlLib.Client;
-using GlLib.Client.Api.Cameras;
+﻿using GlLib.Client.Api.Cameras;
 using GlLib.Client.API.Gui;
-using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
@@ -15,13 +9,15 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using System;
+using System.Threading;
 
 namespace TOFMapEditor.Client
 {
     public class MapEditorWindow : GameWindow
     {
-        private World World { get; set; }
-        private WorldRenderer worldRenderer { get; set; }
+        private World EditWorld { get; }
+        private WorldRenderer WorldRenderer { get; }
         public ICamera camera;
         public GuiFrame guiFrame;
         public int guiTimeout = 0;
@@ -32,15 +28,11 @@ namespace TOFMapEditor.Client
         public MapEditorWindow( int _width, int _height, string _title)
             : base(_width, _height, GraphicsMode.Default, _title)
         {
-            World = new ServerWorld("Overworld", 1, true);
-            var worldJson = File.ReadAllText("maps/" + World.mapName + ".json");
-            var parser = new JsonTextParser();
-            var obj = parser.Parse(worldJson);
-            var mainCollection = (JsonObjectCollection)obj;
-            WorldManager.LoadWorld(World, mainCollection);
-            World.LoadWorld();
+            EditWorld = new World("Overworld", 1, true);
 
-            worldRenderer = new WorldRenderer(World);
+            WorldManager.LoadWorld(EditWorld);
+
+            WorldRenderer = new WorldRenderer(EditWorld);
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             hud = new MapEditorHud();
@@ -49,10 +41,12 @@ namespace TOFMapEditor.Client
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
-            SidedConsole.WriteLine("1");
+            //SidedConsole.WriteLine(EditWorld.jsonObj);
             MouseHandler.Update();
             KeyboardHandler.Update();
             hud.Update(this);
+            WorldRenderer.Render(0,0);
+
             var input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape))
             {
@@ -70,6 +64,16 @@ namespace TOFMapEditor.Client
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
+            SidedConsole.WriteLine(_e.Key);
+            if (_e.Key == Key.W)
+                WorldRenderer.Render(0, 500);
+            if (_e.Key == Key.S)
+                WorldRenderer.Render(0, -500);
+            if (_e.Key == Key.A)
+                WorldRenderer.Render(500, 0);
+            if (_e.Key == Key.D)
+                WorldRenderer.Render(-500, 0);
+
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
@@ -120,38 +124,55 @@ namespace TOFMapEditor.Client
         {
             base.OnRenderFrame(_e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            RenderWorld();
 
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+            //GUI render is not connected to the world
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
-
             GL.PushMatrix();
             GL.Scale(1d / Width, 1d / Height, 1);
 
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+
+
+            hud.Update(this);
+            hud.Render(this);
+
+
+            guiFrame?.Update(this);
+            guiFrame?.Render(this);
             GL.PopMatrix();
+            GL.Disable(EnableCap.Blend);
+
+            SwapBuffers();
+        }
+
+
+        public void RenderWorld()
+        {
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadIdentity();
+            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
+
+            GL.Scale(1d / Width, 1d / Height, 1);
+
+            Vertexer.EnableTextures();
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             GL.PushMatrix();
             GL.Translate(Width / 2d, Height / 2d, 0);
             camera.Update(this);
             camera.PerformTranslation(this);
-            worldRenderer.Render(000, 000);
+            WorldRenderer.Render(000, 000);
             GL.PopMatrix();
 
-            //GUI render is not connected to the world
-            GL.LoadIdentity();
-            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
-            GL.PushMatrix();
-            GL.Scale(1d / Width, 1d / Height, 1);
-            hud.Update(this);
-            hud.Render(this);
-            guiFrame?.Update(this);
-            guiFrame?.Render(this);
-            GL.PopMatrix();
-
-            SwapBuffers();
+            GL.Disable(EnableCap.Blend);
         }
 
         protected override void OnUnload(EventArgs _e)

@@ -65,7 +65,7 @@ namespace GlLib.Common.Map
             entityMutex.WaitOne();
             _e.worldObj = this;
 
-            if (_e.chunkObj == null)
+            if (_e.chunkObj is null)
                 _e.chunkObj = Entity.GetProjection(_e.Position, this);
             _e.chunkObj.entities[_e.Position.z].Add(_e); //todo entity null
             entityMutex.ReleaseMutex();

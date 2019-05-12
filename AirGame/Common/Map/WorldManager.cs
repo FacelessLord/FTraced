@@ -93,6 +93,10 @@ namespace GlLib.Common.Map
             {
                 if (entityJson != null)
                 {
+                    if (_world.FromStash)
+                        break;
+                    //TODO
+
                     var entity = Proxy.GetRegistry().GetEntityFromJson(entityJson as JsonObjectCollection);
                     _world.SpawnEntity(entity);
                 }

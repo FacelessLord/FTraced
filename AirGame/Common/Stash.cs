@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Json;
 using System.Xml;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;
+using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -21,19 +23,37 @@ namespace GlLib.Common
             using (StreamWriter file = File.CreateText(@"stash/StashedObjects.json"))
             {
                 //serialize object directly into file stream
-                var blocks = _registry.blocks.Values;
+                ICollection blocks = _registry.blocks.Values;
+                JsonCollection result = new JsonObjectCollection();
                 foreach (var obj in blocks)
                 {
                     var block = obj as TerrainBlock;
-                    file.WriteLine(block?.CreateJsonObject());
+                    result.Add(block?.CreateJsonObject());
                 }
+                result.WriteTo(file);
             }
         }
 
+
         public static Hashtable GetBlocks()
         {
-            //TODO
-            return new Hashtable();
+            UpdateBlocks();
+            return blocks;
+        }
+
+        public static void UpdateBlocks()
+        {
+            if (!File.Exists(@"stash/StashedObjects.json"))
+                SidedConsole.WriteLine("Can't take stashed blocks.");
+
+            var currentBlocks = new JsonObjectCollection();
+
+            using (StreamReader file = File.OpenText(@"stash/StashedObjects.json"))
+            {
+                currentBlocks = new JsonObjectCollection(file.ReadToEnd());
+            }
+
+            blocks = new Hashtable(blocks);
         }
 
         internal static TerrainBlock GetBlockFromName(string _value)

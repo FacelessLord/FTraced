@@ -130,6 +130,9 @@ namespace GlLib.Common.Map
                         {
                             if (collection.Name.StartsWith("Rect"))
                             {
+                                if (world.FromStash)
+                                    break;
+
                                 var preBorders = collection[0];
                                 if (preBorders is JsonArrayCollection borders)
                                 {

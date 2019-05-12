@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace GlLib.Utils
 {
@@ -93,7 +94,10 @@ namespace GlLib.Utils
             if (_s == "")
                 return new RestrictedVector3D();
             var coords = _s.Substring(1, _s.Length - 2).Split(",");
-            return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
+            return new RestrictedVector3D(
+                double.Parse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture),
+                double.Parse(coords[1],NumberStyles.Any, CultureInfo.InvariantCulture),
+                int.Parse(coords[2], NumberStyles.Any, CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object _obj)
@@ -187,7 +191,9 @@ namespace GlLib.Utils
             if (_s == "")
                 return new PlanarVector();
             var coords = _s.Substring(1, _s.Length - 2).Split(",");
-            return new PlanarVector(double.Parse(coords[0]), double.Parse(coords[1]));
+            return new PlanarVector(
+                double.Parse(coords[0], NumberStyles.Any,CultureInfo.InvariantCulture),
+                double.Parse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture));
         }
 
         public AxisAlignedBb Expand(double _width, double _height)

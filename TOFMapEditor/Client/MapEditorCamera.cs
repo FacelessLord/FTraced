@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GlLib.Client.Api.Cameras;
+using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -9,14 +10,15 @@ namespace TOFMapEditor.Client
 {
     internal class MapEditorCamera : ICamera
     {
-        private double posX;
-        private double posY;
+        public double posX;
+        public double posY;
 
         public void Update(GameWindow _window)
         {
             posX = 0;
             posY = 0;
         }
+
 
         public void PerformTranslation(GameWindow _window)
         {
