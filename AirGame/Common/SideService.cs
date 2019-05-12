@@ -24,8 +24,8 @@ namespace GlLib.Common
         {
             profiler.SetState(State.Loading);
             profiler.SetState(State.LoadingRegistries);
-            registry.Load();
             Proxy.RegisterService(this);
+            registry.Load();
             OnStart();
         }
 

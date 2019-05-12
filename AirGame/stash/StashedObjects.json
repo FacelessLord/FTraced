@@ -1,0 +1,12 @@
+"GrassBlock": {
+	"Name": "block.outdoor.grass",
+	"TextureName": "grass.png"
+}
+"Path": {
+	"Name": "block.outdoor.grass.path",
+	"TextureName": "path.png"
+}
+"Bricks": {
+	"Name": "block.indoor.bricks",
+	"TextureName": "bricks_worn.png"
+}

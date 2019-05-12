@@ -11,8 +11,8 @@
 	},
 	"entity": {
 		"entityId": "entity.player",
-		"Position": "(47.9934081857069,0.00018626665214462,0)",
-		"Velocity": "(0,0)",
+		"Position": "(45.1600733458192,4.9001830054186,0)",
+		"Velocity": "(2.25983103735511E-07,4.89185035595947E-07)",
 		"MaxVelocity": "(0.3,0.3)",
 		"WorldId": 0,
 		"IsDead": "False",

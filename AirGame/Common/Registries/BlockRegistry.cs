@@ -13,7 +13,7 @@ namespace GlLib.Common.Registries
 
         public BlocksRegistry(GameRegistry _registry)
         {
-            this.registry = _registry;
+            registry = _registry;
         }
 
         public void Register()
@@ -21,7 +21,7 @@ namespace GlLib.Common.Registries
             registry.RegisterBlock(Grass);
             registry.RegisterBlock(Path);
             registry.RegisterBlock(Bricks);
-            Stash.UpdateStash();
+            Stash.UpdateStash(registry);
         }
     }
 }

@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using GlLib.Common.Map;
+using GlLib.Common.Registries;
 
 namespace GlLib.Common
 {
     internal class Stash
     {
         public static Hashtable blocks = new Hashtable();
-        public static void UpdateStash()
+        public static void UpdateStash(GameRegistry _registry)
         {
             if (!Directory.Exists(@"stash")) Directory.CreateDirectory("stash");
 
@@ -20,7 +21,7 @@ namespace GlLib.Common
             using (StreamWriter file = File.CreateText(@"stash/StashedObjects.json"))
             {
                 //serialize object directly into file stream
-                var blocks = Proxy.GetRegistry().blocks.Values;
+                var blocks = _registry.blocks.Values;
                 foreach (var obj in blocks)
                 {
                     var block = obj as TerrainBlock;
