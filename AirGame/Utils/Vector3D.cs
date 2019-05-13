@@ -314,7 +314,6 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            //TODO
             return $"Bounding ({startX.ToString(CultureInfo.InvariantCulture)}," +
                    $"{startY.ToString(CultureInfo.InvariantCulture)}," +
                    $"{EndXi.ToString(CultureInfo.InvariantCulture)}," +
