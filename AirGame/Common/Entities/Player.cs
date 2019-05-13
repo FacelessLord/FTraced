@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Json;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
-using GlLib.Client.Graphic;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
-using GlLib.Common.Registries;
 using GlLib.Utils;
-using OpenTK.Graphics.OpenGL;
+using System;
+using System.Collections.Generic;
+using System.Net.Json;
 
 namespace GlLib.Common.Entities
 {

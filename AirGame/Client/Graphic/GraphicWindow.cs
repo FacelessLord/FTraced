@@ -50,6 +50,7 @@ namespace GlLib.Client.Graphic
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
+            SidedConsole.WriteLine(_e.Key);
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
@@ -63,6 +64,7 @@ namespace GlLib.Client.Graphic
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
         {
+            SidedConsole.WriteLine(_e.Key);
             base.OnKeyUp(_e);
             KeyboardHandler.SetPressed(_e.Key, false);
         }

@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using GlLib.Client.Api.Gui;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
-using GlLib.Client.Graphic;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
-using GlLib.Common.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
-using OpenTK;
 using OpenTK.Input;
+using System;
+using System.Collections.Generic;
 
 namespace GlLib.Client.Input
 {

@@ -54,8 +54,8 @@ namespace GlLib.Common.Map
                     if (chunk.isLoaded)
                         chunk.Update();
             entityMutex.ReleaseMutex();
-            WorldManager.SaveWorld(this);
-            Proxy.GetServer().profiler.SetState(State.Loop);
+            //WorldManager.SaveWorld(this);
+            //Proxy.GetServer().profiler.SetState(State.Loop);
         }
 
         public void SpawnEntity(Entity _e)
