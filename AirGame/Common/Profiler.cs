@@ -11,7 +11,7 @@ namespace GlLib.Common
 
         public void SetState(State _state, int _maxOperationCount = -1)
         {
-            SidedConsole.WriteLine("State Changed: " + _state);
+//            SidedConsole.WriteLine("State Changed: " + _state);
             state = _state;
             maxOperationCount = _maxOperationCount;
             operationCount = 0;

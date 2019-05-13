@@ -64,16 +64,6 @@ namespace TOFMapEditor.Client
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
-            SidedConsole.WriteLine(_e.Key);
-            if (_e.Key == Key.W)
-                WorldRenderer.Render(0, 500);
-            if (_e.Key == Key.S)
-                WorldRenderer.Render(0, -500);
-            if (_e.Key == Key.A)
-                WorldRenderer.Render(500, 0);
-            if (_e.Key == Key.D)
-                WorldRenderer.Render(-500, 0);
-
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);

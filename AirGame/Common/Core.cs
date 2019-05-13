@@ -59,7 +59,7 @@ namespace GlLib.Common
                 client.Exit();
             }) {Name = Side.Client.ToString()};
             clientThread.Start();
-//            Proxy.AwaitWhile(() => client.profiler.state < State.Loop);
+            Proxy.AwaitWhile(() => client.profiler.state < State.Loop);
         }
     }
 }

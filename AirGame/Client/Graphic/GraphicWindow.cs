@@ -32,7 +32,6 @@ namespace GlLib.Client.Graphic
             Proxy.RegisterWindow(this);
             MouseHandler.Setup();
             KeyBinds.Register();
-            Core.profiler.SetState(State.MainMenu);
             SidedConsole.WriteLine("Window constructed");
         }
 
@@ -80,6 +79,7 @@ namespace GlLib.Client.Graphic
             base.OnLoad(_e);
             VSync = VSyncMode.Off;
             TryOpenGui(new GuiMainMenu());
+            Core.profiler.SetState(State.MainMenu);
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs _e)
@@ -107,7 +107,9 @@ namespace GlLib.Client.Graphic
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (serverStarted)
                 RenderWorld();
+
             
+
             GL.Clear(ClearBufferMask.DepthBufferBit);
             //GUI render is not connected to the world
             GL.MatrixMode(MatrixMode.Modelview);
