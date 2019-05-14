@@ -12,8 +12,7 @@ namespace GlLib.Common.Map
     {
         public Chunk[,] chunks;
         public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
-
-        public Mutex entityMutex = new Mutex();
+        
         public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
         public int height;
 
@@ -41,43 +40,56 @@ namespace GlLib.Common.Map
 
         public void Update()
         {
-            entityMutex.WaitOne();
-            foreach (var pair in entityRemoveQueue) pair.chk.entities[pair.e.Position.z].Remove(pair.e);
-
-            entityRemoveQueue.Clear();
-            foreach (var pair in entityAddQueue) pair.chk.entities[pair.e.Position.z].Add(pair.e);
-
-            entityAddQueue.Clear();
-            lock (chunks)
+            lock (entityRemoveQueue)
             {
-                foreach (var chunk in chunks)
-                    if (chunk.isLoaded)
-                        chunk.Update();
+                foreach (var pair in entityRemoveQueue) pair.chk.entities[pair.e.Position.z].Remove(pair.e);
+                entityRemoveQueue.Clear();
             }
 
-            entityMutex.ReleaseMutex();
-            //WorldManager.SaveWorld(this);
-            //Proxy.GetServer().profiler.SetState(State.Loop);
+            lock (entityAddQueue)
+            {
+                foreach (var pair in entityAddQueue) pair.chk.entities[pair.e.Position.z].Add(pair.e);
+                entityAddQueue.Clear();
+            }
+
+            foreach (var chunk in chunks)
+                if (chunk.isLoaded)
+                    chunk.Update();
         }
 
         public void SpawnEntity(Entity _e)
         {
             if (EventBus.OnEntitySpawn(_e)) return;
 
-            entityMutex.WaitOne();
             _e.worldObj = this;
+
 
             if (_e.chunkObj is null)
                 _e.chunkObj = Entity.GetProjection(_e.Position, this);
-            _e.chunkObj.entities[_e.Position.z].Add(_e); //todo entity null
-            entityMutex.ReleaseMutex();
+            if (_e.chunkObj is null)
+            {
+                SidedConsole.WriteLine("Couldn't spawn entity out of the world");
+                return;
+            }
+
+            lock (_e.chunkObj.entities)
+            {
+                _e.chunkObj.entities[_e.Position.z].Add(_e);
+            }
+
             SidedConsole.WriteLine($"Entity {_e} spawned in world");
         }
 
         public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
         {
-            entityRemoveQueue.Add((_e, _old));
-            entityAddQueue.Add((_e, _next));
+            lock (entityRemoveQueue)
+            {
+                entityRemoveQueue.Add((_e, _old));
+            }
+            lock (entityAddQueue)
+            {
+                entityAddQueue.Add((_e, _next));
+            }
             _e.chunkObj = _next;
         }
 

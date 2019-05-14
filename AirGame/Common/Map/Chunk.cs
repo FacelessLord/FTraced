@@ -82,7 +82,7 @@ namespace GlLib.Common.Map
             GL.PopMatrix();
         }
 
-        public void LoadFromJson(JsonObjectCollection _chunkCollection, bool loadEntities)
+        public void LoadFromJson(JsonObjectCollection _chunkCollection, bool _loadEntities)
         {
             var stashedBlocks = new Hashtable();
             if (world.FromStash)
@@ -147,7 +147,7 @@ namespace GlLib.Common.Map
                                 }
                             }
 
-                            if (collection.Name.StartsWith("entity") && loadEntities)
+                            if (collection.Name.StartsWith("entity") && _loadEntities)
                             {
                                 var entity = Proxy.GetRegistry().GetEntityFromJson(collection);
                                 world.SpawnEntity(entity);
@@ -164,19 +164,25 @@ namespace GlLib.Common.Map
 
         public List<JsonObject> SaveChunkEntities()
         {
-            var objects = new List<JsonObject>();
-            foreach (var height in entities)
-            foreach (var entity in height)
-                objects.Add(entity.CreateJsonObject());
+            lock (entities)
+            {
+                var objects = new List<JsonObject>();
+                foreach (var height in entities)
+                foreach (var entity in height)
+                    objects.Add(entity.CreateJsonObject());
 
-            return objects;
+                return objects;
+            }
         }
 
         public void Update()
         {
-            foreach (var level in entities)
-            foreach (var entity in level)
-                entity.Update();
+            lock (entities)
+            {
+                foreach (var level in entities)
+                foreach (var entity in level)
+                    entity.Update();
+            }
         }
     }
 }
