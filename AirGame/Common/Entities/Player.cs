@@ -9,7 +9,7 @@ using GlLib.Utils;
 
 namespace GlLib.Common.Entities
 {
-    public class Player : Entity
+    public class Player : EntityLiving
     {
         public double accelerationValue = 0.2;
         public PlayerData data;
@@ -17,13 +17,13 @@ namespace GlLib.Common.Entities
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
 
-        public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
+        public Player(string _nickname, World _world, RestrictedVector3D _position) : base(100, 0,_world, _position)
         {
             nickname = _nickname;
             SetCustomRenderer(new PlayerRenderer());
         }
 
-        public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
+        public Player(World _world, RestrictedVector3D _position) : base(100, 0, _world, _position)
         {
             SetCustomRenderer(new PlayerRenderer());
         }
@@ -55,8 +55,8 @@ namespace GlLib.Common.Entities
             base.LoadFromJsonObject(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
             {
-                nickname = ((JsonStringValue) collection[7]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[8]).Value));
+                nickname = ((JsonStringValue) collection[11]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[12]).Value));
             }
         }
 

@@ -6,35 +6,48 @@ using GlLib.Utils;
 
 namespace GlLib.Common.Entities
 {
-    public class EntityLiving : Entity, IJsonSerializable
+    public class EntityLiving : Entity
     {
         public const ushort MaxArmor = 100;
 
-        public EntityLiving(bool _godMode, uint _health,
+        public EntityLiving(uint _health,
             ushort _armor, World _world,
             RestrictedVector3D _position) : base(_world, _position)
         {
             Armor = _armor;
             Health = _health;
-            GodMode = _godMode;
+
+            IsTakingDamage = false;
+        }
+
+        public EntityLiving()
+        {
+            Armor = 0;
+            Health = 100;
 
             IsTakingDamage = false;
         }
 
         public float Health { get; protected set; }
-
         public bool GodMode { get; protected set; }
         public bool IsTakingDamage { get; private set; } // TODO
 
+        private ushort _armor;
+
         public ushort Armor
         {
-            get => Armor;
+            get => _armor;
             protected set
             {
-                if (value < 100) Armor = value;
+                if (value < 100) _armor = value;
                 else
                     throw new ArgumentException("Armor shouldn't be greater than 100.");
             }
+        }
+
+        public void SetGodMode(bool _enable = true)
+        {
+            GodMode = _enable;
         }
 
         public override JsonObject CreateJsonObject()
@@ -65,11 +78,11 @@ namespace GlLib.Common.Entities
         }
 
 
-        public void OnDealDamage(float _damage)
+        public void DealDamage(float _damage)
         {
             if (GodMode) return;
 
-            var takenDamage = _damage * (Armor / MaxArmor);
+            var takenDamage = _damage * (Armor / (float) MaxArmor);
             if (takenDamage >= Health)
             {
                 isDead = true;
