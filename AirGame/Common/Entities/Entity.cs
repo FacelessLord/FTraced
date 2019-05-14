@@ -27,7 +27,7 @@ namespace GlLib.Common.Entities
         public PlanarVector velocity = new PlanarVector();
         public World worldObj;
         
-        private EntityRenderer _renderer = new StandartRenderer();
+        private EntityRenderer _renderer = new StandardRenderer();
 
         public Entity(World _world, RestrictedVector3D _position)
         {

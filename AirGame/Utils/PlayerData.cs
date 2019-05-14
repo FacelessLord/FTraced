@@ -2,8 +2,11 @@ namespace GlLib.Utils
 {
     public class PlayerData
     {
+        public ushort CastLevel { get; }
+
         public PlayerData()
         {
+            CastLevel = 100;
         }
 
         public void SaveToNbt(NbtTag _tag)

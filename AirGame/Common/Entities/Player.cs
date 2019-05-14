@@ -1,4 +1,3 @@
-using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
@@ -6,6 +5,7 @@ using GlLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Json;
+using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.SpellCastSystem;
 
 namespace GlLib.Common.Entities

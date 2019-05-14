@@ -26,9 +26,9 @@ namespace GlLib.Common.SpellCastSystem
 
         // ReSharper disable once InconsistentNaming
         private readonly List<ClassicalElement> elements;
-        public Player SpellCaster { get; }
+        public Entity SpellCaster { get; }
 
-        public SpellSystem(Player _spellCaster)
+        public SpellSystem(Entity _spellCaster)
         {
             SpellCaster = _spellCaster;
             elements = new List<ClassicalElement>();
@@ -83,6 +83,23 @@ namespace GlLib.Common.SpellCastSystem
             double averageValue = elements.Average(e => (int) e.type);
 
             SidedConsole.WriteLine("Result: " + averageValue +" " + averageTime+ " " + elements.Count);
+
+            switch ((int) Math.Floor(averageValue))
+            {
+                case (int) ElementType.Air:
+                    SpellCaster.worldObj.SpawnEntity(
+                        new Fire(SpellCaster.worldObj, 
+                            SpellCaster.Position, 
+                            SpellCaster.velocity * averageTime));
+                    return;
+                case (int)ElementType.Water:
+                    return;
+                case (int)ElementType.Fire:
+                    return;
+                case (int)ElementType.Earth:
+                    return;
+            }
+
 
             //TODO think how system can say to server to make result 
             //TODO cast spell using this time and average element, simple but it should work

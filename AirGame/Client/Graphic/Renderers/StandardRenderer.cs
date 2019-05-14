@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
 {
-    public class StandartRenderer : EntityRenderer
+    public class StandardRenderer : EntityRenderer
     {
         private Texture _texture;
         public override void Setup(Entity _e)
