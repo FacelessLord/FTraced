@@ -37,7 +37,12 @@ namespace GlLib.Server
 
         public override void OnServiceUpdate()
         {
-            foreach (var world in worlds) world.Value.Update();
+            foreach (var world in worlds)
+                world.Value.Update();
+            // this code don't work!
+            //foreach (var client in clients)
+            //    client.player.spells.OnUpdate();
+            
         }
 
         public override void OnExit()

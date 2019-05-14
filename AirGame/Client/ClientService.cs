@@ -74,6 +74,8 @@ namespace GlLib.Client
                     KeyBinds.binds[bind.Key](player);
                 }
             }
+            //bad idea to update it on client side
+            player.spells.OnUpdate();
         }
 
         public override void OnExit()

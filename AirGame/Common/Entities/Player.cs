@@ -6,6 +6,7 @@ using GlLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Json;
+using GlLib.Common.SpellCastSystem;
 
 namespace GlLib.Common.Entities
 {
@@ -16,6 +17,7 @@ namespace GlLib.Common.Entities
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
         public PlayerInventory inventory = new PlayerInventory();
+        internal SpellSystem spells;
 
         public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
@@ -38,6 +40,9 @@ namespace GlLib.Common.Entities
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.sword));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.armor));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
+
+            spells = new SpellSystem(this);
+
         }
 
         public override string GetName()

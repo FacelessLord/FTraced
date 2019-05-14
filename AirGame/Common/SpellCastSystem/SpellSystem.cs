@@ -3,16 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GlLib.Common.Entities;
+using GlLib.Utils;
 
 namespace GlLib.Common.SpellCastSystem
 {
     internal class SpellSystem
     {
-        public const uint MaxCastTime = 2 * 60 * 1000;
+        public const uint MaxCastTime = 3 * 1000;
         public const byte ElementsCountBound = 6; 
         // ReSharper disable once InconsistentNaming
-        private static uint? time;
-        protected  bool IsStarted { get; private set; }
+        private uint? time;
+        internal uint? InternalTime
+            => IsStarted
+                ? (uint) DateTime.Now.TimeOfDay.TotalMilliseconds - time
+                : 0;
+
+        protected bool IsStarted
+        {
+            get; 
+            private set;
+        }
 
         // ReSharper disable once InconsistentNaming
         private readonly List<ClassicalElement> elements;
@@ -25,7 +35,7 @@ namespace GlLib.Common.SpellCastSystem
             IsStarted = false;
 
         }
-        public  void OnUpdate(ElementType _element = ElementType.Empty)
+        public void OnUpdate(ElementType _element = ElementType.Empty)
         {
             if (_element != ElementType.Empty)
             {
@@ -34,43 +44,47 @@ namespace GlLib.Common.SpellCastSystem
                     if (elements.Count < ElementsCountBound)
                     {
                         uint totalMilliseconds = (uint) (DateTime.Now.TimeOfDay.TotalMilliseconds - time);
+                        SidedConsole.WriteLine("Adding of " + (int)_element);
                         elements.Add(new ClassicalElement(totalMilliseconds, _element));
                     }
                     else if (elements.Count == ElementsCountBound)
                     {
                         MakeResult();
-                        IsStarted = false;
+                        Refresh();
                         return;
                     }
                 }
                 else
                 {
+                    SidedConsole.WriteLine("Spell casting start");
                     time = (uint) DateTime.Now.TimeOfDay.TotalMilliseconds;
                     IsStarted = true;
                     elements.Add(new ClassicalElement(1, _element));
                 }
             }
 
-            if (MaxCastTime > time - DateTime.Now.TimeOfDay.TotalMilliseconds)
+            if (IsStarted && InternalTime >= MaxCastTime)
             {
                 MakeResult();
-                IsStarted = false;
+                Refresh();
             }
 
         }
 
-        private  void MakeResult()
+        private void Refresh()
         {
-            Calculate();
-            //TODO think how system can say to server to make result 
-            throw new NotImplementedException();
+            IsStarted = false;
+            time = null;
+            elements.Clear();
         }
-
-        private  void Calculate()
+        private void MakeResult()
         {
             double averageTime = elements.Average(e => e.StartTime);
             double averageValue = elements.Average(e => (int) e.type);
 
+            SidedConsole.WriteLine("Result: " + averageValue +" " + averageTime+ " " + elements.Count);
+
+            //TODO think how system can say to server to make result 
             //TODO cast spell using this time and average element, simple but it should work
 
         }

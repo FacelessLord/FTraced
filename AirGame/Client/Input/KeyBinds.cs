@@ -5,6 +5,7 @@ using GlLib.Utils;
 using OpenTK.Input;
 using System;
 using System.Collections.Generic;
+using GlLib.Common.SpellCastSystem;
 
 namespace GlLib.Client.Input
 {
@@ -44,6 +45,16 @@ namespace GlLib.Client.Input
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
+        public static Action<Player> spellFire = _p => { _p.spells.OnUpdate(ElementType.Fire); };
+        public static Action<Player> spellAir = _p => { _p.spells.OnUpdate(ElementType.Air); };
+        public static Action<Player> spellEarth = _p => { _p.spells.OnUpdate(ElementType.Earth); };
+        public static Action<Player> spellWater = _p => { _p.spells.OnUpdate(ElementType.Water); };
+
+
+
+
+
+
         public static void Register()
         {
             Bind(Key.Up, moveUp);
@@ -52,6 +63,11 @@ namespace GlLib.Client.Input
             Bind(Key.Right, moveRight);
             BindClick(Key.I, openInventory);
             BindClick(Key.Escape, exit);
+
+            BindClick(Key.Number1, spellAir);
+            BindClick(Key.Number2, spellEarth);
+            BindClick(Key.Number3, spellWater);
+            BindClick(Key.Number4, spellFire);
         }
 
         public static void Bind(Key _key, Action<Player> _action)
