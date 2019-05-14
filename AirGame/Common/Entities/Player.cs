@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Json;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api.Inventory;
@@ -42,7 +43,7 @@ namespace GlLib.Common.Entities
 
         public override string GetName()
         {
-            return "entity.player";
+            return "entity.living.player";
         }
 
         public override void Update()
@@ -55,8 +56,9 @@ namespace GlLib.Common.Entities
             base.LoadFromJsonObject(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
             {
-                nickname = ((JsonStringValue) collection[11]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[12]).Value));
+//                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
+                nickname = ((JsonStringValue) collection[12]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[13]).Value));
             }
         }
 

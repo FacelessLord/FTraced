@@ -14,7 +14,7 @@ namespace GlLib.Common.Entities
         private EntityRenderer _renderer = new StandartRenderer();
         public Chunk chunkObj;
 
-        public bool isDead;
+        private bool isDead;
         public PlanarVector maxVel = new PlanarVector(0.3, 0.3);
 
         public NbtTag nbtTag = new NbtTag();
@@ -59,8 +59,7 @@ namespace GlLib.Common.Entities
                 worldObj = Proxy.GetServer().GetWorldById((int) ((JsonNumericValue) collection[4]).Value);
                 isDead = ((JsonStringValue) collection[5]).Value == "True";
                 noClip = ((JsonStringValue) collection[6]).Value == "True";
-                if (collection.Count > 7)
-                    nbtTag = NbtTag.FromString(((JsonStringValue) collection[collection.Count - 1]).Value);
+                nbtTag = NbtTag.FromString(((JsonStringValue) collection[7]).Value);
             }
         }
 
@@ -86,7 +85,7 @@ namespace GlLib.Common.Entities
 
         public AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(1, 1);
+            return Position.ToPlanar().ExpandBothTo(100, 100);
         }
 
         public TerrainBlock GetUnderlyingBlock()
@@ -100,8 +99,10 @@ namespace GlLib.Common.Entities
 
             MoveEntity();
             velocity *= 0.85;
-            var entities = worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), position.z);
-            foreach (var entity in entities) OnCollideWith(entity);
+            //TODO select most efficient way of iteration to avoid CME
+            var entities = worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), Position.z);
+            foreach (var entity in entities)
+                OnCollideWith(entity);
         }
 
         private void MoveEntity()
@@ -142,9 +143,13 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public void SetDead(bool _dead)
+        public void SetDead(bool _dead = true)
         {
             isDead = _dead;
+            lock (worldObj.entityRemoveQueue)
+            {
+                worldObj.entityRemoveQueue.Add((this, chunkObj));
+            }
         }
 
         public virtual void OnCollideWith(Entity _obj)
@@ -170,7 +175,7 @@ namespace GlLib.Common.Entities
         {
             return Equals(GetName(), _other.GetName()) &&
                    Equals(worldObj, _other.worldObj) &&
-                   Equals(position, _other.position) &&
+                   Equals(Position, _other.Position) &&
                    Equals(velocity, _other.velocity) &&
                    Equals(maxVel, _other.maxVel) &&
                    Equals(chunkObj, _other.chunkObj) &&

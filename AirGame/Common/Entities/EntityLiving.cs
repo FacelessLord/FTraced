@@ -70,10 +70,10 @@ namespace GlLib.Common.Entities
 
             if (_jsonObject is JsonObjectCollection collection)
             {
-                Armor = (ushort) ((JsonNumericValue) collection[7]).Value;
-                Health = (float) ((JsonNumericValue) collection[8]).Value;
-                GodMode = ((JsonStringValue) collection[9]).Value == "True";
-                IsTakingDamage = ((JsonStringValue) collection[10]).Value == "True";
+                Armor = (ushort) ((JsonNumericValue) collection[8]).Value;
+                Health = (float) ((JsonNumericValue) collection[9]).Value;
+                GodMode = ((JsonStringValue) collection[10]).Value == "True";
+                IsTakingDamage = ((JsonStringValue) collection[11]).Value == "True";
             }
         }
 
@@ -82,16 +82,18 @@ namespace GlLib.Common.Entities
         {
             if (GodMode) return;
 
-            var takenDamage = _damage * (Armor / (float) MaxArmor);
+            var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
             if (takenDamage >= Health)
             {
-                isDead = true;
+                SetDead();
                 Health = 0;
+                SidedConsole.WriteLine("Dead");
             }
             else
             {
                 Health -= takenDamage;
             }
+            SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
         }
 
         public override string GetName()

@@ -63,7 +63,20 @@ namespace GlLib.Client.Input
                 Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
         };
 
+        public static Action<Player> spawnSlime = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
+        };
+
         public static Action<Player> exit = _p => Proxy.Exit = true;
+
+        public static Action<Player> attack = _p =>
+        {
+            var entities = _p.worldObj.GetEntitiesWithinAaBb(_p.GetAaBb());
+            entities.Where(_e => _e is EntityLiving && _e != _p).Cast<EntityLiving>().ToList()
+                .ForEach(_e => _e.DealDamage(30));
+        };
 
         public static void Register()
         {
@@ -74,6 +87,8 @@ namespace GlLib.Client.Input
             BindClick(Key.I, openInventory, "gui.inv");
             BindClick(Key.Escape, openIngameMenu, "gui.menu");
             BindClick(Key.Grave, exit, "exit");
+            BindClick(Key.Space, attack, "world.attack");
+            BindClick(Key.G, spawnSlime, "world.spawn.slime");
         }
 
         public static void Bind(Key _key, Action<Player> _action, string _name)

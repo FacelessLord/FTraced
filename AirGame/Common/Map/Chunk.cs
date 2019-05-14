@@ -165,6 +165,7 @@ namespace GlLib.Common.Map
         public List<JsonObject> SaveChunkEntities()
         {
             var objects = new List<JsonObject>();
+            lock(entities)
             foreach (var height in entities)
             foreach (var entity in height)
                 objects.Add(entity.CreateJsonObject());
@@ -174,9 +175,11 @@ namespace GlLib.Common.Map
 
         public void Update()
         {
-            foreach (var level in entities)
-            foreach (var entity in level)
-                entity.Update();
+            lock (entities)
+                foreach (var level in entities)
+                    lock (level)
+                        foreach (var entity in level)
+                            entity.Update();
         }
     }
 }
