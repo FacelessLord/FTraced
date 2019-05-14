@@ -38,10 +38,14 @@ namespace GlLib.Common
             // ClientService._instance.ConnectToIntegratedServer();
         }
 
+        public static Thread clientThread;
+        public static Thread serverThread;
+        
+
         public static void StartWorld()
         {
             var server = new ServerInstance();
-            var serverThread = new Thread(() =>
+            serverThread = new Thread(() =>
             {
                 server.Start();
                 server.Loop();
@@ -51,7 +55,7 @@ namespace GlLib.Common
             Proxy.AwaitWhile(() => server.profiler.state < State.Loop);
 
             var client = new ClientService(Config.playerName, Config.playerPassword);
-            var clientThread = new Thread(() =>
+            clientThread = new Thread(() =>
             {
                 client.Start();
                 client.Loop();
@@ -59,6 +63,15 @@ namespace GlLib.Common
             }) {Name = Side.Client.ToString()};
             clientThread.Start();
             Proxy.AwaitWhile(() => client.profiler.state < State.Loop);
+        }
+
+        public static void StopWorld(string _cause)
+        {
+            Proxy.GetClient().AskToStop(_cause);
+            Proxy.AwaitWhile(() => Proxy.GetClient().profiler.state < State.Off);
+            Proxy.GetServer().AskToStop(_cause);
+            Proxy.AwaitWhile(() => Proxy.GetServer().profiler.state < State.Off);
+            
         }
     }
 }

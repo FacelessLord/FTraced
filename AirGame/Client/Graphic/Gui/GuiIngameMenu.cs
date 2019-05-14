@@ -33,7 +33,11 @@ namespace GlLib.Client.Graphic.Gui
             };
             exitButton = new GuiButton("Exit", (w - 180) / 2, h / 3 + 3 * d, w / 4, d);
             Add(exitButton);
-            exitButton.state = ButtonState.Disabled;
+            exitButton.releaseAction = (_f, _b) =>
+            {
+                Core.StopWorld("Player pressed exit");
+                Proxy.GetWindow().OpenGui(new GuiMainMenu());
+            };
         }
 
         public override void Update(GameWindow _window)

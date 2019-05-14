@@ -32,13 +32,10 @@ namespace GlLib.Client.Graphic.Gui
             startMultiButton.state = ButtonState.Disabled;
             settingsButton = new GuiButton("Settings", 3 * w / 8, h / 3 + 2 * d, w / 4, d);
             Add(settingsButton);
-            settingsButton.releaseAction = (_f, _b) =>
-            {
-                Proxy.GetWindow().OpenGui(new GuiSettings(_f));
-            };
+            settingsButton.releaseAction = (_f, _b) => Proxy.GetWindow().OpenGui(new GuiSettings(_f));
             exitButton = new GuiButton("Exit", 3 * w / 8, h / 3 + 3 * d, w / 4, d);
             Add(exitButton);
-            exitButton.state = ButtonState.Disabled;
+            exitButton.releaseAction = (_f, _b) => Proxy.Exit = true;
         }
 
         public override void Update(GameWindow _window)
