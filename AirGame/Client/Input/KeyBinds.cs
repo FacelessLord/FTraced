@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -12,6 +13,7 @@ namespace GlLib.Client.Input
     {
         public static Dictionary<Key, Action<Player>> binds = new Dictionary<Key, Action<Player>>();
         public static Dictionary<Key, Action<Player>> clickBinds = new Dictionary<Key, Action<Player>>();
+        public static Dictionary<Action<Player>, String> delegateNames = new Dictionary<Action<Player>, String>();
 
         public static Action<Player> moveLeft = _p =>
         {
@@ -59,24 +61,40 @@ namespace GlLib.Client.Input
 
         public static void Register()
         {
-            Bind(Key.Up, moveUp);
-            Bind(Key.Left, moveLeft);
-            Bind(Key.Down, moveDown);
-            Bind(Key.Right, moveRight);
-            BindClick(Key.I, openInventory);
-            BindClick(Key.M, openIngameMenu);
-            BindClick(Key.Escape, exit);
+            Bind(Key.Up, moveUp, "move.up");
+            Bind(Key.Left, moveLeft, "move.left");
+            Bind(Key.Down, moveDown, "move.down");
+            Bind(Key.Right, moveRight, "move.right");
+            BindClick(Key.I, openInventory, "gui.inv");
+            BindClick(Key.M, openIngameMenu, "gui.menu");
+            BindClick(Key.Escape, exit, "exit");
         }
 
-        public static void Bind(Key _key, Action<Player> _action)
+        public static void Bind(Key _key, Action<Player> _action, string _name)
         {
             binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
+            delegateNames.Add(_action, _name);
         }
 
-        public static void BindClick(Key _key, Action<Player> _action)
+        public static void BindClick(Key _key, Action<Player> _action, string _name)
         {
             clickBinds.Add(_key, _action);
+            KeyboardHandler.RegisterKey(_key);
+            delegateNames.Add(_action, _name);
+        }
+
+        public static void RebindClick(Key _key, Action<Player> _action)
+        {
+            clickBinds.Remove(clickBinds.Keys.Single(_k => clickBinds[_k] == _action));
+            clickBinds.Add(_key, _action);
+            KeyboardHandler.RegisterKey(_key);
+        }
+        
+        public static void Rebind(Key _key, Action<Player> _action)
+        {
+            binds.Remove(binds.Keys.Single(_k => binds[_k] == _action));
+            binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
         }
     }
