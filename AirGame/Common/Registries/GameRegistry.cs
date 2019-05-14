@@ -96,12 +96,12 @@ namespace GlLib.Common.Registries
             return (TerrainBlock) blocksById[_id];
         }
 
-        public Entity GetEntityFromName(string _entityName, params object[] _args)
+        public Entity GetEntityFromName(string _entityName)
         {
             if (entities.ContainsKey(_entityName))
             {
                 var clazz = (Type) entities[_entityName];
-                return (Entity) Activator.CreateInstance(clazz, _args);
+                return (Entity) Activator.CreateInstance(clazz);
             }
 
             return null;
