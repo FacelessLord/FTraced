@@ -1,4 +1,8 @@
+using System;
+using System.Threading;
+using GlLib.Client.Api.Cameras;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Utils;
@@ -6,24 +10,18 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using System;
-using System.Threading;
-using GlLib.Client.Api.Cameras;
-using GlLib.Client.Api.Gui;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.Graphic.Gui;
 
 namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
+        public ICamera camera;
         public bool enableHud = false;
 
         public GuiFrame guiFrame;
-        public ICamera camera;
 
         public Hud hud;
-        public bool serverStarted = false;
+        public bool serverStarted;
 
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height,
             GraphicsMode.Default,
@@ -55,9 +53,7 @@ namespace GlLib.Client.Graphic
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
             if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
-            {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient()?.player);
-            }
 
             guiFrame?.OnKeyDown(this, _e);
         }
@@ -110,7 +106,6 @@ namespace GlLib.Client.Graphic
             if (serverStarted)
                 RenderWorld();
 
-            
 
             GL.Clear(ClearBufferMask.DepthBufferBit);
             //GUI render is not connected to the world
@@ -163,7 +158,7 @@ namespace GlLib.Client.Graphic
             camera.PerformTranslation(this);
             Proxy.GetClient().worldRenderer.Render(000, 000);
             GL.PopMatrix();
-            
+
             GL.Disable(EnableCap.Blend);
         }
 

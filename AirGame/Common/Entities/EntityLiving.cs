@@ -42,7 +42,7 @@ namespace GlLib.Common.Entities
             var obj = base.CreateJsonObject();
             if (obj is JsonObjectCollection collection)
             {
-                collection.Add(new JsonNumericValue("Armor", Armor ));
+                collection.Add(new JsonNumericValue("Armor", Armor));
                 collection.Add(new JsonNumericValue("Health", Health));
                 collection.Add(new JsonStringValue("GodMode", GodMode + ""));
                 collection.Add(new JsonStringValue("IsTakingDamage", IsTakingDamage + ""));
@@ -57,10 +57,10 @@ namespace GlLib.Common.Entities
 
             if (_jsonObject is JsonObjectCollection collection)
             {
-                Armor =  (ushort) ((JsonNumericValue) collection[7]).Value;
+                Armor = (ushort) ((JsonNumericValue) collection[7]).Value;
                 Health = (float) ((JsonNumericValue) collection[8]).Value;
-                GodMode = ((JsonStringValue)collection[9]).Value == "True";
-                IsTakingDamage = ((JsonStringValue)collection[10]).Value == "True";
+                GodMode = ((JsonStringValue) collection[9]).Value == "True";
+                IsTakingDamage = ((JsonStringValue) collection[10]).Value == "True";
             }
         }
 
@@ -80,6 +80,7 @@ namespace GlLib.Common.Entities
                 Health -= takenDamage;
             }
         }
+
         public override string GetName()
         {
             return "entity.entityLiving";

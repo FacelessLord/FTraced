@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
-using GlLib.Common.Registries;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
@@ -28,7 +27,7 @@ namespace GlLib.Common.Map
 
         public Chunk(World _world, int _x, int _y)
         {
-            this.world = _world;
+            world = _world;
             chunkX = _x;
             chunkY = _y;
             blocks = new TerrainBlock[16, 16];
@@ -45,7 +44,7 @@ namespace GlLib.Common.Map
         {
             GL.PushMatrix();
 
-            GL.Translate((_centerX) * BlockWidth * 16, (_centerY) * BlockHeight * 16, 0);
+            GL.Translate(_centerX * BlockWidth * 16, _centerY * BlockHeight * 16, 0);
 
             //GL.Color3(0.75,0.75,0.75);
             for (var i = 7; i > -9; i--)
@@ -92,7 +91,6 @@ namespace GlLib.Common.Map
             {
                 blocks = new TerrainBlock[16, 16];
                 foreach (var entry in _chunkCollection)
-                {
                     switch (entry)
                     {
                         case JsonStringValue gameObject when gameObject.Value.StartsWith("block."):
@@ -117,9 +115,7 @@ namespace GlLib.Common.Map
                             var j = int.Parse(coords[1]);
 
                             if (world.FromStash)
-                            {
                                 blocks[i, j] = (TerrainBlock) stashedBlocks[(int) num.Value];
-                            }
                             else
                                 blocks[i, j] = Proxy.GetRegistry().GetBlockFromId((int) num.Value);
 
@@ -160,7 +156,6 @@ namespace GlLib.Common.Map
                             break;
                         }
                     }
-                }
 
                 SidedConsole.WriteLine($"Chunk {chunkX}x{chunkY} is loaded");
                 isLoaded = true;

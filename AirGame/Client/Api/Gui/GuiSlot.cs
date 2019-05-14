@@ -1,17 +1,17 @@
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Common.Items;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
 namespace GlLib.Client.API.Gui
 {
     public class GuiSlot : GuiObject
     {
+        public const int SlotSize = 96;
         public IInventory inventory;
         public int slot;
-        public const int SlotSize = 96;
+
+        public Texture slotTexture;
 
         public GuiSlot(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, SlotSize,
             SlotSize)
@@ -29,8 +29,6 @@ namespace GlLib.Client.API.Gui
             slot = _slot;
         }
 
-        public Texture slotTexture;
-
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
@@ -47,7 +45,7 @@ namespace GlLib.Client.API.Gui
 
             Vertexer.Draw();
 
-            ItemStack stack = inventory.GetStackInSlot(slot);
+            var stack = inventory.GetStackInSlot(slot);
             stack?.item.GetItemSprite(stack).Render();
 
             GL.PopMatrix();

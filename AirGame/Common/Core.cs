@@ -2,17 +2,17 @@
 using System.Linq;
 using System.Threading;
 using GlLib.Client;
-using GlLib.Client.Api.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Common.Events;
 using GlLib.Server;
 using GlLib.Utils;
-using GlLib.Common.Events;
 
 namespace GlLib.Common
 {
     public static class Core
     {
         public static Profiler profiler = new Profiler();
+
         public static void Main(string[] _args)
         {
             profiler.SetState(State.CoreStarting);
@@ -28,7 +28,7 @@ namespace GlLib.Common
 
                 GraphicWindow.RunWindow();
                 Proxy.AwaitWhile(() => profiler.state < State.MainMenu);
-                StartWorld();
+//                StartWorld();
             }
             catch (Exception e)
             {

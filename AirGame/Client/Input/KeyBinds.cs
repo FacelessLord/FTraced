@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK.Input;
-using System;
-using System.Collections.Generic;
 
 namespace GlLib.Client.Input
 {
@@ -37,10 +37,11 @@ namespace GlLib.Client.Input
             _p.CheckVelocity();
         };
 
-        public static Action<Player> openInventory = _p =>
-        {
-            Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
-        };
+        public static Action<Player> openInventory =
+            _p => Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
+
+        public static Action<Player> openMainMenu = _p =>
+            Proxy.GetWindow().TryOpenGui(new GuiMainMenu());
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
@@ -51,6 +52,7 @@ namespace GlLib.Client.Input
             Bind(Key.Down, moveDown);
             Bind(Key.Right, moveRight);
             BindClick(Key.I, openInventory);
+            BindClick(Key.M, openMainMenu);
             BindClick(Key.Escape, exit);
         }
 

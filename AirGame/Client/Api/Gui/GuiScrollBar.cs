@@ -1,7 +1,5 @@
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
 using GlLib.Client.API.Gui;
-using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -11,9 +9,12 @@ namespace GlLib.Client.Api.Gui
 {
     public class GuiScrollBar : GuiObject
     {
-        public int scrollerPos = 0;
-        public int maxValue;
         public int maximum;
+        public int maxValue;
+
+        public TextureLayout scrollBar;
+        public TextureLayout scroller;
+        public int scrollerPos;
 
         public GuiScrollBar(int _maxValue, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
@@ -32,9 +33,6 @@ namespace GlLib.Client.Api.Gui
             maximum = height - 7 * width / 3;
             maxValue = _maxValue;
         }
-
-        public TextureLayout scrollBar;
-        public TextureLayout scroller;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {

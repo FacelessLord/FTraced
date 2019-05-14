@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GlLib.Common.Items
+﻿namespace GlLib.Common.Items
 {
     public enum ItemType
     {

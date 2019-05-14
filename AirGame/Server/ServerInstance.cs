@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Json;
 using GlLib.Client;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -43,6 +42,7 @@ namespace GlLib.Server
         public override void OnExit()
         {
         }
+
         public void RegisterWorld(int _id, string _worldName)
         {
             registeredWorlds.Add(_id, _worldName);
@@ -55,10 +55,7 @@ namespace GlLib.Server
 
         public void LoadWorlds()
         {
-            foreach (var world in worlds.Values)
-            {
-                WorldManager.LoadWorld(world);
-            }
+            foreach (var world in worlds.Values) WorldManager.LoadWorld(world);
         }
 
         public PlayerData GetDataFor(Player _player, string _password)

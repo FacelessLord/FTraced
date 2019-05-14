@@ -6,11 +6,11 @@ namespace GlLib.Client.API.Gui
 {
     public abstract class GuiObject
     {
+        public Color color;
+        public int height;
+        public int width;
         public int x;
         public int y;
-        public int width;
-        public int height;
-        public Color color;
 
         public GuiObject(int _x, int _y, int _width, int _height)
         {
@@ -26,14 +26,13 @@ namespace GlLib.Client.API.Gui
 
         public virtual void Update(GuiFrame _gui)
         {
-
         }
 
         public abstract void Render(GuiFrame _gui, int _centerX, int _centerY);
 
         public virtual AxisAlignedBb GetObjectBox(GuiFrame _guiFrame)
         {
-           return new AxisAlignedBb(x, y, x + width, y + height);
+            return new AxisAlignedBb(x, y, x + width, y + height);
         }
 
         public virtual bool IsMouseOver(GuiFrame _guiFrame, int _mouseX, int _mouseY)
@@ -58,7 +57,6 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnKeyTyped(GuiFrame _guiFrame, KeyPressEventArgs _e)
         {
-            
         }
 
         public virtual bool UnfocusOnRelease()
@@ -68,7 +66,6 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnKeyDown(GuiFrame _guiFrame, KeyboardKeyEventArgs _keyboardKeyEventArgs)
         {
-            
         }
     }
 }

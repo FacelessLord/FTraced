@@ -1,5 +1,4 @@
 using GlLib.Common.Entities;
-using GlLib.Common.Map;
 
 namespace GlLib.Common.Registries
 {

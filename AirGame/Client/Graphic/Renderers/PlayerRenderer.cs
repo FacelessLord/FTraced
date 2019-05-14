@@ -9,10 +9,10 @@ namespace GlLib.Client.Graphic.Renderers
     public class PlayerRenderer : EntityRenderer
     {
         public ISprite playerSprite;
-        
+
         public override void Setup(Entity _p)
         {
-            TextureLayout layout = new TextureLayout("player_sprite.png", 16, 4);
+            var layout = new TextureLayout("player_sprite.png", 16, 4);
             playerSprite = new LinearSprite(layout, 22, 1);
         }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
@@ -11,28 +10,28 @@ namespace GlLib.Common.Map
 {
     public class World
     {
-        public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
-        public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
-
         public Chunk[,] chunks;
+        public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
 
         public Mutex entityMutex = new Mutex();
+        public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
         public int height;
 
         public JsonObjectCollection jsonObj;
 
         public string mapName;
-        public bool FromStash { get; }
 
         public int width;
         public int worldId;
 
-        public World(string _mapName, int _worldId, bool _fromStash=false)
+        public World(string _mapName, int _worldId, bool _fromStash = false)
         {
-            FromStash = _fromStash; 
+            FromStash = _fromStash;
             mapName = _mapName;
             worldId = _worldId;
         }
+
+        public bool FromStash { get; }
 
         public Chunk this[int _i, int _j]
         {
@@ -50,9 +49,12 @@ namespace GlLib.Common.Map
 
             entityAddQueue.Clear();
             lock (chunks)
+            {
                 foreach (var chunk in chunks)
                     if (chunk.isLoaded)
                         chunk.Update();
+            }
+
             entityMutex.ReleaseMutex();
             //WorldManager.SaveWorld(this);
             //Proxy.GetServer().profiler.SetState(State.Loop);
@@ -113,13 +115,11 @@ namespace GlLib.Common.Map
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
-            {
                 if (i >= 0 && j >= 0 && i < width && j < _height)
                 {
                     var chk = this[i, j];
                     if (chk != null) chunks.Add(chk);
                 }
-            }
 
             return chunks.SelectMany(_c => _c.entities[_height])
                 .Where(_entity => _entity.GetAaBb().IntersectsWith(_aabb));

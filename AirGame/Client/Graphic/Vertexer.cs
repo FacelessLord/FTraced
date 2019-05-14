@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic
@@ -67,7 +66,8 @@ namespace GlLib.Client.Graphic
             }
         }
 
-        public static void DrawTexturedModalRect(Texture _texture, double _x, double _y, double _u, double _v, double _width,
+        public static void DrawTexturedModalRect(Texture _texture, double _x, double _y, double _u, double _v,
+            double _width,
             double _height)
         {
             _texture.Bind();

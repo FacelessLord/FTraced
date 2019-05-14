@@ -1,10 +1,8 @@
-
 using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -13,9 +11,13 @@ namespace GlLib.Client.Api.Gui
 {
     public class GuiButton : GuiObject
     {
+        public static FontSprite font;
+        public Action<GuiFrame, GuiButton> action = (_f, _b) => { };
+        public TextureLayout spriteDisabled;
+        public TextureLayout spriteEnabled;
+        public TextureLayout spritePressed;
         public ButtonState state = ButtonState.Enabled;
         public string text;
-        public Action<GuiFrame, GuiButton> action = (_f, _b) => { };
 
         public GuiButton(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
@@ -28,10 +30,10 @@ namespace GlLib.Client.Api.Gui
             spritePressed = new TextureLayout(textureSelected, layout);
             spriteDisabled = new TextureLayout(textureDisabled, layout);
             font = new AlagardFontSprite();
-
         }
 
-        public GuiButton(string _text,int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width, _height, _color)
+        public GuiButton(string _text, int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width,
+            _height, _color)
         {
             text = _text;
             var texture = Vertexer.LoadTexture("gui/button.png");
@@ -43,11 +45,6 @@ namespace GlLib.Client.Api.Gui
             spriteDisabled = new TextureLayout(textureDisabled, layout);
             font = new AlagardFontSprite();
         }
-
-        public static FontSprite font;
-        public TextureLayout spriteEnabled;
-        public TextureLayout spritePressed;
-        public TextureLayout spriteDisabled;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
@@ -64,7 +61,6 @@ namespace GlLib.Client.Api.Gui
                 case ButtonState.Disabled:
                     GuiUtils.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
                     break;
-
             }
 
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
@@ -88,6 +84,7 @@ namespace GlLib.Client.Api.Gui
                 action(_gui, this);
                 state = ButtonState.Pressed;
             }
+
             return this;
         }
 

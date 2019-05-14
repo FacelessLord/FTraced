@@ -1,5 +1,4 @@
 using System.Threading;
-using GlLib.Common.Map;
 using GlLib.Common.Registries;
 
 namespace GlLib.Common
@@ -7,9 +6,9 @@ namespace GlLib.Common
     public abstract class SideService
     {
         public const int FrameTime = 50;
+        public Profiler profiler = new Profiler();
 
         public GameRegistry registry;
-        public Profiler profiler = new Profiler();
 
         public int serverId;
         public Side side;

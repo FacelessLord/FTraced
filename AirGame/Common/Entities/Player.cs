@@ -1,21 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Json;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Utils;
-using System;
-using System.Collections.Generic;
-using System.Net.Json;
 
 namespace GlLib.Common.Entities
 {
     public class Player : Entity
     {
-        public PlayerData data;
         public double accelerationValue = 0.2;
+        public PlayerData data;
+        public PlayerInventory inventory = new PlayerInventory();
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
-        public PlayerInventory inventory = new PlayerInventory();
 
         public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
         {
@@ -49,7 +49,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
         }
-        
+
         public override void LoadFromJsonObject(JsonObject _jsonObject)
         {
             base.LoadFromJsonObject(_jsonObject);
@@ -62,13 +62,13 @@ namespace GlLib.Common.Entities
 
         public override JsonObject CreateJsonObject()
         {
-            JsonObject obj = base.CreateJsonObject();
+            var obj = base.CreateJsonObject();
             if (obj is JsonObjectCollection collection)
             {
                 collection.Add(new JsonStringValue("nickName", nickname));
                 if (data != null)
                 {
-                    NbtTag tag = new NbtTag();
+                    var tag = new NbtTag();
                     data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
