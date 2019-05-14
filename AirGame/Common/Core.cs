@@ -28,7 +28,6 @@ namespace GlLib.Common
 
                 GraphicWindow.RunWindow();
                 Proxy.AwaitWhile(() => profiler.state < State.MainMenu);
-//                StartWorld();
             }
             catch (Exception e)
             {

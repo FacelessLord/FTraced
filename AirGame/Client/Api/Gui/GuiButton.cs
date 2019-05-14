@@ -12,7 +12,9 @@ namespace GlLib.Client.Api.Gui
     public class GuiButton : GuiObject
     {
         public static FontSprite font;
-        public Action<GuiFrame, GuiButton> action = (_f, _b) => { };
+        public Action<GuiFrame, GuiButton> clickAction = (_f, _b) => { };
+        public Action<GuiFrame, GuiButton, int, int> dragAction = (_f, _b, _dx, _dy) => { };
+        public Action<GuiFrame, GuiButton> releaseAction = (_f, _b) => { };
         public TextureLayout spriteDisabled;
         public TextureLayout spriteEnabled;
         public TextureLayout spritePressed;
@@ -64,7 +66,7 @@ namespace GlLib.Client.Api.Gui
             }
 
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
-            var heightCenter = (height - 11d) / 2;
+            var heightCenter = (height - 11d) / 2 - 2;
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
@@ -81,7 +83,7 @@ namespace GlLib.Client.Api.Gui
             base.OnMouseClick(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Enabled)
             {
-                action(_gui, this);
+                clickAction(_gui, this);
                 state = ButtonState.Pressed;
             }
 
@@ -91,6 +93,7 @@ namespace GlLib.Client.Api.Gui
         public override void OnMouseDrag(GuiFrame _gui, int _mouseX, int _mouseY, int _dx, int _dy)
         {
             base.OnMouseDrag(_gui, _mouseX, _mouseY, _dx, _dy);
+            dragAction(_gui, this, _dx, _dy);
             x += _dx;
             y += _dy;
         }
@@ -99,7 +102,10 @@ namespace GlLib.Client.Api.Gui
         {
             base.OnMouseRelease(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Pressed)
+            {
+                releaseAction(_gui, this);
                 state = ButtonState.Enabled;
+            }
         }
     }
 

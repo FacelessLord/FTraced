@@ -15,33 +15,45 @@ namespace GlLib.Client.Input
 
         public static Action<Player> moveLeft = _p =>
         {
-            _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> moveUp = _p =>
         {
-            _p.velocity += new PlanarVector(0, -_p.accelerationValue);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(0, -_p.accelerationValue);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> moveRight = _p =>
         {
-            _p.velocity += new PlanarVector(_p.accelerationValue, 0);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(_p.accelerationValue, 0);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> moveDown = _p =>
         {
-            _p.velocity += new PlanarVector(0, _p.accelerationValue);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(0, _p.accelerationValue);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> openInventory =
             _p => Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
 
-        public static Action<Player> openMainMenu = _p =>
-            Proxy.GetWindow().TryOpenGui(new GuiMainMenu());
+        public static Action<Player> openIngameMenu = _p =>
+            Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
@@ -52,7 +64,7 @@ namespace GlLib.Client.Input
             Bind(Key.Down, moveDown);
             Bind(Key.Right, moveRight);
             BindClick(Key.I, openInventory);
-            BindClick(Key.M, openMainMenu);
+            BindClick(Key.M, openIngameMenu);
             BindClick(Key.Escape, exit);
         }
 

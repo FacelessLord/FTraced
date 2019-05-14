@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GlLib.Common.Api.Inventory;
+using GlLib.Utils;
 using OpenTK;
 using OpenTK.Input;
 
@@ -23,6 +24,8 @@ namespace GlLib.Client.API.Gui
             ScreenObjects.Add(_obj);
             return _obj;
         }
+
+        public GuiObject background;
 
         public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height)
         {
@@ -110,7 +113,9 @@ namespace GlLib.Client.API.Gui
         {
             foreach (var obj in ScreenObjects)
                 if (obj.IsMouseOver(this, _mouseX, _mouseY))
+                {
                     obj.OnMouseRelease(this, _button, _mouseX, _mouseY);
+                }
 
             if (focusedObject != null && focusedObject.UnfocusOnRelease())
             {

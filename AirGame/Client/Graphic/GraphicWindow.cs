@@ -33,6 +33,8 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine("Window constructed");
         }
 
+        public bool CanMovementBeHandled() => guiFrame == null || guiFrame.focusedObject == null;
+
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
             MouseHandler.Update();
@@ -175,6 +177,16 @@ namespace GlLib.Client.Graphic
                 new GraphicWindow(800, 600, "Tracing of F").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
+        }
+
+        public void CloseGui()
+        {
+            guiFrame = null;
+        }
+        
+        public void OpenGui(GuiFrame _gui)
+        {
+            guiFrame = _gui;
         }
 
         public void TryOpenGui(GuiFrame _gui)
