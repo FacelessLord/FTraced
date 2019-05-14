@@ -10,7 +10,7 @@ using GlLib.Common.SpellCastSystem;
 
 namespace GlLib.Common.Entities
 {
-    public class Player : Entity
+    public class Player : EntityLiving
     {
         public PlayerData data;
         public double accelerationValue = 0.2;
@@ -19,19 +19,27 @@ namespace GlLib.Common.Entities
         public PlayerInventory inventory = new PlayerInventory();
         internal SpellSystem spells;
 
-        public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
+        public Player(string _nickname,
+            World _world,
+            RestrictedVector3D _position,
+            bool _godMode, uint _health,
+            ushort _armor) : base(_godMode, _health, _armor,_world, _position)
         {
             nickname = _nickname;
-            SetCustomRenderer(new PlayerRenderer());
+            Initialization();
         }
 
-        public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
+        public Player(World _world, RestrictedVector3D _position
+            , bool _godMode, uint _health,
+            ushort _armor) : base(_godMode, _health, _armor, _world, _position)
         {
-            SetCustomRenderer(new PlayerRenderer());
+            Initialization();
         }
 
-        public Player()
+
+        private void Initialization()
         {
+
             SidedConsole.WriteLine("Setting Player Renderer");
             SetCustomRenderer(new PlayerRenderer());
             SidedConsole.WriteLine("Setting Player Inventory");
@@ -62,6 +70,9 @@ namespace GlLib.Common.Entities
             {
                 nickname = ((JsonStringValue) collection[7]).Value;
                 data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[8]).Value));
+                GodMode = ((JsonStringValue)collection[9]).Value == "True";
+                Armor = (ushort) ((JsonNumericValue)collection[10]).Value;
+                Health = (ushort)((JsonNumericValue)collection[11]).Value;
             }
         }
 
@@ -77,6 +88,9 @@ namespace GlLib.Common.Entities
                     data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
+                collection.Add(new JsonStringValue("GodMode", GodMode + ""));
+                collection.Add(new JsonNumericValue("Armor", Armor));
+                collection.Add(new JsonNumericValue("Health", Health));
             }
 
             return obj;

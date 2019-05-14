@@ -88,9 +88,12 @@ namespace GlLib.Common.SpellCastSystem
             {
                 case (int) ElementType.Air:
                     SpellCaster.worldObj.SpawnEntity(
-                        new Fire(SpellCaster.worldObj, 
+                        new FireBall(
+                            SpellCaster.worldObj,
                             SpellCaster.Position, 
-                            SpellCaster.velocity * averageTime));
+                            SpellCaster.velocity,
+                            (uint) Math.Round(averageTime * 3),
+                            (int) Math.Round(averageTime * 5)));
                     return;
                 case (int)ElementType.Water:
                     return;

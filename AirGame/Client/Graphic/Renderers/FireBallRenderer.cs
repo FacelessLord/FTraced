@@ -8,7 +8,7 @@ using GlLib.Utils;
 
 namespace GlLib.Client.Graphic.Renderers
 {
-    internal class FireRenderer : EntityRenderer
+    internal class FireBallRenderer : EntityRenderer
     {
         private ISprite _sprite;
         public override void Setup(Entity _e)
@@ -19,9 +19,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
-
             _sprite.Render();
-
         }
     }
 }

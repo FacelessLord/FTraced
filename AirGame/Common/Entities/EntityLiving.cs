@@ -69,6 +69,8 @@ namespace GlLib.Common.Entities
         {
             if (GodMode) return;
 
+            SidedConsole.WriteLine("DealDamage!");
+
             var takenDamage = _damage * (Armor / MaxArmor);
             if (takenDamage >= Health)
             {

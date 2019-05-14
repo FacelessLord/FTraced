@@ -19,6 +19,9 @@
 		"Noclip": "False",
 		"entityTag": "",
 		"nickName": "",
-		"tag": ""
+		"tag": "",
+		"GodMode": "True",
+		"Armor": "8",
+		"Health": "142"
 	}
 }

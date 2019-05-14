@@ -181,7 +181,12 @@ namespace GlLib.Common.Map
         {
             foreach (var level in entities)
             foreach (var entity in level)
+            {
                 entity.Update();
+                //if (entity.isDead)
+                //    world.
+                // TODO
+            }
         }
     }
 }
