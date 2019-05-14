@@ -59,7 +59,7 @@ namespace GlLib.Common.Map
             return null;
         }
 
-        private static void LoadChunks(World _world, JsonObjectCollection _worldCollection, bool _loadEntities)
+        private static void LoadChunks(World _world, JsonObjectCollection _worldCollection, bool loadEntities)
         {
             _world.jsonObj = _worldCollection;
             _world.width = (int) ((JsonNumericValue) _worldCollection[0]).Value;
@@ -79,7 +79,7 @@ namespace GlLib.Common.Map
                 var i = int.Parse(parts[0].Trim());
                 var j = int.Parse(parts[1].Trim());
                 if (!_world[i, j].isLoaded)
-                    _world[i, j].LoadFromJson((JsonObjectCollection) _o, _loadEntities);
+                    _world[i, j].LoadFromJson((JsonObjectCollection) _o, loadEntities);
             });
         }
 
