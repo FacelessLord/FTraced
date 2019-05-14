@@ -94,8 +94,8 @@ namespace GlLib.Client.Api.Gui
         {
             base.OnMouseDrag(_gui, _mouseX, _mouseY, _dx, _dy);
             dragAction(_gui, this, _dx, _dy);
-            x += _dx;
-            y += _dy;
+//            x += _dx;
+//            y += _dy;
         }
 
         public override void OnMouseRelease(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)

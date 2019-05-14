@@ -78,39 +78,26 @@ namespace GlLib.Client.Api.Gui
 
         public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
+            GuiObject objFocus = null;
             foreach (var obj in screenObjects)
-                if (obj.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    obj.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
+                if (obj.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY) && objFocus is null)
+                    objFocus = obj.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
 
-            if (bar != null)
+            if (bar != null && objFocus is null)
                 if (bar.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
                     return bar.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
 
-            return null;
-        }
-
-        public override void OnMouseDrag(GuiFrame _gui, int _mouseX, int _mouseY, int _dx, int _dy)
-        {
-            foreach (var obj in screenObjects)
-                if (obj.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    obj.OnMouseDrag(_gui, -x + _mouseX, -y + _mouseY, _dx, _dy);
-
-            if (bar != null)
-                if (bar.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    bar.OnMouseDrag(_gui, -x + _mouseX, -y + _mouseY, _dx, _dy);
+            return objFocus;
         }
 
         public override void OnMouseRelease(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
-            foreach (var obj in screenObjects)
-                if (obj.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    obj.OnMouseRelease(_gui, _button, -x + _mouseX, -y + _mouseY);
-
-            if (bar != null)
-                if (bar.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    bar.OnMouseRelease(_gui, _button, -x + _mouseX, -y + _mouseY);
+            screenObjects.Where(_o => _o != _gui.focusedObject)
+                .Where(_o => _o.IsMouseOver(_gui, _mouseX, _mouseY))
+                .ToList()
+                .ForEach(_o => _o.OnMouseRelease(_gui, _button, _mouseX, _mouseY));
         }
-
+        
         public GuiObject Add(GuiObject _obj)
         {
             screenObjects.Add(_obj);

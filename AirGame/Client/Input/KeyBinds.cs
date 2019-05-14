@@ -51,23 +51,29 @@ namespace GlLib.Client.Input
             }
         };
 
-        public static Action<Player> openInventory =
-            _p => Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
+        public static Action<Player> openInventory = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
+        };
 
         public static Action<Player> openIngameMenu = _p =>
-            Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
+        {
+            if (Proxy.GetWindow().serverStarted)
+                Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
+        };
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
         public static void Register()
         {
-            Bind(Key.Up, moveUp, "move.up");
-            Bind(Key.Left, moveLeft, "move.left");
-            Bind(Key.Down, moveDown, "move.down");
-            Bind(Key.Right, moveRight, "move.right");
+            Bind(Key.W, moveUp, "move.up");
+            Bind(Key.A, moveLeft, "move.left");
+            Bind(Key.S, moveDown, "move.down");
+            Bind(Key.D, moveRight, "move.right");
             BindClick(Key.I, openInventory, "gui.inv");
-            BindClick(Key.M, openIngameMenu, "gui.menu");
-            BindClick(Key.Escape, exit, "exit");
+            BindClick(Key.Escape, openIngameMenu, "gui.menu");
+            BindClick(Key.Grave, exit, "exit");
         }
 
         public static void Bind(Key _key, Action<Player> _action, string _name)
@@ -90,7 +96,7 @@ namespace GlLib.Client.Input
             clickBinds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
         }
-        
+
         public static void Rebind(Key _key, Action<Player> _action)
         {
             binds.Remove(binds.Keys.Single(_k => binds[_k] == _action));

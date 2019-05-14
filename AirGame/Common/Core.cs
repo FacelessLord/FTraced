@@ -71,7 +71,7 @@ namespace GlLib.Common
             Proxy.AwaitWhile(() => Proxy.GetClient().profiler.state < State.Off);
             Proxy.GetServer().AskToStop(_cause);
             Proxy.AwaitWhile(() => Proxy.GetServer().profiler.state < State.Off);
-            
+            Proxy.GetWindow().serverStarted = false;
         }
     }
 }

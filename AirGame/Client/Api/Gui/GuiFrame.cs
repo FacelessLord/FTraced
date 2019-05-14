@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GlLib.Common.Api.Inventory;
 using GlLib.Utils;
 using OpenTK;
@@ -94,9 +95,8 @@ namespace GlLib.Client.API.Gui
         {
             focusedObject = null;
             foreach (var obj in ScreenObjects)
-                if (focusedObject == null)
-                    if (obj.IsMouseOver(this, _mouseX, _mouseY))
-                        focusedObject = obj.OnMouseClick(this, _button, _mouseX, _mouseY);
+                if (obj.IsMouseOver(this, _mouseX, _mouseY))
+                    focusedObject = obj.OnMouseClick(this, _button, _mouseX, _mouseY);
         }
 
         public virtual void OnKeyTyped(GameWindow _window, KeyPressEventArgs _keyEvent)
@@ -111,17 +111,17 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
-            foreach (var obj in ScreenObjects)
-                if (obj.IsMouseOver(this, _mouseX, _mouseY))
-                {
-                    obj.OnMouseRelease(this, _button, _mouseX, _mouseY);
-                }
-
+            SidedConsole.WriteLine(focusedObject);
             if (focusedObject != null && focusedObject.UnfocusOnRelease())
             {
                 focusedObject.OnMouseRelease(this, _button, _mouseX, _mouseY);
                 focusedObject = null;
             }
+
+            ScreenObjects.Where(_o => _o != focusedObject)
+                .Where(_o => _o.IsMouseOver(this, _mouseX, _mouseY))
+                .ToList()
+                .ForEach(_o => _o.OnMouseRelease(this, _button, _mouseX, _mouseY));
         }
 
         public virtual void OnKeyDown(GameWindow _window, KeyboardKeyEventArgs _e)
