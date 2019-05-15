@@ -33,7 +33,9 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine("Window constructed");
         }
 
-        public bool CanMovementBeHandled() => guiFrame == null || guiFrame.focusedObject == null;
+        public bool CanMovementBeHandled() => (guiFrame == null || guiFrame.focusedObject == null) &&
+                                              Proxy.GetClient() != null && Proxy.GetClient().player != null
+                                              && !Proxy.GetClient().player.IsDead;
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
@@ -181,7 +183,7 @@ namespace GlLib.Client.Graphic
         {
             guiFrame = null;
         }
-        
+
         public void OpenGui(GuiFrame _gui)
         {
             guiFrame = _gui;

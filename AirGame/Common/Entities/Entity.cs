@@ -50,6 +50,11 @@ namespace GlLib.Common.Entities
             }
         }
 
+        public bool IsDead
+        {
+            get { return isDead; }
+        }
+
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
