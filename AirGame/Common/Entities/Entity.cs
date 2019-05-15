@@ -89,7 +89,7 @@ namespace GlLib.Common.Entities
             return jsonObj;
         }
 
-        public AxisAlignedBb GetAaBb()
+        public virtual AxisAlignedBb GetAaBb()
         {
             return Position.ToPlanar().ExpandBothTo(1, 1);
         }

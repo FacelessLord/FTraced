@@ -23,7 +23,7 @@ namespace GlLib.Common.Entities
             World _world,
             RestrictedVector3D _position,
             bool _godMode, uint _health,
-            ushort _armor) : base(_health, _armor,_world, _position)
+            ushort _armor) : base(_health, _armor, _world, _position)
         {
             nickname = _nickname;
             Initialization();
@@ -93,6 +93,11 @@ namespace GlLib.Common.Entities
         {
             if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
             if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
+        }
+
+        public override AxisAlignedBb GetAaBb()
+        {
+            return base.GetAaBb() + new PlanarVector(0, 1);
         }
     }
 }

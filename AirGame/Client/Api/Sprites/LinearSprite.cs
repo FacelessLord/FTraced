@@ -1,3 +1,5 @@
+using OpenTK.Graphics.OpenGL;
+
 namespace GlLib.Client.Api.Sprites
 {
     public class LinearSprite : ISprite
@@ -17,8 +19,11 @@ namespace GlLib.Client.Api.Sprites
 
         public void Render()
         {
+            GL.PushMatrix();
+            GL.Translate(-texture.layout.FrameWidth(), -texture.layout.FrameHeight(), 0);
             texture.Render(frameCount / step);
             frameCount = (frameCount + 1) % (maxFrameCount * step);
+            GL.PopMatrix();
         }
     }
 }
