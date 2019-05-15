@@ -12,7 +12,7 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving
     {
-        public double accelerationValue = 0.2;
+        public double accelerationValue = 0.1;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
         public string nickname = "Player";
@@ -67,8 +67,8 @@ namespace GlLib.Common.Entities
             if (_jsonObject is JsonObjectCollection collection)
             {
 //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
-                nickname = ((JsonStringValue) collection[12]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[13]).Value));
+                nickname = ((JsonStringValue) collection[13]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[14]).Value));
             }
         }
 

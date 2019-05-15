@@ -9,7 +9,7 @@ namespace GlLib.Client.API.Gui
         public static FontSprite font;
         public double maxValue = 100;
 
-        public double value = 75;
+        public double value = 100;
 
         public GuiNumeric(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {

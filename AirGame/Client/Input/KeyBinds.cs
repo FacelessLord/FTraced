@@ -20,6 +20,8 @@ namespace GlLib.Client.Input
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
             {
+                _p.direction = Direction.Left;
+                _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
                 _p.CheckVelocity();
             }
@@ -29,6 +31,7 @@ namespace GlLib.Client.Input
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
             {
+                _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(0, -_p.accelerationValue);
                 _p.CheckVelocity();
             }
@@ -38,6 +41,8 @@ namespace GlLib.Client.Input
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
             {
+                _p.SetState(EntityState.Walk, 3);
+                _p.direction = Direction.Right;
                 _p.velocity += new PlanarVector(_p.accelerationValue, 0);
                 _p.CheckVelocity();
             }
@@ -47,6 +52,7 @@ namespace GlLib.Client.Input
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
             {
+                _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(0, _p.accelerationValue);
                 _p.CheckVelocity();
             }
@@ -80,6 +86,7 @@ namespace GlLib.Client.Input
 
         public static Action<Player> attack = _p =>
         {
+            _p.SetState(EntityState.Attack, 6);
             var entities = _p.worldObj.GetEntitiesWithinAaBb(_p.GetAaBb());
             entities.Where(_e => _e is EntityLiving && _e != _p).Cast<EntityLiving>().ToList()
                 .ForEach(_e => _e.DealDamage(30));

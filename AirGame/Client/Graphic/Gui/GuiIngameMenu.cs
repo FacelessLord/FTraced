@@ -35,6 +35,7 @@ namespace GlLib.Client.Graphic.Gui
             exitButton.releaseAction = (_f, _b) =>
             {
                 Core.StopWorld("Player pressed exit");
+                Proxy.GetWindow().hud = null;
                 Proxy.GetWindow().OpenGui(new GuiMainMenu());
             };
         }
