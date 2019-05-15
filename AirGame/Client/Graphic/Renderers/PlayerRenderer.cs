@@ -13,7 +13,7 @@ namespace GlLib.Client.Graphic.Renderers
         public override void Setup(Entity _p)
         {
             var layout = new TextureLayout("player_sprite.png", 16, 4);
-            playerSprite = new LinearSprite(layout, 22, 1);
+            playerSprite = new LinearSprite(layout, 22, 6);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
