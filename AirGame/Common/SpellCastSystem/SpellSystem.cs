@@ -84,15 +84,15 @@ namespace GlLib.Common.SpellCastSystem
 
             SidedConsole.WriteLine("Result: " + averageValue +" " + averageTime+ " " + elements.Count);
 
-            switch ((int) Math.Floor(averageValue))
+            switch (Math.Floor(averageValue))
             {
-                case (int) ElementType.Air:
+                case (int)ElementType.Air:
                     SpellCaster.worldObj.SpawnEntity(
-                        new FireBall(
+                        new AirBlow(
                             SpellCaster.worldObj,
                             SpellCaster.Position, 
                             SpellCaster.velocity,
-                            (uint) Math.Round(averageTime * 3),
+                            (uint) Math.Round(averageTime * 100000),
                             (int) Math.Round(averageTime * 5)));
                     return;
                 case (int)ElementType.Water:
