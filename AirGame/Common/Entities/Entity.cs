@@ -86,7 +86,7 @@ namespace GlLib.Common.Entities
 
         public AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(100, 100);
+            return Position.ToPlanar().ExpandBothTo(1, 1);
         }
 
         public TerrainBlock GetUnderlyingBlock()
