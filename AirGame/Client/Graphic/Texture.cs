@@ -21,10 +21,8 @@ namespace GlLib.Client.Graphic
             //Generate handle
             _handle = GL.GenTexture();
 
-
             //Bind the handle
             Bind();
-
 
             //Load the image
             var image = Image.Load(_path);

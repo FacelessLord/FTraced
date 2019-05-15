@@ -1,3 +1,4 @@
+using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
@@ -40,8 +41,14 @@ namespace GlLib.Client.API.Gui
         {
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
-
-            GuiUtils.DrawSizedSquare(background, x, y, width, height, grainSize);
+            try
+            {
+                GuiUtils.DrawSizedSquare(background, x, y, width, height, grainSize);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
 
             GL.Color4(1.0, 1, 1, 1);
 

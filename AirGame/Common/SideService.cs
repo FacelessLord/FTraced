@@ -7,37 +7,31 @@ namespace GlLib.Common
     public abstract class SideService
     {
         public const int FrameTime = 50;
-        public Blocks blocks;
-        public EntityRegistry entities;
-        public ItemRegistry items;
 
         public GameRegistry registry;
+        public Profiler profiler = new Profiler();
 
         public int serverId;
         public Side side;
-        public State state = State.Off;
 
         public SideService(Side _side)
         {
             side = _side;
             registry = new GameRegistry();
-            blocks = new Blocks(registry);
-            entities = new EntityRegistry(registry);
-            items = new ItemRegistry(registry);
         }
 
         public void Start()
         {
-            blocks.Register();
-            entities.Register();
-            items.Register();
+            profiler.SetState(State.Loading);
+            profiler.SetState(State.LoadingRegistries);
             Proxy.RegisterService(this);
+            registry.Load();
             OnStart();
         }
 
         public void Loop()
         {
-            state = State.Loop;
+            profiler.SetState(State.Loop);
             while (!Proxy.Exit)
             {
                 OnServiceUpdate();
@@ -47,9 +41,9 @@ namespace GlLib.Common
 
         public void Exit()
         {
-            state = State.Exiting;
+            profiler.SetState(State.Exiting);
             OnExit();
-            state = State.Off;
+            profiler.SetState(State.Off);
         }
 
         public abstract void OnServiceUpdate();

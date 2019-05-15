@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Net;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
@@ -14,6 +16,8 @@ namespace GlLib.Client
         public WorldRenderer worldRenderer;
         public World world;
 
+        public GraphicWindow window;
+
         public string nickName;
         public string password;
         public volatile Player player;
@@ -22,6 +26,7 @@ namespace GlLib.Client
         {
             nickName = _nickName;
             password = _password;
+            
         }
 
         public void UpdateRendererData(World _world)
@@ -32,19 +37,32 @@ namespace GlLib.Client
 
         public override void OnStart()
         {
-            player = new Player();
-            UpdateRendererData(Proxy.GetServer().GetWorldById(0));
-            player.nickname = nickName;
-            player.Position = new RestrictedVector3D(world.width * 8, world.height * 8,0);
-            player.data = Proxy.GetServer().GetDataFor(player, password);
-            
-            var testEntity = new Entity(Proxy.GetServer().GetWorldById(0),
-                new RestrictedVector3D(world.width * 8, world.height * 8, 0));
+//            SidedConsole.WriteLine("Setting World");
+            world = Proxy.GetServer().GetWorldById(0);
+            UpdateRendererData(world);
+//            SidedConsole.WriteLine("Setting Player");
+            foreach (var chunk in world.chunks)
+            {
+                var players = chunk.entities.SelectMany(_o => _o).Where(_e => _e is Player).Cast<Player>().ToList();
+                if (players.Any())
+                {
+                    player = players.First();
+                }
+            }
 
-            Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
-            testEntity.worldObj.SpawnEntity(testEntity);
-            KeyBinds.Register();
-            GraphicWindow.RunWindow(this);
+            if(player is null)
+            {
+//                player = new Player("F");
+////            SidedConsole.WriteLine("Setting Player Name");
+//                player.nickname = nickName;
+////            SidedConsole.WriteLine("Setting Player Pos");
+//                player.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+////            SidedConsole.WriteLine("Setting Player Data");
+//                player.data = Proxy.GetServer().GetDataFor(player, password);
+//                Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
+            }
+//            SidedConsole.WriteLine("Loading window");
+            Proxy.GetWindow().OnClientStarted();
         }
 
         public override void OnServiceUpdate()
@@ -56,6 +74,8 @@ namespace GlLib.Client
                     KeyBinds.binds[bind.Key](player);
                 }
             }
+            //bad idea to update it on client side
+            player.spells.OnUpdate();
         }
 
         public override void OnExit()

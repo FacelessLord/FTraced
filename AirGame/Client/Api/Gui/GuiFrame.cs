@@ -34,12 +34,12 @@ namespace GlLib.Client.API.Gui
             return Add(new GuiRectangle(_x, _y, _width, _height, _color));
         }
 
-        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
+        public GuiPicture AddPicture(string _texture, int _x, int _y, int _width, int _height)
         {
             return Add(new GuiPicture(_texture, _x, _y, _width, _height));
         }
 
-        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
+        public GuiPicture AddPicture(string _texture, int _x, int _y, int _width, int _height, Color _color)
         {
             return Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }
@@ -87,18 +87,14 @@ namespace GlLib.Client.API.Gui
             int centerX = _window.Width / 2;
             int centerY = _window.Height / 2;
 
-            foreach (var obj in ScreenObjects)
-            {
-                obj.Render(this, centerX, centerY);
-            }
+            ScreenObjects.ForEach(_o => _o.Render(this, centerX, centerY));
         }
 
         public GuiObject focusedObject;
 
         public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
-            if(focusedObject != null && !focusedObject.UnfocusOnRelease())
-                focusedObject = null;
+            focusedObject = null;
             foreach (var obj in ScreenObjects)
             {
                 if (focusedObject == null)
@@ -127,11 +123,14 @@ namespace GlLib.Client.API.Gui
                     obj.OnMouseRelease(this, _button, _mouseX, _mouseY);
             }
 
-            if(focusedObject.UnfocusOnRelease())
+            if(focusedObject != null && focusedObject.UnfocusOnRelease())
+            {
+                focusedObject.OnMouseRelease(this, _button, _mouseX, _mouseY);
                 focusedObject = null;
+            }
         }
 
-        public virtual void OnKeyDown(GraphicWindow _window, KeyboardKeyEventArgs _e)
+        public virtual void OnKeyDown(GameWindow _window, KeyboardKeyEventArgs _e)
         {
             focusedObject?.OnKeyDown(this, _e);
         }

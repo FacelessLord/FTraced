@@ -18,11 +18,10 @@ namespace GlLib.Server
 
         public Dictionary<int, string> registeredWorlds = new Dictionary<int, string>();
 
-        public Dictionary<int, ServerWorld> worlds = new Dictionary<int, ServerWorld>();
+        public Dictionary<int, World> worlds = new Dictionary<int, World>();
 
         public ServerInstance() : base(Side.Server)
         {
-            Proxy.serverInstance = this;
         }
 
 
@@ -31,13 +30,19 @@ namespace GlLib.Server
             serverId = new Random().Next();
             UpdateServerConfiguration();
 
+            profiler.SetState(State.LoadingWorld);
             CreateWorlds();
             LoadWorlds();
         }
 
         public override void OnServiceUpdate()
         {
-            foreach (var world in worlds) world.Value.Update();
+            foreach (var world in worlds)
+                world.Value.Update();
+            // this code don't work!
+            //foreach (var client in clients)
+            //    client.player.spells.OnUpdate();
+            
         }
 
         public override void OnExit()
@@ -50,19 +55,14 @@ namespace GlLib.Server
 
         public void CreateWorlds()
         {
-            foreach (var world in registeredWorlds) worlds.Add(0, new ServerWorld(world.Value, world.Key));
+            foreach (var world in registeredWorlds) worlds.Add(0, new World(world.Value, world.Key));
         }
 
         public void LoadWorlds()
         {
             foreach (var world in worlds.Values)
             {
-                var worldJson = File.ReadAllText("maps/" + world.mapName + ".json");
-                var parser = new JsonTextParser();
-                var obj = parser.Parse(worldJson);
-                var mainCollection = (JsonObjectCollection) obj;
-                WorldManager.LoadWorld(world, mainCollection);
-                world.LoadWorld();
+                WorldManager.LoadWorld(world);
             }
         }
 
@@ -71,7 +71,6 @@ namespace GlLib.Server
             //todo use password
             if (playerInfo.ContainsKey(_player.nickname))
                 return playerInfo[_player.nickname];
-            var spawnWorld = GetWorldById(0);
             var data = new PlayerData();
             playerInfo.Add(_player.nickname, data);
             return data;
@@ -100,7 +99,7 @@ namespace GlLib.Server
             }
         }
 
-        public ServerWorld GetWorldById(int _id)
+        public World GetWorldById(int _id)
         {
             return worlds[_id];
         }

@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using GlLib.Client.Api.Gui;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
-using GlLib.Client.Graphic;
-using GlLib.Common.API;
+using GlLib.Client.Graphic.Gui;
+using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Utils;
-using OpenTK;
 using OpenTK.Input;
+using System;
+using System.Collections.Generic;
+using GlLib.Common.SpellCastSystem;
 
 namespace GlLib.Client.Input
 {
@@ -20,7 +17,6 @@ namespace GlLib.Client.Input
         public static Action<Player> moveLeft = _p =>
         {
             _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-//            GraphicWindow.instance.dx -= _p.accelerationValue*64;
             _p.CheckVelocity();
         };
 
@@ -28,35 +24,36 @@ namespace GlLib.Client.Input
         {
             _p.velocity += new PlanarVector(0, -_p.accelerationValue);
             _p.CheckVelocity();
-//            GraphicWindow.instance.dy -= _p.accelerationValue*64;
         };
 
         public static Action<Player> moveRight = _p =>
         {
             _p.velocity += new PlanarVector(_p.accelerationValue, 0);
             _p.CheckVelocity();
-//            GraphicWindow.instance.dx += _p.accelerationValue*64;
         };
 
         public static Action<Player> moveDown = _p =>
         {
             _p.velocity += new PlanarVector(0, _p.accelerationValue);
             _p.CheckVelocity();
-//            GraphicWindow.instance.dy += _p.accelerationValue*64;
         };
 
         public static Action<Player> openInventory = _p =>
         {
-            if (GraphicWindow.instance.guiFrame == null)
-            {
-                GraphicWindow.instance.guiFrame = new PlayerFrameInventoryGuiFrame(_p);
-            }
-            else
-            {
-                if(GraphicWindow.instance.guiFrame.focusedObject == null)
-                    GraphicWindow.instance.guiFrame = null;
-            }
+            Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
         };
+
+        public static Action<Player> exit = _p => Proxy.Exit = true;
+
+        public static Action<Player> spellFire = _p => { _p.spells.OnUpdate(ElementType.Fire); };
+        public static Action<Player> spellAir = _p => { _p.spells.OnUpdate(ElementType.Air); };
+        public static Action<Player> spellEarth = _p => { _p.spells.OnUpdate(ElementType.Earth); };
+        public static Action<Player> spellWater = _p => { _p.spells.OnUpdate(ElementType.Water); };
+
+
+
+
+
 
         public static void Register()
         {
@@ -65,6 +62,12 @@ namespace GlLib.Client.Input
             Bind(Key.Down, moveDown);
             Bind(Key.Right, moveRight);
             BindClick(Key.I, openInventory);
+            BindClick(Key.Escape, exit);
+
+            BindClick(Key.Number1, spellAir);
+            BindClick(Key.Number2, spellEarth);
+            BindClick(Key.Number3, spellWater);
+            BindClick(Key.Number4, spellFire);
         }
 
         public static void Bind(Key _key, Action<Player> _action)
@@ -72,7 +75,7 @@ namespace GlLib.Client.Input
             binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
         }
-        
+
         public static void BindClick(Key _key, Action<Player> _action)
         {
             clickBinds.Add(_key, _action);

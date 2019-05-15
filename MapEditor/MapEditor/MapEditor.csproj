@@ -47,6 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlocksStruct\BlocksConstruction.cs" />
+    <Compile Include="BlocksStruct\Bricks.cs" />
+    <Compile Include="BlocksStruct\Grass.cs" />
+    <Compile Include="BlocksStruct\IBlock.cs" />
+    <Compile Include="Common\ChunkMapRender.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Common\RenderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -82,6 +89,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="textures\blocks\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

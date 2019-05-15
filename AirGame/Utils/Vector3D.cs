@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace GlLib.Utils
 {
@@ -85,7 +86,9 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            return $"({x},{y},{z})";
+            return $"({x.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{y.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{z.ToString(CultureInfo.InvariantCulture)})";
         }
 
         public static RestrictedVector3D FromString(string _s)
@@ -93,7 +96,10 @@ namespace GlLib.Utils
             if (_s == "")
                 return new RestrictedVector3D();
             var coords = _s.Substring(1, _s.Length - 2).Split(",");
-            return new RestrictedVector3D(double.Parse(coords[0]), double.Parse(coords[1]), int.Parse(coords[2]));
+            return new RestrictedVector3D(
+                double.Parse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture),
+                double.Parse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture),
+                int.Parse(coords[2], NumberStyles.Any, CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object _obj)
@@ -179,7 +185,8 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            return $"({x},{y})";
+            return $"({x.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{y.ToString(CultureInfo.InvariantCulture)})";
         }
 
         public static PlanarVector FromString(string _s)
@@ -187,7 +194,9 @@ namespace GlLib.Utils
             if (_s == "")
                 return new PlanarVector();
             var coords = _s.Substring(1, _s.Length - 2).Split(",");
-            return new PlanarVector(double.Parse(coords[0]), double.Parse(coords[1]));
+            return new PlanarVector(
+                double.Parse(coords[0], NumberStyles.Any, CultureInfo.InvariantCulture),
+                double.Parse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture));
         }
 
         public AxisAlignedBb Expand(double _width, double _height)
@@ -287,8 +296,8 @@ namespace GlLib.Utils
         {
             return Math.Abs(_item.startX - startX) < 1e-3
                    && Math.Abs(_item.startY - startY) < 1e-3
-                   &&Math.Abs(_item.endX - endX) < 1e-3
-                   &&Math.Abs(_item.endY - endY) < 1e-3;
+                   && Math.Abs(_item.endX - endX) < 1e-3
+                   && Math.Abs(_item.endY - endY) < 1e-3;
         }
 
         public override int GetHashCode()
@@ -305,8 +314,10 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            //TODO
-            return $"Bounding {startX},{startY},{EndXi},{EndYi}";
+            return $"Bounding ({startX.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{startY.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{EndXi.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{EndYi.ToString(CultureInfo.InvariantCulture)})";
         }
 
         private void CheckCoordinates()

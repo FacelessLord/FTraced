@@ -59,5 +59,14 @@ namespace MapEditor.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add Brush.
+        /// </summary>
+        internal static string Window_InitializeComponent_Add_Brush {
+            get {
+                return ResourceManager.GetString("Window_InitializeComponent_Add_Brush", resourceCulture);
+            }
+        }
     }
 }

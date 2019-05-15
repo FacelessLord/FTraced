@@ -1,41 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Json;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
-using GlLib.Common.Registries;
 using GlLib.Utils;
-using OpenTK.Graphics.OpenGL;
+using System;
+using System.Collections.Generic;
+using System.Net.Json;
+using GlLib.Client.Graphic.Renderers;
+using GlLib.Common.SpellCastSystem;
 
 namespace GlLib.Common.Entities
 {
-    public class Player : Entity
+    public class Player : EntityLiving
     {
         public PlayerData data;
         public double accelerationValue = 0.2;
         public string nickname = "Player";
         public HashSet<string> usedBinds = new HashSet<string>();
         public PlayerInventory inventory = new PlayerInventory();
+        internal SpellSystem spells;
 
-        public Player(string _nickname, World _world, RestrictedVector3D _position) : base(_world, _position)
+        public Player(string _nickname,
+            World _world,
+            RestrictedVector3D _position,
+            bool _godMode, uint _health,
+            ushort _armor) : base(_godMode, _health, _armor,_world, _position)
         {
             nickname = _nickname;
+            Initialization();
         }
 
-        public Player(World _world, RestrictedVector3D _position) : base(_world, _position)
+        public Player(World _world, RestrictedVector3D _position
+            , bool _godMode, uint _health,
+            ushort _armor) : base(_godMode, _health, _armor, _world, _position)
         {
+            Initialization();
         }
 
-        public Player()
+
+        private void Initialization()
         {
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.varia));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.apple));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.sword));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.armor));
-            inventory.AddItemStack(new ItemStack(Proxy.GetClient().items.ring));
+
+            SidedConsole.WriteLine("Setting Player Renderer");
+            SetCustomRenderer(new PlayerRenderer());
+            SidedConsole.WriteLine("Setting Player Inventory");
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.varia));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.apple));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.sword));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.armor));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
+
+            spells = new SpellSystem(this);
+
         }
 
         public override string GetName()
@@ -47,28 +62,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
         }
-
-        public ISprite playerSprite;
-
-        public override void Render(PlanarVector _xAxis, PlanarVector _yAxis)
-        {
-            GL.PushMatrix();
-//            var btexture = Vertexer.LoadTexture("player.png");
-//            Vertexer.BindTexture(btexture);
-//
-//            Vertexer.StartDrawingQuads();
-//
-//            Vertexer.VertexWithUvAt(10, -10, 1, 0);
-//            Vertexer.VertexWithUvAt(10, 10, 1, 1);
-//            Vertexer.VertexWithUvAt(-10, 10, 0, 1);
-//            Vertexer.VertexWithUvAt(-10, -10, 0, 0);
-//
-//            Vertexer.Draw();
-
-            playerSprite.Render();
-            GL.PopMatrix();
-        }
-
+        
         public override void LoadFromJsonObject(JsonObject _jsonObject)
         {
             base.LoadFromJsonObject(_jsonObject);
@@ -76,6 +70,9 @@ namespace GlLib.Common.Entities
             {
                 nickname = ((JsonStringValue) collection[7]).Value;
                 data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[8]).Value));
+                GodMode = ((JsonStringValue)collection[9]).Value == "True";
+                Armor = (ushort) ((JsonNumericValue)collection[10]).Value;
+                Health = (ushort)((JsonNumericValue)collection[11]).Value;
             }
         }
 
@@ -91,6 +88,9 @@ namespace GlLib.Common.Entities
                     data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
+                collection.Add(new JsonStringValue("GodMode", GodMode + ""));
+                collection.Add(new JsonNumericValue("Armor", Armor));
+                collection.Add(new JsonNumericValue("Health", Health));
             }
 
             return obj;

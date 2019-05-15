@@ -14,6 +14,7 @@ namespace GlLib.Common.Registries
 
         public void Register()
         {
+            registry.RegisterEntity("entity.null", typeof(Entity));
             registry.RegisterEntity("entity.player", typeof(Player));
         }
     }
