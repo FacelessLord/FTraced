@@ -87,7 +87,7 @@ namespace GlLib.Client.Input
         public static Action<Player> attack = _p =>
         {
             _p.SetState(EntityState.Attack, 6);
-            var entities = _p.worldObj.GetEntitiesWithinAaBb(_p.GetAaBb());
+            var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(_p.GetAaBb(), _p.Position.z);
             entities.Where(_e => _e is EntityLiving && _e != _p).Cast<EntityLiving>().ToList()
                 .ForEach(_e => _e.DealDamage(30));
         };
