@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.API.Gui;
-using GlLib.Client.Graphic;
-using GlLib.Common;
+﻿using GlLib.Client.API.Gui;
 using OpenTK;
 
 namespace TOFMapEditor.Client

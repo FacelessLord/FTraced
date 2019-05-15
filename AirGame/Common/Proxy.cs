@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Threading;
 using GlLib.Client;
 using GlLib.Client.Graphic;
-using GlLib.Common.Map;
 using GlLib.Common.Registries;
 using GlLib.Server;
 using GlLib.Utils;
@@ -17,6 +16,11 @@ namespace GlLib.Common
 
         private static bool _exit;
 
+        private static ServerInstance _serverInstance;
+        private static ClientService _clientInstance;
+        private static GraphicWindow _gameWindow;
+        private static readonly Profiler Profiler = new Profiler();
+
         public static bool Exit
         {
             get => _exit;
@@ -28,11 +32,6 @@ namespace GlLib.Common
             }
         }
 
-        private static ServerInstance _serverInstance;
-        private static ClientService _clientInstance;
-        private static GraphicWindow _gameWindow;
-        private static readonly Profiler Profiler = new Profiler();
-
         public static ClientService GetClient()
         {
             return _clientInstance;
@@ -42,6 +41,7 @@ namespace GlLib.Common
         {
             return _serverInstance;
         }
+
         public static GameRegistry GetRegistry()
         {
             return _serverInstance.registry;
@@ -51,7 +51,7 @@ namespace GlLib.Common
         {
             return _gameWindow;
         }
-        
+
         public static void AwaitWhile(Func<bool> _condition)
         {
             while (_condition.Invoke()) //while condition is true
@@ -76,14 +76,8 @@ namespace GlLib.Common
         {
             services.TryAdd(GetSide().ToString(), _sideService);
             SidedConsole.WriteLine(_sideService.side + "-Side service registered");
-            if (_sideService is ServerInstance server)
-            {
-                _serverInstance = server;
-            }
-            if (_sideService is ClientService client)
-            {
-                _clientInstance = client;
-            }
+            if (_sideService is ServerInstance server) _serverInstance = server;
+            if (_sideService is ClientService client) _clientInstance = client;
         }
 
         public static void RegisterWindow(GraphicWindow _window)

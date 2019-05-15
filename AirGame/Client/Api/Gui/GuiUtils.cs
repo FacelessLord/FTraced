@@ -15,9 +15,8 @@ namespace GlLib.Client.API.Gui
         public static void DrawSizedSquare(TextureLayout _layout, int _x, int _y, int _width, int _height,
             float _grainSizeX, float _grainSizeY)
         {
-
-            float bordW = _width - _grainSizeX * 2;
-            float bordH = _height - _grainSizeY * 2;
+            var bordW = _width - _grainSizeX * 2;
+            var bordH = _height - _grainSizeY * 2;
             Vertexer.BindTexture(_layout.texture);
             GL.PushMatrix();
             GL.Translate(_x, _y, 0);
@@ -39,7 +38,7 @@ namespace GlLib.Client.API.Gui
         public static void DrawLayoutPart(TextureLayout _layout, float _x, float _y, int _frame, float _width,
             float _height)
         {
-            (float startX, float startY, float endX, float endY) = _layout.layout.GetFrameUvProportions(_frame);
+            var (startX, startY, endX, endY) = _layout.layout.GetFrameUvProportions(_frame);
 
             Vertexer.StartDrawingQuads();
             Vertexer.VertexWithUvAt(_x, _y, startX, startY);

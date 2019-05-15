@@ -1,4 +1,8 @@
+using System;
+using System.Threading;
+using GlLib.Client.Api.Cameras;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Utils;
@@ -6,24 +10,18 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using System;
-using System.Threading;
-using GlLib.Client.Api.Cameras;
-using GlLib.Client.Api.Gui;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.Graphic.Gui;
 
 namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
+        public ICamera camera;
         public bool enableHud = false;
 
         public GuiFrame guiFrame;
-        public ICamera camera;
 
         public Hud hud;
-        public bool serverStarted = false;
+        public bool serverStarted;
 
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height,
             GraphicsMode.Default,
@@ -34,6 +32,8 @@ namespace GlLib.Client.Graphic
             KeyBinds.Register();
             SidedConsole.WriteLine("Window constructed");
         }
+
+        public bool CanMovementBeHandled() => guiFrame == null || guiFrame.focusedObject == null;
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
@@ -50,21 +50,17 @@ namespace GlLib.Client.Graphic
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
-//            SidedConsole.WriteLine(_e.Key);
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
             if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
-            {
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient()?.player);
-            }
 
             guiFrame?.OnKeyDown(this, _e);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
         {
-//            SidedConsole.WriteLine(_e.Key);
             base.OnKeyUp(_e);
             KeyboardHandler.SetPressed(_e.Key, false);
         }
@@ -110,7 +106,6 @@ namespace GlLib.Client.Graphic
             if (serverStarted)
                 RenderWorld();
 
-            
 
             GL.Clear(ClearBufferMask.DepthBufferBit);
             //GUI render is not connected to the world
@@ -163,7 +158,7 @@ namespace GlLib.Client.Graphic
             camera.PerformTranslation(this);
             Proxy.GetClient().worldRenderer.Render(000, 000);
             GL.PopMatrix();
-            
+
             GL.Disable(EnableCap.Blend);
         }
 
@@ -180,6 +175,16 @@ namespace GlLib.Client.Graphic
                 new GraphicWindow(800, 600, "Tracing of F").Run(60));
             graphicThread.Name = Side.Graphics.ToString();
             graphicThread.Start();
+        }
+
+        public void CloseGui()
+        {
+            guiFrame = null;
+        }
+        
+        public void OpenGui(GuiFrame _gui)
+        {
+            guiFrame = _gui;
         }
 
         public void TryOpenGui(GuiFrame _gui)

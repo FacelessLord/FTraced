@@ -1,6 +1,4 @@
-using GlLib.Client.API;
 using GlLib.Client.Graphic;
-using GlLib.Utils;
 
 namespace GlLib.Client.Api.Sprites
 {
@@ -14,21 +12,18 @@ namespace GlLib.Client.Api.Sprites
 
         public void SetupKern()
         {
-            SetVerticalKern('p',4);
-            SetVerticalKern('q',4);
-            SetVerticalKern('g',4);
-            SetVerticalKern('y',4);
-            SetVerticalKern('J',6);
-            SetVerticalKern('j',6);
-            SetVerticalKern(',',4);
-            SetVerticalKern('.',4);
-            
-            
-            for (char i = 'a'; i <= 'z'; i++)
-            {
-                SetHorizontalKern(i, 1, 3);
-            }
-            
+            SetVerticalKern('p', 4);
+            SetVerticalKern('q', 4);
+            SetVerticalKern('g', 4);
+            SetVerticalKern('y', 4);
+            SetVerticalKern('J', 6);
+            SetVerticalKern('j', 6);
+            SetVerticalKern(',', 4);
+            SetVerticalKern('.', 4);
+
+
+            for (var i = 'a'; i <= 'z'; i++) SetHorizontalKern(i, 1, 3);
+
             SetHorizontalKern('I', 3, 3);
             SetHorizontalKern('J', 3, 3);
             SetHorizontalKern('L', 1, 3);

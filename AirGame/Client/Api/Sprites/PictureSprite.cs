@@ -6,9 +6,9 @@ namespace GlLib.Client.Api.Sprites
 {
     public class PictureSprite : ISprite
     {
+        public int height;
         public Texture texture;
         public int width;
-        public int height;
 
         public PictureSprite(string _textureName, int _width = GuiSlot.SlotSize, int _height
             = GuiSlot.SlotSize)

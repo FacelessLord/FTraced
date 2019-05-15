@@ -1,7 +1,4 @@
-using GlLib.Client.Graphic;
 using GlLib.Common;
-using GlLib.Common.Entities;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

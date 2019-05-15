@@ -1,4 +1,6 @@
-﻿using GlLib.Client.Api.Cameras;
+﻿using System;
+using System.Threading;
+using GlLib.Client.Api.Cameras;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
@@ -9,15 +11,11 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using System;
-using System.Threading;
 
 namespace TOFMapEditor.Client
 {
     public class MapEditorWindow : GameWindow
     {
-        private World EditWorld { get; }
-        private WorldRenderer WorldRenderer { get; }
         public ICamera camera;
         public GuiFrame guiFrame;
         public int guiTimeout = 0;
@@ -25,7 +23,7 @@ namespace TOFMapEditor.Client
         public GuiFrame hud;
         public VSyncMode vSync = VSyncMode.On;
 
-        public MapEditorWindow( int _width, int _height, string _title)
+        public MapEditorWindow(int _width, int _height, string _title)
             : base(_width, _height, GraphicsMode.Default, _title)
         {
             EditWorld = new World("Overworld", 1, true);
@@ -39,13 +37,16 @@ namespace TOFMapEditor.Client
             camera = new MapEditorCamera();
         }
 
+        private World EditWorld { get; }
+        private WorldRenderer WorldRenderer { get; }
+
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
             //SidedConsole.WriteLine(EditWorld.jsonObj);
             MouseHandler.Update();
             KeyboardHandler.Update();
             hud.Update(this);
-            WorldRenderer.Render(0,0);
+            WorldRenderer.Render(0, 0);
 
             var input = Keyboard.GetState();
             if (input.IsKeyDown(Key.Escape))
@@ -67,7 +68,7 @@ namespace TOFMapEditor.Client
             base.OnKeyDown(_e);
             KeyboardHandler.SetClicked(_e.Key, true);
             KeyboardHandler.SetPressed(_e.Key, true);
-            if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool)KeyboardHandler.ClickedKeys[_e.Key])
+            if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
                 KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
             guiFrame?.OnKeyDown(this, _e);
         }
@@ -100,7 +101,7 @@ namespace TOFMapEditor.Client
         protected override void OnMouseMove(MouseMoveEventArgs _e)
         {
             base.OnMouseMove(_e);
-            if ((bool)MouseHandler.pressed[MouseButton.Left])
+            if ((bool) MouseHandler.pressed[MouseButton.Left])
                 guiFrame?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
         }
 
@@ -127,7 +128,6 @@ namespace TOFMapEditor.Client
             Vertexer.EnableTextures();
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
 
 
             hud.Update(this);
@@ -174,10 +174,10 @@ namespace TOFMapEditor.Client
 
         public static void RunWindow()
         {
-            var graphicThread = new Thread(() 
+            var graphicThread = new Thread(()
                     => new MapEditorWindow(800, 600, "Tracing of F")
                         .Run(60))
-                        { Name = Side.Graphics.ToString()};
+                {Name = Side.Graphics.ToString()};
             graphicThread.Start();
         }
     }

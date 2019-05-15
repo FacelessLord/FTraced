@@ -1,26 +1,19 @@
-using System;
 using System.Text;
 
 namespace GlLib.Utils
 {
     public static class MiscUtils
     {
+        private const string Delim = "|";
+
         public static double Limit(double _t, double _min, double _max)
         {
-            if (_t < _min)
-            {
-                return _min;
-            }
-            if (_t > _max)
-            {
-                return _max;
-            }
+            if (_t < _min) return _min;
+            if (_t > _max) return _max;
 
             return _t;
         }
-        
-        
-        private const string Delim = "|";
+
         public static string Compact(params object[] _objects)
         {
             var ret = new StringBuilder();

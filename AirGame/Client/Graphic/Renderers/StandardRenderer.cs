@@ -8,6 +8,7 @@ namespace GlLib.Client.Graphic.Renderers
     public class StandardRenderer : EntityRenderer
     {
         private Texture _texture;
+
         public override void Setup(Entity _e)
         {
             _texture = Vertexer.LoadTexture("monochromatic.png");

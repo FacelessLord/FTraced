@@ -1,19 +1,18 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
-using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Common.Items;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 namespace GlLib.Client.Api.Gui
 {
     public class GuiSlotTypeRenderer : GuiObject
     {
+        public const int SlotSize = 32;
         public IInventory inventory;
         public int slot;
-        public const int SlotSize = 32;
+
+        public TextureLayout slotTexture;
 
         public GuiSlotTypeRenderer(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, SlotSize,
             SlotSize)
@@ -41,8 +40,8 @@ namespace GlLib.Client.Api.Gui
             {
                 if (_gui.SelectedSlot != null)
                 {
-                    ItemStack slotStack = inventory.GetStackInSlot(slot);
-                    ItemStack selectedStack = _gui.SelectedSlot.GetStack();
+                    var slotStack = inventory.GetStackInSlot(slot);
+                    var selectedStack = _gui.SelectedSlot.GetStack();
                     _gui.SelectedSlot.SetStack(slotStack);
                     inventory.SetItemStack(selectedStack, slot);
                     _gui.SelectedSlot = null;
@@ -56,15 +55,11 @@ namespace GlLib.Client.Api.Gui
             return this;
         }
 
-        public TextureLayout slotTexture;
-
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             if (inventory.GetStackInSlot(slot) != null)
-            {
                 GuiUtils.DrawLayoutPart(slotTexture, x + 1, y + 1, (int) inventory.GetStackInSlot(slot).item.type,
                     width, height);
-            }
         }
     }
 }

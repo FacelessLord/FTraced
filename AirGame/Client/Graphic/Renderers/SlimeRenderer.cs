@@ -1,25 +1,26 @@
-using GlLib.Client.API;
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
 {
-    public class PlayerRenderer : EntityRenderer
+    public class SlimeRenderer : EntityRenderer
     {
-        public ISprite playerSprite;
+        public ISprite slimeSprite;
 
         public override void Setup(Entity _p)
         {
-            var layout = new TextureLayout("player_sprite.png", 16, 4);
-            playerSprite = new LinearSprite(layout, 22, 1);
+            var layout = new TextureLayout("slime/slime_waiting.png", 7, 1);
+            slimeSprite = new LinearSprite(layout, 22, 20);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            playerSprite.Render();
-
+            GL.PushMatrix();
+            slimeSprite.Render();
+            GL.PopMatrix();
         }
     }
 }

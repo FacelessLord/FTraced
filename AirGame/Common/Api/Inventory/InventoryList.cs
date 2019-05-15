@@ -8,7 +8,7 @@ namespace GlLib.Common.Api.Inventory
         public List<ItemStack> itemList = new List<ItemStack>();
 
         public int selectedSlot = -1;
-        
+
         public abstract int GetMaxSize();
 
         public int GetCurrentSize()

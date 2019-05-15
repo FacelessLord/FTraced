@@ -10,17 +10,16 @@ namespace GlLib.Common.Registries
 {
     public class GameRegistry
     {
+        private bool _loaded;
         public BlocksRegistry blockRegistry;
-        public EntityRegistry entitieRegistry;
-        public ItemRegistry itemRegistry;
 
         public Hashtable blocks = new Hashtable();
         public Hashtable blocksById = new Hashtable();
+        public EntityRegistry entitieRegistry;
         public Hashtable entities = new Hashtable();
+        public ItemRegistry itemRegistry;
         public Hashtable items = new Hashtable();
         public Hashtable itemsById = new Hashtable();
-
-        private bool _loaded = false;
 
         public GameRegistry()
         {
@@ -97,12 +96,12 @@ namespace GlLib.Common.Registries
             return (TerrainBlock) blocksById[_id];
         }
 
-        public Entity GetEntityFromName(string _entityName, params object[] _args)
+        public Entity GetEntityFromName(string _entityName)
         {
             if (entities.ContainsKey(_entityName))
             {
                 var clazz = (Type) entities[_entityName];
-                return (Entity) Activator.CreateInstance(clazz, _args);
+                return (Entity) Activator.CreateInstance(clazz);
             }
 
             return null;
@@ -110,9 +109,9 @@ namespace GlLib.Common.Registries
 
         public Entity GetEntityFromJson(JsonObjectCollection _collection)
         {
-            string entityId = ((JsonStringValue) _collection[0]).Value;
+            var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
-            SidedConsole.WriteLine(entityId+", "+_loaded);
+            SidedConsole.WriteLine(entityId + ", " + _loaded);
             entity.LoadFromJsonObject(_collection);
             return entity;
         }

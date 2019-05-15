@@ -6,6 +6,10 @@ namespace GlLib.Client.API.Gui
 {
     public class GuiHorizontalBar : GuiObject
     {
+        public double maxValue = 100;
+
+        public double value = 100;
+
         public GuiHorizontalBar(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
         }
@@ -14,9 +18,6 @@ namespace GlLib.Client.API.Gui
             _color)
         {
         }
-
-        public double value = 100;
-        public double maxValue = 100;
 
         public override void Update(GuiFrame _gui)
         {
@@ -54,7 +55,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.VertexWithUvAt(x + width - height, y + height, 0, 1);
             Vertexer.Draw();
 
-            double proportions = value / maxValue;
+            var proportions = value / maxValue;
             GL.Color4(color.R, color.G, color.B, color.A);
             Vertexer.BindTexture(filler);
             Vertexer.StartDrawingQuads();

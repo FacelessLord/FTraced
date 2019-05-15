@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using MapEditor.BlocksStruct;
+﻿using MapEditor.BlocksStruct;
 
 namespace MapEditor.Common
 {
@@ -30,7 +28,7 @@ namespace MapEditor.Common
         private IBlock[,][,] Chunks { get; }
 
 
-        public new Point? MousePosition { get; set; }
+        public Point? MousePosition { get; set; }
 
         protected override void OnMouseMove(MouseEventArgs _e)
         {

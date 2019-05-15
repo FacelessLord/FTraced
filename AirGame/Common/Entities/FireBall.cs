@@ -38,7 +38,7 @@ namespace GlLib.Common.Entities
         public override void OnCollideWith(Entity _obj)
         {
             if (_obj is EntityLiving)
-                (_obj as EntityLiving).OnDealDamage(Damage);
+                (_obj as EntityLiving).DealDamage(Damage);
         }
     }
 }

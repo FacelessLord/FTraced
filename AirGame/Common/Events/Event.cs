@@ -6,19 +6,18 @@ namespace GlLib.Common.Events
 {
     public class EventBus
     {
+        public static Func<Entity, Entity, bool> identity = (_sender, _entity) => false;
         public static event EntitySpawnEvent EntitySpawn = (_sender, _entity) => false;
         public static event EntityDespawnEvent EntityDespawn = (_sender, _entity) => false;
         public static event EntityEnteredChunkEvent EntityEnteredChunk = (_sender, _entity) => false;
         public static event EntityLeftChunkEvent EntityLeftChunk = (_sender, _entity) => false;
         public static event EntityUpdateEvent EntityUpdate = (_sender, _entity) => false;
 
-        public static Func<Entity, Entity, bool> identity = (_sender, _entity) => false;
-
         public static void Init()
         {
             SidedConsole.WriteLine("EventBus initialized");
         }
-        
+
         public static bool OnEntitySpawn(Entity _e)
         {
             return EntitySpawn(_e, _e);

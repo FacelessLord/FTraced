@@ -2,14 +2,14 @@ namespace GlLib.Client.API
 {
     public class Layout
     {
-        public int width;
+        public int countX;
+        public int countY;
+        public int endU;
+        public int endV;
         public int height;
         public int startU;
         public int startV;
-        public int endU;
-        public int endV;
-        public int countX;
-        public int countY;
+        public int width;
 
         public Layout(int _width, int _height, int _startU, int _startV, int _endU, int _endV, int _countX, int _countY)
         {
@@ -43,42 +43,42 @@ namespace GlLib.Client.API
 
         public int FrameStartU(int _frameNumber)
         {
-            return (startU + (endU - startU) / countX * (_frameNumber % countX));
+            return startU + (endU - startU) / countX * (_frameNumber % countX);
         }
 
         public int FrameEndU(int _frameNumber)
         {
-            return (startU + (endU - startU) / countX * (_frameNumber % countX + 1));
+            return startU + (endU - startU) / countX * (_frameNumber % countX + 1);
         }
 
         public int FrameStartV(int _frameNumber)
         {
-            return (startV + (endV - startV) / countY * (_frameNumber / countX));
+            return startV + (endV - startV) / countY * (_frameNumber / countX);
         }
 
         public int FrameEndV(int _frameNumber)
         {
-            return (startV + (endV - startV) / countY * (_frameNumber / countX + 1));
+            return startV + (endV - startV) / countY * (_frameNumber / countX + 1);
         }
 
         public float FrameStartUProportion(int _frameNumber)
         {
-            return (startU + (endU - startU) / (float) countX * (_frameNumber % countX)) / (float) width;
+            return (startU + (endU - startU) / (float) countX * (_frameNumber % countX)) / width;
         }
 
         public float FrameEndUProportion(int _frameNumber)
         {
-            return (startU + (endU - startU) / (float) countX * (_frameNumber % countX + 1)) / (float) width;
+            return (startU + (endU - startU) / (float) countX * (_frameNumber % countX + 1)) / width;
         }
 
         public float FrameStartVProportion(int _frameNumber)
         {
-            return (startV + (endV - startV) / (float) countY * (_frameNumber / countX)) / (float) height;
+            return (startV + (endV - startV) / (float) countY * (_frameNumber / countX)) / height;
         }
 
         public float FrameEndVProportion(int _frameNumber)
         {
-            return (startV + (endV - startV) / (float) countY * (_frameNumber / countX + 1)) / (float) height;
+            return (startV + (endV - startV) / (float) countY * (_frameNumber / countX + 1)) / height;
         }
     }
 }

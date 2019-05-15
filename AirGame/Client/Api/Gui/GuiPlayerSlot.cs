@@ -1,18 +1,18 @@
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Common.Items;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
 namespace GlLib.Client.API.Gui
 {
     public class GuiPlayerSlot : GuiObject
     {
-        public PlayerInventory inventory;
         public const int SlotSize = 96;
+        public PlayerInventory inventory;
 
-        public GuiPlayerSlot(PlayerInventory _inventory,int _x, int _y) : base(_x, _y, SlotSize,
+        public Texture slotTexture;
+
+        public GuiPlayerSlot(PlayerInventory _inventory, int _x, int _y) : base(_x, _y, SlotSize,
             SlotSize)
         {
             slotTexture = Vertexer.LoadTexture("gui/slot.png");
@@ -25,8 +25,6 @@ namespace GlLib.Client.API.Gui
             slotTexture = Vertexer.LoadTexture("gui/slot.png");
             inventory = _inventory;
         }
-
-        public Texture slotTexture;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
@@ -44,7 +42,7 @@ namespace GlLib.Client.API.Gui
 
             Vertexer.Draw();
 
-            ItemStack stack = inventory.GetStackInSlot(inventory.currentSlot);
+            var stack = inventory.GetStackInSlot(inventory.currentSlot);
             stack?.item.GetItemSprite(stack).Render();
 
             GL.PopMatrix();

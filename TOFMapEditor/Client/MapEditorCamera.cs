@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.Api.Cameras;
-using GlLib.Utils;
+﻿using GlLib.Client.Api.Cameras;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

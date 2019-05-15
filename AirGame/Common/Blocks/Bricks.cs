@@ -2,7 +2,6 @@ namespace GlLib.Common.Map.Blocks
 {
     public class Bricks : TerrainBlock
     {
-
         public override string Name
         {
             get => "block.indoor.bricks";

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MapEditor.BlocksStruct
+﻿namespace MapEditor.BlocksStruct
 {
     internal struct BlocksСonstructor : IBlock
     {
         private string TextureName { get; }
-        private string BlockName { get;  }
+        private string BlockName { get; }
 
         public BlocksСonstructor(string _textureName, string _blockName)
         {

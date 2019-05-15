@@ -56,6 +56,10 @@
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
+		"Armor": 0,
+		"Health":100,
+		"GodMode":"False",
+		"IsTakingDamage": "False",
 		"entityTag": "",
 		"nickName": "Noname",
 		"tag": ""

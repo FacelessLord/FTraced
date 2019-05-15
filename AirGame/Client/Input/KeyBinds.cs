@@ -1,11 +1,12 @@
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
+using GlLib.Common.SpellCastSystem;
 using GlLib.Utils;
 using OpenTK.Input;
 using System;
 using System.Collections.Generic;
-using GlLib.Common.SpellCastSystem;
+using System.Linq;
 
 namespace GlLib.Client.Input
 {
@@ -13,34 +14,60 @@ namespace GlLib.Client.Input
     {
         public static Dictionary<Key, Action<Player>> binds = new Dictionary<Key, Action<Player>>();
         public static Dictionary<Key, Action<Player>> clickBinds = new Dictionary<Key, Action<Player>>();
+        public static Dictionary<Action<Player>, String> delegateNames = new Dictionary<Action<Player>, String>();
 
         public static Action<Player> moveLeft = _p =>
         {
-            _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> moveUp = _p =>
         {
-            _p.velocity += new PlanarVector(0, -_p.accelerationValue);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(0, -_p.accelerationValue);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> moveRight = _p =>
         {
-            _p.velocity += new PlanarVector(_p.accelerationValue, 0);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(_p.accelerationValue, 0);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> moveDown = _p =>
         {
-            _p.velocity += new PlanarVector(0, _p.accelerationValue);
-            _p.CheckVelocity();
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            {
+                _p.velocity += new PlanarVector(0, _p.accelerationValue);
+                _p.CheckVelocity();
+            }
         };
 
         public static Action<Player> openInventory = _p =>
         {
-            Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
+            if (Proxy.GetWindow().serverStarted)
+                Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
+        };
+
+        public static Action<Player> openIngameMenu = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
+        };
+
+        public static Action<Player> spawnSlime = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
@@ -51,34 +78,58 @@ namespace GlLib.Client.Input
         public static Action<Player> spellWater = _p => { _p.spells.OnUpdate(ElementType.Water); };
 
 
-
+        public static Action<Player> attack = _p =>
+        {
+            var entities = _p.worldObj.GetEntitiesWithinAaBb(_p.GetAaBb());
+            entities.Where(_e => _e is EntityLiving && _e != _p).Cast<EntityLiving>().ToList()
+                .ForEach(_e => _e.DealDamage(30));
+        };
 
 
 
         public static void Register()
         {
-            Bind(Key.Up, moveUp);
-            Bind(Key.Left, moveLeft);
-            Bind(Key.Down, moveDown);
-            Bind(Key.Right, moveRight);
-            BindClick(Key.I, openInventory);
-            BindClick(Key.Escape, exit);
+            Bind(Key.W, moveUp, "move.up");
+            Bind(Key.A, moveLeft, "move.left");
+            Bind(Key.S, moveDown, "move.down");
+            Bind(Key.D, moveRight, "move.right");
+            BindClick(Key.I, openInventory, "gui.inv");
+            BindClick(Key.Escape, openIngameMenu, "gui.menu");
+            BindClick(Key.Grave, exit, "exit");
+            BindClick(Key.Space, attack, "world.attack");
+            BindClick(Key.G, spawnSlime, "world.spawn.slime");
 
-            BindClick(Key.Number1, spellAir);
-            BindClick(Key.Number2, spellEarth);
-            BindClick(Key.Number3, spellWater);
-            BindClick(Key.Number4, spellFire);
+            BindClick(Key.Number1, spellAir, "spell.air");
+            BindClick(Key.Number2, spellEarth, "spell.earth");
+            BindClick(Key.Number3, spellWater, "spell.water");
+            BindClick(Key.Number4, spellFire, "spell.fire");
         }
 
-        public static void Bind(Key _key, Action<Player> _action)
+        public static void Bind(Key _key, Action<Player> _action, string _name)
         {
             binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
+            delegateNames.Add(_action, _name);
         }
 
-        public static void BindClick(Key _key, Action<Player> _action)
+        public static void BindClick(Key _key, Action<Player> _action, string _name)
         {
             clickBinds.Add(_key, _action);
+            KeyboardHandler.RegisterKey(_key);
+            delegateNames.Add(_action, _name);
+        }
+
+        public static void RebindClick(Key _key, Action<Player> _action)
+        {
+            clickBinds.Remove(clickBinds.Keys.Single(_k => clickBinds[_k] == _action));
+            clickBinds.Add(_key, _action);
+            KeyboardHandler.RegisterKey(_key);
+        }
+
+        public static void Rebind(Key _key, Action<Player> _action)
+        {
+            binds.Remove(binds.Keys.Single(_k => binds[_k] == _action));
+            binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
         }
     }

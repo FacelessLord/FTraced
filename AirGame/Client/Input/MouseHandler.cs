@@ -7,13 +7,12 @@ namespace GlLib.Client.Input
     {
         public static Hashtable pressed = new Hashtable();
         public static Hashtable clicked = new Hashtable();
+        public static int lastMouseX;
+        public static int lastMouseY;
         public static int MouseX => Mouse.GetState().X;
         public static int MouseY => Mouse.GetState().Y;
-        public static int lastMouseX = 0;
-        public static int lastMouseY = 0;
         public static int Dx => MouseX - lastMouseX;
         public static int Dy => lastMouseY - MouseY;
-
 
 
         public static void Setup()

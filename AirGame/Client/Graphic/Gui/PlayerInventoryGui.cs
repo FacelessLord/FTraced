@@ -27,9 +27,9 @@ namespace GlLib.Client.Graphic.Gui
             var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, 2 * h / 5);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
-            for (int i = 0; i < _p.inventory.GetMaxSize(); i++)
+            for (var i = 0; i < _p.inventory.GetMaxSize(); i++)
             {
-                int dy = slotSize + 2;
+                var dy = slotSize + 2;
                 var rect = new GuiRectangle(background, slotSize, dy * i,
                     panel.width - slotSize - panel.bar.width - d, slotSize);
                 panel.Add(rect);
@@ -64,13 +64,11 @@ namespace GlLib.Client.Graphic.Gui
         public override void Update(GameWindow _window)
         {
             base.Update(_window);
-            for (int i = 0; i < signs.Count; i++)
-            {
+            for (var i = 0; i < signs.Count; i++)
                 if (inventory.GetStackInSlot(i) is ItemStack stack)
                     signs[i].text = stack.item.GetName(stack);
                 else
                     signs[i].text = "";
-            }
         }
     }
 }
