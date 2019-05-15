@@ -27,12 +27,17 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new FireBallRenderer());
         }
 
+        public AxisAlignedBb GetAaBb()
+        {
+            base.GetAaBb();
+            return Position.ToPlanar().ExpandBothTo(2, 1.5);
+        }
         public override void Update()
         {
             base.Update();
 
-            if (InternalTime > DieTime)
-                SetDead(true);
+            //if (InternalTime > DieTime)
+            //    SetDead(true);
         }
 
         public override void OnCollideWith(Entity _obj)
