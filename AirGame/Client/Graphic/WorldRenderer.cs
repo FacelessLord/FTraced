@@ -34,8 +34,7 @@ namespace GlLib.Client.Graphic
                 {
                     var chunk = _world[i, j];
                     if (chunk.isLoaded)
-                        foreach (var level in chunk.entities)
-                        foreach (var entity in level)
+                        foreach (var entity in chunk.entities)
                         {
                             if (!entity.GetRenderer().isSetUp)
                                 entity.GetRenderer().CallSetup(entity);

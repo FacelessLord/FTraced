@@ -10,8 +10,6 @@ namespace GlLib.Common.Map
 {
     public class Chunk
     {
-        public const int Heights = 8;
-
         public const double BlockWidth = 64;
         public const double BlockHeight = 32;
         public TerrainBlock[,] blocks; // = new TerrainBlock[16,16];
@@ -19,7 +17,7 @@ namespace GlLib.Common.Map
         public int chunkX;
         public int chunkY;
 
-        public List<Entity>[] entities = new List<Entity>[Heights];
+        public List<Entity> entities;
 
         public bool isLoaded;
 
@@ -31,7 +29,7 @@ namespace GlLib.Common.Map
             chunkX = _x;
             chunkY = _y;
             blocks = new TerrainBlock[16, 16];
-            for (var i = 0; i < Heights; i++) entities[i] = new List<Entity>();
+            entities = new List<Entity>();
         }
 
         public TerrainBlock this[int _i, int _j]
@@ -165,10 +163,9 @@ namespace GlLib.Common.Map
         public List<JsonObject> SaveChunkEntities()
         {
             var objects = new List<JsonObject>();
-            lock(entities)
-            foreach (var height in entities)
-            foreach (var entity in height)
-                objects.Add(entity.CreateJsonObject());
+            lock (entities)
+                foreach (var entity in entities)
+                    objects.Add(entity.CreateJsonObject());
 
             return objects;
         }
@@ -176,10 +173,8 @@ namespace GlLib.Common.Map
         public void Update()
         {
             lock (entities)
-                foreach (var level in entities)
-                    lock (level)
-                        foreach (var entity in level)
-                            entity.Update();
+                foreach (var entity in entities)
+                    entity.Update();
         }
     }
 }

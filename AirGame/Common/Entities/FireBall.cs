@@ -9,7 +9,7 @@ namespace GlLib.Common.Entities
 {
     public class FireBall : Entity
     {
-        private const short BaseVelocity = 8;
+        private const short BaseVelocity = 0;
         private readonly long spawnTime;
         internal uint DieTime { get; }
         internal int Damage { get; }

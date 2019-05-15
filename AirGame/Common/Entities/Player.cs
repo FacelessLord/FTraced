@@ -84,9 +84,6 @@ namespace GlLib.Common.Entities
                     data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
-                collection.Add(new JsonStringValue("GodMode", GodMode + ""));
-                collection.Add(new JsonNumericValue("Armor", Armor));
-                collection.Add(new JsonNumericValue("Health", Health));
             }
 
             return obj;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Json;
+using GlLib.Utils;
 
 namespace GlLib.Common.Map
 {
@@ -49,11 +50,19 @@ namespace GlLib.Common.Map
 
         private static JsonObjectCollection ReadEntities(World _world)
         {
-            if (File.Exists("maps/" + _world.mapName + "_entities.json"))
+            try
             {
-                var fs = File.ReadAllText("maps/" + _world.mapName + "_entities.json");
-                var parser = new JsonTextParser();
-                return (JsonObjectCollection) parser.Parse(fs);
+                if (File.Exists("maps/" + _world.mapName + "_entities.json"))
+                {
+                    var fs = File.ReadAllText("maps/" + _world.mapName + "_entities.json");
+                    var parser = new JsonTextParser();
+                    return (JsonObjectCollection) parser.Parse(fs);
+                }
+            }
+            catch (System.FormatException e)
+            {
+                SidedConsole.WriteErrorLine("There something wrong with your entity file.\n" +
+                                            "It can be result of death of all entities");
             }
 
             return null;

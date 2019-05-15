@@ -49,20 +49,20 @@
       "block": "block.indoor.bricks"
     },
     "entity": {
-		"entityId": "entity.player",
+		"entityId": "entity.living.player",
 		"Position": "(40,24,0)",
 		"Velocity": "(0,0)",
 		"MaxVelocity": "(0.3,0.3)",
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
+		"tag": "",
 		"Armor": 0,
 		"Health":100,
 		"GodMode":"False",
 		"IsTakingDamage": "False",
-		"entityTag": "",
 		"nickName": "Noname",
-		"tag": ""
+		"entityTag": ""
 	}
   },
   "2,1": {
