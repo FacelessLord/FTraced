@@ -47,7 +47,7 @@ namespace GlLib.Common.Items
 
         public override string ToString()
         {
-            return unlocalizedName; // todo
+            return unlocalizedName;
         }
     }
 }
