@@ -84,9 +84,7 @@ namespace GlLib.Common.Entities
         {
             if (GodMode) return;
 
-            SidedConsole.WriteLine("DealDamage!");
-
-            var takenDamage = _damage * (Armor / MaxArmor);
+            var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
             if (takenDamage >= Health)
             {
                 SetDead();
@@ -97,7 +95,7 @@ namespace GlLib.Common.Entities
             {
                 Health -= takenDamage;
             }
-            SidedConsole.WriteLine("Damage Dealt: " + takenDamage + "; " + Health);
+            SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
         }
 
         public override string GetName()

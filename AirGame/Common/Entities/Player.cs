@@ -66,9 +66,9 @@ namespace GlLib.Common.Entities
             base.LoadFromJsonObject(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
             {
-                //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
-                nickname = ((JsonStringValue)collection[12]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue)collection[13]).Value));
+//                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
+                nickname = ((JsonStringValue) collection[12]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[13]).Value));
             }
         }
 
