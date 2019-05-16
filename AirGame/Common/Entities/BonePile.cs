@@ -10,5 +10,10 @@ namespace GlLib.Common.Entities
             Health = 1;
             SetCustomRenderer(new BonePileRenderer());
         }
+
+        public override string GetName()
+        {
+            return "entity.bone_pile";
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace GlLib.Client.API.Gui
     {
         private GuiHorizontalBar health;
         private GuiHorizontalBar cast;
+        private GuiSign moneySign;
 
         public Hud()
         {
@@ -19,7 +20,9 @@ namespace GlLib.Client.API.Gui
 //            AddPicture("head.png", 16, 16, 64, 64);
             cast = AddHorizontalBar(80, 48, 500, 30, new Color(240, 200, 60, 255));
             health = AddHorizontalBar(80, 16, 500, 30, new Color(240, 60, 40, 255));
-//            AddNumeric(350, 80, 20, 10);
+            moneySign = new GuiSign(Proxy.GetClient().player.money + "", 20, 20, 8, 8);
+            Add(moneySign);
+            //            AddNumeric(350, 80, 20, 10);
         }
 
         public override void Update(GameWindow _window)
@@ -29,6 +32,7 @@ namespace GlLib.Client.API.Gui
             health.value = Proxy.GetClient().player.Health;
             cast.maxValue = SpellSystem.MaxCastTime;
             cast.value = Proxy.GetClient().player.spells.InternalTime;
+            moneySign.text = Proxy.GetClient().player.money + "";
         }
     }
 }

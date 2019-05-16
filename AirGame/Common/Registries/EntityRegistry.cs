@@ -17,6 +17,7 @@ namespace GlLib.Common.Registries
             registry.RegisterEntity("entity.living.player", typeof(Player));
             registry.RegisterEntity("entity.living.slime", typeof(EntitySlime));
             registry.RegisterEntity("entity.bone_pile", typeof(BonePile));
+            registry.RegisterEntity("entity.coin", typeof(Coin));
         }
     }
 }

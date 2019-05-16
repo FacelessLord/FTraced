@@ -73,7 +73,7 @@ namespace GlLib.Client.Input
         public static Action<Player> spawnSlime = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
-                _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
+                _p.worldObj.SpawnEntity(new Coin(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> exit = _p => Proxy.Exit = true;

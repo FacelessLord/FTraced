@@ -19,6 +19,8 @@ namespace GlLib.Common.Entities
         public HashSet<string> usedBinds = new HashSet<string>();
         internal SpellSystem spells;
 
+        public int money = 0;
+
         public Player(string _nickname,
             World _world,
             RestrictedVector3D _position,
