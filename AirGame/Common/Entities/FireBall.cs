@@ -51,7 +51,7 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving)
+            if (!(_obj is Player) && _obj is EntityLiving)
                 (_obj as EntityLiving).DealDamage(Damage);
         }
     }
