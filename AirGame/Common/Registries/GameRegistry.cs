@@ -98,6 +98,7 @@ namespace GlLib.Common.Registries
 
         public Entity GetEntityFromName(string _entityName)
         {
+            SidedConsole.WriteLine(_entityName + ", " + entities.ContainsKey(_entityName));
             if (entities.ContainsKey(_entityName))
             {
                 var clazz = (Type) entities[_entityName];
@@ -111,7 +112,6 @@ namespace GlLib.Common.Registries
         {
             var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
-            SidedConsole.WriteLine(entityId + ", " + _loaded);
             entity.LoadFromJsonObject(_collection);
             return entity;
         }

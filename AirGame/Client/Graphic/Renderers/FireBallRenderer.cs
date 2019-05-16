@@ -13,8 +13,8 @@ namespace GlLib.Client.Graphic.Renderers
         private ISprite _sprite;
         public override void Setup(Entity _e)
         {
-            TextureLayout layout = new TextureLayout(@"12_nebula_spritesheet.png", 8, 8);
-            _sprite = new LinearSprite(layout, 24, 6);
+            TextureLayout layout = new TextureLayout(@"11_fire_spritesheet.png", 8, 8);
+            _sprite = new LinearSprite(layout, 61, 6);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

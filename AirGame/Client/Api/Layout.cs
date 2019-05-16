@@ -41,6 +41,15 @@ namespace GlLib.Client.API
                 FrameEndUProportion(_frame), FrameEndVProportion(_frame));
         }
 
+        public int FrameWidth()
+        {
+            return (endU - startU) / countX;
+        }
+        public int FrameHeight()
+        {
+            return (endV - startV) / countY;
+        }
+
         public int FrameStartU(int _frameNumber)
         {
             return startU + (endU - startU) / countX * (_frameNumber % countX);

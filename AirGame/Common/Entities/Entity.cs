@@ -14,7 +14,7 @@ namespace GlLib.Common.Entities
         public Chunk chunkObj;
 
         private bool isDead;
-        public PlanarVector maxVel = new PlanarVector(0.3, 0.3);
+        public PlanarVector maxVel = new PlanarVector(0.7, 0.7);
 
         public NbtTag nbtTag = new NbtTag();
 
@@ -23,9 +23,14 @@ namespace GlLib.Common.Entities
         protected RestrictedVector3D position = new RestrictedVector3D();
 
         public PlanarVector velocity = new PlanarVector();
+        public Direction direction = Direction.Right;
         public World worldObj;
         
         private EntityRenderer _renderer = new StandardRenderer();
+
+        public EntityState state = EntityState.Idle;
+        public int timeout = -1;
+        
 
         public Entity(World _world, RestrictedVector3D _position)
         {
@@ -49,6 +54,21 @@ namespace GlLib.Common.Entities
                 chunkObj = GetProjection(position, worldObj);
             }
         }
+
+        public bool IsDead
+        {
+            get { return isDead; }
+        }
+
+        public void SetState(EntityState _state, int _timeout)
+        {
+            if (timeout <= 0 || state <= _state)
+            {
+                state = _state;
+                timeout = _timeout;
+            }
+        }
+        
 
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
@@ -84,9 +104,9 @@ namespace GlLib.Common.Entities
             return jsonObj;
         }
 
-        public AxisAlignedBb GetAaBb()
+        public virtual AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(100, 100);
+            return Position.ToPlanar().ExpandBothTo(1, 1);
         }
 
         public TerrainBlock GetUnderlyingBlock()
@@ -98,6 +118,14 @@ namespace GlLib.Common.Entities
         {
             if (EventBus.OnEntityUpdate(this)) return;
 
+            if (timeout > 0)
+                timeout--;
+            if (timeout == 0)
+            {
+                state = EntityState.Idle;
+                timeout = -1;
+            }
+            
             MoveEntity();
             velocity *= 0.85;
             //TODO select most efficient way of iteration to avoid CME
@@ -218,5 +246,15 @@ namespace GlLib.Common.Entities
         {
             return !Equals(_left, _right);
         }
+    }
+
+    public enum Direction
+    {
+        Up, Left, Down, Right
+    }
+    
+    public enum EntityState
+    {
+        Idle, Walk, Attack
     }
 }

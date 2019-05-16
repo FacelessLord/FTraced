@@ -1,18 +1,107 @@
 {
 	"entity": {
-		"entityId": "entity.living.player",
-		"Position": "(41.3657222826487,27.5793250856231,0)",
-		"Velocity": "(-1.07278717936473E-05,-6.77072713627609E-07)",
-		"MaxVelocity": "(0.3,0.3)",
+		"entityId": "entity.living.slime",
+		"Position": "(22.1118030051844,13.3541887727956,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
 		"entityTag": "",
 		"Armor": 0,
 		"Health": 100,
+		"MaxHealth": 100,
 		"GodMode": "False",
-		"IsTakingDamage": "False",
-		"nickName": "",
-		"tag": ""
+		"IsTakingDamage": "False"
+	},
+	"entity": {
+		"entityId": "entity.null",
+		"Position": "(26.6933519854075,15.579233220109,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.null",
+		"Position": "(26.6933519854075,15.579233220109,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.null",
+		"Position": "(26.6933519854075,15.579233220109,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.null",
+		"Position": "(26.6933519854075,15.579233220109,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.null",
+		"Position": "(26.6933519854075,15.579233220109,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.null",
+		"Position": "(27.8225103217018,16.196918144669,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.living.slime",
+		"Position": "(17.8388638144429,17.8856838894864,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": "",
+		"Armor": 0,
+		"Health": 100,
+		"MaxHealth": 100,
+		"GodMode": "False",
+		"IsTakingDamage": "False"
+	},
+	"entity": {
+		"entityId": "entity.living.slime",
+		"Position": "(39.9299288499596,13.2014526167636,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": "",
+		"Armor": 0,
+		"Health": 100,
+		"MaxHealth": 100,
+		"GodMode": "False",
+		"IsTakingDamage": "False"
 	}
 }

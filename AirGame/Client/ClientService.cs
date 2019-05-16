@@ -38,20 +38,20 @@ namespace GlLib.Client
 //            SidedConsole.WriteLine("Setting Player");
             foreach (var chunk in world.chunks)
             {
-                var players = chunk.entities.SelectMany(_o => _o).Where(_e => _e is Player).Cast<Player>().ToList();
+                var players = chunk.entities.Where(_e => _e is Player).Cast<Player>().ToList();
                 if (players.Any()) player = players.First();
             }
 
             if (player is null)
             {
-//                player = new Player("F");
-////            SidedConsole.WriteLine("Setting Player Name");
-//                player.nickname = nickName;
-////            SidedConsole.WriteLine("Setting Player Pos");
-//                player.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
-////            SidedConsole.WriteLine("Setting Player Data");
-//                player.data = Proxy.GetServer().GetDataFor(player, password);
-//                Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
+                player = new Player();
+//            SidedConsole.WriteLine("Setting Player Name");
+                player.nickname = nickName;
+//            SidedConsole.WriteLine("Setting Player Pos");
+                player.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+//            SidedConsole.WriteLine("Setting Player Data");
+                player.data = Proxy.GetServer().GetDataFor(player, password);
+                Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             }
 
 //            SidedConsole.WriteLine("Loading window");

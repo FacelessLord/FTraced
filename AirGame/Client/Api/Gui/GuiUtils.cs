@@ -1,11 +1,26 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
+using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.API.Gui
 {
     public class GuiUtils
     {
+        public static void RenderAaBb(AxisAlignedBb _box, double _blockWidth, double _blockHeight)
+        {
+            GL.PushMatrix();
+            GL.Scale(_blockWidth, _blockHeight,1);
+            Vertexer.BindTexture("monochromatic.png");
+            Vertexer.StartDrawingQuads();
+            Vertexer.VertexWithUvAt(_box.startX, _box.startY, 0, 0);
+            Vertexer.VertexWithUvAt(_box.endX, _box.startY, 1, 0);
+            Vertexer.VertexWithUvAt(_box.endX, _box.endY, 1, 1);
+            Vertexer.VertexWithUvAt(_box.startX, _box.endY, 0, 1);
+            Vertexer.Draw();
+            GL.PopMatrix();
+        }
+        
         public static void DrawSizedSquare(TextureLayout _layout, int _x, int _y, int _width, int _height,
             float _grainSize = 32f)
         {

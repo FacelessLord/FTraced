@@ -9,7 +9,7 @@ namespace GlLib.Common.Entities
 {
     public class FireBall : Entity
     {
-        private const short BaseVelocity = 8;
+        private const short BaseVelocity = 0;
         private readonly long spawnTime;
         internal uint DieTime { get; }
         internal int Damage { get; }
@@ -27,12 +27,16 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new FireBallRenderer());
         }
 
+        public override AxisAlignedBb GetAaBb()
+        {
+            return Position.ToPlanar().ExpandBothTo(2, 1.5) + -new PlanarVector(0, -2);
+        }
         public override void Update()
         {
             base.Update();
 
-            if (InternalTime > DieTime)
-                SetDead(true);
+            //if (InternalTime > DieTime)
+            //    SetDead(true);
         }
 
         public override void OnCollideWith(Entity _obj)

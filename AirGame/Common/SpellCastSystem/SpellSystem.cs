@@ -9,11 +9,11 @@ namespace GlLib.Common.SpellCastSystem
 {
     internal class SpellSystem
     {
-        public const uint MaxCastTime = 3 * 1000;
-        public const byte ElementsCountBound = 6; 
+        internal const uint MaxCastTime = 3 * 1000;
+        internal const byte ElementsCountBound = 6; 
         // ReSharper disable once InconsistentNaming
-        private uint? time;
-        internal uint? InternalTime
+        private uint time;
+        internal uint InternalTime
             => IsStarted
                 ? (uint) DateTime.Now.TimeOfDay.TotalMilliseconds - time
                 : 0;
@@ -74,7 +74,7 @@ namespace GlLib.Common.SpellCastSystem
         private void Refresh()
         {
             IsStarted = false;
-            time = null;
+            time = 0;
             elements.Clear();
         }
         private void MakeResult()
@@ -92,7 +92,7 @@ namespace GlLib.Common.SpellCastSystem
                             SpellCaster.worldObj,
                             SpellCaster.Position, 
                             SpellCaster.velocity,
-                            (uint) Math.Round(averageTime * 3),
+                            10000,
                             (int) Math.Round(averageTime * 5)));
                     return;
                 case (int)ElementType.Water:

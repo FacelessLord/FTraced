@@ -12,7 +12,7 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving
     {
-        public double accelerationValue = 0.2;
+        public double accelerationValue = 0.1;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
         public string nickname = "Player";
@@ -23,7 +23,7 @@ namespace GlLib.Common.Entities
             World _world,
             RestrictedVector3D _position,
             bool _godMode, uint _health,
-            ushort _armor) : base(_health, _armor,_world, _position)
+            ushort _armor) : base(_health, _armor, _world, _position)
         {
             nickname = _nickname;
             Initialization();
@@ -66,9 +66,9 @@ namespace GlLib.Common.Entities
             base.LoadFromJsonObject(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
             {
-                //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
-                nickname = ((JsonStringValue)collection[12]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue)collection[13]).Value));
+//                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
+                nickname = ((JsonStringValue) collection[13]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[14]).Value));
             }
         }
 
@@ -84,9 +84,6 @@ namespace GlLib.Common.Entities
                     data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
-                collection.Add(new JsonStringValue("GodMode", GodMode + ""));
-                collection.Add(new JsonNumericValue("Armor", Armor));
-                collection.Add(new JsonNumericValue("Health", Health));
             }
 
             return obj;
@@ -96,6 +93,11 @@ namespace GlLib.Common.Entities
         {
             if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
             if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
+        }
+
+        public override AxisAlignedBb GetAaBb()
+        {
+            return base.GetAaBb() + new PlanarVector(0, 1);
         }
     }
 }

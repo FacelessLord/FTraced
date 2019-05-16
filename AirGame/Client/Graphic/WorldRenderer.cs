@@ -34,8 +34,7 @@ namespace GlLib.Client.Graphic
                 {
                     var chunk = _world[i, j];
                     if (chunk.isLoaded)
-                        foreach (var level in chunk.entities)
-                        foreach (var entity in level)
+                        foreach (var entity in chunk.entities)
                         {
                             if (!entity.GetRenderer().isSetUp)
                                 entity.GetRenderer().CallSetup(entity);
@@ -45,7 +44,7 @@ namespace GlLib.Client.Graphic
 
                             GL.Translate(coord.x, coord.y, 0);
                             GL.Scale(1.5, 1.5, 1);
-                            entity.GetRenderer().Render(entity, xAxis, yAxis);
+                            entity.GetRenderer().CallRender(entity, xAxis, yAxis);
                             GL.PopMatrix();
                         }
                 }

@@ -14,7 +14,17 @@
 
         public override string ToString()
         {
-            //TODO
+            switch (type)
+            {
+                case ElementType.Water:
+                    return "Water";
+                case ElementType.Earth:
+                    return "Earth";
+                case ElementType.Fire:
+                    return "Fire";
+                case ElementType.Air:
+                    return "Air";
+            }
             return base.ToString();
         }
     }

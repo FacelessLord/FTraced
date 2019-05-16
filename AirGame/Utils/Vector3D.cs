@@ -164,7 +164,12 @@ namespace GlLib.Utils
         {
             return new PlanarVector(_a.x + _b.x, _a.y + _b.y);
         }
-        // TODO operator '-'
+        
+        public static PlanarVector operator -(PlanarVector _a, PlanarVector _b)
+        {
+            _b *= -1;
+            return new PlanarVector(_a.x + _b.x, _a.y + _b.y);
+        }
 
         public static bool operator ==(PlanarVector _a, PlanarVector _b)
         {
