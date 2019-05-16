@@ -90,6 +90,16 @@
 		"IsTakingDamage": 0
 	},
 	"entity": {
+		"entityId": "entity.null",
+		"Position": "(22.6580806883489,22.6670153610651,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
+	},
+	"entity": {
 		"entityId": "entity.living.slime",
 		"Position": "(39.9299288499596,13.2014526167636,0)",
 		"Velocity": "(0,0)",

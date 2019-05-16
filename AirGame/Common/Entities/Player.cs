@@ -34,7 +34,6 @@ namespace GlLib.Common.Entities
             Initialization();
         }
 
-
         private void Initialization()
         {
 
@@ -48,7 +47,6 @@ namespace GlLib.Common.Entities
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
 
             spells = new SpellSystem(this);
-            this.SetGodMode();
 
         }
 

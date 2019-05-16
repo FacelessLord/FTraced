@@ -105,7 +105,7 @@ namespace GlLib.Common.Entities
             }
             else
             {
-                DamageTimer += 8;
+                DamageTimer += 1;
                 Health -= takenDamage;
             }
             SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
