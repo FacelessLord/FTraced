@@ -15,7 +15,6 @@ namespace GlLib.Common.Entities
             ushort _armor, World _world,
             RestrictedVector3D _position) : base(_world, _position)
         {
-            GodMode = false;
             Armor = _armor;
             Health = _health;
 
@@ -82,8 +81,8 @@ namespace GlLib.Common.Entities
 
         public void DealDamage(float _damage)
         {
-            if (GodMode) return;
 
+            if (GodMode) return;
             var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
             if (takenDamage >= Health)
             {
