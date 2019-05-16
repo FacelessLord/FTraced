@@ -148,6 +148,8 @@ namespace GlLib.Utils
             (x, y) = (_x, _y);
         }
 
+        public double Angle => Math.Atan2(y, x);
+
         public double Length => Math.Sqrt(x * x + y * y);
 
         public static PlanarVector operator *(PlanarVector _a, double _k)
@@ -196,18 +198,30 @@ namespace GlLib.Utils
 
         public void Normalize()
         {
-            // ????????????? ??????
             if (Math.Abs(Length) < 1e-4)
             {
                 x = 0;
                 y = 0;
                 return;
             }
-
-            double length = Length;
-            x = Math.Round(x * 1 / length);
-            y = Math.Round(y * 1 / length);
+            
+            x = Math.Round(x * 1 / Length);
+            y = Math.Round(y * 1 / Length);
+            return;
         }
+
+        public PlanarVector Normalized { get
+            {
+                if (Math.Abs(Length) < 1e-4)
+                {
+                    return new PlanarVector(0, 0);
+                }
+
+                var newX = Math.Round(x * 1 / Length);
+                var newY = Math.Round(y * 1 / Length);
+                return new PlanarVector(newX, newY);
+            } }
+
         public static PlanarVector FromString(string _s)
         {
             if (_s == "")
