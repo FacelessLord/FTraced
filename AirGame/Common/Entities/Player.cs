@@ -10,7 +10,7 @@ using System.Net.Json;
 
 namespace GlLib.Common.Entities
 {
-    public class Player : EntityLiving
+    public class Player : EntityLiving, IAttacker
     {
         public double accelerationValue = 0.1;
         public PlayerData data;
@@ -48,6 +48,7 @@ namespace GlLib.Common.Entities
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
 
             spells = new SpellSystem(this);
+            this.SetGodMode();
 
         }
 
@@ -99,5 +100,7 @@ namespace GlLib.Common.Entities
         {
             return base.GetAaBb() + new PlanarVector(0, 1);
         }
+
+        public int AttackValue { get; set; }
     }
 }

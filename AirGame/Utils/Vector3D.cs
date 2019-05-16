@@ -194,6 +194,20 @@ namespace GlLib.Utils
                    $"{y.ToString(CultureInfo.InvariantCulture)})";
         }
 
+        public void Normalize()
+        {
+            // Нормализирует вектор
+            if (Math.Abs(Length) < 1e-4)
+            {
+                x = 0;
+                y = 0;
+                return;
+            }
+
+            double length = Length;
+            x = Math.Round(x * 1 / length);
+            y = Math.Round(y * 1 / length);
+        }
         public static PlanarVector FromString(string _s)
         {
             if (_s == "")
