@@ -95,5 +95,9 @@ namespace GlLib.Client.Graphic
         {
             _text.Bind();
         }
+        public static void BindTexture(string _text)
+        {
+            LoadTexture(_text).Bind();
+        }
     }
 }

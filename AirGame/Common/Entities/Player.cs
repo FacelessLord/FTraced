@@ -10,7 +10,7 @@ using System.Net.Json;
 
 namespace GlLib.Common.Entities
 {
-    public class Player : EntityLiving
+    public class Player : EntityLiving, IAttacker
     {
         public double accelerationValue = 0.05;
         public PlayerData data;
@@ -23,7 +23,7 @@ namespace GlLib.Common.Entities
             World _world,
             RestrictedVector3D _position,
             bool _godMode, uint _health,
-            ushort _armor) : base(_health, _armor,_world, _position)
+            ushort _armor) : base(_health, _armor, _world, _position)
         {
             nickname = _nickname;
             Initialization();
@@ -48,6 +48,7 @@ namespace GlLib.Common.Entities
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
 
             spells = new SpellSystem(this);
+            this.SetGodMode();
 
         }
 
@@ -67,8 +68,8 @@ namespace GlLib.Common.Entities
             if (_jsonObject is JsonObjectCollection collection)
             {
 //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
-                nickname = ((JsonStringValue) collection[12]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[13]).Value));
+                nickname = ((JsonStringValue) collection[13]).Value;
+                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[14]).Value));
             }
         }
 
@@ -94,5 +95,12 @@ namespace GlLib.Common.Entities
             if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
             if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
         }
+
+        public override AxisAlignedBb GetAaBb()
+        {
+            return base.GetAaBb() + new PlanarVector(0, 1);
+        }
+
+        public int AttackValue { get; set; }
     }
 }

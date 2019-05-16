@@ -44,7 +44,7 @@ namespace GlLib.Client.Graphic
 
                             GL.Translate(coord.x, coord.y, 0);
                             GL.Scale(1.5, 1.5, 1);
-                            entity.GetRenderer().Render(entity, xAxis, yAxis);
+                            entity.GetRenderer().CallRender(entity, xAxis, yAxis);
                             GL.PopMatrix();
                         }
                 }
