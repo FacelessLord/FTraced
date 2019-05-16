@@ -11,7 +11,7 @@ namespace GlLib.Common.Entities
         internal long InternalTime
             => DateTime.Now.Ticks - _spawnTime;
 
-        private const int UpdateFrame = 8;
+        private const int UpdateFrame = 12;
         private long _spawnTime;
         public EntitySlime()
         {
@@ -40,7 +40,6 @@ namespace GlLib.Common.Entities
 
         public EntitySlime(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
         {
-            AttackRange = position.ToPlanar().ExpandBothTo(_attackRange, _attackRange);
             InMove = _inMove;
             InWaiting = _inWaiting;
             this._spawnTime = _spawnTime;
@@ -67,6 +66,13 @@ namespace GlLib.Common.Entities
         public override void Update()
         {
             var entities = worldObj.GetEntitiesWithinAaBb(AttackRange);
+
+            if (Target is null && !(entities is null))
+            {
+                Target = (Player) entities
+                    .FirstOrDefault(_e => _e is Player);
+            }
+
             if (InternalTime % UpdateFrame == 0 ||
                 (!(Target is null) && Target.IsDead))
             {
