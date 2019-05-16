@@ -31,6 +31,7 @@ namespace GlLib.Common.Entities
             _spawnTime = DateTime.Now.Ticks;
             SetCustomRenderer(new SlimeRenderer());
             AttackRange = position.ToPlanar().ExpandBothTo(1, 1);
+            AttackValue = 5;
         }
 
         public override string GetName()
@@ -80,8 +81,8 @@ namespace GlLib.Common.Entities
                     .FirstOrDefault(_e => _e is Player);
 
                 if (!(Target is null) &&
-                    (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1) ;
-//                    MoveToTarget();
+                    (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
+                    MoveToTarget();
             }
             
             base.Update();
@@ -89,8 +90,8 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            //if (_obj is EntityLiving)
-            //    (_obj as EntityLiving).DealDamage(AttackValue);
+            if (_obj is EntityLiving)
+                (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
         private void MoveToTarget()

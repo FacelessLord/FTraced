@@ -11,6 +11,10 @@
 		"Name": "block.outdoor.darkgrasscoastright",
 		"TextureName": "blocks/DarkGrassCoastRight.png"
 	},
+	"GrassBlock": {
+		"Name": "block.outdoor.grass",
+		"TextureName": "grass.png"
+	},
 	"Bricks": {
 		"Name": "block.indoor.bricks",
 		"TextureName": "bricks_worn.png"
@@ -22,9 +26,5 @@
 	"SettBrimDown": {
 		"Name": "block.indoor.settbrimdown",
 		"TextureName": "blocks/SettBrimDown.png"
-	},
-	"GrassBlock": {
-		"Name": "block.outdoor.grass",
-		"TextureName": "grass.png"
 	}
 }

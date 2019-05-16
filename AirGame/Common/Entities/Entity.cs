@@ -130,7 +130,7 @@ namespace GlLib.Common.Entities
             MoveEntity();
             velocity *= 0.85;
             //TODO select most efficient way of iteration to avoid CME
-            worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), Position.z).ToList().ForEach(OnCollideWith);
+            worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), Position.z).Where(_e => _e != this).ToList().ForEach(OnCollideWith);
         }
 
         private void MoveEntity()
