@@ -1,6 +1,8 @@
 using GlLib.Client.API;
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.API.Gui;
 using GlLib.Common.Entities;
+using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
@@ -8,18 +10,35 @@ namespace GlLib.Client.Graphic.Renderers
 {
     public class PlayerRenderer : EntityRenderer
     {
-        public ISprite playerSprite;
+        public ISprite idleSprite;
+        public ISprite walkSprite;
+        public ISprite attackSprite;
 
         public override void Setup(Entity _p)
         {
-            var layout = new TextureLayout("player_sprite.png", 16, 4);
-            playerSprite = new LinearSprite(layout, 22, 6);
+            var idle = new TextureLayout("dwarf.png",0, 0, 38*5, 32, 5, 1);
+            var walk = new TextureLayout("dwarf.png",0, 32, 38*8, 32*2, 8, 1);
+            var attack = new TextureLayout("dwarf.png",0, 32*3+2, 38*6, 32*4, 6, 1);
+            
+            idleSprite = new LinearSprite(idle, 5, 6);
+            walkSprite = new LinearSprite(walk, 8, 6);
+            attackSprite = new LinearSprite(attack, 6, 6);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            playerSprite.Render();
-
+            switch (_e.state)
+            {
+                case (EntityState.Idle):
+                    idleSprite.Render();
+                    break;
+                case (EntityState.Walk):
+                    walkSprite.Render();
+                    break;
+                case (EntityState.Attack):
+                    attackSprite.Render();
+                    break;
+            }
         }
     }
 }

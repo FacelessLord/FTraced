@@ -121,7 +121,7 @@ namespace GlLib.Client.Graphic
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            if (enableHud)
+            if (enableHud && !(hud is null))
             {
                 hud.Update(this);
                 hud.Render(this);
@@ -140,6 +140,7 @@ namespace GlLib.Client.Graphic
             hud = new Hud();
             camera = new PlayerTrackingCamera();
             serverStarted = true;
+            enableHud = true;
         }
 
         public void RenderWorld()
