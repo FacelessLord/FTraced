@@ -196,7 +196,7 @@ namespace GlLib.Utils
 
         public void Normalize()
         {
-            // Нормализирует вектор
+            // ????????????? ??????
             if (Math.Abs(Length) < 1e-4)
             {
                 x = 0;
@@ -247,7 +247,7 @@ namespace GlLib.Utils
 
         public AxisAlignedBb ExpandBothTo(double _width, double _height)
         {
-            return new AxisAlignedBb(x - _width / 2, y / _height, x + _width / 2, y + _height / 2);
+            return new AxisAlignedBb(x - _width / 2, y - _height/2, x + _width / 2, y + _height / 2);
         }
     }
 
@@ -282,6 +282,10 @@ namespace GlLib.Utils
         public bool IsVectorInside(PlanarVector _vector)
         {
             return _vector.x <= endX && _vector.x >= startX && _vector.y <= endY && _vector.y >= startY;
+        }
+        public bool IsVectorInside(double _x, double _y)
+        {
+            return _x <= endX && _x >= startX && _y <= endY && _y >= startY;
         }
 
         public bool IntersectsWith(AxisAlignedBb _box)

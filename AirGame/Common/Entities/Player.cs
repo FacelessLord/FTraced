@@ -98,7 +98,7 @@ namespace GlLib.Common.Entities
 
         public override AxisAlignedBb GetAaBb()
         {
-            return base.GetAaBb() + new PlanarVector(0, 1);
+            return base.GetAaBb();
         }
 
         public int AttackValue { get; set; }

@@ -1,3 +1,5 @@
+using GlLib.Utils;
+
 namespace GlLib.Common.Map.Blocks
 {
     public class GrassBlock : TerrainBlock

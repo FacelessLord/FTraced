@@ -74,8 +74,8 @@ namespace GlLib.Common.Entities
                     .FirstOrDefault(_e => _e is Player);
 
                 if (!(Target is null) &&
-                    (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
-                    MoveToTarget();
+                    (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1) ;
+//                    MoveToTarget();
             }
             
             base.Update();

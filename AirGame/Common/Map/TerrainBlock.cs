@@ -1,6 +1,7 @@
 using System.Net.Json;
 using GlLib.Client.API;
 using GlLib.Common.API;
+using GlLib.Utils;
 
 namespace GlLib.Common.Map
 {
@@ -37,6 +38,11 @@ namespace GlLib.Common.Map
         public virtual bool RequiresSpecialRenderer(World _world, int _x, int _y)
         {
             return false;
+        }
+
+        public virtual AxisAlignedBb GetCollisionBox()
+        {
+            return null;
         }
 
         public virtual IBlockRenderer GetSpecialRenderer(World _world, int _x, int _y)

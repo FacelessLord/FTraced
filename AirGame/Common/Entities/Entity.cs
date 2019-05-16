@@ -107,7 +107,7 @@ namespace GlLib.Common.Entities
 
         public virtual AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(1, 1);
+            return Position.ToPlanar().ExpandBothTo(1.25, 1.25);
         }
 
         public TerrainBlock GetUnderlyingBlock()
@@ -139,11 +139,28 @@ namespace GlLib.Common.Entities
             var oldChunk = chunkObj;
             var accuracy = 20;
             var dvel = velocity / accuracy;
+            int prevBlockX = Position.Ix;
+            int prevBlockY = Position.Iy;
+
             for (var i = 0; i < accuracy; i++)
             {
                 Position = Position + dvel;
                 if (chunkObj != null && chunkObj.isLoaded)
                 {
+                    if (Position.Ix != prevBlockX || Position.Iy != prevBlockY)
+                    {
+                        var block = chunkObj[Position.Ix / 16, Position.Iy / 16];
+                        var blockBox = block.GetCollisionBox();
+                        double x = Position.x - Position.Ix;
+                        double y = Position.y - Position.Iy;
+                        if (blockBox != null && blockBox.IsVectorInside(x, y))
+                        {
+                            Position = oldPos;
+                            velocity = new PlanarVector();
+                            continue;
+                        }
+                    }
+
                     if (chunkObj != oldChunk) worldObj.ChangeEntityChunk(this, oldChunk, chunkObj);
                 }
                 else
