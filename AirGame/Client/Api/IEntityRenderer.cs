@@ -19,7 +19,7 @@ namespace GlLib.Client.API
         public void CallRender(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
-            if (_e is EntityLiving el && el.IsTakingDamage)
+            if (_e is EntityLiving el && el.DamageTimer > 0)
                 GL.Color3(1.0, 0.5, 0.5);
             if(_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);

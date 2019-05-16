@@ -19,7 +19,7 @@ namespace GlLib.Common.Entities
             Health = _health;
             MaxHealth = _health;
 
-            IsTakingDamage = false;
+            DamageTimer = -1;
         }
 
         public EntityLiving()
@@ -27,13 +27,13 @@ namespace GlLib.Common.Entities
             Armor = 0;
             Health = 100;
             MaxHealth = 100;
-            IsTakingDamage = false;
+            DamageTimer = -1;
         }
 
         public float Health { get; protected set; }
         public float MaxHealth { get; protected set; }
         public bool GodMode { get; protected set; }
-        public bool IsTakingDamage { get; private set; } // TODO
+        public int DamageTimer { get; private set; }
 
         private ushort _armor;
 
@@ -62,7 +62,7 @@ namespace GlLib.Common.Entities
                 collection.Add(new JsonNumericValue("Health", Health));
                 collection.Add(new JsonNumericValue("MaxHealth", MaxHealth));
                 collection.Add(new JsonStringValue("GodMode", GodMode + ""));
-                collection.Add(new JsonStringValue("IsTakingDamage", IsTakingDamage + ""));
+                collection.Add(new JsonNumericValue("IsTakingDamage", DamageTimer));
             }
 
             return obj;
@@ -78,8 +78,18 @@ namespace GlLib.Common.Entities
                 Health = (float)((JsonNumericValue)collection[9]).Value;
                 MaxHealth = (float)((JsonNumericValue)collection[10]).Value;
                 GodMode = ((JsonStringValue)collection[11]).Value == "True";
-                IsTakingDamage = ((JsonStringValue)collection[12]).Value == "True";
+                DamageTimer = (int) ((JsonNumericValue)collection[12]).Value;
             }
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            if (Health <= 0 && DamageTimer == 0)
+                SetDead();
+            if (DamageTimer > 0)
+                DamageTimer--;
         }
 
         public void DealDamage(float _damage)
@@ -89,12 +99,13 @@ namespace GlLib.Common.Entities
             var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
             if (takenDamage >= Health)
             {
-                SetDead();
                 Health = 0;
+                DamageTimer += 1;
                 SidedConsole.WriteLine("Dead");
             }
             else
             {
+                DamageTimer += 8;
                 Health -= takenDamage;
             }
             SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
