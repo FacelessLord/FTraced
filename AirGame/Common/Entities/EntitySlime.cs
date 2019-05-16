@@ -66,8 +66,6 @@ namespace GlLib.Common.Entities
         //public override Mov
         public override void Update()
         {
-            base.Update();
-
             var entities = worldObj.GetEntitiesWithinAaBb(AttackRange);
             if (InternalTime % UpdateFrame == 0 ||
                 (!(Target is null) && Target.IsDead))
@@ -79,6 +77,8 @@ namespace GlLib.Common.Entities
                     (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
                     MoveToTarget();
             }
+            
+            base.Update();
         }
 
         public override void OnCollideWith(Entity _obj)

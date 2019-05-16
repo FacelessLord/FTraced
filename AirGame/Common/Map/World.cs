@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
@@ -11,10 +12,10 @@ namespace GlLib.Common.Map
     public class World
     {
         public Chunk[,] chunks;
-        public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
+        public ThreadSafeList<(Entity e, Chunk chk)> entityAddQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
 
         public Mutex entityMutex = new Mutex();
-        public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
+        public ThreadSafeList<(Entity e, Chunk chk)> entityRemoveQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
         public int height;
 
         public JsonObjectCollection jsonObj;
@@ -90,11 +91,11 @@ namespace GlLib.Common.Map
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = _aabb.EndXi / 16;
-            var chkEndY = _aabb.EndYi / 16;
+            var chkEndX = chkStartX + _aabb.Width / 16;
+            var chkEndY = chkStartY + _aabb.Height / 16;
 
-            for (var i = chkStartX; i <= chkEndX; i++)
-            for (var j = chkStartY; j <= chkEndY; j++)
+            for (var i = chkStartX - 1; i <= chkEndX + 1; i++)
+            for (var j = chkStartY - 1; j <= chkEndY + 1; j++)
             {
                 if (i >= 0 && j >= 0 && i < width && j < height)
                 {
@@ -102,22 +103,20 @@ namespace GlLib.Common.Map
                     if (chk != null) chunks.Add(chk);
                 }
             }
-
-            SidedConsole.WriteLine(chunks.Any());
 
             return chunks.SelectMany(_c => _c.entities);
         }
 
-        public IEnumerable<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
+        public ThreadSafeList<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
         {
-            var chunks = new List<Chunk>();
+            var chunks = new ThreadSafeList<Chunk>();
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = _aabb.EndXi / 16;
-            var chkEndY = _aabb.EndYi / 16;
-            for (var i = chkStartX; i <= chkEndX; i++)
-            for (var j = chkStartY; j <= chkEndY; j++)
+            var chkEndX = chkStartX + _aabb.Width / 16;
+            var chkEndY = chkStartY + _aabb.Height / 16;
+            for (var i = chkStartX - 1; i <= chkEndX + 1; i++)
+            for (var j = chkStartY - 1; j <= chkEndY + 1; j++)
             {
                 if (i >= 0 && j >= 0 && i < width && j < height)
                 {
@@ -126,7 +125,7 @@ namespace GlLib.Common.Map
                 }
             }
 
-            return chunks.SelectMany(_c => _c.entities).Where(_entity => _entity.GetAaBb().IntersectsWith(_aabb));
+            return chunks.SelectMany(_c => _c.entities).ThreadSafeWhere(_entity => _entity.GetAaBb().IntersectsWith(_aabb)).ToThreadSafeList();
         }
     }
 }

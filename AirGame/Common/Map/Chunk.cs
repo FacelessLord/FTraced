@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
@@ -17,7 +18,7 @@ namespace GlLib.Common.Map
         public int chunkX;
         public int chunkY;
 
-        public List<Entity> entities;
+        public ThreadSafeList<Entity> entities;
 
         public bool isLoaded;
 
@@ -29,7 +30,7 @@ namespace GlLib.Common.Map
             chunkX = _x;
             chunkY = _y;
             blocks = new TerrainBlock[16, 16];
-            entities = new List<Entity>();
+            entities = new ThreadSafeList<Entity>();
         }
 
         public TerrainBlock this[int _i, int _j]

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Json;
 using GlLib.Client.API;
 using GlLib.Client.Graphic.Renderers;
@@ -25,12 +26,12 @@ namespace GlLib.Common.Entities
         public PlanarVector velocity = new PlanarVector();
         public Direction direction = Direction.Right;
         public World worldObj;
-        
+
         private EntityRenderer _renderer = new StandardRenderer();
 
         public EntityState state = EntityState.Idle;
         public int timeout = -1;
-        
+
 
         public Entity(World _world, RestrictedVector3D _position)
         {
@@ -68,7 +69,7 @@ namespace GlLib.Common.Entities
                 timeout = _timeout;
             }
         }
-        
+
 
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
@@ -125,13 +126,11 @@ namespace GlLib.Common.Entities
                 state = EntityState.Idle;
                 timeout = -1;
             }
-            
+
             MoveEntity();
             velocity *= 0.85;
             //TODO select most efficient way of iteration to avoid CME
-            var entities = worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), Position.z);
-            foreach (var entity in entities)
-                OnCollideWith(entity);
+            worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), Position.z).ToList().ForEach(OnCollideWith);
         }
 
         private void MoveEntity()
@@ -250,11 +249,16 @@ namespace GlLib.Common.Entities
 
     public enum Direction
     {
-        Up, Left, Down, Right
+        Up,
+        Left,
+        Down,
+        Right
     }
-    
+
     public enum EntityState
     {
-        Idle, Walk, Attack
+        Idle,
+        Walk,
+        Attack
     }
 }
