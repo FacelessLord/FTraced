@@ -10,6 +10,24 @@
         15,
         15
       ],
+      "block": "block.outdoor.darkgrass"
+    },
+    "Rect1": {
+      "borders": [
+        3,
+        4,
+        8,
+        7
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect2": {
+      "borders": [
+        4,
+        5,
+        9,
+        8
+      ],
       "block": "block.outdoor.grass"
     }
   },
@@ -22,7 +40,7 @@
         15,
         15
       ],
-      "block": "block.outdoor.grass"
+      "block": "block.outdoor.darkgrass"
     }
   },
   "2,0": {
@@ -67,17 +85,118 @@
       "borders": [
         0,
         0,
+        3,
+        3
+      ],
+      "block": "block.outdoor.darkgrass"
+    },
+    "Rect1": {
+      "borders": [
+        4,
+        0,
+        4,
+        3
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect2": {
+      "borders": [
+        5,
+        0,
+        7,
+        1
+      ],
+      "block": "block.outdoor.darkgrass"
+    },
+    "Rect3": {
+      "borders": [
+        4,
+        1,
+        7,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect4": {
+      "borders": [
+        8,
+        0,
+        10,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect5": {
+      "borders": [
+        9,
+        0,
+        11,
+        2
+      ],
+      "block": "block.outdoor.darkgrass"
+    },
+    "Rect6": {
+      "borders": [
+        12,
+        0,
         15,
         15
       ],
       "block": "block.outdoor.grass"
+    },
+    "Rect7": {
+      "borders": [
+        0,
+        4,
+        3,
+        13
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect8": {
+      "borders": [
+        0,
+        14,
+        3,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect9": {
+      "borders": [
+        11,
+        2,
+        11,
+        15
+      ],
+      "block": "block.outdoor.grass"
     }
+    
+
   },
   "1,2": {
 
     "Rect0": {
       "borders": [
         0,
+        0,
+        8,
+        15
+      ],
+      "block": "block.outdoor.grass"
+    },
+    "Rect1": {
+      "borders": [
+        9,
+        0,
+        12,
+        15
+      ],
+      "block": "block.indoor.bricks"
+    },
+    "Rect2": {
+      "borders": [
+        13,
         0,
         15,
         15
@@ -94,7 +213,7 @@
         15,
         15
       ],
-      "block": "block.indoor.bricks"
+      "block": "block.outdoor.grass"
     }
   }
 }

@@ -20,9 +20,9 @@ namespace GlLib.Client.Graphic.Renderers
             var walk = new TextureLayout("dwarf.png",0, 32, 38*8, 32*2, 8, 1);
             var attack = new TextureLayout("dwarf.png",0, 32*3+2, 38*6, 32*4, 6, 1);
             
-            idleSprite = new LinearSprite(idle, 5, 6);
-            walkSprite = new LinearSprite(walk, 8, 6);
-            attackSprite = new LinearSprite(attack, 6, 6);
+            idleSprite = new LinearSprite(idle, 5, 12);
+            walkSprite = new LinearSprite(walk, 8, 12);
+            attackSprite = new LinearSprite(attack, 6, 12);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

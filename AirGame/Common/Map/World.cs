@@ -103,7 +103,7 @@ namespace GlLib.Common.Map
                 }
             }
 
-            SidedConsole.WriteLine(chunks.Any());
+            //SidedConsole.WriteLine(chunks.Any());
 
             return chunks.SelectMany(_c => _c.entities);
         }
