@@ -53,6 +53,9 @@ namespace GlLib.Client
                 player.data = Proxy.GetServer().GetDataFor(player, password);
                 Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             }
+            var pile = new BonePile();
+            pile.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+            world.SpawnEntity(pile);
 
 //            SidedConsole.WriteLine("Loading window");
             Proxy.GetWindow().OnClientStarted();

@@ -90,7 +90,7 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving)
+            if (_obj is EntityLiving && InternalTime % UpdateFrame == 0)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
