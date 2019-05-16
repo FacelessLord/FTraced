@@ -7,7 +7,7 @@ namespace GlLib.Common.Map
 {
     public abstract class TerrainBlock : IJsonSerializable
     {
-        protected const string Path = @"blocks\";
+        protected const string Path = @"blocks/";
         public int id = -1;
 
         /// <summary>
