@@ -68,7 +68,11 @@ namespace GlLib.Common.Entities
             }
         }
 
-
+        private void CheckVelocity()
+        {
+            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
+            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
+        }
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
@@ -129,6 +133,7 @@ namespace GlLib.Common.Entities
             if (isVelocityDinamic) velocity *= 0.85;
             //TODO select most efficient way of iteration to avoid CME
             worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb(), Position.z).Where(_e => _e != this).ToList().ForEach(OnCollideWith);
+            CheckVelocity();
         }
 
         private void MoveEntity()

@@ -23,6 +23,11 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new BoxRenderer());
         }
 
+
+        private void Initialize()
+        {
+            maxVel = new PlanarVector();
+        }
         public override void OnDead()
         {
             if (Proxy.GetWindow().serverStarted)
@@ -42,6 +47,19 @@ namespace GlLib.Common.Entities
                     worldObj.SpawnEntity(new EntitySlime(
                         worldObj, Position));
             }
+        }
+
+        public override void OnCollideWith(Entity _obj)
+        {
+            _obj.velocity /= 2;
+            velocity += _obj.velocity;
+            CheckVelocity();
+        }
+
+        public void CheckVelocity()
+        {
+            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
+            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
         }
 
         public override AxisAlignedBb GetAaBb()

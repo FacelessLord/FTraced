@@ -24,7 +24,6 @@ namespace GlLib.Client.Input
                 _p.direction = Direction.Left;
                 _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
-                _p.CheckVelocity();
             }
         };
 
@@ -34,7 +33,7 @@ namespace GlLib.Client.Input
             {
                 _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(0, -_p.accelerationValue);
-                _p.CheckVelocity();
+       
             }
         };
 
@@ -45,7 +44,7 @@ namespace GlLib.Client.Input
                 _p.SetState(EntityState.Walk, 3);
                 _p.direction = Direction.Right;
                 _p.velocity += new PlanarVector(_p.accelerationValue, 0);
-                _p.CheckVelocity();
+        
             }
         };
 
@@ -55,7 +54,7 @@ namespace GlLib.Client.Input
             {
                 _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(0, _p.accelerationValue);
-                _p.CheckVelocity();
+           
             }
         };
 
