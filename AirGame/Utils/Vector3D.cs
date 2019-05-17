@@ -294,6 +294,9 @@ namespace GlLib.Utils
 
         public double Width => endX - startX;
         public double Height => endY - startY;
+        
+        public int WidthI => EndXi - StartXi;
+        public int HeightI => EndYi - StartYi;
 
         public bool IsVectorInside(PlanarVector _vector)
         {
