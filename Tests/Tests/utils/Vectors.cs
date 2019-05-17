@@ -154,14 +154,6 @@ namespace Tests.utils
         }
 
         [Test]
-        public void RestrictedVector3D_To_Planar()
-        {
-            var v1 = new RestrictedVector3D(1, 2, 0);
-            v1.ToPlanar().Should()
-                .BeEquivalentTo(new PlanarVector(1, 2), "planar vec is a projection of restricted vec");
-        }
-
-        [Test]
         public void RestrictedVector3D_Sub_Not_Same_Height()
         {
             //Arrange

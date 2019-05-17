@@ -109,7 +109,12 @@ namespace GlLib.Common.Entities
 
         public virtual AxisAlignedBb GetAaBb()
         {
-            return new PlanarVector().ExpandBothTo(0.375,0.75);
+            return new AxisAlignedBb(-0.375,-0.75, 0.375,0.75);
+        }
+        
+        public virtual AxisAlignedBb GetTranslatedAaBb()
+        {
+            return GetAaBb().Translate(Position);
         }
         
         public TerrainBlock GetUnderlyingBlock()
@@ -131,8 +136,7 @@ namespace GlLib.Common.Entities
 
             MoveEntity();
             if (isVelocityDinamic) velocity *= 0.85;
-            //TODO select most efficient way of iteration to avoid CME
-            worldObj.GetEntitiesWithinAaBbAndHeight(GetAaBb() + Position.ToPlanar(), Position.z)
+            worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z)
                 .Where(_e => _e != this).ToList().ForEach(OnCollideWith);
             CheckVelocity();
         }
@@ -285,6 +289,7 @@ namespace GlLib.Common.Entities
     {
         Idle,
         Walk,
-        Attack
+        AoeAttack,
+        DirectedAttack
     }
 }

@@ -28,6 +28,7 @@ namespace GlLib.Common.Entities
         {
             maxVel = new PlanarVector();
         }
+
         public override void OnDead()
         {
             if (Proxy.GetWindow().serverStarted)
@@ -64,7 +65,7 @@ namespace GlLib.Common.Entities
 
         public override AxisAlignedBb GetAaBb()
         {
-            return new PlanarVector().ExpandBothTo(0.5, 1);
+            return new AxisAlignedBb(-0.5, -1, 0.5, 1);
         }
 
         public override string GetName()

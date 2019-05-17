@@ -29,7 +29,7 @@ namespace GlLib.Common.Entities
 
         public override AxisAlignedBb GetAaBb()
         {
-            return new PlanarVector().ExpandBothTo(3,6);
+            return new AxisAlignedBb(-3, -6, 3, 6);
         }
 
         public override void Update()

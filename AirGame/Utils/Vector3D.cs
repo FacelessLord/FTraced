@@ -3,19 +3,17 @@ using System.Globalization;
 
 namespace GlLib.Utils
 {
-    public class RestrictedVector3D
+    public class RestrictedVector3D : PlanarVector
     {
-        public double x;
-        public double y;
         public int z;
 
         public RestrictedVector3D()
         {
         }
 
-        public RestrictedVector3D(double _x, double _y, int _z)
+        public RestrictedVector3D(double _x, double _y, int _z) : base(_x,_y)
         {
-            (x, y, z) = (_x, _y, _z);
+            z = _z;
         }
 
         public int Ix => (int) Math.Floor(x);
@@ -126,11 +124,6 @@ namespace GlLib.Utils
                 hashCode = (hashCode * 397) ^ z;
                 return hashCode;
             }
-        }
-
-        public PlanarVector ToPlanar()
-        {
-            return new PlanarVector(x, y);
         }
     }
 
@@ -321,8 +314,6 @@ namespace GlLib.Utils
             var halfWidth = Width/2 + _box.Width/2;
             var halfHeight = Height/2 + _box.Height/2;
 
-            if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
-                SidedConsole.WriteLine(this + " | " + _box);
             //TODO it's magic check please
             return Math.Abs(cx1 - cx2) <= halfWidth*1.5 && Math.Abs(cy1 - cy2) <= halfHeight*1.5;
         }
@@ -330,6 +321,15 @@ namespace GlLib.Utils
         public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)
         {
             return new AxisAlignedBb(_a.startX + _v.x, _a.startY + _v.y, _a.endX + _v.x, _a.endY + _v.y);
+        }
+        
+        public AxisAlignedBb Translate(PlanarVector _v)
+        {
+            startX += _v.x;
+            startY += _v.y;
+            endX += _v.x;
+            endY += _v.y;
+            return this;
         }
 
         public override bool Equals(object _obj)

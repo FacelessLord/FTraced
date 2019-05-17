@@ -36,18 +36,18 @@ namespace GlLib.Common.Entities
 
         public override AxisAlignedBb GetAaBb()
         {
-            return new PlanarVector().ExpandBothTo(0.5, 1);
+            return new AxisAlignedBb(-0.5, -1, 0.5, 1);
         }
         
         public override void Update()
         {
             base.Update();
 
-            if (velocity.Length == 0)
-                SetDead(true);
+            if (Math.Abs(velocity.Length) < 1e-3)
+                SetDead();
 
             if (InternalTime > DieTime)
-                SetDead(true);
+                SetDead();
         }
 
         public override void OnCollideWith(Entity _obj)

@@ -70,7 +70,7 @@ namespace GlLib.Common.Entities
         //public override Mov
         public override void Update()
         {
-            var entities = worldObj.GetEntitiesWithinAaBb(Position.ToPlanar().ExpandBothTo(AttackRange, AttackRange));
+            var entities = worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AttackRange, AttackRange));
 
             if (Target is null && !(entities is null))
             {
@@ -85,7 +85,7 @@ namespace GlLib.Common.Entities
                     .FirstOrDefault(_e => _e is Player);
 
                 if (!(Target is null) &&
-                    (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
+                    (Target.Position - position).Length > 1)
                     MoveToTarget();
             }
 
@@ -103,7 +103,7 @@ namespace GlLib.Common.Entities
 
         private void MoveToTarget()
         {
-            velocity = Target.Position.ToPlanar() - position.ToPlanar();
+            velocity = Target.Position - position;
             velocity.Normalize();
             velocity /= 5;
         }

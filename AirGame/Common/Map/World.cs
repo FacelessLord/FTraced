@@ -104,7 +104,7 @@ namespace GlLib.Common.Map
                 }
             }
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => (_entity.GetAaBb() + _entity.Position.ToPlanar()).IntersectsWith(_aabb))
+                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
                 .ToThreadSafeList();
         }
 
@@ -127,7 +127,7 @@ namespace GlLib.Common.Map
             }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => (_entity.GetAaBb() + _entity.Position.ToPlanar()).IntersectsWith(_aabb))
+                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
                 .ToThreadSafeList();
         }
     }

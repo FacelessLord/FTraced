@@ -92,8 +92,12 @@ namespace GlLib.Client.Input
 
         public static Action<Player> attack = _p =>
         {
-            _p.SetState(EntityState.Attack, 6);
-            var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(_p.GetAaBb() + _p.Position.ToPlanar(), _p.Position.z);
+            var vel = _p.velocity.Normalized;
+            if (Math.Abs(vel.Length) < 1e-4)
+                _p.SetState(EntityState.AoeAttack, 6);
+            else
+                _p.SetState(EntityState.DirectedAttack, 6);
+            var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(_p.GetTranslatedAaBb() + vel, _p.Position.z);
             entities.Where(_e => _e is EntityLiving && _e != _p).Cast<EntityLiving>().ToList()
                 .ForEach(_e => _e.DealDamage(30));
         };
