@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using GlLib.Client.Graphic.Renderers;
+using GlLib.Common.Map;
+using GlLib.Utils;
+
+namespace GlLib.Common.Entities.Items
+{
+    internal class Potion : Entity
+    {
+        public Potion()
+        {
+            SetCustomRenderer(new CoinRenderer());
+        }
+        public Potion(World _world, RestrictedVector3D _position) : base(_world, _position)
+        {
+            SetCustomRenderer(new PotionRenderer());
+        }
+        public Potion(World _world, RestrictedVector3D _position, PlanarVector _velocity) : base(_world, _position)
+        {
+            velocity = _velocity;
+            SetCustomRenderer(new PotionRenderer());
+        }
+
+        public override void OnCollideWith(Entity _obj)
+        {
+            if (_obj is Player p)
+            {
+                p.DealDamage(-10);
+                SetDead();
+            }
+        }
+
+        public override string GetName()
+        {
+            return "entity.coin";
+        }
+    }
+}

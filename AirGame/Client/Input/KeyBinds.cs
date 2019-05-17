@@ -7,6 +7,7 @@ using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Common.Entities.Items;
 
 namespace GlLib.Client.Input
 {
@@ -73,7 +74,7 @@ namespace GlLib.Client.Input
         public static Action<Player> spawnSlime = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
-                _p.worldObj.SpawnEntity(new Coin(_p.worldObj, _p.Position));
+                _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
@@ -92,7 +93,27 @@ namespace GlLib.Client.Input
                 .ForEach(_e => _e.DealDamage(30));
         };
 
+        public static Action<Player> spawnBox = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new Box(_p.worldObj, _p.Position));
+        };
+        public static Action<Player> spawnPile = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new BonePile(_p.worldObj, _p.Position));
+        };
 
+        public static Action<Player> spawnStreetlight = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new Streetlight(_p.worldObj, _p.Position));
+        };
+        public static Action<Player> spawnPotion = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new Potion(_p.worldObj, _p.Position));
+        };
 
         public static void Register()
         {
@@ -104,7 +125,14 @@ namespace GlLib.Client.Input
             BindClick(Key.Escape, openIngameMenu, "gui.menu");
             BindClick(Key.Grave, exit, "exit");
             BindClick(Key.Space, attack, "world.attack");
+
             BindClick(Key.G, spawnSlime, "world.spawn.slime");
+
+            BindClick(Key.Keypad1, spawnBox, "world.spawn.Box");
+            BindClick(Key.Keypad2, spawnPile, "world.spawn.Pile");
+            BindClick(Key.Keypad3, spawnStreetlight, "world.spawn.Streetlight");
+            BindClick(Key.Keypad4, spawnPotion, "world.spawn.Potion");
+
 
             BindClick(Key.Number1, spellAir, "spell.air");
             BindClick(Key.Number2, spellEarth, "spell.earth");

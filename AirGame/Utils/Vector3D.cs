@@ -143,6 +143,15 @@ namespace GlLib.Utils
         {
         }
 
+        public static PlanarVector GetRandom(double _range)
+        {
+            var r = new Random();
+
+            return new PlanarVector(
+                (2 * r.NextDouble() - 1) * _range,
+                (2 * r.NextDouble() - 1) * _range);
+
+        }
         public PlanarVector(double _x, double _y)
         {
             (x, y) = (_x, _y);

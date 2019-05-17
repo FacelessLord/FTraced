@@ -14,6 +14,11 @@ namespace GlLib.Common.Entities
         {
             SetCustomRenderer(new CoinRenderer());
         }
+        public Coin(World _world, RestrictedVector3D _position, PlanarVector _velocity) : base(_world, _position)
+        {
+            velocity = _velocity;
+            SetCustomRenderer(new CoinRenderer());
+        }
 
         public override void OnCollideWith(Entity _obj)
         {

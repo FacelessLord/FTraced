@@ -1,24 +1,28 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
 namespace GlLib.Common.Entities
 {
-    public class EntitySlime : EntityLiving, ISmart, IAttacker
+    internal class Bat : EntityLiving
     {
+
         internal long InternalTime
             => DateTime.Now.Ticks - _spawnTime;
 
         private const int UpdateFrame = 12;
         private long _spawnTime;
-        public EntitySlime()
+
+        public Bat()
         {
             Initialize();
         }
 
-        public EntitySlime(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
+        public Bat(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
         {
             SetCustomRenderer(new SlimeRenderer());
             Initialize();
@@ -36,10 +40,10 @@ namespace GlLib.Common.Entities
 
         public override string GetName()
         {
-            return "entity.living.slime";
+            return "entity.living.bat";
         }
 
-        public EntitySlime(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
+        public Bat(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
         {
             InMove = _inMove;
             InWaiting = _inWaiting;
@@ -84,7 +88,7 @@ namespace GlLib.Common.Entities
                     (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
                     MoveToTarget();
             }
-            
+
             base.Update();
         }
 
@@ -96,16 +100,12 @@ namespace GlLib.Common.Entities
 
         private void MoveToTarget()
         {
-            velocity =  Target.Position.ToPlanar() - position.ToPlanar();
+            velocity = Target.Position.ToPlanar() - position.ToPlanar();
             velocity.Normalize();
             velocity /= 5;
         }
 
         public int AttackValue { get; set; }
-
-        //public static EntitySlime GetRandom()
-        //{
-        //    //TODO
-        //}
     }
 }
+

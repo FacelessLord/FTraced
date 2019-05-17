@@ -57,10 +57,7 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public bool IsDead
-        {
-            get { return isDead; }
-        }
+        public bool IsDead { get; }
 
         public void SetState(EntityState _state, int _timeout)
         {
@@ -191,11 +188,16 @@ namespace GlLib.Common.Entities
 
         public void SetDead(bool _dead = true)
         {
+            OnDead();
             isDead = _dead;
             lock (worldObj.entityRemoveQueue)
             {
                 worldObj.entityRemoveQueue.Add((this, chunkObj));
             }
+        }
+        public virtual void OnDead()
+        {
+
         }
 
         public virtual void OnCollideWith(Entity _obj)

@@ -12,7 +12,7 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving, IAttacker
     {
-        public double accelerationValue = 0.03;
+        public double accelerationValue = 0.02;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
         public string nickname = "Player";

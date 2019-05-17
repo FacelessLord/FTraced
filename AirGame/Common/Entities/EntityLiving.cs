@@ -110,7 +110,6 @@ namespace GlLib.Common.Entities
             }
             SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
         }
-
         public override string GetName()
         {
             return "entity.entityLiving";

@@ -20,14 +20,14 @@ namespace GlLib.Client.Graphic.Renderers
             var walk = new TextureLayout("dwarf.png", 0, 32, 38 * 8, 32 * 2, 8, 1);
             var attack = new TextureLayout("dwarf.png", 0, 32 * 4 + 2, 38 * 2, 32 * 5, 2, 1);
 
-            idleSprite = new LinearSprite(idle, 5, 6);
-            walkSprite = new LinearSprite(walk, 8, 6);
-            attackSprite = new LinearSprite(attack, 2, 6);
+            idleSprite = new LinearSprite(idle, 5, 12);
+            walkSprite = new LinearSprite(walk, 8, 12);
+            attackSprite = new LinearSprite(attack, 2, 12);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            GL.PushMatrix();
+
             switch (_e.state)
             {
                 case (EntityState.Idle):
@@ -40,8 +40,6 @@ namespace GlLib.Client.Graphic.Renderers
                     attackSprite.Render();
                     break;
             }
-
-            GL.PopMatrix();
         }
     }
 }
