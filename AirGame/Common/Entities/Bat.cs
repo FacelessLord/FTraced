@@ -24,7 +24,7 @@ namespace GlLib.Common.Entities
 
         public Bat(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
         {
-            SetCustomRenderer(new SlimeRenderer());
+            SetCustomRenderer(new BatRenderer());
             Initialize();
         }
 
@@ -33,7 +33,7 @@ namespace GlLib.Common.Entities
         {
             //TODO move to server time
             _spawnTime = DateTime.Now.Ticks;
-            SetCustomRenderer(new SlimeRenderer());
+            SetCustomRenderer(new BatRenderer());
             AttackRange = position.ToPlanar().ExpandBothTo(1, 1);
             AttackValue = 5;
         }

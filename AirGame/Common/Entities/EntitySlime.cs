@@ -90,7 +90,10 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving && InternalTime % UpdateFrame == 0)
+            if (_obj is EntityLiving 
+                && !(_obj is EntitySlime)
+                && InternalTime % UpdateFrame == 0 
+                && InternalTime > 30000000)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
@@ -99,6 +102,11 @@ namespace GlLib.Common.Entities
             velocity =  Target.Position.ToPlanar() - position.ToPlanar();
             velocity.Normalize();
             velocity /= 5;
+        }
+
+        public override AxisAlignedBb GetAaBb()
+        {
+            return Position.ToPlanar().ExpandBothTo(2, 1);
         }
 
         public int AttackValue { get; set; }

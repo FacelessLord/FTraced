@@ -76,6 +76,12 @@ namespace GlLib.Client.Input
                 _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
         };
 
+        public static Action<Player> spawnBat = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new Bat(_p.worldObj, _p.Position));
+        };
+
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
         public static Action<Player> spellFire = _p => { _p.spells.OnUpdate(ElementType.Fire); };
@@ -95,7 +101,11 @@ namespace GlLib.Client.Input
         public static Action<Player> spawnBox = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
-                _p.worldObj.SpawnEntity(new Box(_p.worldObj, _p.Position));
+            {
+                var box = new Box(_p.worldObj, _p.Position);
+                box.velocity += _p.velocity.Normalized;
+                _p.worldObj.SpawnEntity(box);
+            }
         };
         public static Action<Player> spawnPile = _p =>
         {
@@ -126,6 +136,7 @@ namespace GlLib.Client.Input
             BindClick(Key.Space, attack, "world.attack");
 
             BindClick(Key.G, spawnSlime, "world.spawn.slime");
+            BindClick(Key.B, spawnBat, "world.spawn.bat");
 
             BindClick(Key.Keypad1, spawnBox, "world.spawn.Box");
             BindClick(Key.Keypad2, spawnPile, "world.spawn.Pile");
