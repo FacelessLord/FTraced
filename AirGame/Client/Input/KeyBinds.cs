@@ -101,7 +101,11 @@ namespace GlLib.Client.Input
         public static Action<Player> spawnBox = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
-                _p.worldObj.SpawnEntity(new Box(_p.worldObj, _p.Position));
+            {
+                var box = new Box(_p.worldObj, _p.Position);
+                box.velocity += _p.velocity.Normalized;
+                _p.worldObj.SpawnEntity(box);
+            }
         };
         public static Action<Player> spawnPile = _p =>
         {
