@@ -90,11 +90,6 @@ namespace GlLib.Common.Entities
             return obj;
         }
 
-        public void CheckVelocity()
-        {
-            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
-            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
-        }
 
         public override AxisAlignedBb GetAaBb()
         {
