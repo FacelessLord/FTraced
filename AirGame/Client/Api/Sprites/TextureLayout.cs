@@ -58,7 +58,7 @@ namespace GlLib.Client.Api.Sprites
             var dv = endV - startV;
 
             GL.PushMatrix();
-            GL.ClearColor(0, 0, 0, 2);
+//            GL.ClearColor(0, 0, 0, 2);
             GL.Scale(2, 2, 1);
             Vertexer.BindTexture(texture);
             Vertexer.StartDrawingQuads();

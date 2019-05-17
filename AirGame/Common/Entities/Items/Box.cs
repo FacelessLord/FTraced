@@ -16,8 +16,9 @@ namespace GlLib.Common.Entities
             Health = 800;
             SetCustomRenderer(new BoxRenderer());
         }
-        public Box(World _world, RestrictedVector3D _position, uint _health= 800,
-            ushort _armor=1) : base(_health, _armor,_world, _position)
+
+        public Box(World _world, RestrictedVector3D _position, uint _health = 800,
+            ushort _armor = 1) : base(_health, _armor, _world, _position)
         {
             SetCustomRenderer(new BoxRenderer());
         }
@@ -41,6 +42,11 @@ namespace GlLib.Common.Entities
                     worldObj.SpawnEntity(new EntitySlime(
                         worldObj, Position));
             }
+        }
+
+        public override AxisAlignedBb GetAaBb()
+        {
+            return Position.ToPlanar().ExpandBothTo(2, 2);
         }
 
         public override string GetName()

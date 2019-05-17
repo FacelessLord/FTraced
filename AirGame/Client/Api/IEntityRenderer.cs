@@ -1,5 +1,6 @@
 using System;
 using GlLib.Client.Api.Sprites;
+using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK.Graphics;
@@ -12,7 +13,8 @@ namespace GlLib.Client.API
         protected const string SimpleStructPath = @"simple_structs/";
         protected const string SystemPath = @"system/";
 
-        protected Color4 OnDamage = new Color4(1,0,0,0.0f);
+        protected Color4 OnDamage = new Color4(1,0,0,1.0f);
+        protected Color4 OnHeal = new Color4(0,1,0,1.0f);
         public bool isSetUp;
 
 
@@ -25,10 +27,16 @@ namespace GlLib.Client.API
             }
         }
 
+        public LinearSprite spawnSprite;
+
         public void CallSetup(Entity _e)
         {
             Setup(_e);
             isSetUp = true;
+            
+            spawnSprite = SpawnSprite;
+            spawnSprite.MoveSpriteTo(new PlanarVector(-2,40));
+            spawnSprite.SetColor(new Color4(1,1,1,0.5f));
         }
 
         public abstract void Setup(Entity _e);
@@ -39,14 +47,28 @@ namespace GlLib.Client.API
 
 
             //TODO
-            if (_e is EntityLiving el && el.DamageTimer > 0)
-                GL.Color3(0.5, 5, 0);
+            if (_e is EntityLiving el)
+            {
+                if(el.DamageTimer > 0)
+                    GL.Color4(OnDamage);
+                if(el.DamageTimer < 0)
+                    GL.Color4(OnHeal);
+            }
 
 
             if(_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
-
+            if(_e is EntityLiving)
+            {
+                if (spawnSprite.FullFrameCount < 1)
+                {
+                    var box = _e.GetAaBb();
+                    GL.Scale(box.Width, box.Height, 1);
+                    spawnSprite.Render();
+                }
+            }
+            GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
             GL.PopMatrix();
         }
 

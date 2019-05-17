@@ -13,7 +13,8 @@ namespace GlLib.Client.Api.Sprites
         public TextureLayout texture;
         public bool frozen = false;
         private PlanarVector _moveTo ;
-        private Color4 color;
+        private Color4 color= new Color4(1,1,1,1.0f);
+        private bool hasColor = false;
         // ReSharper disable once InconsistentNaming
         private float transparency;
 
@@ -26,7 +27,6 @@ namespace GlLib.Client.Api.Sprites
         public LinearSprite(TextureLayout _texture, int _maxFrameCount, int _step = 1, int _frameCount = 0)
         {
             transparency = 1;
-            color = new Color4(1,1,1,1.0f);
             _frameCount = 0;
             texture = _texture;
             frameCount = _frameCount;
@@ -51,7 +51,7 @@ namespace GlLib.Client.Api.Sprites
 
         public void SetColor(Color4 _color)
         {
-
+            hasColor = true;
             color = _color;
         }
 
@@ -63,16 +63,18 @@ namespace GlLib.Client.Api.Sprites
                 -texture.layout.FrameHeight() - _moveTo.y,
                 0);
 
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+//            GL.Enable(EnableCap.Blend);
+//            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            GL.Color4(color);
+
+            if (hasColor)
+                GL.Color4(color);
             texture.Render(frameCount / step);
             if (!frozen)
                 frameCount = (frameCount + 1) % (maxFrameCount * step);
             //GL.ClearColor(1, 1, 1, transparency);
-            GL.Disable(EnableCap.Blend);
-           // GL.ClearColor(255, 255, 255, 255);
+//            GL.Disable(EnableCap.Blend);
+            GL.Color4(1.0f, 1, 1, 1);
             GL.PopMatrix();
         }
 

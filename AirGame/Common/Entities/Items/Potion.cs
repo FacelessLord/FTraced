@@ -27,7 +27,7 @@ namespace GlLib.Common.Entities.Items
         {
             if (_obj is Player p)
             {
-                p.DealDamage(-10);
+                p.Heal(10);
                 SetDead();
             }
         }

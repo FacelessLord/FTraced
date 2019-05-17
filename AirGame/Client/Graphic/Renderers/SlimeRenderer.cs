@@ -24,8 +24,8 @@ namespace GlLib.Client.Graphic.Renderers
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         { 
             slimeSprite.Render();
-            if (spawnSprite.FullFrameCount< 1)
-                spawnSprite.Render();
+//            if (spawnSprite.FullFrameCount< 1)
+//                spawnSprite.Render();
         }
     }
 }

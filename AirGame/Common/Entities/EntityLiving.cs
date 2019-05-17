@@ -90,6 +90,8 @@ namespace GlLib.Common.Entities
                 SetDead();
             if (DamageTimer > 0)
                 DamageTimer--;
+            if (DamageTimer < 0)
+                DamageTimer++;
         }
 
         public void DealDamage(float _damage)
@@ -100,16 +102,27 @@ namespace GlLib.Common.Entities
             if (takenDamage >= Health)
             {
                 Health = 0;
-                DamageTimer += 1;
+                DamageTimer = 2;
                 SidedConsole.WriteLine("Dead");
             }
             else
             {
-                DamageTimer += 1;
+                DamageTimer = 2;
                 Health -= takenDamage;
             }
             SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
         }
+
+        public void Heal(float _damage)
+        {
+            Health += _damage;
+            DamageTimer = -2;
+            if (Health > MaxHealth)
+            {
+                Health = MaxHealth;
+            }
+        }
+
         public override string GetName()
         {
             return "entity.entityLiving";
