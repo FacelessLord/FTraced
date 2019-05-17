@@ -11,13 +11,13 @@ namespace GlLib.Client.Graphic.Renderers
 {
     class BatRenderer : EntityRenderer
     {
-        public LinearSprite slimeSprite;
+        public LinearSprite batSprite;
         public LinearSprite spawnSprite;
 
         public override void Setup(Entity _p)
         {
-            var layout = new TextureLayout("slimeslime_waiting.png", 7, 1);
-            slimeSprite = new LinearSprite(layout, 22, 20);
+            var layout = new TextureLayout("bat.png", 6, 1);
+            batSprite = new LinearSprite(layout, 6, 20);
             spawnSprite = SpawnSprite;
             spawnSprite.MoveSpriteTo(new PlanarVector(-2, 40));
             spawnSprite.SetColor(new Color4(1, 1, 1, 0.5f));
@@ -25,7 +25,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            slimeSprite.Render();
+            batSprite.Render();
             if (spawnSprite.FullFrameCount < 1)
                 spawnSprite.Render();
         }

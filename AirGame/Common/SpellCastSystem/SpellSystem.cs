@@ -92,7 +92,7 @@ namespace GlLib.Common.SpellCastSystem
                             SpellCaster.worldObj,
                             SpellCaster.Position, 
                             SpellCaster.velocity,
-                            5000000 + 100000 * (uint)averageTime,
+                            6000000 + 100000 * (uint)averageTime,
                             0));
                     return;
                 case (int)ElementType.Water:
