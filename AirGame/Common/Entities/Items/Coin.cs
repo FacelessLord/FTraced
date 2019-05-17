@@ -29,6 +29,11 @@ namespace GlLib.Common.Entities
             }
         }
 
+        public override AxisAlignedBb GetAaBb()
+        {
+            return new AxisAlignedBb(-0.25, -0.5, 0, 0);
+        }
+
         public override string GetName()
         {
             return "entity.coin";

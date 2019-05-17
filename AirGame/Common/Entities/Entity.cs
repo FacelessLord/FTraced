@@ -135,9 +135,16 @@ namespace GlLib.Common.Entities
             }
 
             MoveEntity();
+
             if (isVelocityDinamic) velocity *= 0.85;
-            worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z)
-                .Where(_e => _e != this).ToList().ForEach(OnCollideWith);
+
+
+            foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
+            {
+                OnCollideWith(e);
+            }
+
+
             CheckVelocity();
         }
 

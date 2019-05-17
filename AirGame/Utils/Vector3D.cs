@@ -314,6 +314,8 @@ namespace GlLib.Utils
             var halfWidth = Width/2 + _box.Width/2;
             var halfHeight = Height/2 + _box.Height/2;
 
+            //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
+            //    SidedConsole.WriteLine(this + " | " + _box);
             //TODO it's magic check please
             return Math.Abs(cx1 - cx2) <= halfWidth*1.5 && Math.Abs(cy1 - cy2) <= halfHeight*1.5;
         }

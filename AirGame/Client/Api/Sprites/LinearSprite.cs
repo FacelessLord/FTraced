@@ -1,5 +1,5 @@
-using System;
 using GlLib.Utils;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -7,22 +7,20 @@ namespace GlLib.Client.Api.Sprites
 {
     public class LinearSprite : ISprite
     {
+        private long _frameCount;
+        private PlanarVector _moveTo;
+        private Color4 color = new Color4(1, 1, 1, 1.0f);
         public int frameCount;
+        public bool frozen;
+        private bool hasColor;
         public int maxFrameCount;
+
+        private Vector3 scale;
         public int step;
         public TextureLayout texture;
-        public bool frozen = false;
-        private PlanarVector _moveTo ;
-        private Color4 color= new Color4(1,1,1,1.0f);
-        private bool hasColor = false;
+
         // ReSharper disable once InconsistentNaming
         private float transparency;
-
-        private long _frameCount;
-        public long FullFrameCount
-        {
-            get => _frameCount / maxFrameCount / step;
-        }
 
         public LinearSprite(TextureLayout _texture, int _maxFrameCount, int _step = 1, int _frameCount = 0)
         {
@@ -32,28 +30,12 @@ namespace GlLib.Client.Api.Sprites
             frameCount = _frameCount;
             maxFrameCount = _maxFrameCount;
             step = _step;
-            _moveTo = new PlanarVector(0,0);
+
+            _moveTo = new PlanarVector(0, 0);
+            scale = new Vector3(1, 1, 0);
         }
 
-        public void MoveSpriteTo(PlanarVector _vector)
-        {
-            _moveTo = _vector;
-        }
-
-
-#if false
-
-        public void SetTransparency(float _transparency)
-        {
-            transparency = _transparency;
-        }
-#endif
-
-        public void SetColor(Color4 _color)
-        {
-            hasColor = true;
-            color = _color;
-        }
+        public long FullFrameCount => _frameCount / maxFrameCount / step;
 
         public void Render()
         {
@@ -66,7 +48,7 @@ namespace GlLib.Client.Api.Sprites
 //            GL.Enable(EnableCap.Blend);
 //            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-
+            GL.Scale(scale);
             if (hasColor)
                 GL.Color4(color);
             texture.Render(frameCount / step);
@@ -76,6 +58,22 @@ namespace GlLib.Client.Api.Sprites
 //            GL.Disable(EnableCap.Blend);
             GL.Color4(1.0f, 1, 1, 1);
             GL.PopMatrix();
+        }
+
+        public void MoveSpriteTo(PlanarVector _vector)
+        {
+            _moveTo = _vector;
+        }
+
+        public void SetSize(Vector3 _scale)
+        {
+            scale = _scale;
+        }
+
+        public void SetColor(Color4 _color)
+        {
+            hasColor = true;
+            color = _color;
         }
 
         public LinearSprite SetFrozen(bool _freeze = true)

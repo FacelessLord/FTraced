@@ -90,6 +90,11 @@ namespace GlLib.Common.Entities
             return obj;
         }
 
+        public override AxisAlignedBb GetAaBb()
+        {
+            return new AxisAlignedBb(-0.4, -0.6, 0.4, 1);
+        }
+
         public int AttackValue { get; set; }
     }
 }
