@@ -76,6 +76,12 @@ namespace GlLib.Client.Input
                 _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
         };
 
+        public static Action<Player> spawnBat = _p =>
+        {
+            if (Proxy.GetWindow().serverStarted)
+                _p.worldObj.SpawnEntity(new Bat(_p.worldObj, _p.Position));
+        };
+
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
         public static Action<Player> spellFire = _p => { _p.spells.OnUpdate(ElementType.Fire); };
@@ -105,6 +111,7 @@ namespace GlLib.Client.Input
             BindClick(Key.Grave, exit, "exit");
             BindClick(Key.Space, attack, "world.attack");
             BindClick(Key.G, spawnSlime, "world.spawn.slime");
+            BindClick(Key.B, spawnBat, "world.spawn.bat");
 
             BindClick(Key.Number1, spellAir, "spell.air");
             BindClick(Key.Number2, spellEarth, "spell.earth");

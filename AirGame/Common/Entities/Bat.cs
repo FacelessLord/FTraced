@@ -1,26 +1,30 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
 namespace GlLib.Common.Entities
 {
-    public class EntitySlime : EntityLiving, ISmart, IAttacker
+    internal class Bat : EntityLiving
     {
+
         internal long InternalTime
             => DateTime.Now.Ticks - _spawnTime;
 
         private const int UpdateFrame = 12;
         private long _spawnTime;
-        public EntitySlime()
+
+        public Bat()
         {
             Initialize();
         }
 
-        public EntitySlime(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
+        public Bat(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
         {
-            SetCustomRenderer(new SlimeRenderer());
+            SetCustomRenderer(new BatRenderer());
             Initialize();
         }
 
@@ -29,17 +33,17 @@ namespace GlLib.Common.Entities
         {
             //TODO move to server time
             _spawnTime = DateTime.Now.Ticks;
-            SetCustomRenderer(new SlimeRenderer());
+            SetCustomRenderer(new BatRenderer());
             AttackRange = position.ToPlanar().ExpandBothTo(1, 1);
             AttackValue = 5;
         }
 
         public override string GetName()
         {
-            return "entity.living.slime";
+            return "entity.living.bat";
         }
 
-        public EntitySlime(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
+        public Bat(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
         {
             InMove = _inMove;
             InWaiting = _inWaiting;
@@ -84,31 +88,24 @@ namespace GlLib.Common.Entities
                     (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
                     MoveToTarget();
             }
-            
+
             base.Update();
         }
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving 
-                && !(_obj is EntitySlime)
-                && InternalTime % UpdateFrame == 0 
-                && InternalTime > 30000000)
+            if (_obj is EntityLiving && InternalTime % UpdateFrame == 0)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
         private void MoveToTarget()
         {
-            velocity =  Target.Position.ToPlanar() - position.ToPlanar();
+            velocity = Target.Position.ToPlanar() - position.ToPlanar();
             velocity.Normalize();
             velocity /= 5;
-        }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return Position.ToPlanar().ExpandBothTo(2, 1);
         }
 
         public int AttackValue { get; set; }
     }
 }
+
