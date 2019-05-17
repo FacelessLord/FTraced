@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Threading;
 using GlLib.Common.Registries;
 using GlLib.Utils;
@@ -15,8 +17,24 @@ namespace GlLib.Common
         public bool askedToStop = false;
         public Side side;
 
-        public SideService(Side _side)
+        public readonly long startTime;
+
+        public long InternalTicks =>
+            (DateTime.UtcNow - Process.GetCurrentProcess()
+                 .StartTime
+                 .ToUniversalTime())
+            .Ticks;
+
+        public double InternalMilliseconds =>
+            (DateTime.UtcNow - Process.GetCurrentProcess()
+                 .StartTime
+                 .ToUniversalTime())
+            .TotalMilliseconds;
+
+
+        protected SideService(Side _side)
         {
+            startTime = DateTime.UtcNow.Ticks;
             side = _side;
             registry = new GameRegistry();
         }

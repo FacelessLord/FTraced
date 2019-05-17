@@ -10,12 +10,8 @@ namespace GlLib.Common.Entities
 {
     internal class Bat : EntityLiving
     {
-
-        internal long InternalTime
-            => DateTime.Now.Ticks - _spawnTime;
-
         private const int UpdateFrame = 12;
-        private long _spawnTime;
+
 
         public Bat()
         {
@@ -31,8 +27,6 @@ namespace GlLib.Common.Entities
 
         private void Initialize()
         {
-            //TODO move to server time
-            _spawnTime = DateTime.Now.Ticks;
             SetCustomRenderer(new BatRenderer());
             AttackRange = 7;
             AttackValue = 5;
@@ -43,14 +37,6 @@ namespace GlLib.Common.Entities
             return "entity.living.bat";
         }
 
-        public Bat(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
-        {
-            InMove = _inMove;
-            InWaiting = _inWaiting;
-            this._spawnTime = _spawnTime;
-            Target = null;
-            Initialize();
-        }
 
         private Player Target { get; set; }
         public bool InMove { get; }
@@ -67,7 +53,6 @@ namespace GlLib.Common.Entities
             get => (Target is null);
         }
 
-        //public override Mov
         public override void Update()
         {
             var entities = worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AttackRange, AttackRange));
@@ -78,7 +63,7 @@ namespace GlLib.Common.Entities
                     .FirstOrDefault(_e => _e is Player);
             }
 
-            if (InternalTime % UpdateFrame == 0 ||
+            if (InternalTicks % UpdateFrame == 0 ||
                 (!(Target is null) && Target.IsDead))
             {
                 Target = (Player) entities
@@ -96,8 +81,8 @@ namespace GlLib.Common.Entities
         {
             if (_obj is EntityLiving
                 && !(_obj is Bat)
-                && InternalTime % UpdateFrame == 0
-                && InternalTime > 30000000)
+                && InternalTicks % UpdateFrame == 0
+                && InternalTicks > 30000000)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 

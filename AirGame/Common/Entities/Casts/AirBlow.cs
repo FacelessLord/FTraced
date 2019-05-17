@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.Graphic.Renderers;
+﻿using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -9,22 +6,20 @@ namespace GlLib.Common.Entities
 {
     public class AirBlow : Entity
     {
-        private PlanarVector baseVelocity = new PlanarVector(0, 0);
-        private readonly long spawnTime;
+
+        //register this
+        private readonly PlanarVector _baseVelocity = new PlanarVector(0, 0);
         internal uint DieTime { get; }
         internal int Damage { get; }
 
-        internal long InternalTime
-            => DateTime.Now.Ticks - spawnTime;
 
         public AirBlow(World _world, RestrictedVector3D _position, PlanarVector _velocity, uint _dieTime, int _damage)
             : base(_world, _position)
         {
             DieTime = _dieTime;
             Damage = _damage;
-            spawnTime = DateTime.Now.Ticks;
             position = _position + (_velocity / _velocity.Length) * 1.5;
-            velocity = baseVelocity;
+            velocity = _baseVelocity;
             SetCustomRenderer(new AirBlowRenderer());
         }
 
@@ -32,7 +27,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
 
-            if (InternalTime > DieTime)
+            if (InternalTicks > DieTime)
                 SetDead(true);
         }
 

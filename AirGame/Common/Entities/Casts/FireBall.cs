@@ -10,12 +10,11 @@ namespace GlLib.Common.Entities
     public class FireBall : Entity
     {
         private const short BaseVelocity = 2;
-        private readonly long spawnTime;
+
         internal uint DieTime { get; }
         internal int Damage { get; }
 
-        internal long InternalTime
-            =>  DateTime.Now.Ticks - spawnTime;
+
 
         public FireBall(World _world, RestrictedVector3D _position, Direction direction, PlanarVector _velocity, uint _dieTime, int _damage)
             : base(_world, _position)
@@ -28,7 +27,7 @@ namespace GlLib.Common.Entities
 
             DieTime = _dieTime;
             Damage = _damage;
-            spawnTime = DateTime.Now.Ticks;
+
             velocity = _velocity.Normalized == new PlanarVector(0, 0) ? sightDirection : _velocity.Normalized;
             SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
         }
@@ -46,7 +45,7 @@ namespace GlLib.Common.Entities
             if (Math.Abs(velocity.Length) < 1e-3)
                 SetDead();
 
-            if (InternalTime > DieTime)
+            if (InternalTicks > DieTime)
                 SetDead();
         }
 

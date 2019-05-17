@@ -12,10 +12,10 @@ namespace GlLib.Common.SpellCastSystem
         internal const uint MaxCastTime = 3 * 1000;
         internal const byte ElementsCountBound = 6; 
         // ReSharper disable once InconsistentNaming
-        private uint time;
+        private long updatedTime;
         internal uint InternalTime
             => IsStarted
-                ? (uint) DateTime.Now.TimeOfDay.TotalMilliseconds - time
+                ? (uint) (Proxy.GetServer().InternalMilliseconds - updatedTime)
                 : 0;
 
         protected bool IsStarted
@@ -43,9 +43,9 @@ namespace GlLib.Common.SpellCastSystem
                 {
                     if (elements.Count < ElementsCountBound)
                     {
-                        uint totalMilliseconds = (uint) (DateTime.Now.TimeOfDay.TotalMilliseconds - time);
                         SidedConsole.WriteLine("Adding of " + (int)_element);
-                        elements.Add(new ClassicalElement(totalMilliseconds, _element));
+
+                        elements.Add(new ClassicalElement(InternalTime, _element));
                     }
                     else if (elements.Count == ElementsCountBound)
                     {
@@ -57,7 +57,7 @@ namespace GlLib.Common.SpellCastSystem
                 else
                 {
                     SidedConsole.WriteLine("Spell casting start");
-                    time = (uint) DateTime.Now.TimeOfDay.TotalMilliseconds;
+                    updatedTime = (uint) Proxy.GetServer().InternalMilliseconds;
                     IsStarted = true;
                     elements.Add(new ClassicalElement(1, _element));
                 }
@@ -74,9 +74,11 @@ namespace GlLib.Common.SpellCastSystem
         private void Refresh()
         {
             IsStarted = false;
-            time = 0;
+            updatedTime = 0;
             elements.Clear();
         }
+
+
         private void MakeResult()
         {
             double averageTime = elements.Average(e => e.StartTime);
@@ -112,8 +114,6 @@ namespace GlLib.Common.SpellCastSystem
             }
 
 
-            //TODO think how system can say to server to make result 
-            //TODO cast spell using this time and average element, simple but it should work
 
         }
     }

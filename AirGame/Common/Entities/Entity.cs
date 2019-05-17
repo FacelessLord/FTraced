@@ -14,6 +14,10 @@ namespace GlLib.Common.Entities
     {
         public Chunk chunkObj;
 
+        internal long InternalTicks
+            => Proxy.GetServer().InternalTicks - spawnTime;
+        private readonly long spawnTime;
+
         private bool isDead;
         public PlanarVector maxVel = new PlanarVector(0.7, 0.7);
 
@@ -36,6 +40,7 @@ namespace GlLib.Common.Entities
 
         public Entity(World _world, RestrictedVector3D _position)
         {
+            spawnTime = Proxy.GetServer().InternalTicks;
             worldObj = _world;
             Position = _position;
         }

@@ -8,11 +8,7 @@ namespace GlLib.Common.Entities
 {
     public class EntitySlime : EntityLiving, ISmart, IAttacker
     {
-        internal long InternalTime
-            => DateTime.Now.Ticks - _spawnTime;
-
         private const int UpdateFrame = 12;
-        private long _spawnTime;
 
         public EntitySlime()
         {
@@ -21,15 +17,13 @@ namespace GlLib.Common.Entities
 
         public EntitySlime(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
         {
-            SetCustomRenderer(new SlimeRenderer());
             Initialize();
         }
 
 
         private void Initialize()
         {
-            //TODO move to server time
-            _spawnTime = DateTime.Now.Ticks;
+
             SetCustomRenderer(new SlimeRenderer());
             AttackRange = 7;
             AttackValue = 5;
@@ -44,7 +38,6 @@ namespace GlLib.Common.Entities
         {
             InMove = _inMove;
             InWaiting = _inWaiting;
-            this._spawnTime = _spawnTime;
             Target = null;
             Initialize();
         }
@@ -75,7 +68,7 @@ namespace GlLib.Common.Entities
                     .FirstOrDefault(_e => _e is Player);
             }
 
-            if (InternalTime % UpdateFrame == 0 ||
+            if (InternalTicks % UpdateFrame == 0 ||
                 (!(Target is null) && Target.IsDead))
             {
                 Target = (Player) entities
@@ -93,8 +86,8 @@ namespace GlLib.Common.Entities
         {
             if (_obj is EntityLiving
                 && !(_obj is EntitySlime)
-                && InternalTime % UpdateFrame == 0
-                && InternalTime > 30000000)
+                && InternalTicks % UpdateFrame == 0
+                && InternalTicks > 30000000)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
@@ -112,9 +105,5 @@ namespace GlLib.Common.Entities
 
         public int AttackValue { get; set; }
 
-        //public static EntitySlime GetRandom()
-        //{
-        //    //TODO
-        //}
     }
 }

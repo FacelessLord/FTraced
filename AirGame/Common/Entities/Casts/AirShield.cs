@@ -10,19 +10,16 @@ namespace GlLib.Common.Entities
     public class AirShield : Entity
     {
         private const short BaseVelocity = 0;
-        private readonly long spawnTime;
+
         internal uint DieTime { get; }
         internal int Damage { get; }
 
-        internal long InternalTime
-            => DateTime.Now.Ticks - spawnTime;
 
         public AirShield(World _world, RestrictedVector3D _position, PlanarVector _velocity, uint _dieTime, int _damage)
             : base(_world, _position)
         {
             DieTime = _dieTime;
             Damage = _damage;
-            spawnTime = DateTime.Now.Ticks;
             velocity = _velocity * BaseVelocity;
             SetCustomRenderer(new AirShieldRenderer());
         }
@@ -36,7 +33,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
 
-            if (InternalTime > DieTime)
+            if (InternalTicks > DieTime)
                 SetDead(true);
         }
 
