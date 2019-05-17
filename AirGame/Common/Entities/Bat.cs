@@ -94,7 +94,10 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving && InternalTime % UpdateFrame == 0)
+            if (_obj is EntityLiving
+                && !(_obj is Bat)
+                && InternalTime % UpdateFrame == 0
+                && InternalTime > 30000000)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
