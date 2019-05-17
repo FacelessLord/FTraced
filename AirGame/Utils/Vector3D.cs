@@ -270,7 +270,7 @@ namespace GlLib.Utils
 
         public AxisAlignedBb ExpandBothTo(double _width, double _height)
         {
-            return new AxisAlignedBb(x - _width / 2, y - _height/2, x + _width / 2, y + _height / 2);
+            return new AxisAlignedBb(x - _width, y - _height, x + _width, y + _height);
         }
     }
 
@@ -318,17 +318,19 @@ namespace GlLib.Utils
             var cx2 = (_box.startX + _box.endX) / 2;
             var cy2 = (_box.startY + _box.endY) / 2;
 
-            var halfWidth = endX - cx1 + _box.endX - cx2;
-            var halfHeight = endY - cy1 + _box.endY - cy2;
+            var halfWidth = Width/2 + _box.Width/2;
+            var halfHeight = Height/2 + _box.Height/2;
 
-            return Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight;
+            if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
+                SidedConsole.WriteLine(this + " | " + _box);
+            //TODO it's magic check please
+            return Math.Abs(cx1 - cx2) <= halfWidth*1.5 && Math.Abs(cy1 - cy2) <= halfHeight*1.5;
         }
 
         public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)
         {
             return new AxisAlignedBb(_a.startX + _v.x, _a.startY + _v.y, _a.endX + _v.x, _a.endY + _v.y);
         }
-
 
         public override bool Equals(object _obj)
         {
@@ -360,10 +362,10 @@ namespace GlLib.Utils
 
         public override string ToString()
         {
-            return $"Bounding ({startX.ToString(CultureInfo.InvariantCulture)}," +
+            return $"Box ({startX.ToString(CultureInfo.InvariantCulture)}," +
                    $"{startY.ToString(CultureInfo.InvariantCulture)}," +
-                   $"{EndXi.ToString(CultureInfo.InvariantCulture)}," +
-                   $"{EndYi.ToString(CultureInfo.InvariantCulture)})";
+                   $"{endX.ToString(CultureInfo.InvariantCulture)}," +
+                   $"{endY.ToString(CultureInfo.InvariantCulture)})";
         }
 
         private void CheckCoordinates()

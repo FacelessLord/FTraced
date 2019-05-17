@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using GlLib.Utils;
 using NUnit.Framework;
 
@@ -150,6 +151,14 @@ namespace Tests.utils
             var resultVector = v1 - v2;
             //Assert
             Assert.AreEqual(resultVector, new RestrictedVector3D(-1, 1, 0));
+        }
+
+        [Test]
+        public void RestrictedVector3D_To_Planar()
+        {
+            var v1 = new RestrictedVector3D(1, 2, 0);
+            v1.ToPlanar().Should()
+                .BeEquivalentTo(new PlanarVector(1, 2), "planar vec is a projection of restricted vec");
         }
 
         [Test]

@@ -85,7 +85,7 @@ namespace GlLib.Common.Map
             _e.chunkObj = _next;
         }
 
-        public IEnumerable<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
+        public ThreadSafeList<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
         {
             var chunks = new List<Chunk>();
 
@@ -103,8 +103,9 @@ namespace GlLib.Common.Map
                     if (chk != null) chunks.Add(chk);
                 }
             }
-
-            return chunks.SelectMany(_c => _c.entities);
+            return chunks.SelectMany(_c => _c.entities)
+                .ThreadSafeWhere(_entity => (_entity.GetAaBb() + _entity.Position.ToPlanar()).IntersectsWith(_aabb))
+                .ToThreadSafeList();
         }
 
         public ThreadSafeList<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
@@ -125,7 +126,9 @@ namespace GlLib.Common.Map
                 }
             }
 
-            return chunks.SelectMany(_c => _c.entities).ThreadSafeWhere(_entity => _entity.GetAaBb().IntersectsWith(_aabb)).ToThreadSafeList();
+            return chunks.SelectMany(_c => _c.entities)
+                .ThreadSafeWhere(_entity => (_entity.GetAaBb() + _entity.Position.ToPlanar()).IntersectsWith(_aabb))
+                .ToThreadSafeList();
         }
     }
 }

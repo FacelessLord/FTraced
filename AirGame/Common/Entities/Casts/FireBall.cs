@@ -33,9 +33,10 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
         }
 
+
         public override AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(2, 1.5);
+            return new PlanarVector().ExpandBothTo(0.5, 1);
         }
         
         public override void Update()

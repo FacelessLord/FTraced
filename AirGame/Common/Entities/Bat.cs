@@ -34,7 +34,7 @@ namespace GlLib.Common.Entities
             //TODO move to server time
             _spawnTime = DateTime.Now.Ticks;
             SetCustomRenderer(new BatRenderer());
-            AttackRange = position.ToPlanar().ExpandBothTo(1, 1);
+            AttackRange = 7;
             AttackValue = 5;
         }
 
@@ -55,7 +55,7 @@ namespace GlLib.Common.Entities
         private Player Target { get; set; }
         public bool InMove { get; }
         public bool InWaiting { get; }
-        public AxisAlignedBb AttackRange { get; private set; }
+        public int AttackRange { get; private set; }
 
         public bool IsAttacking
         {
@@ -70,7 +70,7 @@ namespace GlLib.Common.Entities
         //public override Mov
         public override void Update()
         {
-            var entities = worldObj.GetEntitiesWithinAaBb(AttackRange);
+            var entities = worldObj.GetEntitiesWithinAaBb(Position.ToPlanar().ExpandBothTo(AttackRange, AttackRange));
 
             if (Target is null && !(entities is null))
             {

@@ -90,12 +90,6 @@ namespace GlLib.Common.Entities
             return obj;
         }
 
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return base.GetAaBb();
-        }
-
         public int AttackValue { get; set; }
     }
 }

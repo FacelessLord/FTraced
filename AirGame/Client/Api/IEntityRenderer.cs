@@ -1,7 +1,9 @@
 using System;
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.API.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
+using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -59,12 +61,13 @@ namespace GlLib.Client.API
             if(_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
+            GuiUtils.RenderAaBb(_e.GetAaBb(), Chunk.BlockWidth, Chunk.BlockHeight);
             if(_e is EntityLiving)
             {
                 if (spawnSprite.FullFrameCount < 1)
                 {
                     var box = _e.GetAaBb();
-                    GL.Scale(box.Width, box.Height, 1);
+                    GL.Scale(box.Width*2, box.Height, 1);
                     spawnSprite.Render();
                 }
             }

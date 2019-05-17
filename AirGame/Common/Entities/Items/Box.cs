@@ -64,7 +64,7 @@ namespace GlLib.Common.Entities
 
         public override AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(2, 2);
+            return new PlanarVector().ExpandBothTo(0.5, 1);
         }
 
         public override string GetName()

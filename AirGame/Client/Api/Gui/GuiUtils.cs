@@ -12,7 +12,7 @@ namespace GlLib.Client.API.Gui
             GL.PushMatrix();
             GL.Scale(_blockWidth, _blockHeight,1);
             Vertexer.BindTexture("monochromatic.png");
-            Vertexer.StartDrawingQuads();
+            Vertexer.StartDrawing(PrimitiveType.LineLoop);
             Vertexer.VertexWithUvAt(_box.startX, _box.startY, 0, 0);
             Vertexer.VertexWithUvAt(_box.endX, _box.startY, 1, 0);
             Vertexer.VertexWithUvAt(_box.endX, _box.endY, 1, 1);

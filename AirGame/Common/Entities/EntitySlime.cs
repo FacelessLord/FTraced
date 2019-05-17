@@ -13,6 +13,7 @@ namespace GlLib.Common.Entities
 
         private const int UpdateFrame = 12;
         private long _spawnTime;
+
         public EntitySlime()
         {
             Initialize();
@@ -30,7 +31,7 @@ namespace GlLib.Common.Entities
             //TODO move to server time
             _spawnTime = DateTime.Now.Ticks;
             SetCustomRenderer(new SlimeRenderer());
-            AttackRange = position.ToPlanar().ExpandBothTo(1, 1);
+            AttackRange = 7;
             AttackValue = 5;
         }
 
@@ -51,7 +52,7 @@ namespace GlLib.Common.Entities
         private Player Target { get; set; }
         public bool InMove { get; }
         public bool InWaiting { get; }
-        public AxisAlignedBb AttackRange { get; private set; }
+        public int AttackRange { get; private set; }
 
         public bool IsAttacking
         {
@@ -66,7 +67,7 @@ namespace GlLib.Common.Entities
         //public override Mov
         public override void Update()
         {
-            var entities = worldObj.GetEntitiesWithinAaBb(AttackRange);
+            var entities = worldObj.GetEntitiesWithinAaBb(Position.ToPlanar().ExpandBothTo(AttackRange, AttackRange));
 
             if (Target is null && !(entities is null))
             {
@@ -84,29 +85,29 @@ namespace GlLib.Common.Entities
                     (Target.Position.ToPlanar() - position.ToPlanar()).Length > 1)
                     MoveToTarget();
             }
-            
+
             base.Update();
         }
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving 
+            if (_obj is EntityLiving
                 && !(_obj is EntitySlime)
-                && InternalTime % UpdateFrame == 0 
+                && InternalTime % UpdateFrame == 0
                 && InternalTime > 30000000)
                 (_obj as EntityLiving).DealDamage(AttackValue);
         }
 
         private void MoveToTarget()
         {
-            velocity =  Target.Position.ToPlanar() - position.ToPlanar();
+            velocity = Target.Position.ToPlanar() - position.ToPlanar();
             velocity.Normalize();
             velocity /= 5;
         }
 
         public override AxisAlignedBb GetAaBb()
         {
-            return Position.ToPlanar().ExpandBothTo(2, 1);
+            return new PlanarVector().ExpandBothTo(0.25, 0.5);
         }
 
         public int AttackValue { get; set; }

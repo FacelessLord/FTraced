@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using GlLib.Utils;
 using NUnit.Framework;
 
@@ -124,9 +125,9 @@ namespace Tests.utils
         }
 
 
-        private static void CheckIfIntersectsIsFalse(AxisAlignedBb _bb1, AxisAlignedBb _bb2)
+        private static void CheckIfIntersectsIs(AxisAlignedBb _bb1, AxisAlignedBb _bb2, bool _intersects)
         {
-            Assert.IsFalse(_bb1.IntersectsWith(_bb2),
+            Assert.AreEqual(_bb1.IntersectsWith(_bb2), _intersects,
                 $"{_bb1} shouldn't have intersection with {_bb2}");
         }
 
@@ -136,15 +137,44 @@ namespace Tests.utils
             var arrangePairs = new[]
             {
                 (new AxisAlignedBb(0, 0, 0, 0),
-                    new AxisAlignedBb(0, 0, 4, 4)),
+                    new AxisAlignedBb(0, 0, 4, 4), true),
                 (new AxisAlignedBb(0, 0, 0, 0),
-                    new AxisAlignedBb(0, 0, 0, 0)),
+                    new AxisAlignedBb(0, 0, 0, 0), true),
                 (new AxisAlignedBb(0, 0, 0, 0),
-                    new AxisAlignedBb(1, 1, 4, 4))
+                    new AxisAlignedBb(1, 1, 4, 4), false)
             };
 
-            foreach (var pair in arrangePairs)
-                CheckIfIntersectsIsFalse(pair.Item1, pair.Item2);
+            foreach (var triple in arrangePairs)
+                CheckIfIntersectsIs(triple.Item1, triple.Item2, triple.Item3);
+        }
+        
+        [TestCase]
+        public void AxisAlignedBb_Vector_Sum()
+        {
+            var box = new AxisAlignedBb(0,0, 123, 321);
+            var vec = new PlanarVector(47, 51);
+            var result = new AxisAlignedBb(47, 51, 170, 372);
+
+            (box + vec).Should().BeEquivalentTo(result, "Sum with vector is translation");
+        }
+        
+        [TestCase]
+        public void AxisAlignedBb_Vector_Expand()
+        {
+            var box = new AxisAlignedBb(-2,-2, 2,2);
+            var result = new PlanarVector().ExpandBothTo(2,2);
+
+            box.Should().BeEquivalentTo(result, "Vector expand equally");
+        }
+
+        [TestCase]
+        public void AxisAlignedBb_Vector_Expand_Sum()
+        {
+            var box = new AxisAlignedBb(319, 736, 323, 740);
+            var vec = new PlanarVector(321, 738);
+            var result = vec.ExpandBothTo(2, 2);
+
+            box.Should().BeEquivalentTo(result, "They are at the same pos");
         }
 
         #endregion

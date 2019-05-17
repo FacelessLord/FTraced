@@ -123,6 +123,11 @@ namespace GlLib.Common.Entities
             }
         }
 
+//        public virtual void PerformAttack()
+//        {
+//            
+//        }
+
         public override string GetName()
         {
             return "entity.entityLiving";
