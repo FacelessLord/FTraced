@@ -9,23 +9,30 @@ namespace GlLib.Client.Graphic.Renderers
 {
     public class SlimeRenderer : EntityRenderer
     {
-        public LinearSprite slimeSprite;
-        public LinearSprite spawnSprite;
+        protected LinearSprite idleSprite;
+        protected LinearSprite walkSprite;
 
         public override void Setup(Entity _p)
         {
-            var layout = new TextureLayout("slime/slime_waiting.png", 7, 1);
-            slimeSprite = new LinearSprite(layout, 22, 20);
-            spawnSprite = SpawnSprite;
-            spawnSprite.MoveSpriteTo(new PlanarVector(-2,40));
-            spawnSprite.SetColor(new Color4(1,1,1,0.5f));
+
+            var idle = new TextureLayout("slime/smile_idle.png", 10, 1);
+            var walk = new TextureLayout("slime/slime_waiting.png", 7, 1);
+
+            idleSprite = new LinearSprite(idle, 10, 30);
+            walkSprite = new LinearSprite(walk, 7, 30);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
-        { 
-            slimeSprite.Render();
-//            if (spawnSprite.FullFrameCount< 1)
-//                spawnSprite.Render();
+        {
+            switch ((_e as EntitySlime).state)
+            {
+                case (EntityState.Idle):
+                    idleSprite.Render();
+                    break;
+                case (EntityState.Walk):
+                    walkSprite.Render();
+                    break;
+            }
         }
     }
 }

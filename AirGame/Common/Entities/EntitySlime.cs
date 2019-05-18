@@ -10,6 +10,15 @@ namespace GlLib.Common.Entities
     {
         private const int UpdateFrame = 12;
 
+        public new EntityState state
+        {
+            get =>
+                Target is null 
+                    ? EntityState.Idle
+                    : EntityState.Walk;
+            private set { state = value; }
+        }
+
         public EntitySlime()
         {
             Initialize();
@@ -25,7 +34,7 @@ namespace GlLib.Common.Entities
         {
 
             SetCustomRenderer(new SlimeRenderer());
-            AttackRange = 7;
+            AttackRange = 2;
             AttackValue = 5;
         }
 
@@ -40,6 +49,7 @@ namespace GlLib.Common.Entities
             InWaiting = _inWaiting;
             Target = null;
             Initialize();
+            state = EntityState.Idle;
         }
 
         private Player Target { get; set; }
@@ -60,6 +70,7 @@ namespace GlLib.Common.Entities
         //public override Mov
         public override void Update()
         {
+
             var entities = worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AttackRange, AttackRange));
 
             if (Target is null && !(entities is null))
@@ -76,7 +87,10 @@ namespace GlLib.Common.Entities
 
                 if (!(Target is null) &&
                     (Target.Position - position).Length > 1)
+                {
                     MoveToTarget();
+                }
+
             }
 
             base.Update();
