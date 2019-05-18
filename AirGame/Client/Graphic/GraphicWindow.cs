@@ -5,6 +5,7 @@ using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -35,7 +36,8 @@ namespace GlLib.Client.Graphic
 
         public bool CanMovementBeHandled() => (guiFrame == null || guiFrame.focusedObject == null) &&
                                               Proxy.GetClient() != null && Proxy.GetClient().player != null
-                                              && !Proxy.GetClient().player.IsDead;
+                                              && !Proxy.GetClient().player.IsDead && !Proxy.GetClient().player.state
+                                                  .Equals(EntityState.Dead);
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
@@ -180,9 +182,10 @@ namespace GlLib.Client.Graphic
             graphicThread.Start();
         }
 
-        public void CloseGui()
+        public void CloseGui(bool _force = false)
         {
-            guiFrame = null;
+            if(guiFrame is null || !guiFrame.NoClose || _force)
+                guiFrame = null;
         }
 
         public void OpenGui(GuiFrame _gui)

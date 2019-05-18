@@ -7,6 +7,7 @@ using GlLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Json;
+using GlLib.Client.Graphic.Gui;
 
 namespace GlLib.Common.Entities
 {
@@ -48,6 +49,7 @@ namespace GlLib.Common.Entities
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.armor));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
 
+            CanDie = false;
             spells = new SpellSystem(this);
 
         }
@@ -60,6 +62,14 @@ namespace GlLib.Common.Entities
         public override void Update()
         {
             base.Update();
+            if (state.Equals(EntityState.Dead))
+            {
+                if (!(Proxy.GetWindow().guiFrame is ResurrectionGui))
+                {
+                    Proxy.GetWindow().CloseGui();
+                    Proxy.GetWindow().TryOpenGui(new ResurrectionGui());
+                }
+            }
         }
 
         public override void LoadFromJsonObject(JsonObject _jsonObject)

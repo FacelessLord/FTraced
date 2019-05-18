@@ -60,14 +60,14 @@ namespace GlLib.Common.Entities
             if (Target is null && !(entities is null))
             {
                 Target = (Player) entities
-                    .FirstOrDefault(_e => _e is Player);
+                    .FirstOrDefault(_e => _e is Player p && !p.state.Equals(EntityState.Dead));
             }
 
             if (InternalTicks % UpdateFrame == 0 ||
                 (!(Target is null) && Target.IsDead))
             {
                 Target = (Player) entities
-                    .FirstOrDefault(_e => _e is Player);
+                    .FirstOrDefault(_e => _e is Player p && !p.state.Equals(EntityState.Dead));
 
                 if (!(Target is null) &&
                     (Target.Position - position).Length > 1)
@@ -79,7 +79,8 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving
+            if (_obj is EntityLiving el
+                && !el.state.Equals(EntityState.Dead)
                 && !(_obj is Bat)
                 && InternalTicks % UpdateFrame == 0
                 && InternalTicks > 30000000)

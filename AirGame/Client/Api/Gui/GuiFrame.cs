@@ -19,6 +19,7 @@ namespace GlLib.Client.API.Gui
         public List<GuiObject> ScreenObjects { get; set; }
 
         public Slot SelectedSlot { get; set; }
+        public bool NoClose { get; set; }
 
         public T Add<T>(T _obj) where T : GuiObject
         {
@@ -127,6 +128,12 @@ namespace GlLib.Client.API.Gui
         public virtual void OnKeyDown(GameWindow _window, KeyboardKeyEventArgs _e)
         {
             focusedObject?.OnKeyDown(this, _e);
+        }
+
+        public GuiFrame SetNoClose(bool _noClose = true)
+        {
+            NoClose = _noClose;
+            return this;
         }
     }
 }

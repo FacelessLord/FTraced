@@ -265,6 +265,20 @@ namespace GlLib.Utils
         {
             return new AxisAlignedBb(x - _width, y - _height, x + _width, y + _height);
         }
+
+        public PlanarVector Divide(double _i)
+        {
+            x /= _i;
+            y /= _i;
+            return this;
+        }
+        
+        public PlanarVector Divide(double _i, double _j)
+        {
+            x /= _i;
+            y /= _j;
+            return this;
+        }
     }
 
     public class AxisAlignedBb
@@ -334,6 +348,29 @@ namespace GlLib.Utils
             startY += _v.y;
             endX += _v.x;
             endY += _v.y;
+            return this;
+        }
+        
+        public AxisAlignedBb Scaled(PlanarVector _v, double _s)
+        {
+            if (_v.x > 0)
+            {
+                startX += _v.x / _s;
+                endX += _v.x * _s;
+            }else
+            {
+                startX += _v.x * _s;
+                endX += _v.x / _s;
+            }
+            if (_v.y > 0)
+            {
+                startY += _v.y / _s;
+                endY += _v.y * _s;
+            }else
+            {
+                startY += _v.y * _s;
+                endY += _v.y / _s;
+            }
             return this;
         }
 

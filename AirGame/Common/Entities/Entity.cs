@@ -16,6 +16,7 @@ namespace GlLib.Common.Entities
 
         internal long InternalTicks
             => Proxy.GetServer().InternalTicks - spawnTime;
+
         private readonly long spawnTime;
 
         private bool isDead;
@@ -64,9 +65,9 @@ namespace GlLib.Common.Entities
 
         public bool IsDead { get; }
 
-        public void SetState(EntityState _state, int _timeout)
+        public void SetState(EntityState _state, int _timeout, bool _force = false)
         {
-            if (timeout <= 0 || state <= _state)
+            if (state <= _state || _force)
             {
                 state = _state;
                 timeout = _timeout;
@@ -78,6 +79,7 @@ namespace GlLib.Common.Entities
             if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
             if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
         }
+
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
@@ -114,14 +116,14 @@ namespace GlLib.Common.Entities
 
         public virtual AxisAlignedBb GetAaBb()
         {
-            return new AxisAlignedBb(-0.375,-0.75, 0.375,0.75);
+            return new AxisAlignedBb(-0.375, -0.75, 0.375, 0.75);
         }
-        
+
         public virtual AxisAlignedBb GetTranslatedAaBb()
         {
             return GetAaBb().Translate(Position);
         }
-        
+
         public TerrainBlock GetUnderlyingBlock()
         {
             return chunkObj[Position.Ix % 16, Position.Iy % 16];
@@ -135,8 +137,7 @@ namespace GlLib.Common.Entities
                 timeout--;
             if (timeout == 0)
             {
-                state = EntityState.Idle;
-                timeout = -1;
+                SetState(EntityState.Idle, -1, true);
             }
 
             MoveEntity();
@@ -217,6 +218,7 @@ namespace GlLib.Common.Entities
                 worldObj.entityRemoveQueue.Add((this, chunkObj));
             }
         }
+
         public virtual void OnDead()
         {
 
@@ -302,6 +304,8 @@ namespace GlLib.Common.Entities
         Idle,
         Walk,
         AoeAttack,
-        DirectedAttack
+        DirectedAttack,
+        AttackInterrupted,
+        Dead
     }
 }

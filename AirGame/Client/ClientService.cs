@@ -44,6 +44,22 @@ namespace GlLib.Client
 
             if (player is null)
             {
+                ResurrectPlayer();
+            }
+            var coin = new Coin();
+            coin.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+            world.SpawnEntity(coin);
+
+//            SidedConsole.WriteLine("Loading window");
+            Proxy.GetWindow().OnClientStarted();
+        }
+
+        public void ResurrectPlayer()
+        {
+            if (player is null || player.state is EntityState.Dead)
+            {
+                if(player.state is EntityState.Dead)
+                    player.SetDead();
                 player = new Player();
 //            SidedConsole.WriteLine("Setting Player Name");
                 player.nickname = nickName;
@@ -53,12 +69,6 @@ namespace GlLib.Client
                 player.data = Proxy.GetServer().GetDataFor(player, password);
                 Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
             }
-            var coin = new Coin();
-            coin.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
-            world.SpawnEntity(coin);
-
-//            SidedConsole.WriteLine("Loading window");
-            Proxy.GetWindow().OnClientStarted();
         }
 
         public override void OnServiceUpdate()

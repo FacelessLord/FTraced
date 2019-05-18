@@ -92,14 +92,18 @@ namespace GlLib.Client.Input
 
         public static Action<Player> attack = _p =>
         {
-            var vel = _p.velocity.Normalized;
-            if (Math.Abs(vel.Length) < 1e-4)
-                _p.SetState(EntityState.AoeAttack, 6);
-            else
-                _p.SetState(EntityState.DirectedAttack, 6);
-            var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(_p.GetTranslatedAaBb() + vel, _p.Position.z);
-            entities.Where(_e => _e is EntityLiving && _e != _p).Cast<EntityLiving>().ToList()
-                .ForEach(_e => _e.DealDamage(30));
+            if (Proxy.GetWindow().CanMovementBeHandled())
+            if(!(_p.state is EntityState.AttackInterrupted))
+            {
+                if (Math.Abs(_p.velocity.Length) < 1e-2)
+                    _p.SetState(EntityState.AoeAttack, 6);
+                else
+                    _p.SetState(EntityState.DirectedAttack, 6);
+                var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(
+                    _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 2), 1.05), _p.Position.z);
+                entities.Where(_e => _e is EntityLiving el && !el.state.Equals(EntityState.Dead) && _e != _p).Cast<EntityLiving>().ToList()
+                    .ForEach(_e => _e.DealDamage(30));
+            }
         };
 
         public static Action<Player> spawnBox = _p =>
