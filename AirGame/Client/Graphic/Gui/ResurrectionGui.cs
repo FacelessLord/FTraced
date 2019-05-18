@@ -17,6 +17,7 @@ namespace GlLib.Client.Graphic.Gui
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
             var d = h / 25;
+            SetNoClose();
             rectangle = AddRectangle(w / 4 - 10, h / 3 - 10, w / 2 + 20, h / 3);
             resurrectButton = new GuiButton("Resurrect", (w - 180) / 2, h / 3, w / 4, d);
             Add(resurrectButton);

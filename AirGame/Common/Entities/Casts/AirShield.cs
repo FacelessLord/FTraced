@@ -22,11 +22,7 @@ namespace GlLib.Common.Entities
             Damage = _damage;
             velocity = _velocity * BaseVelocity;
             SetCustomRenderer(new AirShieldRenderer());
-        }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-3, -6, 3, 6);
+            AaBb = new AxisAlignedBb(-3, -6, 3, 6);
         }
 
         public override void Update()

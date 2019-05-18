@@ -27,6 +27,7 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new SlimeRenderer());
             AttackRange = 7;
             AttackValue = 5;
+            AaBb = new AxisAlignedBb(-0.25, 0, 0.25, 0.5);
         }
 
         public override string GetName()
@@ -97,11 +98,6 @@ namespace GlLib.Common.Entities
             velocity = Target.Position - position;
             velocity.Normalize();
             velocity /= 5;
-        }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.25, -0.5, 0.25,0.5);
         }
 
         public int AttackValue { get; set; }

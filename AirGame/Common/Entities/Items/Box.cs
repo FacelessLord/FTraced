@@ -21,6 +21,7 @@ namespace GlLib.Common.Entities
             ushort _armor = 1) : base(_health, _armor, _world, _position)
         {
             SetCustomRenderer(new BoxRenderer());
+            AaBb = new AxisAlignedBb(-0.5, -0.25, 0.5, 1);
         }
 
 
@@ -61,11 +62,6 @@ namespace GlLib.Common.Entities
         {
             if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
             if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
-        }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.5, -1, 0.5, 1);
         }
 
         public override string GetName()

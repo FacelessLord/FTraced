@@ -63,7 +63,8 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public bool IsDead { get; }
+        public bool IsDead { get; } = false;
+        public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375, -0.25, 0.375, 0.75);
 
         public void SetState(EntityState _state, int _timeout, bool _force = false)
         {
@@ -114,14 +115,9 @@ namespace GlLib.Common.Entities
             return jsonObj;
         }
 
-        public virtual AxisAlignedBb GetAaBb()
+        public AxisAlignedBb GetTranslatedAaBb()
         {
-            return new AxisAlignedBb(-0.375, -0.75, 0.375, 0.75);
-        }
-
-        public virtual AxisAlignedBb GetTranslatedAaBb()
-        {
-            return GetAaBb().Translate(Position);
+            return AaBb + Position;
         }
 
         public TerrainBlock GetUnderlyingBlock()

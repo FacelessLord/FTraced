@@ -53,6 +53,7 @@ namespace GlLib.Common.Entities
             CanDie = false;
             spells = new SpellSystem(this);
 
+            AaBb = new AxisAlignedBb(-0.4, 0.1, 0.4, 0.8);
         }
 
         public override string GetName()
@@ -100,12 +101,6 @@ namespace GlLib.Common.Entities
 
             return obj;
         }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.4, -0.6, 0.4, 1);
-        }
-
         public int AttackValue { get; set; }
     }
 }

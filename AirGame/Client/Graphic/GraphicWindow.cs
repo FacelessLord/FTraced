@@ -110,7 +110,6 @@ namespace GlLib.Client.Graphic
             if (serverStarted)
                 RenderWorld();
 
-
             GL.Clear(ClearBufferMask.DepthBufferBit);
             //GUI render is not connected to the world
             GL.MatrixMode(MatrixMode.Modelview);
@@ -202,7 +201,7 @@ namespace GlLib.Client.Graphic
             else
             {
                 if (guiFrame.focusedObject == null)
-                    guiFrame = null;
+                    CloseGui();
             }
         }
     }

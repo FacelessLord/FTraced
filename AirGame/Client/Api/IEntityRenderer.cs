@@ -61,12 +61,12 @@ namespace GlLib.Client.API
             if(_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
-            GuiUtils.RenderAaBb(_e.GetAaBb(), Chunk.BlockWidth, Chunk.BlockHeight);
+            GuiUtils.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if(_e is EntityLiving)
             {
                 if (spawnSprite.FullFrameCount < 1)
                 {
-                    var box = _e.GetAaBb();
+                    var box = _e.AaBb;
                     GL.Scale(box.Width*2, box.Height, 1);
                     spawnSprite.Render();
                 }

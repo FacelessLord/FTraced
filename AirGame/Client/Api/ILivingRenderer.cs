@@ -55,6 +55,8 @@ namespace GlLib.Client.API
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
+            GL.PushMatrix();
+            GL.Translate(0, _e.AaBb.Height/2,0);
             switch (_e.state)
             {
                 case (EntityState.Idle):
@@ -82,6 +84,7 @@ namespace GlLib.Client.API
                 {
                     ls.Reset();
                 }
+            GL.PopMatrix();
         }
     }
 }
