@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.Graphic.Renderers;
+﻿using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -13,6 +10,7 @@ namespace GlLib.Common.Entities.Items
         {
             Initialize();
         }
+
         public Streetlight(World _world, RestrictedVector3D _position) : base(_world, _position)
         {
             Initialize();

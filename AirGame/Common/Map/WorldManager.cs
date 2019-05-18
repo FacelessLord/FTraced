@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace GlLib.Common.Map
                     return (JsonObjectCollection) parser.Parse(fs);
                 }
             }
-            catch (System.FormatException e)
+            catch (FormatException e)
             {
                 SidedConsole.WriteErrorLine("There something wrong with your entity file.\n" +
                                             "It can be result of death of all entities");

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 
@@ -6,6 +7,8 @@ namespace GlLib.Client.Graphic
     public class Vertexer
     {
         public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+
+        public static Texture Null { get; private set; }
 
         public static void EnableTextures()
         {
@@ -60,9 +63,26 @@ namespace GlLib.Client.Graphic
             {
                 if (textures.ContainsKey(_path))
                     return textures[_path];
-                var texture = new Texture("textures/" + _path);
-                textures.Add(_path, texture);
-                return texture;
+                Texture texture;
+                try
+                {
+                    texture = new Texture("textures/" + _path);
+                    textures.Add(_path, texture);
+                    return texture;
+                }
+                catch (Exception e)
+                {
+                    if (_path != "null.png")
+                    {
+                        if (Null is null)
+                            Null = LoadTexture("null.png");
+                        texture = Null;
+                        textures.Add(_path, texture);
+                        return texture;
+                    }
+
+                    throw;
+                }
             }
         }
 
@@ -95,6 +115,7 @@ namespace GlLib.Client.Graphic
         {
             _text.Bind();
         }
+
         public static void BindTexture(string _text)
         {
             LoadTexture(_text).Bind();

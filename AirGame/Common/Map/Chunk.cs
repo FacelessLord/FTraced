@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
@@ -165,8 +164,10 @@ namespace GlLib.Common.Map
         {
             var objects = new List<JsonObject>();
             lock (entities)
+            {
                 foreach (var entity in entities)
                     objects.Add(entity.CreateJsonObject());
+            }
 
             return objects;
         }
@@ -174,8 +175,10 @@ namespace GlLib.Common.Map
         public void Update()
         {
             lock (entities)
+            {
                 foreach (var entity in entities)
                     entity.Update();
+            }
         }
     }
 }

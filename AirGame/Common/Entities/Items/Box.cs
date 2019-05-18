@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
@@ -21,6 +19,7 @@ namespace GlLib.Common.Entities
             ushort _armor = 1) : base(_health, _armor, _world, _position)
         {
             SetCustomRenderer(new BoxRenderer());
+            AaBb = new AxisAlignedBb(-0.5, -0.25, 0.5, 1);
         }
 
 
@@ -39,14 +38,14 @@ namespace GlLib.Common.Entities
                     worldObj.SpawnEntity(new Coin(worldObj, Position,
                         PlanarVector.GetRandom(0.2)));
                     if (r.Next(10) > 7)
-                    {
                         worldObj.SpawnEntity(new Potion(worldObj, Position,
                             PlanarVector.GetRandom(0.2)));
-                    }
                 }
                 else
+                {
                     worldObj.SpawnEntity(new EntitySlime(
                         worldObj, Position));
+                }
             }
         }
 
@@ -61,11 +60,6 @@ namespace GlLib.Common.Entities
         {
             if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
             if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
-        }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.5, -1, 0.5, 1);
         }
 
         public override string GetName()

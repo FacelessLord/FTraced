@@ -1,12 +1,12 @@
-using GlLib.Client.Graphic.Renderers;
+using System.Collections.Generic;
+using System.Net.Json;
+using GlLib.Client.API;
+using GlLib.Client.Graphic.Gui;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
 using GlLib.Utils;
-using System;
-using System.Collections.Generic;
-using System.Net.Json;
 
 namespace GlLib.Common.Entities
 {
@@ -15,11 +15,11 @@ namespace GlLib.Common.Entities
         public double accelerationValue = 0.02;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
-        public string nickname = "Player";
-        public HashSet<string> usedBinds = new HashSet<string>();
-        internal SpellSystem spells;
 
         public int money = 0;
+        public string nickname = "Player";
+        internal SpellSystem spells;
+        public HashSet<string> usedBinds = new HashSet<string>();
 
         public Player(string _nickname,
             World _world,
@@ -36,11 +36,12 @@ namespace GlLib.Common.Entities
             Initialization();
         }
 
+        public int AttackValue { get; set; }
+
         private void Initialization()
         {
-
             SidedConsole.WriteLine("Setting Player Renderer");
-            SetCustomRenderer(new PlayerRenderer());
+            SetCustomRenderer(new AttackingLivingRenderer("player/dwarf"));
             SidedConsole.WriteLine("Setting Player Inventory");
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.varia));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.apple));
@@ -48,8 +49,10 @@ namespace GlLib.Common.Entities
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.armor));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
 
+            CanDie = false;
             spells = new SpellSystem(this);
 
+            AaBb = new AxisAlignedBb(-0.4, 0.1, 0.4, 0.8);
         }
 
         public override string GetName()
@@ -60,6 +63,12 @@ namespace GlLib.Common.Entities
         public override void Update()
         {
             base.Update();
+            if (state.Equals(EntityState.Dead))
+                if (!(Proxy.GetWindow().guiFrame is ResurrectionGui))
+                {
+                    Proxy.GetWindow().CloseGui();
+                    Proxy.GetWindow().TryOpenGui(new ResurrectionGui());
+                }
         }
 
         public override void LoadFromJsonObject(JsonObject _jsonObject)
@@ -89,12 +98,5 @@ namespace GlLib.Common.Entities
 
             return obj;
         }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.4, -0.6, 0.4, 1);
-        }
-
-        public int AttackValue { get; set; }
     }
 }

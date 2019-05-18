@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,7 @@ namespace GlLib.Utils
 {
     public class ThreadSafeList<T> : IList<T>
     {
+        protected static readonly object _lock = new object();
         protected List<T> internalList = new List<T>();
 
         // Other Elements of IList implementation
@@ -15,53 +17,49 @@ namespace GlLib.Utils
             return Clone().GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return Clone().GetEnumerator();
-        }
-
-        protected readonly static object _lock = new object();
-
-        public List<T> Clone()
-        {
-            List<T> newList = new List<T>();
-
-            lock (_lock)
-            {
-                internalList.ForEach(_x => newList.Add(_x));
-            }
-
-            return newList;
         }
 
         public void Add(T _item)
         {
             lock (_lock)
+            {
                 internalList.Add(_item);
+            }
         }
 
         public void Clear()
         {
             lock (_lock)
+            {
                 internalList.Clear();
+            }
         }
 
         public bool Contains(T _item)
         {
             lock (_lock)
+            {
                 return internalList.Contains(_item);
+            }
         }
 
         public void CopyTo(T[] _array, int _arrayIndex)
         {
             lock (_lock)
+            {
                 internalList.CopyTo(_array, _arrayIndex);
+            }
         }
 
         public bool Remove(T _item)
         {
             lock (_lock)
+            {
                 return internalList.Remove(_item);
+            }
         }
 
         public int Count => internalList.Count;
@@ -70,25 +68,43 @@ namespace GlLib.Utils
         public int IndexOf(T _item)
         {
             lock (_lock)
+            {
                 return internalList.IndexOf(_item);
+            }
         }
 
         public void Insert(int _index, T _item)
         {
             lock (_lock)
+            {
                 internalList.Insert(_index, _item);
+            }
         }
 
         public void RemoveAt(int _index)
         {
             lock (_lock)
+            {
                 internalList.RemoveAt(_index);
+            }
         }
 
         public T this[int _index]
         {
             get => internalList[_index];
             set => internalList[_index] = value;
+        }
+
+        public List<T> Clone()
+        {
+            var newList = new List<T>();
+
+            lock (_lock)
+            {
+                internalList.ForEach(_x => newList.Add(_x));
+            }
+
+            return newList;
         }
     }
 

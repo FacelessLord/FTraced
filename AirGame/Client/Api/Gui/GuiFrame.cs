@@ -9,6 +9,7 @@ namespace GlLib.Client.API.Gui
 {
     public class GuiFrame
     {
+        public GuiObject background;
         public GuiObject focusedObject;
 
         public GuiFrame()
@@ -19,14 +20,13 @@ namespace GlLib.Client.API.Gui
         public List<GuiObject> ScreenObjects { get; set; }
 
         public Slot SelectedSlot { get; set; }
+        public bool NoClose { get; set; }
 
         public T Add<T>(T _obj) where T : GuiObject
         {
             ScreenObjects.Add(_obj);
             return _obj;
         }
-
-        public GuiObject background;
 
         public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height)
         {
@@ -127,6 +127,12 @@ namespace GlLib.Client.API.Gui
         public virtual void OnKeyDown(GameWindow _window, KeyboardKeyEventArgs _e)
         {
             focusedObject?.OnKeyDown(this, _e);
+        }
+
+        public GuiFrame SetNoClose(bool _noClose = true)
+        {
+            NoClose = _noClose;
+            return this;
         }
     }
 }

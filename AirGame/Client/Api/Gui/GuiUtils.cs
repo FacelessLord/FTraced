@@ -10,7 +10,7 @@ namespace GlLib.Client.API.Gui
         public static void RenderAaBb(AxisAlignedBb _box, double _blockWidth, double _blockHeight)
         {
             GL.PushMatrix();
-            GL.Scale(_blockWidth, _blockHeight,1);
+            GL.Scale(_blockWidth, _blockHeight, 1);
             Vertexer.BindTexture("monochromatic.png");
             Vertexer.StartDrawing(PrimitiveType.LineLoop);
             Vertexer.VertexWithUvAt(_box.startX, _box.startY, 0, 0);
@@ -20,7 +20,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.Draw();
             GL.PopMatrix();
         }
-        
+
         public static void DrawSizedSquare(TextureLayout _layout, int _x, int _y, int _width, int _height,
             float _grainSize = 32f)
         {

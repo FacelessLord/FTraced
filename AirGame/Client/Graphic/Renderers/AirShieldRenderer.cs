@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
-using GlLib.Client.Api.Sprites;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 
@@ -11,9 +8,10 @@ namespace GlLib.Client.Graphic.Renderers
     internal class AirShieldRenderer : EntityRenderer
     {
         private ISprite _sprite;
+
         public override void Setup(Entity _e)
         {
-            TextureLayout layout = new TextureLayout(@"air_shield.png", 4, 1);
+            var layout = new TextureLayout(@"air_shield.png", 4, 1);
             _sprite = new LinearSprite(layout, 4, 6);
         }
 

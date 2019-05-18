@@ -1,15 +1,15 @@
 {
 	"entity": {
 		"entityId": "entity.living.player",
-		"Position": "(31.200030309878,24,0)",
-		"Velocity": "(-4.54648166690135E-06,0)",
+		"Position": "(20.4386601286169,22.533333333333,0)",
+		"Velocity": "(-0.00579901929241408,-2.98641120493583E-30)",
 		"MaxVelocity": "(0.7,0.7)",
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
 		"entityTag": "",
 		"Armor": 0,
-		"Health": 100,
+		"Health": 95,
 		"MaxHealth": 100,
 		"GodMode": "False",
 		"IsTakingDamage": 0,

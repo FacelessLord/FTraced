@@ -13,6 +13,9 @@ namespace GlLib.Common
     {
         public static Profiler profiler = new Profiler();
 
+        public static Thread clientThread;
+        public static Thread serverThread;
+
         public static void Main(string[] _args)
         {
             profiler.SetState(State.CoreStarting);
@@ -38,9 +41,6 @@ namespace GlLib.Common
             // ClientService._instance.ConnectToIntegratedServer();
         }
 
-        public static Thread clientThread;
-        public static Thread serverThread;
-        
 
         public static void StartWorld()
         {

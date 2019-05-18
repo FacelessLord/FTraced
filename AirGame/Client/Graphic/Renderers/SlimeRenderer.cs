@@ -3,7 +3,6 @@ using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
 {
@@ -11,7 +10,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         protected LinearSprite idleSprite;
         protected LinearSprite walkSprite;
-        protected Color4 color;
+        protected Color4 color = Color4.White;
 
 
         public SlimeRenderer() : base()
@@ -31,6 +30,7 @@ namespace GlLib.Client.Graphic.Renderers
 
             idleSprite = new LinearSprite(idle, 10, 30);
             walkSprite = new LinearSprite(walk, 7, 30);
+
             idleSprite.SetColor(color);
             walkSprite.SetColor(color);
         }

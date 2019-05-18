@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 
@@ -10,31 +9,30 @@ namespace GlLib.Common.SpellCastSystem
     internal class SpellSystem
     {
         internal const uint MaxCastTime = 3 * 1000;
-        internal const byte ElementsCountBound = 6; 
-        // ReSharper disable once InconsistentNaming
-        private long updatedTime;
-        internal uint InternalTime
-            => IsStarted
-                ? (uint) (Proxy.GetServer().InternalMilliseconds - updatedTime)
-                : 0;
-
-        protected bool IsStarted
-        {
-            get; 
-            private set;
-        }
+        internal const byte ElementsCountBound = 6;
 
         // ReSharper disable once InconsistentNaming
         private readonly List<ClassicalElement> elements;
-        public Entity SpellCaster { get; }
+
+        // ReSharper disable once InconsistentNaming
+        private long updatedTime;
 
         public SpellSystem(Entity _spellCaster)
         {
             SpellCaster = _spellCaster;
             elements = new List<ClassicalElement>();
             IsStarted = false;
-
         }
+
+        internal uint InternalTime
+            => IsStarted
+                ? (uint) (Proxy.GetServer().InternalMilliseconds - updatedTime)
+                : 0;
+
+        protected bool IsStarted { get; private set; }
+
+        public Entity SpellCaster { get; }
+
         public void OnUpdate(ElementType _element = ElementType.Empty)
         {
             if (_element != ElementType.Empty)
@@ -43,7 +41,7 @@ namespace GlLib.Common.SpellCastSystem
                 {
                     if (elements.Count < ElementsCountBound)
                     {
-                        SidedConsole.WriteLine("Adding of " + (int)_element);
+                        SidedConsole.WriteLine("Adding of " + (int) _element);
 
                         elements.Add(new ClassicalElement(InternalTime, _element));
                     }
@@ -68,7 +66,6 @@ namespace GlLib.Common.SpellCastSystem
                 MakeResult();
                 Refresh();
             }
-
         }
 
         private void Refresh()
@@ -81,25 +78,25 @@ namespace GlLib.Common.SpellCastSystem
 
         private void MakeResult()
         {
-            double averageTime = elements.Average(e => e.StartTime);
-            double averageValue = elements.Average(e => (int) e.type);
+            var averageTime = elements.Average(e => e.StartTime);
+            var averageValue = elements.Average(e => (int) e.type);
 
-            SidedConsole.WriteLine("Result: " + averageValue +" " + averageTime+ " " + elements.Count);
+            SidedConsole.WriteLine("Result: " + averageValue + " " + averageTime + " " + elements.Count);
 
             switch (Math.Floor(averageValue))
             {
-                case (int)ElementType.Air:
+                case (int) ElementType.Air:
                     SpellCaster.worldObj.SpawnEntity(
                         new AirShield(
                             SpellCaster.worldObj,
-                            SpellCaster.Position, 
+                            SpellCaster.Position,
                             SpellCaster.velocity,
-                            6000000 + 100000 * (uint)averageTime,
+                            6000000 + 100000 * (uint) averageTime,
                             0));
                     return;
-                case (int)ElementType.Water:
+                case (int) ElementType.Water:
                     return;
-                case (int)ElementType.Fire:
+                case (int) ElementType.Fire:
                     SpellCaster.worldObj.SpawnEntity(
                         new FireBall(
                             SpellCaster.worldObj,
@@ -107,14 +104,11 @@ namespace GlLib.Common.SpellCastSystem
                             SpellCaster.direction,
                             SpellCaster.velocity,
                             10000000,
-                            (int)Math.Round(averageTime * 5)));
+                            (int) Math.Round(averageTime * 5)));
                     return;
-                case (int)ElementType.Earth:
+                case (int) ElementType.Earth:
                     return;
             }
-
-
-
         }
     }
 }

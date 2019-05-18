@@ -97,7 +97,7 @@ namespace GlLib.Client.Api.Gui
                 .ToList()
                 .ForEach(_o => _o.OnMouseRelease(_gui, _button, _mouseX, _mouseY));
         }
-        
+
         public GuiObject Add(GuiObject _obj)
         {
             screenObjects.Add(_obj);
