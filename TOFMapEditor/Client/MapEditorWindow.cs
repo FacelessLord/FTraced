@@ -11,6 +11,9 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using System;
+using System.Threading;
+using GlLib.Common.Entities;
 
 namespace TOFMapEditor.Client
 {
@@ -22,6 +25,7 @@ namespace TOFMapEditor.Client
 
         public GuiFrame hud;
         public VSyncMode vSync = VSyncMode.On;
+        public Entity cameraEntity;
 
         public MapEditorWindow(int _width, int _height, string _title)
             : base(_width, _height, GraphicsMode.Default, _title)
@@ -34,7 +38,9 @@ namespace TOFMapEditor.Client
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             hud = new MapEditorHud();
-            camera = new MapEditorCamera();
+            cameraEntity = new Entity(EditWorld, new RestrictedVector3D(0, 0, 0));
+            EditWorld.SpawnEntity(cameraEntity);
+            camera = new EntityTrackingCamera(cameraEntity);
         }
 
         private World EditWorld { get; }
@@ -46,14 +52,11 @@ namespace TOFMapEditor.Client
             MouseHandler.Update();
             KeyboardHandler.Update();
             hud.Update(this);
-            WorldRenderer.Render(0, 0);
+            WorldRenderer.Render(cameraEntity.Position.x, cameraEntity.Position.y);
 
-            var input = Keyboard.GetState();
-            if (input.IsKeyDown(Key.Escape))
-            {
-                Exit();
-                Proxy.Exit = true;
-            }
+            SidedConsole.WriteLine(cameraEntity.Position);
+            OnRenderFrame(_e);
+
 
             base.OnUpdateFrame(_e);
         }
@@ -65,12 +68,31 @@ namespace TOFMapEditor.Client
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
+            SidedConsole.WriteLine(_e.Key);
+            switch (_e.Key)
+            {
+                case (Key.W):
+                {
+                    cameraEntity.Position += new PlanarVector(1, 0);
+                    break;;
+                }
+                case (Key.S):
+                {
+                    cameraEntity.Position += new PlanarVector(-1, 0);
+                    break; 
+                }
+                case (Key.A):
+                {
+                    cameraEntity.Position += new PlanarVector(0, 1);
+                    break;
+                }
+                case (Key.D):
+                {
+                    cameraEntity.Position += new PlanarVector(0, -1);
+                    break;
+                }
+            }
             base.OnKeyDown(_e);
-            KeyboardHandler.SetClicked(_e.Key, true);
-            KeyboardHandler.SetPressed(_e.Key, true);
-            if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
-                KeyBinds.clickBinds[_e.Key](Proxy.GetClient().player);
-            guiFrame?.OnKeyDown(this, _e);
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
@@ -115,7 +137,7 @@ namespace TOFMapEditor.Client
         {
             base.OnRenderFrame(_e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            RenderWorld();
+
 
             GL.Clear(ClearBufferMask.DepthBufferBit);
             //GUI render is not connected to the world
@@ -129,10 +151,11 @@ namespace TOFMapEditor.Client
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-
             hud.Update(this);
             hud.Render(this);
 
+
+            RenderWorld();
 
             guiFrame?.Update(this);
             guiFrame?.Render(this);
