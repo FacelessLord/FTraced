@@ -3,6 +3,7 @@ using System.Linq;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using OpenTK.Graphics;
 
 namespace GlLib.Common.Entities
 {
@@ -33,9 +34,10 @@ namespace GlLib.Common.Entities
         private void Initialize()
         {
 
-            SetCustomRenderer(new SlimeRenderer());
+            SetCustomRenderer(new SlimeRenderer(Color4.Blue));
             AttackRange = 2;
             AttackValue = 5;
+
         }
 
         public override string GetName()

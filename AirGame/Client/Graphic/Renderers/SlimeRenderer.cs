@@ -11,7 +11,18 @@ namespace GlLib.Client.Graphic.Renderers
     {
         protected LinearSprite idleSprite;
         protected LinearSprite walkSprite;
+        protected Color4 color;
 
+
+        public SlimeRenderer() : base()
+        {
+
+        }
+
+        public SlimeRenderer(Color4 _color) : base()
+        {
+            color = _color;
+        }
         public override void Setup(Entity _p)
         {
 
@@ -20,6 +31,8 @@ namespace GlLib.Client.Graphic.Renderers
 
             idleSprite = new LinearSprite(idle, 10, 30);
             walkSprite = new LinearSprite(walk, 7, 30);
+            idleSprite.SetColor(color);
+            walkSprite.SetColor(color);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
