@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
@@ -25,6 +22,18 @@ namespace GlLib.Common.Entities
         }
 
 
+        private Player Target { get; set; }
+        public bool InMove { get; }
+        public bool InWaiting { get; }
+        public int AttackRange { get; private set; }
+
+        public bool IsAttacking => !(Target is null);
+
+        public bool IsWaiting => Target is null;
+
+        public int AttackValue { get; set; }
+
+
         private void Initialize()
         {
             SetCustomRenderer(new BatRenderer());
@@ -37,34 +46,16 @@ namespace GlLib.Common.Entities
             return "entity.living.bat";
         }
 
-
-        private Player Target { get; set; }
-        public bool InMove { get; }
-        public bool InWaiting { get; }
-        public int AttackRange { get; private set; }
-
-        public bool IsAttacking
-        {
-            get => !(Target is null);
-        }
-
-        public bool IsWaiting
-        {
-            get => (Target is null);
-        }
-
         public override void Update()
         {
             var entities = worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AttackRange, AttackRange));
 
             if (Target is null && !(entities is null))
-            {
                 Target = (Player) entities
                     .FirstOrDefault(_e => _e is Player p && !p.state.Equals(EntityState.Dead));
-            }
 
             if (InternalTicks % UpdateFrame == 0 ||
-                (!(Target is null) && Target.IsDead))
+                !(Target is null) && Target.IsDead)
             {
                 Target = (Player) entities
                     .FirstOrDefault(_e => _e is Player p && !p.state.Equals(EntityState.Dead));
@@ -93,8 +84,5 @@ namespace GlLib.Common.Entities
             velocity.Normalize();
             velocity /= 5;
         }
-
-        public int AttackValue { get; set; }
     }
 }
-

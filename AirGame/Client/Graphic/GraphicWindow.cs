@@ -17,7 +17,7 @@ namespace GlLib.Client.Graphic
     public class GraphicWindow : GameWindow
     {
         public ICamera camera;
-        public bool enableHud = false;
+        public bool enableHud;
 
         public GuiFrame guiFrame;
 
@@ -34,10 +34,13 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine("Window constructed");
         }
 
-        public bool CanMovementBeHandled() => (guiFrame == null || guiFrame.focusedObject == null) &&
-                                              Proxy.GetClient() != null && Proxy.GetClient().player != null
-                                              && !Proxy.GetClient().player.IsDead && !Proxy.GetClient().player.state
-                                                  .Equals(EntityState.Dead);
+        public bool CanMovementBeHandled()
+        {
+            return (guiFrame == null || guiFrame.focusedObject == null) &&
+                   Proxy.GetClient() != null && Proxy.GetClient().player != null
+                   && !Proxy.GetClient().player.IsDead && !Proxy.GetClient().player.state
+                       .Equals(EntityState.Dead);
+        }
 
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
@@ -183,7 +186,7 @@ namespace GlLib.Client.Graphic
 
         public void CloseGui(bool _force = false)
         {
-            if(guiFrame is null || !guiFrame.NoClose || _force)
+            if (guiFrame is null || !guiFrame.NoClose || _force)
                 guiFrame = null;
         }
 

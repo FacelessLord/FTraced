@@ -12,10 +12,10 @@ namespace GlLib.Client.Api.Sprites
         private Color4 color = new Color4(1, 1, 1, 1.0f);
         public int frameCount;
         public bool frozen;
-        public bool noRepeat = false;
-        
+
         private bool hasColor;
         public int maxFrameCount;
+        public bool noRepeat;
 
         private Vector3 scale;
         public int step;
@@ -86,7 +86,7 @@ namespace GlLib.Client.Api.Sprites
             frozen = _freeze;
             return this;
         }
-        
+
         public LinearSprite SetNoRepeat(bool _no = true)
         {
             noRepeat = _no;

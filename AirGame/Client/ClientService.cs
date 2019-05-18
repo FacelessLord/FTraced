@@ -42,10 +42,7 @@ namespace GlLib.Client
                 if (players.Any()) player = players.First();
             }
 
-            if (player is null)
-            {
-                ResurrectPlayer();
-            }
+            if (player is null) ResurrectPlayer();
             var coin = new Coin();
             coin.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
             world.SpawnEntity(coin);
@@ -58,7 +55,7 @@ namespace GlLib.Client
         {
             if (player is null || player.state is EntityState.Dead)
             {
-                if(player.state is EntityState.Dead)
+                if (player.state is EntityState.Dead)
                     player.SetDead();
                 player = new Player();
 //            SidedConsole.WriteLine("Setting Player Name");

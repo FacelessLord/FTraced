@@ -1,7 +1,5 @@
 using System;
-using System.Globalization;
 using System.Net.Json;
-using GlLib.Common.API;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -10,7 +8,8 @@ namespace GlLib.Common.Entities
     public class EntityLiving : Entity
     {
         public const ushort MaxArmor = 100;
-        public bool CanDie { get; set; } = true;
+
+        private ushort _armor;
 
         public EntityLiving(uint _health,
             ushort _armor, World _world,
@@ -31,12 +30,12 @@ namespace GlLib.Common.Entities
             DamageTimer = -1;
         }
 
+        public bool CanDie { get; set; } = true;
+
         public float Health { get; protected set; }
         public float MaxHealth { get; protected set; }
         public bool GodMode { get; protected set; }
         public int DamageTimer { get; private set; }
-
-        private ushort _armor;
 
         public ushort Armor
         {
@@ -94,20 +93,14 @@ namespace GlLib.Common.Entities
             if (DamageTimer < 0)
                 DamageTimer++;
 
-            if (state is EntityState.Dead && Health > 0)
-            {
-                SetState(EntityState.Idle, -1, true);
-            }
-            if (!(state is EntityState.Dead) && Health <= 0)
-            {
-                SetState(EntityState.Dead, -1, true);
-            }
+            if (state is EntityState.Dead && Health > 0) SetState(EntityState.Idle, -1, true);
+            if (!(state is EntityState.Dead) && Health <= 0) SetState(EntityState.Dead, -1, true);
         }
 
         public void DealDamage(float _damage)
         {
             if (GodMode) return;
-            if(!state.Equals(EntityState.Dead))
+            if (!state.Equals(EntityState.Dead))
             {
                 SetState(EntityState.AttackInterrupted, 3);
                 var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
@@ -132,10 +125,7 @@ namespace GlLib.Common.Entities
         {
             Health += _damage;
             DamageTimer = -2;
-            if (Health > MaxHealth)
-            {
-                Health = MaxHealth;
-            }
+            if (Health > MaxHealth) Health = MaxHealth;
         }
 
 //        public virtual void PerformAttack()

@@ -11,7 +11,7 @@ namespace GlLib.Utils
         {
         }
 
-        public RestrictedVector3D(double _x, double _y, int _z) : base(_x,_y)
+        public RestrictedVector3D(double _x, double _y, int _z) : base(_x, _y)
         {
             z = _z;
         }
@@ -136,15 +136,6 @@ namespace GlLib.Utils
         {
         }
 
-        public static PlanarVector GetRandom(double _range)
-        {
-            var r = new Random();
-
-            return new PlanarVector(
-                (2 * r.NextDouble() - 1) * _range,
-                (2 * r.NextDouble() - 1) * _range);
-
-        }
         public PlanarVector(double _x, double _y)
         {
             (x, y) = (_x, _y);
@@ -153,6 +144,27 @@ namespace GlLib.Utils
         public double Angle => Math.Atan2(y, x);
 
         public double Length => Math.Sqrt(x * x + y * y);
+
+        public PlanarVector Normalized
+        {
+            get
+            {
+                if (Math.Abs(Length) < 1e-4) return new PlanarVector(0, 0);
+
+                var newX = Math.Round(x * 1 / Length);
+                var newY = Math.Round(y * 1 / Length);
+                return new PlanarVector(newX, newY);
+            }
+        }
+
+        public static PlanarVector GetRandom(double _range)
+        {
+            var r = new Random();
+
+            return new PlanarVector(
+                (2 * r.NextDouble() - 1) * _range,
+                (2 * r.NextDouble() - 1) * _range);
+        }
 
         public static PlanarVector operator *(PlanarVector _a, double _k)
         {
@@ -168,7 +180,7 @@ namespace GlLib.Utils
         {
             return new PlanarVector(_a.x + _b.x, _a.y + _b.y);
         }
-        
+
         public static PlanarVector operator -(PlanarVector _a, PlanarVector _b)
         {
             _b *= -1;
@@ -206,23 +218,10 @@ namespace GlLib.Utils
                 y = 0;
                 return;
             }
-            
+
             x = Math.Round(x * 1 / Length);
             y = Math.Round(y * 1 / Length);
-            return;
         }
-
-        public PlanarVector Normalized { get
-            {
-                if (Math.Abs(Length) < 1e-4)
-                {
-                    return new PlanarVector(0, 0);
-                }
-
-                var newX = Math.Round(x * 1 / Length);
-                var newY = Math.Round(y * 1 / Length);
-                return new PlanarVector(newX, newY);
-            } }
 
         public static PlanarVector FromString(string _s)
         {
@@ -272,7 +271,7 @@ namespace GlLib.Utils
             y /= _i;
             return this;
         }
-        
+
         public PlanarVector Divide(double _i, double _j)
         {
             x /= _i;
@@ -308,7 +307,7 @@ namespace GlLib.Utils
 
         public double Width => endX - startX;
         public double Height => endY - startY;
-        
+
         public int WidthI => EndXi - StartXi;
         public int HeightI => EndYi - StartYi;
 
@@ -316,6 +315,7 @@ namespace GlLib.Utils
         {
             return _vector.x <= endX && _vector.x >= startX && _vector.y <= endY && _vector.y >= startY;
         }
+
         public bool IsVectorInside(double _x, double _y)
         {
             return _x <= endX && _x >= startX && _y <= endY && _y >= startY;
@@ -328,20 +328,20 @@ namespace GlLib.Utils
             var cx2 = (_box.startX + _box.endX) / 2;
             var cy2 = (_box.startY + _box.endY) / 2;
 
-            var halfWidth = Width/2 + _box.Width/2;
-            var halfHeight = Height/2 + _box.Height/2;
+            var halfWidth = Width / 2 + _box.Width / 2;
+            var halfHeight = Height / 2 + _box.Height / 2;
 
             //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
             //    SidedConsole.WriteLine(this + " | " + _box);
             //TODO it's magic check please
-            return Math.Abs(cx1 - cx2) <= halfWidth*1.5 && Math.Abs(cy1 - cy2) <= halfHeight*1.5;
+            return Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
         }
 
         public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)
         {
             return new AxisAlignedBb(_a.startX + _v.x, _a.startY + _v.y, _a.endX + _v.x, _a.endY + _v.y);
         }
-        
+
         public AxisAlignedBb Translate(PlanarVector _v)
         {
             startX += _v.x;
@@ -350,27 +350,31 @@ namespace GlLib.Utils
             endY += _v.y;
             return this;
         }
-        
+
         public AxisAlignedBb Scaled(PlanarVector _v, double _s)
         {
             if (_v.x > 0)
             {
                 startX += _v.x / _s;
                 endX += _v.x * _s;
-            }else
+            }
+            else
             {
                 startX += _v.x * _s;
                 endX += _v.x / _s;
             }
+
             if (_v.y > 0)
             {
                 startY += _v.y / _s;
                 endY += _v.y * _s;
-            }else
+            }
+            else
             {
                 startY += _v.y * _s;
                 endY += _v.y / _s;
             }
+
             return this;
         }
 

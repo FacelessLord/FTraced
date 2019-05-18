@@ -9,8 +9,8 @@ namespace GlLib.Client.Graphic.Gui
 {
     public class GuiSettings : GuiFrame
     {
-        public GuiRectangle rectangle;
         public GuiButton exitButton;
+        public GuiRectangle rectangle;
         public GuiPanel settings;
 
         public GuiSettings(GuiFrame _prev)
@@ -28,15 +28,15 @@ namespace GlLib.Client.Graphic.Gui
             settings = new GuiPanel(w / 4 - 10, h / 3 - 10, w / 2 + 20, h / 3);
             settings.bar = new GuiScrollBar(settings.height, settings.width - 50, 0, 50, settings.height);
 
-            var binds = KeyBinds.clickBinds.Concat(KeyBinds.binds).OrderBy((_ka) => KeyBinds.delegateNames[_ka.Value])
+            var binds = KeyBinds.clickBinds.Concat(KeyBinds.binds).OrderBy(_ka => KeyBinds.delegateNames[_ka.Value])
                 .ToList();
-            int i = 0;
+            var i = 0;
             foreach (var bind in binds)
             {
-                int dw = settings.width - settings.bar.width;
-                int n = 3;
-                var key = new GuiBindButton(bind.Key, bind.Value, 0, i * d, d*n, d);
-                var sign = new GuiSign(KeyBinds.delegateNames[bind.Value], d*n, i * d, dw - d*n, d);
+                var dw = settings.width - settings.bar.width;
+                var n = 3;
+                var key = new GuiBindButton(bind.Key, bind.Value, 0, i * d, d * n, d);
+                var sign = new GuiSign(KeyBinds.delegateNames[bind.Value], d * n, i * d, dw - d * n, d);
                 settings.Add(key);
                 settings.Add(sign);
                 i++;

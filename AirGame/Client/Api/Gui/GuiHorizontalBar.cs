@@ -57,7 +57,7 @@ namespace GlLib.Client.API.Gui
 
             var proportions = value / maxValue;
             GL.Color4(color.R, color.G, color.B, color.A);
-            var fluidWidth = (width-height) * proportions;
+            var fluidWidth = (width - height) * proportions;
             Vertexer.BindTexture(filler);
             Vertexer.StartDrawingQuads();
             Vertexer.VertexWithUvAt(x + height / 2, y, 0, 0);

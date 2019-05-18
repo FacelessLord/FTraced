@@ -11,11 +11,13 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new CoinRenderer());
             Initialize();
         }
+
         public Coin(World _world, RestrictedVector3D _position) : base(_world, _position)
         {
             SetCustomRenderer(new CoinRenderer());
             Initialize();
         }
+
         public Coin(World _world, RestrictedVector3D _position, PlanarVector _velocity) : base(_world, _position)
         {
             velocity = _velocity;

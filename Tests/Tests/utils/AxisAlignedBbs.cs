@@ -147,22 +147,22 @@ namespace Tests.utils
             foreach (var triple in arrangePairs)
                 CheckIfIntersectsIs(triple.Item1, triple.Item2, triple.Item3);
         }
-        
+
         [TestCase]
         public void AxisAlignedBb_Vector_Sum()
         {
-            var box = new AxisAlignedBb(0,0, 123, 321);
+            var box = new AxisAlignedBb(0, 0, 123, 321);
             var vec = new PlanarVector(47, 51);
             var result = new AxisAlignedBb(47, 51, 170, 372);
 
             (box + vec).Should().BeEquivalentTo(result, "Sum with vector is translation");
         }
-        
+
         [TestCase]
         public void AxisAlignedBb_Vector_Expand()
         {
-            var box = new AxisAlignedBb(-2,-2, 2,2);
-            var result = new PlanarVector().ExpandBothTo(2,2);
+            var box = new AxisAlignedBb(-2, -2, 2, 2);
+            var result = new PlanarVector().ExpandBothTo(2, 2);
 
             box.Should().BeEquivalentTo(result, "Vector expand equally");
         }

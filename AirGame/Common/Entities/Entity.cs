@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net.Json;
 using GlLib.Client.API;
 using GlLib.Client.Graphic.Renderers;
@@ -12,14 +11,15 @@ namespace GlLib.Common.Entities
 {
     public class Entity : IJsonSerializable
     {
-        public Chunk chunkObj;
-
-        internal long InternalTicks
-            => Proxy.GetServer().InternalTicks - spawnTime;
-
         private readonly long spawnTime;
 
+        private EntityRenderer _renderer = new StandardRenderer();
+        public Chunk chunkObj;
+        public Direction direction = Direction.Right;
+
         private bool isDead;
+
+        public bool isVelocityDinamic = true;
         public PlanarVector maxVel = new PlanarVector(0.7, 0.7);
 
         public NbtTag nbtTag = new NbtTag();
@@ -28,16 +28,11 @@ namespace GlLib.Common.Entities
         protected RestrictedVector3D oldPosition = new RestrictedVector3D();
         protected RestrictedVector3D position = new RestrictedVector3D();
 
-        public PlanarVector velocity = new PlanarVector();
-        public Direction direction = Direction.Right;
-        public World worldObj;
-
-        private EntityRenderer _renderer = new StandardRenderer();
-
         public EntityState state = EntityState.Idle;
         public int timeout = -1;
 
-        public bool isVelocityDinamic = true;
+        public PlanarVector velocity = new PlanarVector();
+        public World worldObj;
 
         public Entity(World _world, RestrictedVector3D _position)
         {
@@ -49,6 +44,9 @@ namespace GlLib.Common.Entities
         public Entity()
         {
         }
+
+        internal long InternalTicks
+            => Proxy.GetServer().InternalTicks - spawnTime;
 
         public RestrictedVector3D OldPosition => oldPosition;
 
@@ -65,21 +63,6 @@ namespace GlLib.Common.Entities
 
         public bool IsDead { get; } = false;
         public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375, -0.25, 0.375, 0.75);
-
-        public void SetState(EntityState _state, int _timeout, bool _force = false)
-        {
-            if (state <= _state || _force)
-            {
-                state = _state;
-                timeout = _timeout;
-            }
-        }
-
-        private void CheckVelocity()
-        {
-            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
-            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
-        }
 
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
@@ -115,6 +98,21 @@ namespace GlLib.Common.Entities
             return jsonObj;
         }
 
+        public void SetState(EntityState _state, int _timeout, bool _force = false)
+        {
+            if (state <= _state || _force)
+            {
+                state = _state;
+                timeout = _timeout;
+            }
+        }
+
+        private void CheckVelocity()
+        {
+            if (Math.Abs(velocity.x) > maxVel.x) velocity.x *= maxVel.x / Math.Abs(velocity.x);
+            if (Math.Abs(velocity.y) > maxVel.y) velocity.y *= maxVel.y / Math.Abs(velocity.y);
+        }
+
         public AxisAlignedBb GetTranslatedAaBb()
         {
             return AaBb + Position;
@@ -131,10 +129,7 @@ namespace GlLib.Common.Entities
 
             if (timeout > 0)
                 timeout--;
-            if (timeout == 0)
-            {
-                SetState(EntityState.Idle, -1, true);
-            }
+            if (timeout == 0) SetState(EntityState.Idle, -1, true);
 
             MoveEntity();
 
@@ -142,9 +137,7 @@ namespace GlLib.Common.Entities
 
 
             foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
-            {
                 OnCollideWith(e);
-            }
 
 
             CheckVelocity();
@@ -156,8 +149,8 @@ namespace GlLib.Common.Entities
             var oldChunk = chunkObj;
             var accuracy = 20;
             var dvel = velocity / accuracy;
-            int prevBlockX = Position.Ix;
-            int prevBlockY = Position.Iy;
+            var prevBlockX = Position.Ix;
+            var prevBlockY = Position.Iy;
 
             for (var i = 0; i < accuracy; i++)
             {
@@ -168,8 +161,8 @@ namespace GlLib.Common.Entities
                     {
                         var block = chunkObj[Position.Ix / 16, Position.Iy / 16];
                         var blockBox = block.GetCollisionBox();
-                        double x = Position.x - Position.Ix;
-                        double y = Position.y - Position.Iy;
+                        var x = Position.x - Position.Ix;
+                        var y = Position.y - Position.Iy;
                         if (blockBox != null && blockBox.IsVectorInside(x, y))
                         {
                             Position = oldPos;
@@ -217,7 +210,6 @@ namespace GlLib.Common.Entities
 
         public virtual void OnDead()
         {
-
         }
 
         public virtual void OnCollideWith(Entity _obj)

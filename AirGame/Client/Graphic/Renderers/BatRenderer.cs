@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
-using GlLib.Client.Api.Sprites;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK.Graphics;
 
 namespace GlLib.Client.Graphic.Renderers
 {
-    class BatRenderer : EntityRenderer
+    internal class BatRenderer : EntityRenderer
     {
         public LinearSprite batSprite;
         public LinearSprite spawnSprite;

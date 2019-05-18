@@ -4,14 +4,15 @@ namespace GlLib.Utils
 {
     public class PlayerData
     {
-        public ushort CastLevel { get; }
         public World world;
-            
+
 
         public PlayerData()
         {
             CastLevel = 100;
         }
+
+        public ushort CastLevel { get; }
 
         public void SaveToNbt(NbtTag _tag)
         {

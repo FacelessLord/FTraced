@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic
@@ -8,6 +7,8 @@ namespace GlLib.Client.Graphic
     public class Vertexer
     {
         public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+
+        public static Texture Null { get; private set; }
 
         public static void EnableTextures()
         {
@@ -55,8 +56,6 @@ namespace GlLib.Client.Graphic
         {
             GL.End();
         }
-
-        public static Texture Null { get; private set; }
 
         public static Texture LoadTexture(string _path)
         {
@@ -116,6 +115,7 @@ namespace GlLib.Client.Graphic
         {
             _text.Bind();
         }
+
         public static void BindTexture(string _text)
         {
             LoadTexture(_text).Bind();

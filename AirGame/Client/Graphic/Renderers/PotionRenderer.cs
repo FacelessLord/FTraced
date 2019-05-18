@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
-using GlLib.Client.Api.Sprites;
 using GlLib.Common.Entities;
 using GlLib.Utils;
-using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
 {
-    class PotionRenderer : EntityRenderer
+    internal class PotionRenderer : EntityRenderer
     {
         public ISprite coinSprite;
 

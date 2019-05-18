@@ -7,11 +7,11 @@ namespace GlLib.Client.Graphic.Gui
 {
     public class GuiMainMenu : GuiFrame
     {
+        public GuiButton exitButton;
         public GuiRectangle rectangle;
+        public GuiButton settingsButton;
         public GuiButton startButton;
         public GuiButton startMultiButton;
-        public GuiButton settingsButton;
-        public GuiButton exitButton;
 
         public GuiMainMenu()
         {

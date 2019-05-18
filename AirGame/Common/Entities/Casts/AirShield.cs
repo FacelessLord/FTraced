@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.Graphic.Renderers;
+﻿using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -10,9 +7,6 @@ namespace GlLib.Common.Entities
     public class AirShield : Entity
     {
         private const short BaseVelocity = 0;
-
-        internal uint DieTime { get; }
-        internal int Damage { get; }
 
 
         public AirShield(World _world, RestrictedVector3D _position, PlanarVector _velocity, uint _dieTime, int _damage)
@@ -24,6 +18,9 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new AirShieldRenderer());
             AaBb = new AxisAlignedBb(-3, -6, 3, 6);
         }
+
+        internal uint DieTime { get; }
+        internal int Damage { get; }
 
         public override void Update()
         {

@@ -45,6 +45,7 @@ namespace GlLib.Client.API
         {
             return (endU - startU) / countX;
         }
+
         public int FrameHeight()
         {
             return (endV - startV) / countY;

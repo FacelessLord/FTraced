@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
-using GlLib.Client.Api.Sprites;
 using GlLib.Common.Entities;
-using GlLib.Common.Map.Blocks;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 

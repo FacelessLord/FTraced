@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
@@ -40,14 +38,14 @@ namespace GlLib.Common.Entities
                     worldObj.SpawnEntity(new Coin(worldObj, Position,
                         PlanarVector.GetRandom(0.2)));
                     if (r.Next(10) > 7)
-                    {
                         worldObj.SpawnEntity(new Potion(worldObj, Position,
                             PlanarVector.GetRandom(0.2)));
-                    }
                 }
                 else
+                {
                     worldObj.SpawnEntity(new EntitySlime(
                         worldObj, Position));
+                }
             }
         }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.Graphic.Renderers;
+﻿using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -13,10 +10,12 @@ namespace GlLib.Common.Entities.Items
         {
             SetCustomRenderer(new CoinRenderer());
         }
+
         public Potion(World _world, RestrictedVector3D _position) : base(_world, _position)
         {
             SetCustomRenderer(new PotionRenderer());
         }
+
         public Potion(World _world, RestrictedVector3D _position, PlanarVector _velocity) : base(_world, _position)
         {
             velocity = _velocity;

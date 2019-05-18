@@ -1,13 +1,13 @@
-using GlLib.Client.Graphic.Gui;
-using GlLib.Common;
-using GlLib.Common.Entities;
-using GlLib.Common.SpellCastSystem;
-using GlLib.Utils;
-using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Client.Graphic.Gui;
+using GlLib.Common;
+using GlLib.Common.Entities;
 using GlLib.Common.Entities.Items;
+using GlLib.Common.SpellCastSystem;
+using GlLib.Utils;
+using OpenTK.Input;
 
 namespace GlLib.Client.Input
 {
@@ -15,7 +15,7 @@ namespace GlLib.Client.Input
     {
         public static Dictionary<Key, Action<Player>> binds = new Dictionary<Key, Action<Player>>();
         public static Dictionary<Key, Action<Player>> clickBinds = new Dictionary<Key, Action<Player>>();
-        public static Dictionary<Action<Player>, String> delegateNames = new Dictionary<Action<Player>, String>();
+        public static Dictionary<Action<Player>, string> delegateNames = new Dictionary<Action<Player>, string>();
 
         public static Action<Player> moveLeft = _p =>
         {
@@ -33,7 +33,6 @@ namespace GlLib.Client.Input
             {
                 _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(0, -_p.accelerationValue);
-       
             }
         };
 
@@ -44,7 +43,6 @@ namespace GlLib.Client.Input
                 _p.SetState(EntityState.Walk, 3);
                 _p.direction = Direction.Right;
                 _p.velocity += new PlanarVector(_p.accelerationValue, 0);
-        
             }
         };
 
@@ -54,7 +52,6 @@ namespace GlLib.Client.Input
             {
                 _p.SetState(EntityState.Walk, 3);
                 _p.velocity += new PlanarVector(0, _p.accelerationValue);
-           
             }
         };
 
@@ -93,17 +90,18 @@ namespace GlLib.Client.Input
         public static Action<Player> attack = _p =>
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
-            if(!(_p.state is EntityState.AttackInterrupted))
-            {
-                if (Math.Abs(_p.velocity.Length) < 1e-2)
-                    _p.SetState(EntityState.AoeAttack, 6);
-                else
-                    _p.SetState(EntityState.DirectedAttack, 6);
-                var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(
-                    _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 2), 1.05), _p.Position.z);
-                entities.Where(_e => _e is EntityLiving el && !el.state.Equals(EntityState.Dead) && _e != _p).Cast<EntityLiving>().ToList()
-                    .ForEach(_e => _e.DealDamage(30));
-            }
+                if (!(_p.state is EntityState.AttackInterrupted))
+                {
+                    if (Math.Abs(_p.velocity.Length) < 1e-2)
+                        _p.SetState(EntityState.AoeAttack, 6);
+                    else
+                        _p.SetState(EntityState.DirectedAttack, 6);
+                    var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(
+                        _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 2), 1.05), _p.Position.z);
+                    entities.Where(_e => _e is EntityLiving el && !el.state.Equals(EntityState.Dead) && _e != _p)
+                        .Cast<EntityLiving>().ToList()
+                        .ForEach(_e => _e.DealDamage(30));
+                }
         };
 
         public static Action<Player> spawnBox = _p =>
@@ -115,6 +113,7 @@ namespace GlLib.Client.Input
                 _p.worldObj.SpawnEntity(box);
             }
         };
+
         public static Action<Player> spawnPile = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
@@ -126,6 +125,7 @@ namespace GlLib.Client.Input
             if (Proxy.GetWindow().serverStarted)
                 _p.worldObj.SpawnEntity(new Streetlight(_p.worldObj, _p.Position));
         };
+
         public static Action<Player> spawnPotion = _p =>
         {
             if (Proxy.GetWindow().serverStarted)

@@ -49,7 +49,7 @@ namespace GlLib.Client.Api.Sprites
             texture = Vertexer.LoadTexture(_texture);
             layout = new Layout(texture.width, texture.height, _countX, _countY);
         }
-        
+
         public TextureLayout(Texture _texture, int _countX, int _countY)
         {
             texture = _texture;

@@ -1,5 +1,4 @@
 using GlLib.Client.Graphic.Renderers;
-using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -13,6 +12,7 @@ namespace GlLib.Common.Entities
             Health = 1;
             SetCustomRenderer(new BonePileRenderer());
         }
+
         public BonePile(World _world, RestrictedVector3D _position, uint _health = 1,
             ushort _armor = 1) : base(_health, _armor, _world, _position)
         {
@@ -22,7 +22,7 @@ namespace GlLib.Common.Entities
         public override void OnDead()
         {
             if (Proxy.GetWindow().serverStarted)
-                this.worldObj.SpawnEntity(
+                worldObj.SpawnEntity(
                     new Coin(worldObj, Position,
                         PlanarVector.GetRandom(0.2)));
         }

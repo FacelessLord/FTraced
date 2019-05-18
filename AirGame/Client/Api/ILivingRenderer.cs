@@ -1,26 +1,21 @@
-using System;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
-using GlLib.Common;
 using GlLib.Common.Entities;
-using GlLib.Common.Map;
 using GlLib.Utils;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.API
 {
     public class AttackingLivingRenderer : EntityRenderer
     {
+        public ISprite aoeAttackSprite;
+        public ISprite deathSprite;
+        public ISprite directedAttackSprite;
         public string entityName;
 
         public ISprite idleSprite;
-        public ISprite walkSprite;
-        public ISprite aoeAttackSprite;
-        public ISprite directedAttackSprite;
         public ISprite interruptedAttackSprite;
-        public ISprite deathSprite;
+        public ISprite walkSprite;
 
         public AttackingLivingRenderer(string _entityName)
         {
@@ -29,13 +24,13 @@ namespace GlLib.Client.API
 
         public override void Setup(Entity _e)
         {
-            Texture idleTexture = Vertexer.LoadTexture(entityName + "_idle.png");
-            Texture walkTexture = Vertexer.LoadTexture(entityName + "_walk.png");
-            Texture aoeAttackTexture = Vertexer.LoadTexture(entityName + "_aoe_attack.png");
-            Texture directedAttackTexture = Vertexer.LoadTexture(entityName + "_directed_attack.png");
-            Texture interruptedAttackTexture = Vertexer.LoadTexture(entityName + "_interrupted.png");
-            Texture deathTexture = Vertexer.LoadTexture(entityName + "_death.png");
-            
+            var idleTexture = Vertexer.LoadTexture(entityName + "_idle.png");
+            var walkTexture = Vertexer.LoadTexture(entityName + "_walk.png");
+            var aoeAttackTexture = Vertexer.LoadTexture(entityName + "_aoe_attack.png");
+            var directedAttackTexture = Vertexer.LoadTexture(entityName + "_directed_attack.png");
+            var interruptedAttackTexture = Vertexer.LoadTexture(entityName + "_interrupted.png");
+            var deathTexture = Vertexer.LoadTexture(entityName + "_death.png");
+
             var idle = new TextureLayout(idleTexture, idleTexture.width / idleTexture.height, 1);
             var walk = new TextureLayout(walkTexture, walkTexture.width / walkTexture.height, 1);
             var aoeAttack = new TextureLayout(aoeAttackTexture, aoeAttackTexture.width / aoeAttackTexture.height, 1);
@@ -56,34 +51,32 @@ namespace GlLib.Client.API
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
-            GL.Translate(0, _e.AaBb.Height/2,0);
+            GL.Translate(0, _e.AaBb.Height / 2, 0);
             switch (_e.state)
             {
-                case (EntityState.Idle):
+                case EntityState.Idle:
                     idleSprite.Render();
                     break;
-                case (EntityState.Walk):
+                case EntityState.Walk:
                     walkSprite.Render();
                     break;
-                case (EntityState.AoeAttack):
+                case EntityState.AoeAttack:
                     aoeAttackSprite.Render();
                     break;
-                case (EntityState.DirectedAttack):
+                case EntityState.DirectedAttack:
                     directedAttackSprite.Render();
                     break;
-                case (EntityState.AttackInterrupted):
+                case EntityState.AttackInterrupted:
                     interruptedAttackSprite.Render();
                     break;
-                case (EntityState.Dead):
+                case EntityState.Dead:
                     deathSprite.Render();
                     break;
             }
 
             if (deathSprite is LinearSprite ls)
                 if (!_e.state.Equals(EntityState.Dead) && ls.FullFrameCount != 0)
-                {
                     ls.Reset();
-                }
             GL.PopMatrix();
         }
     }

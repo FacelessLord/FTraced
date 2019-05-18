@@ -6,9 +6,9 @@ namespace GlLib.Client.API.Gui
 {
     public class Hud : GuiFrame
     {
-        private GuiHorizontalBar health;
-        private GuiHorizontalBar cast;
-        private GuiSign moneySign;
+        private readonly GuiHorizontalBar cast;
+        private readonly GuiHorizontalBar health;
+        private readonly GuiSign moneySign;
 
         public Hud()
         {

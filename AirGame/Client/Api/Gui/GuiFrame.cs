@@ -9,6 +9,7 @@ namespace GlLib.Client.API.Gui
 {
     public class GuiFrame
     {
+        public GuiObject background;
         public GuiObject focusedObject;
 
         public GuiFrame()
@@ -26,8 +27,6 @@ namespace GlLib.Client.API.Gui
             ScreenObjects.Add(_obj);
             return _obj;
         }
-
-        public GuiObject background;
 
         public GuiRectangle AddRectangle(int _x, int _y, int _width, int _height)
         {

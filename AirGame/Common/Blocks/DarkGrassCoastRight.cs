@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Common.Map;
+﻿using GlLib.Common.Map;
 
 namespace GlLib.Common.Blocks
 {
-    class DarkGrassCoastRight : TerrainBlock
+    internal class DarkGrassCoastRight : TerrainBlock
     {
         public override string Name
         {
@@ -26,6 +23,5 @@ namespace GlLib.Common.Blocks
                 //TODO
             }
         }
-
     }
 }
