@@ -7,6 +7,7 @@ using GlLib.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net.Json;
+using GlLib.Client.API;
 using GlLib.Client.Graphic.Gui;
 
 namespace GlLib.Common.Entities
@@ -41,7 +42,7 @@ namespace GlLib.Common.Entities
         {
 
             SidedConsole.WriteLine("Setting Player Renderer");
-            SetCustomRenderer(new PlayerRenderer());
+            SetCustomRenderer(new AttackingLivingRenderer("player/dwarf"));
             SidedConsole.WriteLine("Setting Player Inventory");
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.varia));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.apple));

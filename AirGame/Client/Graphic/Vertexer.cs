@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic
@@ -54,15 +56,34 @@ namespace GlLib.Client.Graphic
             GL.End();
         }
 
+        public static Texture Null { get; private set; }
+
         public static Texture LoadTexture(string _path)
         {
             lock (textures)
             {
                 if (textures.ContainsKey(_path))
                     return textures[_path];
-                var texture = new Texture("textures/" + _path);
-                textures.Add(_path, texture);
-                return texture;
+                Texture texture;
+                try
+                {
+                    texture = new Texture("textures/" + _path);
+                    textures.Add(_path, texture);
+                    return texture;
+                }
+                catch (Exception e)
+                {
+                    if (_path != "null.png")
+                    {
+                        if (Null is null)
+                            Null = LoadTexture("null.png");
+                        texture = Null;
+                        textures.Add(_path, texture);
+                        return texture;
+                    }
+
+                    throw;
+                }
             }
         }
 
