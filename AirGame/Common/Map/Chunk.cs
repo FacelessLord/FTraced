@@ -99,8 +99,10 @@ namespace GlLib.Common.Map
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
                             if (world.FromStash)
-                                blocks[i, j] = (TerrainBlock) stashedBlocks[gameObject.Value];
-
+                                if( stashedBlocks.ContainsKey(gameObject.Value))
+                                    blocks[i, j] = (TerrainBlock) stashedBlocks[gameObject.Value];
+                                else
+                                    SidedConsole.WriteErrorLine($"Stash Block cannot be loaded: {gameObject.Value}");
                             else
                                 blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
 
@@ -156,6 +158,8 @@ namespace GlLib.Common.Map
                     }
 
                 SidedConsole.WriteLine($"Chunk {chunkX}x{chunkY} is loaded");
+                string bStr = this[0, 0] is null ? "null" : this[0, 0] + "";
+                SidedConsole.WriteLine($"Chunk block at 0x0 is {bStr}");
                 isLoaded = true;
             }
         }

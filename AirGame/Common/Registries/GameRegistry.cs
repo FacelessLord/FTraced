@@ -88,6 +88,7 @@ namespace GlLib.Common.Registries
         {
             if (blocks.ContainsKey(_blockName))
                 return (TerrainBlock) blocks[_blockName];
+            SidedConsole.WriteErrorLine($"Block cannot be loaded: {_blockName}");
             return null;
         }
 
