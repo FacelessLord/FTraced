@@ -10,7 +10,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         protected LinearSprite idleSprite;
         protected LinearSprite walkSprite;
-        protected Color4 color = Color4.White;
+        protected Color4 color = Color4.Aquamarine;
 
 
         public SlimeRenderer() : base()
@@ -22,6 +22,7 @@ namespace GlLib.Client.Graphic.Renderers
         {
             color = _color;
         }
+
         public override void Setup(Entity _p)
         {
 
@@ -37,7 +38,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
-            switch ((_e as EntitySlime).state)
+            switch (_e.state)
             {
                 case (EntityState.Idle):
                     idleSprite.Render();
