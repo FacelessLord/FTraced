@@ -13,11 +13,12 @@ namespace GlLib.Common.Map
         public Chunk[,] chunks;
         public ThreadSafeList<(Entity e, Chunk chk)> entityAddQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
 
-        public Mutex entityMutex = new Mutex();
         public ThreadSafeList<(Entity e, Chunk chk)> entityRemoveQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
         public int height;
 
         public JsonObjectCollection jsonObj;
+        public int MaxEntityCount { get; private set; } = 200;
+        public int EntityCount { get; private set; }
 
         public string mapName;
 
@@ -68,20 +69,26 @@ namespace GlLib.Common.Map
 
         public void SpawnEntity(Entity _e)
         {
-            if (EventBus.OnEntitySpawn(_e)) return;
-
-            entityMutex.WaitOne();
-            _e.worldObj = this;
-
-            if (_e.chunkObj is null)
-                _e.chunkObj = Entity.GetProjection(_e.Position, this);
-            lock (_e.chunkObj.entities)
+            if (EntityCount < MaxEntityCount)
             {
-                _e.chunkObj.entities.Add(_e); //todo entity null
-            }
+                if (EventBus.OnEntitySpawn(_e)) return;
 
-            entityMutex.ReleaseMutex();
-            SidedConsole.WriteLine($"Entity {_e} spawned in world");
+                _e.worldObj = this;
+
+                if (_e.chunkObj is null)
+                    _e.chunkObj = Entity.GetProjection(_e.Position, this);
+                lock (_e.chunkObj.entities)
+                {
+                    _e.chunkObj.entities.Add(_e); //todo entity null
+                }
+
+                EntityCount++;
+                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+            }
+            else
+            {
+                SidedConsole.WriteLine($"Entity count exceds maximum value({MaxEntityCount}). Couldn't spawn entity");
+            }
         }
 
         public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
@@ -132,6 +139,12 @@ namespace GlLib.Common.Map
             return chunks.SelectMany(_c => _c.entities)
                 .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
                 .ToThreadSafeList();
+        }
+
+        public void DespawnEntity(Entity _entity)
+        {
+            entityRemoveQueue.Add((_entity, _entity.chunkObj));
+            EntityCount--;
         }
     }
 }
