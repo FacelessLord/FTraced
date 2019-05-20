@@ -9,11 +9,11 @@ using OpenTK;
 
 namespace GlLib.Client.Graphic.Gui
 {
-    public class PlayerFrameInventoryGuiFrame : GuiFrameInventory
+    public class PlayerInventoryGui : GuiInventory
     {
         public List<GuiSign> signs = new List<GuiSign>();
 
-        public PlayerFrameInventoryGuiFrame(Player _p) : base(_p.inventory)
+        public PlayerInventoryGui(Player _p) : base(_p.inventory)
         {
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;

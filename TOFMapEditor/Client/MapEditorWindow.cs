@@ -6,6 +6,7 @@ using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Map;
+using GlLib.Common.Registries;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -30,8 +31,12 @@ namespace TOFMapEditor.Client
         public MapEditorWindow(int _width, int _height, string _title)
             : base(_width, _height, GraphicsMode.Default, _title)
         {
-            EditWorld = new World("Overworld", 1, true);
+            EditWorld = new World("Overworld", 1, false);
 
+            var registry = new GameRegistry();
+            registry.Load();
+            Proxy.RegisterRegistry(registry);
+            
             WorldManager.LoadWorld(EditWorld);
 
             WorldRenderer = new WorldRenderer(EditWorld);
@@ -180,8 +185,8 @@ namespace TOFMapEditor.Client
 
             GL.PushMatrix();
             GL.Translate(Width / 2d, Height / 2d, 0);
-            camera.Update(this);
-            camera.PerformTranslation(this);
+//            camera.Update(this);
+//            camera.PerformTranslation(this);
             WorldRenderer.Render(000, 000);
             GL.PopMatrix();
 

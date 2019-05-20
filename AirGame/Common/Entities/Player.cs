@@ -12,7 +12,7 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving, IAttacker
     {
-        public double accelerationValue = 0.02;
+        public double accelerationValue = 0.05;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
 
@@ -53,6 +53,12 @@ namespace GlLib.Common.Entities
             spells = new SpellSystem(this);
 
             AaBb = new AxisAlignedBb(-0.4, 0.1, 0.4, 0.8);
+        }
+
+        public override void DealDamage(float _damage)
+        {
+            base.DealDamage(_damage);
+            spells.InterruptCast();
         }
 
         public override string GetName()

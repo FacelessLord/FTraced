@@ -19,6 +19,10 @@ namespace GlLib.Common
         private static ServerInstance _serverInstance;
         private static ClientService _clientInstance;
         private static GraphicWindow _gameWindow;
+        /// <summary>
+        /// Registry used to work only on one Side (line in Map Editor)
+        /// </summary>
+        private static GameRegistry _registry;
         private static readonly Profiler Profiler = new Profiler();
 
         public static bool Exit
@@ -44,7 +48,7 @@ namespace GlLib.Common
 
         public static GameRegistry GetRegistry()
         {
-            return _serverInstance.registry;
+            return _registry ?? _serverInstance.registry;
         }
 
         public static GraphicWindow GetWindow()
@@ -83,6 +87,11 @@ namespace GlLib.Common
         public static void RegisterWindow(GraphicWindow _window)
         {
             _gameWindow = _window;
+        }
+
+        public static void RegisterRegistry(GameRegistry _gameRegistry)
+        {
+            _registry = _gameRegistry;
         }
     }
 }

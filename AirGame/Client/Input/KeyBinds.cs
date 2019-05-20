@@ -77,7 +77,7 @@ namespace GlLib.Client.Input
         public static Action<Player> openInventory = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
-                Proxy.GetWindow().TryOpenGui(new PlayerFrameInventoryGuiFrame(_p));
+                Proxy.GetWindow().TryOpenGui(new PlayerInventoryGui(_p));
         };
 
         public static Action<Player> openIngameMenu = _p =>
@@ -86,29 +86,51 @@ namespace GlLib.Client.Input
                 Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
         };
 
-        public static Action<Player> spawnSlime = _p =>
+        public static Action<Player> openChat = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
+                Proxy.GetWindow().TryOpenGui(new GuiChat());
+        };
+
+        public static Action<Player> spawnSlime = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled())
                 _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> spawnBat = _p =>
         {
-            if (Proxy.GetWindow().serverStarted)
+            if (Proxy.GetWindow().CanMovementBeHandled())
                 _p.worldObj.SpawnEntity(new Bat(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> exit = _p => Proxy.Exit = true;
 
-        public static Action<Player> spellFire = _p => { _p.spells.OnUpdate(ElementType.Fire); };
-        public static Action<Player> spellAir = _p => { _p.spells.OnUpdate(ElementType.Air); };
-        public static Action<Player> spellEarth = _p => { _p.spells.OnUpdate(ElementType.Earth); };
-        public static Action<Player> spellWater = _p => { _p.spells.OnUpdate(ElementType.Water); };
+        public static Action<Player> spellFire = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled()) _p.spells.OnUpdate(ElementType.Fire);
+        };
+
+        public static Action<Player> spellAir = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled()) _p.spells.OnUpdate(ElementType.Air);
+        };
+
+        public static Action<Player> spellEarth = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled()) _p.spells.OnUpdate(ElementType.Earth);
+        };
+
+        public static Action<Player> spellWater = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled()) _p.spells.OnUpdate(ElementType.Water);
+        };
 
 
         public static Action<Player> attack = _p =>
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
+            {
                 if (!(_p.state is EntityState.AttackInterrupted))
                 {
                     if (Math.Abs(_p.velocity.Length) < 1e-2)
@@ -121,11 +143,14 @@ namespace GlLib.Client.Input
                         .Cast<EntityLiving>().ToList()
                         .ForEach(_e => _e.DealDamage(30));
                 }
+
+                _p.spells.InterruptCast();
+            }
         };
 
         public static Action<Player> spawnBox = _p =>
         {
-            if (Proxy.GetWindow().serverStarted)
+            if (Proxy.GetWindow().CanMovementBeHandled())
             {
                 var box = new Box(_p.worldObj, _p.Position);
                 box.velocity += _p.velocity.Normalized;
@@ -135,19 +160,19 @@ namespace GlLib.Client.Input
 
         public static Action<Player> spawnPile = _p =>
         {
-            if (Proxy.GetWindow().serverStarted)
+            if (Proxy.GetWindow().CanMovementBeHandled())
                 _p.worldObj.SpawnEntity(new BonePile(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> spawnStreetlight = _p =>
         {
-            if (Proxy.GetWindow().serverStarted)
+            if (Proxy.GetWindow().CanMovementBeHandled())
                 _p.worldObj.SpawnEntity(new Streetlight(_p.worldObj, _p.Position));
         };
 
         public static Action<Player> spawnPotion = _p =>
         {
-            if (Proxy.GetWindow().serverStarted)
+            if (Proxy.GetWindow().CanMovementBeHandled())
                 _p.worldObj.SpawnEntity(new Potion(_p.worldObj, _p.Position));
         };
 
@@ -158,6 +183,7 @@ namespace GlLib.Client.Input
             Bind(Key.S, moveDown, "move.down");
             Bind(Key.D, moveRight, "move.right");
             BindClick(Key.I, openInventory, "gui.inv");
+            BindClick(Key.T, openChat, "gui.chat");
             BindClick(Key.Escape, openIngameMenu, "gui.menu");
             BindClick(Key.Grave, exit, "exit");
             BindClick(Key.Space, attack, "world.attack");

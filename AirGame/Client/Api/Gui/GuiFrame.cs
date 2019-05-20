@@ -111,7 +111,7 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnMouseRelease(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
-            SidedConsole.WriteLine(focusedObject);
+//            SidedConsole.WriteLine(focusedObject);
             if (focusedObject != null && focusedObject.UnfocusOnRelease())
             {
                 focusedObject.OnMouseRelease(this, _button, _mouseX, _mouseY);

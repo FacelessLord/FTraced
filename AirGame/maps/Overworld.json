@@ -1,8 +1,29 @@
 {
   "Width": 3,
   "Height": 3,
-  "0,1": {
+  "0,0": {
 
+    "Rect0": {
+      "borders": [
+        0,
+        0,
+        7,
+        15
+      ],
+      "block": "block.void"
+    },
+    "Rect0": {
+      "borders": [
+        8,
+        0,
+        15,
+        11
+      ],
+      "block": "block.indoor.bricks"
+    },
+    "15,15":"block.castle"
+  },
+  "0,1": {
     "Rect0": {
       "borders": [
         0,

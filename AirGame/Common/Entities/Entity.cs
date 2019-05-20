@@ -204,7 +204,7 @@ namespace GlLib.Common.Entities
             isDead = _dead;
             lock (worldObj.entityRemoveQueue)
             {
-                worldObj.entityRemoveQueue.Add((this, chunkObj));
+                worldObj.DespawnEntity(this);
             }
         }
 

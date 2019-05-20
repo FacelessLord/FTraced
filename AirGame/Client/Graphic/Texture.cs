@@ -125,7 +125,10 @@ namespace GlLib.Client.Graphic
 
         ~Texture()
         {
-            GL.DeleteProgram(_handle);
+            if (!_disposedValue)
+            {
+                GL.DeleteProgram(_handle);
+            }
         }
     }
 }
