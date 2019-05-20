@@ -88,34 +88,33 @@ namespace GlLib.Common.SpellCastSystem
             var averageTime = elements.Average(e => e.StartTime);
             var averageValue = elements.Average(e => (int) e.type);
 
-                SidedConsole.WriteLine("Result: " + averageValue + " " + averageTime + " " + elements.Count);
+            SidedConsole.WriteLine("Result: " + averageValue + " " + averageTime + " " + elements.Count);
 
-                switch (Math.Floor(averageValue))
-                {
-                    case (int) ElementType.Air:
-                        SpellCaster.worldObj.SpawnEntity(
-                            new AirShield(
-                                SpellCaster.worldObj,
-                                SpellCaster.Position,
-                                SpellCaster.velocity,
-                                6000000 + 100000 * (uint) averageTime,
-                                0));
-                        return;
-                    case (int) ElementType.Water:
-                        return;
-                    case (int) ElementType.Fire:
-                        SpellCaster.worldObj.SpawnEntity(
-                            new FireBall(
-                                SpellCaster.worldObj,
-                                SpellCaster.Position,
-                                SpellCaster.direction,
-                                SpellCaster.velocity,
-                                10000000,
-                                (int) Math.Round(averageTime * 5)));
-                        return;
-                    case (int) ElementType.Earth:
-                        return;
-                }
+            switch (Math.Floor(averageValue))
+            {
+                case (int) ElementType.Air:
+                    SpellCaster.worldObj.SpawnEntity(
+                        new AirShield(
+                            SpellCaster.worldObj,
+                            SpellCaster.Position,
+                            SpellCaster.velocity,
+                            6000000 + 100000 * (uint) averageTime,
+                            0));
+                    return;
+                case (int) ElementType.Water:
+                    return;
+                case (int) ElementType.Fire:
+                    SpellCaster.worldObj.SpawnEntity(
+                        new FireBall(
+                            SpellCaster.worldObj,
+                            SpellCaster.Position,
+                            SpellCaster.direction,
+                            SpellCaster.velocity,
+                            10000000,
+                            (int) Math.Round(averageTime * 5)));
+                    return;
+                case (int) ElementType.Earth:
+                    return;
             }
         }
     }
