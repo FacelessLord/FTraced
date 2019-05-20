@@ -97,7 +97,7 @@ namespace GlLib.Common.Entities
             if (!(state is EntityState.Dead) && Health <= 0) SetState(EntityState.Dead, -1, true);
         }
 
-        public void DealDamage(float _damage)
+        public virtual void DealDamage(float _damage)
         {
             if (GodMode) return;
             if (!state.Equals(EntityState.Dead))
@@ -121,7 +121,7 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public void Heal(float _damage)
+        public virtual void Heal(float _damage)
         {
             Health += _damage;
             DamageTimer = -2;

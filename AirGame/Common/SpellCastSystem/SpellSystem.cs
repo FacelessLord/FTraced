@@ -8,7 +8,7 @@ namespace GlLib.Common.SpellCastSystem
 {
     internal class SpellSystem
     {
-        internal const uint MaxCastTime = 3 * 1000;
+        internal const uint MaxCastTime = 1000;
         internal const byte ElementsCountBound = 6;
 
         // ReSharper disable once InconsistentNaming
@@ -66,6 +66,11 @@ namespace GlLib.Common.SpellCastSystem
                 MakeResult();
                 Refresh();
             }
+        }
+
+        public void InterruptCast()
+        {
+            Refresh();
         }
 
         private void Refresh()

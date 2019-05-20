@@ -55,6 +55,12 @@ namespace GlLib.Common.Entities
             AaBb = new AxisAlignedBb(-0.4, 0.1, 0.4, 0.8);
         }
 
+        public override void DealDamage(float _damage)
+        {
+            base.DealDamage(_damage);
+            spells.InterruptCast();
+        }
+
         public override string GetName()
         {
             return "entity.living.player";

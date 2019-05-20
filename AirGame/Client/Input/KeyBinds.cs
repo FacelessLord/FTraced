@@ -90,6 +90,7 @@ namespace GlLib.Client.Input
         public static Action<Player> attack = _p =>
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
+            {
                 if (!(_p.state is EntityState.AttackInterrupted))
                 {
                     if (Math.Abs(_p.velocity.Length) < 1e-2)
@@ -102,6 +103,8 @@ namespace GlLib.Client.Input
                         .Cast<EntityLiving>().ToList()
                         .ForEach(_e => _e.DealDamage(30));
                 }
+                _p.spells.InterruptCast();
+            }
         };
 
         public static Action<Player> spawnBox = _p =>
