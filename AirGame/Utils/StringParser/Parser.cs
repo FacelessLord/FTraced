@@ -12,8 +12,9 @@ namespace GlLib.Utils.StringParser
         {
 
         }
+
         // TODO okay
-        private Dictionary<string, Action<string>> args;
+        private Dictionary<string, Action<string>> args = new Dictionary<string, Action<string>>();
 
         public void AddParse(string _word, Action<string> _delegate)
         {
@@ -25,12 +26,15 @@ namespace GlLib.Utils.StringParser
             var parsed = _arg.Split(' ');
             if (args.ContainsKey(parsed[0]))
             {
-                args[parsed[0]](parsed
-                    .Skip(1)
-                    .Aggregate((_a, _b) => _a + " " + _b));
-
+                if (parsed.Skip(1).Any())
+                    args[parsed[0]](parsed
+                        .Skip(1)
+                        .Aggregate((_a, _b) => _a + " " + _b));
+                else
+                {
+                    args[parsed[0]]("");
+                }
             }
         }
-
     }
 }
