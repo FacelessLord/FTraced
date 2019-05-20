@@ -85,8 +85,6 @@ namespace GlLib.Common.Entities
 
         public override void Update()
         {
-            base.Update();
-
             if (Health <= 0 && Math.Abs(DamageTimer) < 1e-3 && CanDie)
                 SetDead();
             if (DamageTimer * 16 < 1)
@@ -96,6 +94,9 @@ namespace GlLib.Common.Entities
 
             if (state is EntityState.Dead && Health > 0) SetState(EntityState.Idle, -1, true);
             if (!(state is EntityState.Dead) && Health <= 0) SetState(EntityState.Dead, -1, true);
+            
+            if (Health <= 0) return;
+            base.Update();
         }
 
         public virtual void DealDamage(float _damage)

@@ -111,7 +111,7 @@ namespace GlLib.Client.Api.Sprites
         {
             GL.PushMatrix();
             Vertexer.BindTexture(texture);
-            GL.Color4(_r, _g, _b, _a);
+            Vertexer.Colorize(_r, _g, _b, _a);
             GL.Scale(_size, _size + 2, 1);
             double d = 0;
             for (var i = 0; i < _text.Length; i++)
@@ -138,7 +138,7 @@ namespace GlLib.Client.Api.Sprites
                 }
             }
 
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
     }

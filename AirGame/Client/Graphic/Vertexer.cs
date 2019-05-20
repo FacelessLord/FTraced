@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic
@@ -9,6 +11,62 @@ namespace GlLib.Client.Graphic
         public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
 
         public static Texture Null { get; private set; }
+
+        public static Color4 color { get; private set; } = Color4.White;
+        public static ColorAdditionMode ColorMode { get; private set; } = 0;
+
+        public enum ColorAdditionMode
+        {
+            HalfSum,
+            Override,
+            OnlyFirst
+        }
+
+        public static void SetColorMode(ColorAdditionMode _mode)
+        {
+            ColorMode = _mode;
+        }
+
+        public static void Colorize(Color4 _color)
+        {
+            switch (ColorMode)
+            {
+                case ColorAdditionMode.HalfSum:
+                    color = new Color4((color.R + _color.R) / 2, (color.G + _color.G) / 2, (color.B + _color.B) / 2,
+                        (color.A + _color.A) / 2);
+                    break;
+                case ColorAdditionMode.Override:
+                    color = _color;
+                    break;
+                case ColorAdditionMode.OnlyFirst:
+                    if (color == Color4.White)
+                        color = _color;
+                    break;
+            }
+        }
+
+        public static void Colorize(float _r, float _g, float _b, float _a)
+        {
+            switch (ColorMode)
+            {
+                case ColorAdditionMode.HalfSum:
+                    color = new Color4((color.R + _r) / 2, (color.G + _g) / 2, (color.B + _b) / 2, (color.A + _a) / 2);
+                    break;
+                case ColorAdditionMode.Override:
+                    color = new Color4(_r, _g, _b, _a);
+                    break;
+                case ColorAdditionMode.OnlyFirst:
+                    if (color == Color4.White)
+                        color = new Color4(_r, _g, _b, _a);
+                    break;
+            }
+        }
+
+        public static void ClearColor()
+        {
+            color = Color4.White;
+            ColorMode = ColorAdditionMode.OnlyFirst;
+        }
 
         public static void EnableTextures()
         {
@@ -22,11 +80,13 @@ namespace GlLib.Client.Graphic
 
         public static void StartDrawingQuads()
         {
+            GL.Color4(color);
             GL.Begin(PrimitiveType.Quads);
         }
 
         public static void StartDrawing(PrimitiveType _type)
         {
+            GL.Color4(color);
             GL.Begin(_type);
         }
 
@@ -55,6 +115,7 @@ namespace GlLib.Client.Graphic
         public static void Draw()
         {
             GL.End();
+            GL.Color4(Color4.White);
         }
 
         public static Texture LoadTexture(string _path)

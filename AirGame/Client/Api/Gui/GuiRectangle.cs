@@ -40,7 +40,7 @@ namespace GlLib.Client.API.Gui
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             try
             {
                 GuiUtils.DrawSizedSquare(background, x, y, width, height, grainSize);
@@ -50,7 +50,7 @@ namespace GlLib.Client.API.Gui
                 SidedConsole.WriteLine(e);
             }
 
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
         }

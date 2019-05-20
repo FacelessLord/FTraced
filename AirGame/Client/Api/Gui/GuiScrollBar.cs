@@ -1,5 +1,6 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -37,14 +38,13 @@ namespace GlLib.Client.Api.Gui
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
 
             GuiUtils.DrawSizedSquare(scrollBar, x, y, width, height, width / 3f, width);
             GL.Translate(0, scrollerPos + 2 * width / 3, 0);
             GuiUtils.DrawSizedSquare(scroller, x, y, width, width, width / 3f);
 
-
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
 

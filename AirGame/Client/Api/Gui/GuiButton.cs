@@ -68,10 +68,10 @@ namespace GlLib.Client.Api.Gui
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
             var heightCenter = (height - 11d) / 2 - 2;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
 
             GL.PopMatrix();

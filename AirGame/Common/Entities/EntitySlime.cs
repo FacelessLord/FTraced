@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Api.Sprites;
@@ -11,6 +12,7 @@ namespace GlLib.Common.Entities
     public class EntitySlime : EntityLiving, ISmart, IAttacker
     {
         private const int UpdateFrame = 12;
+        public Color4 color;
 
         public new EntityState state
         {
@@ -54,6 +56,8 @@ namespace GlLib.Common.Entities
 
         private void Initialize()
         {
+            var r = new Random();
+            color = new Color4((float) r.NextDouble(), (float) r.NextDouble(), (float) r.NextDouble(), 1);
             SetCustomRenderer(new SlimeRenderer());
             AttackRange = 2;
             AttackValue = 2;

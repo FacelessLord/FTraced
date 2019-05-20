@@ -1,3 +1,4 @@
+using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -44,24 +45,17 @@ namespace GlLib.Client.Api.Sprites
             _frameCount++;
             GL.PushMatrix();
             GL.Translate(-texture.layout.FrameWidth() - _moveTo.x,
-                -texture.layout.FrameHeight() - _moveTo.y,
-                0);
-
-//            GL.Enable(EnableCap.Blend);
-//            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                -texture.layout.FrameHeight() - _moveTo.y,0);
 
             GL.Scale(scale);
-            if (hasColor)
-                GL.Color4(color);
+            Vertexer.Colorize(color);
             texture.Render(frameCount / step);
             if (!frozen)
                 if (noRepeat && frameCount + 1 >= maxFrameCount * step)
                     SetFrozen();
                 else
                     frameCount = (frameCount + 1) % (maxFrameCount * step);
-            //GL.ClearColor(1, 1, 1, transparency);
-//            GL.Disable(EnableCap.Blend);
-            GL.Color4(1.0f, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
 

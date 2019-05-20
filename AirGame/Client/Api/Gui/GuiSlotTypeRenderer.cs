@@ -57,6 +57,7 @@ namespace GlLib.Client.Api.Gui
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
+            slotTexture.texture.Bind();
             if (inventory.GetStackInSlot(slot) != null)
                 GuiUtils.DrawLayoutPart(slotTexture, x + 1, y + 1, (int) inventory.GetStackInSlot(slot).item.type,
                     width, height);

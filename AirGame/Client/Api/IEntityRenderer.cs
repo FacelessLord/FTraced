@@ -1,6 +1,7 @@
 using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Utils;
@@ -51,22 +52,22 @@ namespace GlLib.Client.API
         public void CallRender(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
+            Vertexer.SetColorMode(Vertexer.ColorAdditionMode.OnlyFirst);
 
             if (_e is EntityLiving el)
             {
-                if (el.DamageTimer > 0)
-                    GL.Color4(OnDamage);
-                if (el.DamageTimer < 0)
-                    GL.Color4(OnHeal);
-
                 if (el.DamageTimer > 0)
                 {
                     GL.PushMatrix();
                     GL.Translate(Math.Sin(Math.Abs(el.DamageTimer) * 2) * 8, (-5 + Math.Abs(el.DamageTimer)) * 16, 0);
                     el.DamageTimer -= 0.05f * Math.Sign(el.DamageTimer);
-                    Text.DrawText($"{el.LastDamage}", 12);
+                    Text.DrawText($"{el.LastDamage}", 12, 0.85f, 0, 0);
                     GL.PopMatrix();
                 }
+                if (el.DamageTimer > 0 && el.DamageTimer > 3)
+                    Vertexer.Colorize(OnDamage);
+                if (el.DamageTimer < 0)
+                    Vertexer.Colorize(OnHeal);
             }
 
             if (_e.direction.Equals(Direction.Left))
@@ -81,7 +82,7 @@ namespace GlLib.Client.API
                     spawnSprite.Render();
                 }
 
-            GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
 
