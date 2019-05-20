@@ -1,3 +1,4 @@
+using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Common.Entities;
@@ -18,7 +19,13 @@ namespace GlLib.Client.API
         protected Color4 OnHeal = new Color4(0, 1, 0, 1.0f);
 
         public LinearSprite spawnSprite;
+        protected AlagardFontSprite Text;
+        private float start = -4;
 
+        public EntityRenderer()
+        {
+            Text = new AlagardFontSprite();
+        }
 
         protected static LinearSprite SpawnSprite
         {
@@ -51,6 +58,15 @@ namespace GlLib.Client.API
                     GL.Color4(OnDamage);
                 if (el.DamageTimer < 0)
                     GL.Color4(OnHeal);
+
+                if (el.DamageTimer > 0)
+                {
+                    GL.PushMatrix();
+                    GL.Translate(Math.Sin(Math.Abs(el.DamageTimer) * 2) * 8, (-5 + Math.Abs(el.DamageTimer)) * 16, 0);
+                    el.DamageTimer -= 0.05f * Math.Sign(el.DamageTimer);
+                    Text.DrawText($"{el.LastDamage}", 12);
+                    GL.PopMatrix();
+                }
             }
 
             if (_e.direction.Equals(Direction.Left))

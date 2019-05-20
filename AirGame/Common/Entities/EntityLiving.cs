@@ -35,7 +35,8 @@ namespace GlLib.Common.Entities
         public float Health { get; protected set; }
         public float MaxHealth { get; protected set; }
         public bool GodMode { get; protected set; }
-        public int DamageTimer { get; private set; }
+        public double DamageTimer { get; set; }
+        public float LastDamage { get; private set; }
 
         public ushort Armor
         {
@@ -86,10 +87,10 @@ namespace GlLib.Common.Entities
         {
             base.Update();
 
-            if (Health <= 0 && DamageTimer == 0 && CanDie)
+            if (Health <= 0 && Math.Abs(DamageTimer) < 1e-3 && CanDie)
                 SetDead();
-            if (DamageTimer > 0)
-                DamageTimer--;
+            if (DamageTimer * 16 < 1)
+                DamageTimer = 0;
             if (DamageTimer < 0)
                 DamageTimer++;
 
@@ -107,15 +108,17 @@ namespace GlLib.Common.Entities
                 if (takenDamage >= Health)
                 {
                     Health = 0;
-                    DamageTimer = 2;
+                    DamageTimer = 4;
                     SetState(EntityState.Dead, -1);
 //                    SidedConsole.WriteLine("Dead");
                 }
                 else
                 {
-                    DamageTimer = 2;
+                    DamageTimer = 4;
                     Health -= takenDamage;
                 }
+
+                LastDamage = takenDamage;
 
 //            SidedConsole.WriteLine("Damage Dealt: " + takenDamage + "; " + Health);
             }
