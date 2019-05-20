@@ -74,6 +74,12 @@ namespace GlLib.Client.API.Gui
             GL.PushMatrix();
             GL.Color4(color.R, color.G, color.B, color.A);
             GL.Translate(x, y, 0);
+            if (oneLineMode)
+            {
+                var heightCenter = (height - 16d) / 2;
+                GL.Translate(0, heightCenter, 0);
+            }
+
             if (timer < timerSpeed / 2 || _gui.focusedObject != this)
             {
                 font.DrawText(text, 11);
@@ -157,13 +163,11 @@ namespace GlLib.Client.API.Gui
                 if (oneLineMode)
                 {
                     HandleEnterKey();
-                    SidedConsole.WriteLine("handl");
                 }
                 else
                 {
                     text = text.Insert(cursorX, "\n");
                     cursorX++;
-                    SidedConsole.WriteLine("\\n");
                 }
             }
         }
