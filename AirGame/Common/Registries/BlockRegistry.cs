@@ -13,7 +13,8 @@ namespace GlLib.Common.Registries
         public static readonly TerrainBlock DarkGrassCoastRight = new DarkGrassCoastRight();
         public static readonly TerrainBlock SettBrimCorner = new SettBrimCorner();
         public static readonly TerrainBlock SettBrimDown = new SettBrimDown();
-
+        public static readonly TerrainBlock VoidBlock = new VoidBlock();
+        public static readonly TerrainBlock CastleBlock = new CastleBlock();
 
         public GameRegistry registry;
 
@@ -24,6 +25,7 @@ namespace GlLib.Common.Registries
 
         public void Register()
         {
+            registry.RegisterBlock(VoidBlock);
             registry.RegisterBlock(Grass);
             registry.RegisterBlock(Path);
             registry.RegisterBlock(Bricks);
@@ -31,6 +33,7 @@ namespace GlLib.Common.Registries
             registry.RegisterBlock(DarkGrassCoastRight);
             registry.RegisterBlock(SettBrimCorner);
             registry.RegisterBlock(SettBrimDown);
+            registry.RegisterBlock(CastleBlock);
 
             Stash.UpdateStash(registry);
         }

@@ -73,7 +73,11 @@ namespace GlLib.Common.Map
                 }
                 else
                 {
+                    GL.PushMatrix();
+                    var coord = _xAxis * (i + 8) + _yAxis * (j + 8);
+                    GL.Translate(coord.x, coord.y, 0);
                     block.GetSpecialRenderer(world, i, j).Render(world, i, j);
+                    GL.PopMatrix();
                 }
             }
 
