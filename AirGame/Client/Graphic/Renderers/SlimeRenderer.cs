@@ -1,8 +1,10 @@
+using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
 {
@@ -11,7 +13,8 @@ namespace GlLib.Client.Graphic.Renderers
         protected LinearSprite idleSprite;
         protected LinearSprite walkSprite;
         protected Color4 color = Color4.White;
-
+        protected AlagardFontSprite Text;
+        private float start = -4;
 
         public SlimeRenderer() : base()
         {
@@ -25,6 +28,8 @@ namespace GlLib.Client.Graphic.Renderers
         public override void Setup(Entity _p)
         {
 
+            Text= new AlagardFontSprite();
+
             var idle = new TextureLayout("slime/smile_idle.png", 10, 1);
             var walk = new TextureLayout("slime/slime_waiting.png", 7, 1);
 
@@ -37,6 +42,9 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
+
+
+
             switch ((_e as EntitySlime).state)
             {
                 case (EntityState.Idle):
@@ -46,6 +54,15 @@ namespace GlLib.Client.Graphic.Renderers
                     walkSprite.Render();
                     break;
             }
+
+
+            GL.PushMatrix();
+            GL.Translate(idleSprite.texture.layout.startU + Math.Sin(start / 2) * 3,
+                idleSprite.texture.layout.startV - start,
+                0);
+            start += 0.1f;
+            Text.DrawText("Hello, I'm Slime", 12);
+            GL.PopMatrix();
         }
     }
 }

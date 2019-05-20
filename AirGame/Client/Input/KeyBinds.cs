@@ -5,6 +5,7 @@ using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Entities.Items;
+using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
 using GlLib.Utils;
 using OpenTK.Input;
@@ -35,6 +36,24 @@ namespace GlLib.Client.Input
                 _p.velocity += new PlanarVector(0, -_p.accelerationValue);
             }
         };
+
+        public static Action<Player> setBlock = _p =>
+        {
+            var chunkX = (int) Math.Floor(_p.Position.x) / 16;
+            var chunkY = (int) Math.Floor(_p.Position.y) / 16;
+
+            var blockX = ((int) Math.Floor(_p.Position.x)  - chunkX * 16 ) ;
+            var blockY = ((int) Math.Floor(_p.Position.y) - chunkY * 16 ) ;
+
+            _p.worldObj.chunks[chunkX, chunkY].blocks[blockX, blockY] =
+                (TerrainBlock) Proxy.GetRegistry().blocksById[0];
+        };
+
+        public static Action<Player> saveWorld = _p =>
+        {
+            WorldManager.SaveWorld(_p.worldObj);
+        };
+
 
         public static Action<Player> moveRight = _p =>
         {
@@ -151,6 +170,8 @@ namespace GlLib.Client.Input
             BindClick(Key.Keypad3, spawnStreetlight, "world.spawn.Streetlight");
             BindClick(Key.Keypad4, spawnPotion, "world.spawn.Potion");
 
+            BindClick(Key.Keypad0, saveWorld, "world.save.world");
+            BindClick(Key.Enter, setBlock, "world.set.block");
 
             BindClick(Key.Number1, spellAir, "spell.air");
             BindClick(Key.Number2, spellEarth, "spell.earth");

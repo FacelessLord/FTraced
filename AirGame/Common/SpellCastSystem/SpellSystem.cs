@@ -78,6 +78,8 @@ namespace GlLib.Common.SpellCastSystem
 
         private void MakeResult()
         {
+            if (!elements.Any()) return;
+
             var averageTime = elements.Average(e => e.StartTime);
             var averageValue = elements.Average(e => (int) e.type);
 
