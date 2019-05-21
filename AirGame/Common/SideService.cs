@@ -33,6 +33,10 @@ namespace GlLib.Common
                  .ToUniversalTime())
             .Ticks;
 
+        public DateTime MachineTime =>
+            DateTime.UtcNow
+                .ToUniversalTime();
+
         public double InternalMilliseconds =>
             (DateTime.UtcNow - Process.GetCurrentProcess()
                  .StartTime

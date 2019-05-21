@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Json;
+using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -39,6 +42,9 @@ namespace GlLib.Client.Input
 
         public static Action<Player> setBlock = _p =>
         {
+
+            if (!Proxy.GetWindow().CanMovementBeHandled()) return;
+            //if (!(Proxy.GetClient().player is SystemAdmin)) return; <- TODO
             if (Proxy.GetWindow().CanMovementBeHandled())
             {
                 var chunkX = (int) Math.Floor(_p.Position.x) / 16;
@@ -47,14 +53,16 @@ namespace GlLib.Client.Input
                 var blockX = ((int) Math.Floor(_p.Position.x) - chunkX * 16);
                 var blockY = ((int) Math.Floor(_p.Position.y) - chunkY * 16);
 
+
                 _p.worldObj.chunks[chunkX, chunkY].blocks[blockX, blockY] =
-                    (TerrainBlock) Proxy.GetRegistry().blocksById[0];
+                    Proxy.GetClient().player.Brush;
             }
         };
 
         public static Action<Player> saveWorld = _p =>
         {
-            WorldManager.SaveWorld(_p.worldObj);
+            if (Proxy.GetWindow().CanMovementBeHandled())
+                WorldManager.SaveChunks(_p.worldObj);
         };
 
 
@@ -86,13 +94,19 @@ namespace GlLib.Client.Input
         public static Action<Player> openIngameMenu = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
+            {
                 Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
+            }
         };
 
         public static Action<Player> openChat = _p =>
         {
             if (Proxy.GetWindow().serverStarted)
+            {
                 Proxy.GetWindow().TryOpenGui(new GuiChat());
+                if (Proxy.GetWindow().guiFrame != null)
+                    Proxy.GetWindow().guiFrame.focusedObject = Proxy.GetWindow().guiFrame.ScreenObjects[1];
+            }
         };
 
         public static Action<Player> spawnSlime = _p =>

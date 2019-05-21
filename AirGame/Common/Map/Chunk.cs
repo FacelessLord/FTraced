@@ -38,6 +38,22 @@ namespace GlLib.Common.Map
             set => blocks[_i, _j] = value;
         }
 
+        public JsonObjectCollection _unloadChunk(World world, int x, int y)
+        {
+            List<JsonObject> objects = new List<JsonObject>();
+            for (int i = 0; i < 16; i++)
+            {
+                for (int j = 0; j < 16; j++)
+                {
+                    TerrainBlock block = this[i, j];
+                    if (block != null)
+                        objects.Add(new JsonNumericValue($"{i},{j}", block.id));
+                }
+            }
+
+            return new JsonObjectCollection($"{x},{y}", objects);
+        }
+
         public void RenderChunk(double _centerX, double _centerY, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();

@@ -12,6 +12,9 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving, IAttacker
     {
+
+        public TerrainBlock Brush { get; internal set; }
+
         public double accelerationValue = 0.05;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
