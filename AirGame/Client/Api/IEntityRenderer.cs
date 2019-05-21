@@ -64,6 +64,7 @@ namespace GlLib.Client.API
                     Text.DrawText($"{el.LastDamage}", 12, 0.85f, 0, 0);
                     GL.PopMatrix();
                 }
+
                 if (el.DamageTimer > 0 && el.DamageTimer > 3)
                     Vertexer.Colorize(OnDamage);
                 if (el.DamageTimer < 0)
@@ -73,6 +74,13 @@ namespace GlLib.Client.API
             if (_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
+            Vertexer.LoadTexture("monochromatic.png").Bind();
+            Vertexer.StartDrawing(PrimitiveType.Quads);
+            Vertexer.VertexWithUvAt(-2, -2, 0, 0);
+            Vertexer.VertexWithUvAt(-2, 2, 0, 1);
+            Vertexer.VertexWithUvAt(2, 2, 1, 1);
+            Vertexer.VertexWithUvAt(2, -2, 1, 0);
+            Vertexer.Draw();
             GuiUtils.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if (_e is EntityLiving)
                 if (spawnSprite.FullFrameCount < 1)

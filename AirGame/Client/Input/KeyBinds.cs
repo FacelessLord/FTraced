@@ -41,13 +41,13 @@ namespace GlLib.Client.Input
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
             {
-                var chunkX = (int) Math.Floor(_p.Position.x) / 16;
-                var chunkY = (int) Math.Floor(_p.Position.y) / 16;
+                var chunkX = _p.Position.Ix / 16;
+                var chunkY = _p.Position.Iy / 16;
 
-                var blockX = ((int) Math.Floor(_p.Position.x) - chunkX * 16);
-                var blockY = ((int) Math.Floor(_p.Position.y) - chunkY * 16);
+                var blockX = _p.Position.Ix % 16;
+                var blockY = _p.Position.Iy % 16;
 
-                _p.worldObj.chunks[chunkX, chunkY].blocks[blockX, blockY] =
+                _p.worldObj[chunkX, chunkY][blockX, blockY] =
                     (TerrainBlock) Proxy.GetRegistry().blocksById[0];
             }
         };

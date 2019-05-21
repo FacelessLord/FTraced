@@ -149,20 +149,23 @@ namespace GlLib.Common.Entities
             var oldChunk = chunkObj;
             var accuracy = 20;
             var dvel = velocity / accuracy;
-            var prevBlockX = Position.Ix;
-            var prevBlockY = Position.Iy;
+            var prevBlockX = Position.Ix % 16;
+            var prevBlockY = Position.Iy % 16;
 
             for (var i = 0; i < accuracy; i++)
             {
                 Position = Position + dvel;
                 if (chunkObj != null && chunkObj.isLoaded)
                 {
-                    if (Position.Ix != prevBlockX || Position.Iy != prevBlockY)
+                    var blockX = Position.Ix % 16;
+                    var blockY = Position.Iy % 16;
+                    if (blockX != prevBlockX || blockY != prevBlockY)
                     {
-                        var block = chunkObj[Position.Ix / 16, Position.Iy / 16];
+                        var block = chunkObj[blockX, blockY];
                         var blockBox = block.GetCollisionBox();
                         var x = Position.x - Position.Ix;
                         var y = Position.y - Position.Iy;
+                        SidedConsole.WriteLine(blockX + " | " + blockY + " | " + x + " | " + y);
                         if (blockBox != null && blockBox.IsVectorInside(x, y))
                         {
                             Position = oldPos;
