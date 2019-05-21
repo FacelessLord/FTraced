@@ -12,6 +12,7 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving, IAttacker
     {
+        public ChatIo chatIo = new ChatIo();
 
         public TerrainBlock Brush { get; internal set; }
 

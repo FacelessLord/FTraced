@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Linq;
 using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
@@ -14,14 +15,15 @@ using GlLib.Utils;
 using GlLib.Utils.StringParser;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 using OpenTK.Platform.Windows;
 
 namespace GlLib.Client.Api.Gui
 {
     public class GuiChatInput : GuiText
     {
+        public int historyPointer = 0;
         private Parser _parser = new Parser();
-        public ChatIo io = new ChatIo();
 
         public GuiChatInput(string _baseText, int _x, int _y, int _width, int _height) : base(_baseText, _x, _y, _width,
             _height)
@@ -37,8 +39,8 @@ namespace GlLib.Client.Api.Gui
 
         private void Initialize()
         {
-            _parser.AddParse("", (_s, _io) =>{});
-            _parser.AddParse("clear", (_s, _io) => _io.TryClearStream(),"Clears all output");
+            _parser.AddParse("", (_s, _io) => { });
+            _parser.AddParse("clear", (_s, _io) => _io.TryClearStream(), "Clears all output");
             _parser.AddParse("help", (_s, _io) =>
             {
                 _io.Output("This is Help" + "\n"
@@ -135,10 +137,8 @@ namespace GlLib.Client.Api.Gui
             }, "Chose block to set to.");
 
 
-            _parser.AddParse("brush", (_s, _io) =>
-            {
-                _io.Output($"Now brush have block {Proxy.GetClient().player.Brush.Name}");
-            });
+            _parser.AddParse("brush",
+                (_s, _io) => { _io.Output($"Now brush have block {Proxy.GetClient().player.Brush.Name}"); });
             _parser.AddParse("list", (_s, _io) =>
             {
                 if (_s.Length == 0)
@@ -201,9 +201,9 @@ namespace GlLib.Client.Api.Gui
             {
                 var heightCenter = (height - 16d) / 2;
                 GL.Translate(0, heightCenter - height / 2d, 0);
-                foreach (var line in io.InputStream())
+                foreach (var line in Proxy.GetClient().player.chatIo.InputStream())
                 {
-                    GL.Translate(0, -height * 2d/3, 0);
+                    GL.Translate(0, -height * 2d / 3, 0);
                     font.DrawText(line, 11);
                 }
             }
@@ -212,14 +212,42 @@ namespace GlLib.Client.Api.Gui
             GL.PopMatrix();
         }
 
+        public override void OnKeyDown(GuiFrame _guiFrame, KeyboardKeyEventArgs _e)
+        {
+            base.OnKeyDown(_guiFrame, _e);
+
+            if (_e.Key is Key.Up)
+            {
+                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("$> ")).ToList();
+                if (historyPointer < commands.Count - 1)
+                {
+                    text = commands[++historyPointer].Substring(3);
+                    cursorX = text.Length;
+                }
+            }
+
+            if (_e.Key is Key.Down)
+            {
+                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("$> ")).ToList();
+                if (historyPointer > 0)
+                {
+                    text = commands[--historyPointer].Substring(3);
+                    cursorX = text.Length;
+                }
+            }
+        }
+
         public override void HandleEnterKey()
         {
             base.HandleEnterKey();
 
-            io.Output("$> "+text);
+            var io = Proxy.GetClient().player.chatIo;
+
+            io.Output("$> " + text);
             _parser.Parse(text, io);
 
             cursorX = 0;
+            historyPointer = -1;
             text = "";
         }
     }
