@@ -12,7 +12,9 @@ AirGame/\.vs
 AirGame/[Bb]in/
 AirGame/[Oo]bj/
 
-
+#Some git's files
+/README.md
+/LICENSE.md
 
 #old
 
