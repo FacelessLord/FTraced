@@ -1,5 +1,7 @@
+using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Utils;
@@ -18,14 +20,20 @@ namespace GlLib.Client.API
         protected Color4 OnHeal = new Color4(0, 1, 0, 1.0f);
 
         public LinearSprite spawnSprite;
+        protected AlagardFontSprite Text;
+        private float start = -4;
 
+        public EntityRenderer()
+        {
+            Text = new AlagardFontSprite();
+        }
 
         protected static LinearSprite SpawnSprite
         {
             get
             {
                 var layout = new TextureLayout(SystemPath + "spawn.png", 7, 6);
-                return new LinearSprite(layout, 7 * 6, 10);
+                return new LinearSprite(layout, 7 * 6, 3);
             }
         }
 
@@ -34,9 +42,13 @@ namespace GlLib.Client.API
             Setup(_e);
             isSetUp = true;
 
+            var box = _e.AaBb;
             spawnSprite = SpawnSprite;
-            spawnSprite.MoveSpriteTo(new PlanarVector(-2, 40));
-            spawnSprite.SetColor(new Color4(1, 1, 1, 0.5f));
+            spawnSprite.Translate(new PlanarVector(6, box.Height*-128));
+            spawnSprite.SetColor(new Color4(1, 1, 1, 0.8f));
+            
+            spawnSprite.Scale(8, 8);
+            spawnSprite.Scale((float) box.Width, (float) box.Height);
         }
 
         public abstract void Setup(Entity _e);
@@ -44,28 +56,38 @@ namespace GlLib.Client.API
         public void CallRender(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
+            Vertexer.SetColorMode(Vertexer.ColorAdditionMode.OnlyFirst);
 
             if (_e is EntityLiving el)
             {
                 if (el.DamageTimer > 0)
-                    GL.Color4(OnDamage);
+                {
+                    GL.PushMatrix();
+                    GL.Translate(Math.Sin(Math.Abs(el.DamageTimer) * 2) * 8, (-5 + Math.Abs(el.DamageTimer)) * 16, 0);
+                    el.DamageTimer -= 0.05f * Math.Sign(el.DamageTimer);
+                    Text.DrawText($"{el.LastDamage}", 12, 0.85f, 0, 0);
+                    GL.PopMatrix();
+                }
+
+                if (el.DamageTimer > 0 && el.DamageTimer > 3)
+                    Vertexer.Colorize(OnDamage);
                 if (el.DamageTimer < 0)
-                    GL.Color4(OnHeal);
+                    Vertexer.Colorize(OnHeal);
             }
 
             if (_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
-            GuiUtils.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
+            Vertexer.BindTexture("monochromatic.png");
+            Vertexer.DrawSquare(-2, -2, 2, 2);
+            Vertexer.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if (_e is EntityLiving)
                 if (spawnSprite.FullFrameCount < 1)
                 {
-                    var box = _e.AaBb;
-                    GL.Scale(box.Width * 2, box.Height, 1);
                     spawnSprite.Render();
                 }
 
-            GL.Color4(1.0f, 1.0f, 1.0f, 1.0f);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
 

@@ -1,29 +1,59 @@
 {
 	"entity": {
+		"entityId": "entity.streetlight",
+		"Position": "(13.1695541583632,26.6675720893222,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "True",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.streetlight",
+		"Position": "(11.7453227665313,26.6676727666287,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "True",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.streetlight",
+		"Position": "(9.42006288553026,26.938877754424,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "True",
+		"entityTag": ""
+	},
+	"entity": {
+		"entityId": "entity.streetlight",
+		"Position": "(16.4951954753308,26.666873347374,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "True",
+		"entityTag": ""
+	},
+	"entity": {
 		"entityId": "entity.living.player",
-		"Position": "(17.3348051244695,11.0148247805502,0)",
-		"Velocity": "(-1.34447255256412E-07,-1.37942325299121E-12)",
+		"Position": "(43.5957573757011,33.5591549667169,0)",
+		"Velocity": "(0.000101721449820476,-8.49900322016315E-05)",
 		"MaxVelocity": "(0.7,0.7)",
 		"WorldId": 0,
 		"IsDead": "False",
 		"Noclip": "False",
 		"entityTag": "",
 		"Armor": 0,
-		"Health": 83,
+		"Health": 92,
 		"MaxHealth": 100,
 		"GodMode": "False",
 		"IsTakingDamage": 0,
 		"nickName": "Noname",
 		"tag": ""
-	},
-	"entity": {
-		"entityId": "entity.coin",
-		"Position": "(24,24,0)",
-		"Velocity": "(0,0)",
-		"MaxVelocity": "(0.7,0.7)",
-		"WorldId": 0,
-		"IsDead": "False",
-		"Noclip": "False",
-		"entityTag": ""
 	}
 }

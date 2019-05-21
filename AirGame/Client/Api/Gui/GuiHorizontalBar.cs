@@ -56,7 +56,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.Draw();
 
             var proportions = value / maxValue;
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             var fluidWidth = (width - height) * proportions;
             Vertexer.BindTexture(filler);
             Vertexer.StartDrawingQuads();
@@ -65,7 +65,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.VertexWithUvAt(x + fluidWidth * proportions + height / 2, y + height, 1, 1);
             Vertexer.VertexWithUvAt(x + height / 2, y + height, 0, 1);
             Vertexer.Draw();
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
         }
     }
 }

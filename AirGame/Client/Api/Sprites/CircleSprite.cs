@@ -20,19 +20,8 @@ namespace GlLib.Client.Api.Sprites
 
         public void Render()
         {
-            GL.PushMatrix();
-            var t = Vertexer.LoadTexture("monochromatic.png");
-            Vertexer.BindTexture(t);
-            Vertexer.StartDrawing(PrimitiveType.TriangleFan);
-
-            var angleStep = 2 * Math.PI / accuracy;
-            var r = 1;
-            for (var i = accuracy - 1; i >= 0; i--)
-                Vertexer.VertexAt(r * Math.Cos(angleStep * i), r * Math.Sin(angleStep * i));
-
-            Vertexer.Draw();
-
-            GL.PopMatrix();
+            Vertexer.BindTexture("monochromatic.png");
+            Vertexer.DrawCircle(accuracy);
         }
     }
 }

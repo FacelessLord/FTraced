@@ -15,8 +15,10 @@ namespace GlLib.Client.Graphic.Renderers
         {
             var layout = new TextureLayout("bat.png", 6, 1);
             batSprite = new LinearSprite(layout, 6, 6);
+            var box = _p.AaBb;
+            batSprite.Scale((float) box.Width, (float) box.Height);
             spawnSprite = SpawnSprite;
-            spawnSprite.MoveSpriteTo(new PlanarVector(-2, 40));
+            spawnSprite.Translate(new PlanarVector(-2, 40));
             spawnSprite.SetColor(new Color4(1, 1, 1, 0.5f));
         }
 

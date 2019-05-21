@@ -82,14 +82,8 @@ namespace GlLib.Client.Api.Sprites
         {
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(registry[_character]);
             var dh = 0.5 / layout.height;
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(0, 0, startU, startV + dh);
-            Vertexer.VertexWithUvAt(1, 0, endU, startV + dh);
-            Vertexer.VertexWithUvAt(1, 1, endU, endV);
-            Vertexer.VertexWithUvAt(0, 1, startU, endV);
-
-            Vertexer.Draw();
+            
+            Vertexer.DrawSquare(0,0,1,1, startU, startV+dh, endU, endV);
         }
 
         public double GetTextWidth(string _text, int _size)
@@ -111,7 +105,7 @@ namespace GlLib.Client.Api.Sprites
         {
             GL.PushMatrix();
             Vertexer.BindTexture(texture);
-            GL.Color4(_r, _g, _b, _a);
+            Vertexer.Colorize(_r, _g, _b, _a);
             GL.Scale(_size, _size + 2, 1);
             double d = 0;
             for (var i = 0; i < _text.Length; i++)
@@ -138,7 +132,7 @@ namespace GlLib.Client.Api.Sprites
                 }
             }
 
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
     }

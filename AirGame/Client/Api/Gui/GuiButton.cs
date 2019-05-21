@@ -55,23 +55,23 @@ namespace GlLib.Client.Api.Gui
             switch (state)
             {
                 case ButtonState.Enabled:
-                    GuiUtils.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
                     break;
                 case ButtonState.Pressed:
-                    GuiUtils.DrawSizedSquare(spritePressed, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spritePressed, x, y, width, height, 16);
                     break;
                 case ButtonState.Disabled:
-                    GuiUtils.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
                     break;
             }
 
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
             var heightCenter = (height - 11d) / 2 - 2;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
 
             GL.PopMatrix();

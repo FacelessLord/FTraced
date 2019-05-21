@@ -22,19 +22,10 @@ namespace GlLib.Client.API.Gui
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-//            GL.Color4(color.R, color.G, color.B, color.A);
-
+            Vertexer.Colorize(color);
             Vertexer.BindTexture(texture);
-
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(x, y, 0, 0);
-            Vertexer.VertexWithUvAt(x + width, y, 1, 0);
-            Vertexer.VertexWithUvAt(x + width, y + height, 1, 1);
-            Vertexer.VertexWithUvAt(x, y + height, 0, 1);
-
-            Vertexer.Draw();
-//            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.DrawSquare(x,y, x+width, y+height);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
         }

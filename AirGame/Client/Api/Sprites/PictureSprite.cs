@@ -20,17 +20,8 @@ namespace GlLib.Client.Api.Sprites
 
         public void Render()
         {
-            GL.PushMatrix();
             Vertexer.BindTexture(texture);
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(0, 0, 0, 0);
-            Vertexer.VertexWithUvAt(width, 0, 1, 0);
-            Vertexer.VertexWithUvAt(width, height, 1, 1);
-            Vertexer.VertexWithUvAt(0, height, 0, 1);
-
-            Vertexer.Draw();
-            GL.PopMatrix();
+            Vertexer.DrawSquare(-width / 2d, -height / 2d, width / 2d, height / 2d);
         }
     }
 }

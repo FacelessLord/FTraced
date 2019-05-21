@@ -21,7 +21,7 @@ namespace GlLib.Client.Graphic.Renderers
         public void Render(World _world, int _x, int _y)
         {
             GL.Translate(-3*Chunk.BlockWidth,-Chunk.BlockHeight,0);
-            GL.Scale(1,0.5d,1);
+            GL.Scale(8,2,1);
             castleSprite.Render();
         }
     }

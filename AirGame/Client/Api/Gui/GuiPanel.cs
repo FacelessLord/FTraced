@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -54,13 +55,13 @@ namespace GlLib.Client.Api.Gui
             if (bar != null)
             {
                 if (enableBackground)
-                    GuiUtils.DrawSizedSquare(rectangleLayout, -d, -d, width - bar.width + 8 - d, height + 8 - d, 32);
+                    Vertexer.DrawSizedSquare(rectangleLayout, -d, -d, width - bar.width + 8 - d, height + 8 - d, 32);
                 bar.Render(_gui, centerX, centerY);
             }
             else
             {
                 if (enableBackground)
-                    GuiUtils.DrawSizedSquare(rectangleLayout, -d, -d, width + 8 - d, height + 8 - d, 32);
+                    Vertexer.DrawSizedSquare(rectangleLayout, -d, -d, width + 8 - d, height + 8 - d, 32);
             }
 
             GL.Translate(-dx, -dy, 0);

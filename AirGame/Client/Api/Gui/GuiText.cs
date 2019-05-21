@@ -1,4 +1,5 @@
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.Graphic;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -29,10 +30,10 @@ namespace GlLib.Client.API.Gui
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
             var heightCenter = (height - 11d) / 2;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
         }
@@ -72,7 +73,7 @@ namespace GlLib.Client.API.Gui
             var timerSpeed = 40;
             timer = (timer + 1) % timerSpeed;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x, y, 0);
             if (oneLineMode)
             {
@@ -95,7 +96,7 @@ namespace GlLib.Client.API.Gui
                 font.DrawText(t1 + "|" + t2, 11);
             }
 
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
         }
