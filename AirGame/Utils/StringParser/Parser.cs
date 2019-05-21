@@ -8,28 +8,30 @@ namespace GlLib.Utils.StringParser
     {
         public Parser()
         {
-            args = new Dictionary<string, Action<string[]>>();
+            _args = new Dictionary<string, Action<string[]>>();
+            _actionDescription = new Dictionary<string, string>();
         }
-        // TODO 
-        private readonly Dictionary<string, Action<string[]>> args;
+        private readonly Dictionary<string, Action<string[]>> _args;
+        private readonly Dictionary<string, string> _actionDescription;
 
 
         public string GetCommandList()
         {
-            return args.Keys.Aggregate( (a,b) => a + "\n" + b);
+            return _args.Keys.Aggregate((_a,_b) => _a + "\n" + $"{_b, 12} {_actionDescription[_b], -10:NO}");
         }
-        public void AddParse(string _word, Action<string[]> _delegate)
+        public void AddParse(string _word, Action<string[]> _delegate, string _description="")
         {
-            args.Add(_word, _delegate);
+            _args.Add(_word, _delegate);
+            _actionDescription.Add(_word, _description);
         }
 
         public void Parse(string _arg)
         {
             _arg += " ";
             var parsed = _arg.Split(' ');
-            if (args.ContainsKey(parsed[0]))
+            if (_args.ContainsKey(parsed[0]))
             {
-                args[parsed[0]](parsed
+                _args[parsed[0]](parsed
                     .Skip(1)
                     .ToArray());
             }

@@ -55,7 +55,7 @@ namespace GlLib.Client.Api.Gui
                 entity.Position = Proxy.GetClient().player.Position;
                 entity.velocity = Proxy.GetClient().player.velocity.Normalized;
                 Proxy.GetClient().world.SpawnEntity(entity);
-            });
+            }, "Spawns entity. Use full name.");
 
             _parser.AddParse("lspawn", _s =>
             {
@@ -74,7 +74,7 @@ namespace GlLib.Client.Api.Gui
                 entity.Position = Proxy.GetClient().player.Position;
                 entity.velocity = Proxy.GetClient().player.velocity.Normalized;
                 Proxy.GetClient().world.SpawnEntity(entity);
-            });
+            }, "Spawns entity.living. Use name. Example: lspawn box");
             _parser.AddParse("gm",_s =>
             {
                 if (_s.Length == 0)
@@ -87,7 +87,7 @@ namespace GlLib.Client.Api.Gui
                     Proxy.GetClient().player.SetGodMode();
                 if (_s[0] == "0")
                     Proxy.GetClient().player.SetGodMode(false);
-            });
+            }, "Change player's god mode.0 - if it should be on, 1 - if it should be off.");
             _parser.AddParse("setbrush", _s =>
             {
                 if (_s.Length == 0)
@@ -121,7 +121,7 @@ namespace GlLib.Client.Api.Gui
                     else
                         SidedConsole.WriteLine("Wrong block name, can't chose this block.");
                 }
-            });
+            }, "Chose block to set to.");
 
             _parser.AddParse("list", _s =>
             {
@@ -165,7 +165,7 @@ namespace GlLib.Client.Api.Gui
                     SidedConsole.WriteLine(concateEntities);
                 }
                 else SidedConsole.WriteLine("blocks, entities or items please");
-            });
+            }, "Shows game registry.");
             _parser.AddParse("save", _p =>
             {
                 WorldManager.SaveWorld(Proxy.GetClient().player.worldObj);
