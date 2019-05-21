@@ -70,7 +70,8 @@ namespace GlLib.Client.Api.Sprites
             l.AddRange(new List<char>
             {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+',
-                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~', '\'', '\"', ' ', '\n'
+                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~', '\'', '\"', '-', ' ',
+                '\t', '\n'
             });
 
             for (var i = 0; i < l.Count; i++)
@@ -81,9 +82,9 @@ namespace GlLib.Client.Api.Sprites
         public void Render(char _character)
         {
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(registry[_character]);
-            var dh = 0.5 / layout.height;
-            
-            Vertexer.DrawSquare(0,0,1,1, startU, startV+dh, endU, endV);
+            var dh = 0.35 / layout.height;
+
+            Vertexer.DrawSquare(0, 0, 1, 1, startU, startV + dh, endU, endV+dh);
         }
 
         public double GetTextWidth(string _text, int _size)

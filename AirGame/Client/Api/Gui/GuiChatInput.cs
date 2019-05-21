@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using GlLib.Client.API;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Items;
@@ -10,6 +13,7 @@ using GlLib.Common.Registries;
 using GlLib.Utils;
 using GlLib.Utils.StringParser;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Platform.Windows;
 
 namespace GlLib.Client.Api.Gui
@@ -17,6 +21,7 @@ namespace GlLib.Client.Api.Gui
     public class GuiChatInput : GuiText
     {
         private Parser _parser = new Parser();
+        public ChatIo io = new ChatIo();
 
         public GuiChatInput(string _baseText, int _x, int _y, int _width, int _height) : base(_baseText, _x, _y, _width,
             _height)
@@ -32,24 +37,28 @@ namespace GlLib.Client.Api.Gui
 
         private void Initialize()
         {
-            _parser.AddParse("help", _s =>
+            _parser.AddParse("", (_s, _io) =>{});
+            _parser.AddParse("clear", (_s, _io) => _io.TryClearStream(),"Clears all output");
+            _parser.AddParse("help", (_s, _io) =>
             {
-                SidedConsole.WriteLine("This is Help" + "\n"
-                 + _parser.GetCommandList() );
+                _io.Output("This is Help" + "\n"
+                                          + _parser.GetCommandList());
             });
 
-            _parser.AddParse("spawn", _s =>
+            _parser.AddParse("spawn", (_s, _io) =>
             {
                 if (_s.Length == 0)
                 {
-                    SidedConsole.WriteLine("What shall I spawn?");
+                    _io.Output("What shall I spawn?");
                     return;
                 }
+
                 if (!Proxy.GetRegistry().entities.ContainsKey("entity." + _s[0]))
                 {
-                    SidedConsole.WriteLine("Can't spawn entity with name: " + _s[0]);
+                    _io.Output("Can't spawn entity with name: " + _s[0]);
                     return;
                 }
+
                 var entity = Proxy.GetRegistry().GetEntityFromName("entity." + _s[0]);
                 entity.worldObj = Proxy.GetClient().player.worldObj;
                 entity.Position = Proxy.GetClient().player.Position;
@@ -57,29 +66,31 @@ namespace GlLib.Client.Api.Gui
                 Proxy.GetClient().world.SpawnEntity(entity);
             }, "Spawns entity. Use full name.");
 
-            _parser.AddParse("lspawn", _s =>
+            _parser.AddParse("lspawn", (_s, _io) =>
             {
                 if (_s.Length == 0)
                 {
-                    SidedConsole.WriteLine("What shall I spawn?");
+                    _io.Output("What shall I spawn?");
                     return;
                 }
+
                 if (!Proxy.GetRegistry().entities.ContainsKey("entity.living." + _s[0]))
                 {
-                    SidedConsole.WriteLine("Can't spawn entity with name: " + _s[0]);
+                    _io.Output("Can't spawn entity with name: " + _s[0]);
                     return;
                 }
+
                 var entity = Proxy.GetRegistry().GetEntityFromName("entity.living." + _s[0]);
                 entity.worldObj = Proxy.GetClient().player.worldObj;
                 entity.Position = Proxy.GetClient().player.Position;
                 entity.velocity = Proxy.GetClient().player.velocity.Normalized;
                 Proxy.GetClient().world.SpawnEntity(entity);
             }, "Spawns entity.living. Use name. Example: lspawn box");
-            _parser.AddParse("gm",_s =>
+            _parser.AddParse("gm", (_s, _io) =>
             {
                 if (_s.Length == 0)
                 {
-                    SidedConsole.WriteLine("What game mode are you will?");
+                    _io.Output("What game mode are you will?");
                     return;
                 }
 
@@ -88,11 +99,11 @@ namespace GlLib.Client.Api.Gui
                 if (_s[0] == "0")
                     Proxy.GetClient().player.SetGodMode(false);
             }, "Change player's god mode.0 - if it should be on, 1 - if it should be off.");
-            _parser.AddParse("setbrush", _s =>
+            _parser.AddParse("setbrush", (_s, _io) =>
             {
                 if (_s.Length == 0)
                 {
-                    SidedConsole.WriteLine("What brush should I use?");
+                    _io.Output("What brush should I use?");
                     return;
                 }
 
@@ -104,7 +115,7 @@ namespace GlLib.Client.Api.Gui
                     if (Proxy.GetRegistry().TryGetBlockFromId(id, out block))
                         Proxy.GetClient().player.Brush = block;
                     else
-                        SidedConsole.WriteLine("Wrong ID, can't chose this block.");
+                        _io.Output("Wrong ID, can't chose this block.");
                 }
 
                 else if (!_s[0].StartsWith("block."))
@@ -112,22 +123,22 @@ namespace GlLib.Client.Api.Gui
                     if (Proxy.GetRegistry().TryGetBlockFromName("block." + _s[0], out block))
                         Proxy.GetClient().player.Brush = block;
                     else
-                        SidedConsole.WriteLine("Wrong block name, can't chose this block.");
+                        _io.Output("Wrong block name, can't chose this block.");
                 }
                 else
                 {
                     if (Proxy.GetRegistry().TryGetBlockFromName(_s[0], out block))
                         Proxy.GetClient().player.Brush = block;
                     else
-                        SidedConsole.WriteLine("Wrong block name, can't chose this block.");
+                        _io.Output("Wrong block name, can't chose this block.");
                 }
             }, "Chose block to set to.");
 
-            _parser.AddParse("list", _s =>
+            _parser.AddParse("list", (_s, _io) =>
             {
                 if (_s.Length == 0)
                 {
-                    SidedConsole.WriteLine("What objects do you want?");
+                    _io.Output("What objects do you want?");
                     return;
                 }
 
@@ -140,8 +151,8 @@ namespace GlLib.Client.Api.Gui
                     {
                         concatedItems += $"{(items[id] as Item)?.ToString(),12} {id,15:N0}\n";
                     }
-                    SidedConsole.WriteLine(concatedItems);
-                    
+
+                    _io.Output(concatedItems);
                 }
                 else if (_s[0] == "blocks")
                 {
@@ -150,9 +161,10 @@ namespace GlLib.Client.Api.Gui
                     var blocks = Proxy.GetRegistry().blocksById;
                     foreach (var id in blocks.Keys)
                     {
-                        concatedBlocks += $"{(blocks[id] as TerrainBlock)?.Name ,-35} {id,10:N0}\n";
+                        concatedBlocks += $"{(blocks[id] as TerrainBlock)?.Name,-35} {id,10:N0}\n";
                     }
-                    SidedConsole.WriteLine(concatedBlocks);
+
+                    _io.Output(concatedBlocks);
                 }
                 else if (_s[0] == "entities")
                 {
@@ -162,23 +174,45 @@ namespace GlLib.Client.Api.Gui
                     {
                         concateEntities += $"{name,8} {name,20:N0}\n";
                     }
-                    SidedConsole.WriteLine(concateEntities);
+
+                    _io.Output(concateEntities);
                 }
-                else SidedConsole.WriteLine("blocks, entities or items please");
+                else _io.Output("blocks, entities or items please");
             }, "Shows game registry.");
-            _parser.AddParse("save", _p =>
+            _parser.AddParse("save", (_p, _io) =>
             {
                 WorldManager.SaveWorld(Proxy.GetClient().player.worldObj);
+                _io.Output("World Saved");
             });
-
         }
 
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
+        {
+            base.Render(_gui, _centerX, _centerY);
+            GL.PushMatrix();
+            Vertexer.Colorize(color);
+            GL.Translate(x, y, 0);
+            if (oneLineMode)
+            {
+                var heightCenter = (height - 16d) / 2;
+                GL.Translate(0, heightCenter - height / 2d, 0);
+                foreach (var line in io.InputStream())
+                {
+                    GL.Translate(0, -height * 2d/3, 0);
+                    font.DrawText(line, 11);
+                }
+            }
+
+            Vertexer.ClearColor();
+            GL.PopMatrix();
+        }
 
         public override void HandleEnterKey()
         {
             base.HandleEnterKey();
 
-            _parser.Parse(text);
+            io.Output("$> "+text);
+            _parser.Parse(text, io);
 
             cursorX = 0;
             text = "";
