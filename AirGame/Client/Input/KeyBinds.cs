@@ -95,7 +95,7 @@ namespace GlLib.Client.Input
         {
             if (Proxy.GetWindow().serverStarted)
             {
-                Proxy.GetWindow().TryOpenGui(new GuiIngameMenu());
+                Proxy.GetWindow().TryOpenGui(new GuiIngameMenu(), true);
             }
         };
 

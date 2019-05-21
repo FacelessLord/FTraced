@@ -195,7 +195,7 @@ namespace GlLib.Client.Graphic
             guiFrame = _gui;
         }
 
-        public void TryOpenGui(GuiFrame _gui)
+        public void TryOpenGui(GuiFrame _gui, bool _unfocus=false)
         {
             if (guiFrame == null)
             {
@@ -205,6 +205,8 @@ namespace GlLib.Client.Graphic
             {
                 if (guiFrame.focusedObject == null)
                     CloseGui();
+                else if(_unfocus)
+                    guiFrame.focusedObject = null;
             }
         }
     }
