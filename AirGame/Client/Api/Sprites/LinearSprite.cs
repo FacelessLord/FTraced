@@ -12,8 +12,10 @@ namespace GlLib.Client.Api.Sprites
         private Color4 color = new Color4(1, 1, 1, 1.0f);
         public int frameCount;
         public bool frozen;
+
         private bool hasColor;
         public int maxFrameCount;
+        public bool noRepeat;
 
         private Vector3 scale;
         public int step;
@@ -53,7 +55,10 @@ namespace GlLib.Client.Api.Sprites
                 GL.Color4(color);
             texture.Render(frameCount / step);
             if (!frozen)
-                frameCount = (frameCount + 1) % (maxFrameCount * step);
+                if (noRepeat && frameCount + 1 >= maxFrameCount * step)
+                    SetFrozen();
+                else
+                    frameCount = (frameCount + 1) % (maxFrameCount * step);
             //GL.ClearColor(1, 1, 1, transparency);
 //            GL.Disable(EnableCap.Blend);
             GL.Color4(1.0f, 1, 1, 1);
@@ -80,6 +85,18 @@ namespace GlLib.Client.Api.Sprites
         {
             frozen = _freeze;
             return this;
+        }
+
+        public LinearSprite SetNoRepeat(bool _no = true)
+        {
+            noRepeat = _no;
+            return this;
+        }
+
+        public void Reset()
+        {
+            _frameCount = 0;
+            frozen = false;
         }
     }
 }

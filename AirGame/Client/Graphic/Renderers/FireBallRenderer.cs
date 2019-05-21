@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Client.API;
 using GlLib.Client.Api.Sprites;
+using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
 {
     internal class FireBallRenderer : EntityRenderer
     {
-        private double rotation;
         private ISprite _sprite;
+        private readonly double rotation;
 
         public FireBallRenderer(PlanarVector _aim, Direction direction)
         {
@@ -28,16 +27,17 @@ namespace GlLib.Client.Graphic.Renderers
                 }
             else rotation = _aim.Angle;
         }
+
         public override void Setup(Entity _e)
         {
-            TextureLayout layout = new TextureLayout(@"11_fire_spritesheet.png", 8, 8);
+            var layout = new TextureLayout(@"11_fire_spritesheet.png", 8, 8);
             _sprite = new LinearSprite(layout, 61, 6);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
-            GL.Rotate((180 / Math.PI) * rotation + 270, OpenTK.Vector3d.UnitZ);
+            GL.Rotate(180 / Math.PI * rotation + 270, Vector3d.UnitZ);
             _sprite.Render();
             GL.PopMatrix();
         }

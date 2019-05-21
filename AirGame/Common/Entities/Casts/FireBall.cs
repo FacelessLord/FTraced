@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
@@ -11,15 +9,12 @@ namespace GlLib.Common.Entities
     {
         private const short BaseVelocity = 2;
 
-        internal uint DieTime { get; }
-        internal int Damage { get; }
 
-
-
-        public FireBall(World _world, RestrictedVector3D _position, Direction direction, PlanarVector _velocity, uint _dieTime, int _damage)
+        public FireBall(World _world, RestrictedVector3D _position, Direction direction, PlanarVector _velocity,
+            uint _dieTime, int _damage)
             : base(_world, _position)
         {
-            this.isVelocityDinamic = false;
+            isVelocityDinamic = false;
             PlanarVector sightDirection;
             if (direction == Direction.Right)
                 sightDirection = new PlanarVector(1, 0);
@@ -30,14 +25,12 @@ namespace GlLib.Common.Entities
 
             velocity = _velocity.Normalized == new PlanarVector(0, 0) ? sightDirection : _velocity.Normalized;
             SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
+            AaBb = new AxisAlignedBb(-0.5, -1, 0.5, 1);
         }
 
+        internal uint DieTime { get; }
+        internal int Damage { get; }
 
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.5, -1, 0.5, 1);
-        }
-        
         public override void Update()
         {
             base.Update();

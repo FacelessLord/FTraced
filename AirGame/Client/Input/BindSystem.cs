@@ -1,7 +1,7 @@
-﻿using OpenTK.Input;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using OpenTK.Input;
 
 namespace GlLib.Client.Input
 {
@@ -15,37 +15,24 @@ namespace GlLib.Client.Input
 
         public void OnKeyUpdate(params Key[] _keys)
         {
-            
             foreach (var pattern in Patterns)
-            {
                 if (pattern.StartsWith(_keys.ToList()))
-                {
                     ExpectedPatterns.Add(pattern);
-                }
-            }
 
-            foreach (var pattern in ExpectedPatterns)
-            {
-                pattern.Update(TimeTick, _keys);
-            }
+            foreach (var pattern in ExpectedPatterns) pattern.Update(TimeTick, _keys);
 
 
             PressedKeys[TimeTick] = _keys;
             Update();
-            
-            
         }
 
         private void Update()
         {
             foreach (var expPattern in ExpectedPatterns)
             {
-                
             }
 
             TimeTick++;
         }
-
-
     }
 }

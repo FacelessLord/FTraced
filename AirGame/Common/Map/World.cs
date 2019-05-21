@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
@@ -14,11 +13,12 @@ namespace GlLib.Common.Map
         public Chunk[,] chunks;
         public ThreadSafeList<(Entity e, Chunk chk)> entityAddQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
 
-        public Mutex entityMutex = new Mutex();
         public ThreadSafeList<(Entity e, Chunk chk)> entityRemoveQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
         public int height;
 
         public JsonObjectCollection jsonObj;
+        public int MaxEntityCount { get; private set; } = 200;
+        public int EntityCount { get; private set; }
 
         public string mapName;
 
@@ -44,12 +44,16 @@ namespace GlLib.Common.Map
         {
             foreach (var pair in entityRemoveQueue)
                 lock (pair.chk.entities)
+                {
                     pair.chk.entities.Remove(pair.e);
+                }
 
             entityRemoveQueue.Clear();
             foreach (var pair in entityAddQueue)
                 lock (pair.chk.entities)
+                {
                     pair.chk.entities.Add(pair.e);
+                }
 
             entityAddQueue.Clear();
             lock (chunks)
@@ -65,17 +69,26 @@ namespace GlLib.Common.Map
 
         public void SpawnEntity(Entity _e)
         {
-            if (EventBus.OnEntitySpawn(_e)) return;
+            if (EntityCount < MaxEntityCount)
+            {
+                if (EventBus.OnEntitySpawn(_e)) return;
 
-            entityMutex.WaitOne();
-            _e.worldObj = this;
+                _e.worldObj = this;
 
-            if (_e.chunkObj is null)
-                _e.chunkObj = Entity.GetProjection(_e.Position, this);
-            lock (_e.chunkObj.entities)
-                _e.chunkObj.entities.Add(_e); //todo entity null
-            entityMutex.ReleaseMutex();
-            SidedConsole.WriteLine($"Entity {_e} spawned in world");
+                if (_e.chunkObj is null)
+                    _e.chunkObj = Entity.GetProjection(_e.Position, this);
+                lock (_e.chunkObj.entities)
+                {
+                    _e.chunkObj.entities.Add(_e); //todo entity null
+                }
+
+                EntityCount++;
+                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+            }
+            else
+            {
+                SidedConsole.WriteLine($"Entity count exceds maximum value({MaxEntityCount}). Couldn't spawn entity");
+            }
         }
 
         public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
@@ -96,13 +109,12 @@ namespace GlLib.Common.Map
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
-            {
                 if (i >= 0 && j >= 0 && i < width && j < height)
                 {
                     var chk = this[i, j];
                     if (chk != null) chunks.Add(chk);
                 }
-            }
+
             return chunks.SelectMany(_c => _c.entities)
                 .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
                 .ToThreadSafeList();
@@ -118,17 +130,21 @@ namespace GlLib.Common.Map
             var chkEndY = chkStartY + _aabb.Height / 16;
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
-            {
                 if (i >= 0 && j >= 0 && i < width && j < height)
                 {
                     var chk = this[i, j];
                     if (chk != null) chunks.Add(chk);
                 }
-            }
 
             return chunks.SelectMany(_c => _c.entities)
                 .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
                 .ToThreadSafeList();
+        }
+
+        public void DespawnEntity(Entity _entity)
+        {
+            entityRemoveQueue.Add((_entity, _entity.chunkObj));
+            EntityCount--;
         }
     }
 }

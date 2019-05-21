@@ -1,17 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Json;
+using GlLib.Common.Entities;
 using GlLib.Utils;
 
 namespace GlLib.Common.Map
 {
     public static class WorldManager
     {
+        private static Player GetPlayer => Proxy.GetClient().player;
+
         public static void SaveWorld(World _world)
         {
             Proxy.GetServer().profiler.SetState(State.SavingWorld);
             SaveWorldEntities(_world);
+            SaveChunks(_world);
         }
 
         private static void SaveWorldEntities(World _world)
@@ -59,7 +64,7 @@ namespace GlLib.Common.Map
                     return (JsonObjectCollection) parser.Parse(fs);
                 }
             }
-            catch (System.FormatException e)
+            catch (FormatException e)
             {
                 SidedConsole.WriteErrorLine("There something wrong with your entity file.\n" +
                                             "It can be result of death of all entities");
@@ -104,6 +109,33 @@ namespace GlLib.Common.Map
                     var entity = Proxy.GetRegistry().GetEntityFromJson(entityJson as JsonObjectCollection);
                     _world.SpawnEntity(entity);
                 }
+        }
+
+        public static void SaveChunks(World _world)
+        {
+            var objJson = new JsonObjectCollection();
+            objJson.Add(new JsonNumericValue("Width", _world.width));
+            objJson.Add(new JsonNumericValue("Height", _world.height));
+            foreach (var chunk in GetPlayer.worldObj.chunks)
+            {
+                if (!chunk.isLoaded) continue;
+                objJson.Add(chunk._unloadChunk(GetPlayer.worldObj, chunk.chunkX, chunk.chunkY));
+            }
+
+            if (!Directory.Exists(@"Saves")) Directory.CreateDirectory("Saves");
+
+            var filePath = Proxy.GetServer().MachineTime
+                               .ToString()
+                               .Replace(":", "-") + ".json";
+
+            if (!File.Exists(@"Saves/" + filePath))
+                File.Create(@"Saves/" + filePath).Close();
+
+
+            using (var file = File.CreateText(@"Saves/" + filePath))
+            {
+                objJson.WriteTo(file);
+            }
         }
     }
 }

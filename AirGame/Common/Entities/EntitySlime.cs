@@ -1,14 +1,25 @@
-using System;
 using System.Linq;
+using GlLib.Client.API.Gui;
+using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using OpenTK.Graphics;
 
 namespace GlLib.Common.Entities
 {
     public class EntitySlime : EntityLiving, ISmart, IAttacker
     {
         private const int UpdateFrame = 12;
+
+        public new EntityState state
+        {
+            get =>
+                Target is null 
+                    ? EntityState.Idle
+                    : EntityState.Walk;
+            private set { state = value; }
+        }
 
         public EntitySlime()
         {
@@ -20,26 +31,13 @@ namespace GlLib.Common.Entities
             Initialize();
         }
 
-
-        private void Initialize()
-        {
-
-            SetCustomRenderer(new SlimeRenderer());
-            AttackRange = 7;
-            AttackValue = 5;
-        }
-
-        public override string GetName()
-        {
-            return "entity.living.slime";
-        }
-
         public EntitySlime(bool _inMove, bool _inWaiting, int _attackRange, long _spawnTime)
         {
             InMove = _inMove;
             InWaiting = _inWaiting;
             Target = null;
             Initialize();
+            state = EntityState.Idle;
         }
 
         private Player Target { get; set; }
@@ -47,36 +45,54 @@ namespace GlLib.Common.Entities
         public bool InWaiting { get; }
         public int AttackRange { get; private set; }
 
-        public bool IsAttacking
+        public bool IsAttacking => !(Target is null);
+
+        public bool IsWaiting => Target is null;
+
+        public int AttackValue { get; set; }
+
+
+        private void Initialize()
         {
-            get => !(Target is null);
+            SetCustomRenderer(new SlimeRenderer());
+            AttackRange = 2;
+            AttackValue = 2;
+            AaBb = new AxisAlignedBb(-0.25, 0, 0.25, 0.5);
         }
 
-        public bool IsWaiting
+        public override string GetName()
         {
-            get => (Target is null);
+            return "entity.living.slime";
         }
 
         //public override Mov
         public override void Update()
         {
+            //var sprite = new AlagardFontSprite();
+
+            //sprite.DrawText("Hello, I'm Slime", 64);
+
+            //sprite.Render((char) Proxy.GetServer().registry.entities[this]);
+
+
             var entities = worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AttackRange, AttackRange));
 
             if (Target is null && !(entities is null))
-            {
                 Target = (Player) entities
-                    .FirstOrDefault(_e => _e is Player);
-            }
+                    .FirstOrDefault(_e => _e is Player p && !p.state.Equals(EntityState.Dead));
 
             if (InternalTicks % UpdateFrame == 0 ||
-                (!(Target is null) && Target.IsDead))
+                !(Target is null) && Target.IsDead)
             {
                 Target = (Player) entities
-                    .FirstOrDefault(_e => _e is Player);
+                    .FirstOrDefault(_e => _e is Player p && !p.state.Equals(EntityState.Dead));
 
                 if (!(Target is null) &&
                     (Target.Position - position).Length > 1)
+                {
                     MoveToTarget();
+                }
+
             }
 
             base.Update();
@@ -84,8 +100,9 @@ namespace GlLib.Common.Entities
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving
+            if (_obj is EntityLiving el
                 && !(_obj is EntitySlime)
+                && !el.state.Equals(EntityState.Dead)
                 && InternalTicks % UpdateFrame == 0
                 && InternalTicks > 30000000)
                 (_obj as EntityLiving).DealDamage(AttackValue);
@@ -97,13 +114,5 @@ namespace GlLib.Common.Entities
             velocity.Normalize();
             velocity /= 5;
         }
-
-        public override AxisAlignedBb GetAaBb()
-        {
-            return new AxisAlignedBb(-0.25, -0.5, 0.25,0.5);
-        }
-
-        public int AttackValue { get; set; }
-
     }
 }

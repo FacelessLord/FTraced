@@ -19,7 +19,7 @@ namespace GlLib.Utils
         {
             Console.WriteLine(GetSidePrefix() + _text);
         }
-        
+
         public static void WriteErrorLine(object _text)
         {
             Console.Error.WriteLine(GetSidePrefix() + _text);

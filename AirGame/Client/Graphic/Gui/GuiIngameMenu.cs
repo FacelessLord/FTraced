@@ -8,11 +8,11 @@ namespace GlLib.Client.Graphic.Gui
 {
     public class GuiIngameMenu : GuiFrame
     {
-        public GuiRectangle rectangle;
-        public GuiButton startButton;
-        public GuiButton settingsButton;
-        public GuiButton saveButton;
         public GuiButton exitButton;
+        public GuiRectangle rectangle;
+        public GuiButton saveButton;
+        public GuiButton settingsButton;
+        public GuiButton startButton;
 
         public GuiIngameMenu()
         {

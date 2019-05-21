@@ -88,13 +88,41 @@ namespace GlLib.Common.Registries
         {
             if (blocks.ContainsKey(_blockName))
                 return (TerrainBlock) blocks[_blockName];
+            // TODO translate code into console like this:
+            SidedConsole.WriteErrorLine($"Block cannot be loaded: {_blockName}");
             return null;
+        }
+
+        public bool TryGetBlockFromName(string _blockName, out TerrainBlock _block)
+        {
+            if (blocks.ContainsKey(_blockName))
+            {
+                _block =  (TerrainBlock) blocks[_blockName];
+                return true;
+            }
+
+            _block = null;
+            return false;
         }
 
         public TerrainBlock GetBlockFromId(int _id)
         {
             return (TerrainBlock) blocksById[_id];
         }
+
+        public bool TryGetBlockFromId(int _blockId, out TerrainBlock _block)
+        {
+            if (blocksById.ContainsKey(_blockId))
+            {
+                _block = (TerrainBlock) blocksById[_blockId];
+                return true;
+            }
+
+            _block = null;
+            return false;
+        }
+
+
 
         public Entity GetEntityFromName(string _entityName)
         {
@@ -107,6 +135,22 @@ namespace GlLib.Common.Registries
 
             return null;
         }
+
+        public bool TryGetEntityFromName(string _entityName, out Entity _entity)
+        {
+            if (entities.ContainsKey(_entityName))
+            {
+                var clazz = (Type)entities[_entityName];
+                _entity = (Entity)Activator.CreateInstance(clazz);
+                return true;
+            }
+
+            _entity = null;
+            return false;
+        }
+
+
+
 
         public Entity GetEntityFromJson(JsonObjectCollection _collection)
         {

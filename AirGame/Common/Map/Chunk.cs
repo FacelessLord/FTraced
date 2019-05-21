@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
@@ -39,6 +38,22 @@ namespace GlLib.Common.Map
             set => blocks[_i, _j] = value;
         }
 
+        public JsonObjectCollection _unloadChunk(World world, int x, int y)
+        {
+            List<JsonObject> objects = new List<JsonObject>();
+            for (int i = 0; i < 16; i++)
+            {
+                for (int j = 0; j < 16; j++)
+                {
+                    TerrainBlock block = this[i, j];
+                    if (block != null)
+                        objects.Add(new JsonNumericValue($"{i},{j}", block.id));
+                }
+            }
+
+            return new JsonObjectCollection($"{x},{y}", objects);
+        }
+
         public void RenderChunk(double _centerX, double _centerY, PlanarVector _xAxis, PlanarVector _yAxis)
         {
             GL.PushMatrix();
@@ -74,7 +89,11 @@ namespace GlLib.Common.Map
                 }
                 else
                 {
+                    GL.PushMatrix();
+                    var coord = _xAxis * (i + 8) + _yAxis * (j + 8);
+                    GL.Translate(coord.x, coord.y, 0);
                     block.GetSpecialRenderer(world, i, j).Render(world, i, j);
+                    GL.PopMatrix();
                 }
             }
 
@@ -100,8 +119,10 @@ namespace GlLib.Common.Map
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
                             if (world.FromStash)
-                                blocks[i, j] = (TerrainBlock) stashedBlocks[gameObject.Value];
-
+                                if( stashedBlocks.ContainsKey(gameObject.Value))
+                                    blocks[i, j] = (TerrainBlock) stashedBlocks[gameObject.Value];
+                                else
+                                    SidedConsole.WriteErrorLine($"Stash Block cannot be loaded: {gameObject.Value}");
                             else
                                 blocks[i, j] = Proxy.GetRegistry().GetBlockFromName(gameObject.Value);
 
@@ -157,6 +178,8 @@ namespace GlLib.Common.Map
                     }
 
                 SidedConsole.WriteLine($"Chunk {chunkX}x{chunkY} is loaded");
+                string bStr = this[0, 0] is null ? "null" : this[0, 0] + "";
+                SidedConsole.WriteLine($"Chunk block at 0x0 is {bStr}");
                 isLoaded = true;
             }
         }
@@ -165,8 +188,10 @@ namespace GlLib.Common.Map
         {
             var objects = new List<JsonObject>();
             lock (entities)
+            {
                 foreach (var entity in entities)
                     objects.Add(entity.CreateJsonObject());
+            }
 
             return objects;
         }
@@ -174,8 +199,10 @@ namespace GlLib.Common.Map
         public void Update()
         {
             lock (entities)
+            {
                 foreach (var entity in entities)
                     entity.Update();
+            }
         }
     }
 }

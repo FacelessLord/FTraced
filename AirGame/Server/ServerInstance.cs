@@ -41,7 +41,6 @@ namespace GlLib.Server
             // this code don't work!
             //foreach (var client in clients)
             //    client.player.spells.OnUpdate();
-            
         }
 
         public override void OnExit()

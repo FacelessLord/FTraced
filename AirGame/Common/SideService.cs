@@ -9,27 +9,15 @@ namespace GlLib.Common
     public abstract class SideService
     {
         public const int FrameTime = 50;
+
+        public readonly long startTime;
+        public bool askedToStop;
         public Profiler profiler = new Profiler();
 
         public GameRegistry registry;
 
         public int serverId;
-        public bool askedToStop = false;
         public Side side;
-
-        public readonly long startTime;
-
-        public long InternalTicks =>
-            (DateTime.UtcNow - Process.GetCurrentProcess()
-                 .StartTime
-                 .ToUniversalTime())
-            .Ticks;
-
-        public double InternalMilliseconds =>
-            (DateTime.UtcNow - Process.GetCurrentProcess()
-                 .StartTime
-                 .ToUniversalTime())
-            .TotalMilliseconds;
 
 
         protected SideService(Side _side)
@@ -38,6 +26,22 @@ namespace GlLib.Common
             side = _side;
             registry = new GameRegistry();
         }
+
+        public long InternalTicks =>
+            (DateTime.UtcNow - Process.GetCurrentProcess()
+                 .StartTime
+                 .ToUniversalTime())
+            .Ticks;
+
+        public DateTime MachineTime =>
+            DateTime.UtcNow
+                .ToUniversalTime();
+
+        public double InternalMilliseconds =>
+            (DateTime.UtcNow - Process.GetCurrentProcess()
+                 .StartTime
+                 .ToUniversalTime())
+            .TotalMilliseconds;
 
         public void Start()
         {

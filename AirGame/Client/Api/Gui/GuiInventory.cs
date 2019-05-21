@@ -2,11 +2,11 @@ using GlLib.Common.Api.Inventory;
 
 namespace GlLib.Client.API.Gui
 {
-    public class GuiFrameInventory : GuiFrame
+    public class GuiInventory : GuiFrame
     {
         public IInventory inventory;
 
-        public GuiFrameInventory(IInventory _inventory)
+        public GuiInventory(IInventory _inventory)
         {
             inventory = _inventory;
         }

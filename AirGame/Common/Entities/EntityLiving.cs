@@ -1,7 +1,5 @@
 using System;
-using System.Globalization;
 using System.Net.Json;
-using GlLib.Common.API;
 using GlLib.Common.Map;
 using GlLib.Utils;
 
@@ -10,6 +8,8 @@ namespace GlLib.Common.Entities
     public class EntityLiving : Entity
     {
         public const ushort MaxArmor = 100;
+
+        private ushort _armor;
 
         public EntityLiving(uint _health,
             ushort _armor, World _world,
@@ -30,12 +30,12 @@ namespace GlLib.Common.Entities
             DamageTimer = -1;
         }
 
+        public bool CanDie { get; set; } = true;
+
         public float Health { get; protected set; }
         public float MaxHealth { get; protected set; }
         public bool GodMode { get; protected set; }
         public int DamageTimer { get; private set; }
-
-        private ushort _armor;
 
         public ushort Armor
         {
@@ -74,11 +74,11 @@ namespace GlLib.Common.Entities
 
             if (_jsonObject is JsonObjectCollection collection)
             {
-                Armor = (ushort)((JsonNumericValue)collection[8]).Value;
-                Health = (float)((JsonNumericValue)collection[9]).Value;
-                MaxHealth = (float)((JsonNumericValue)collection[10]).Value;
-                GodMode = ((JsonStringValue)collection[11]).Value == "True";
-                DamageTimer = (int) ((JsonNumericValue)collection[12]).Value;
+                Armor = (ushort) ((JsonNumericValue) collection[8]).Value;
+                Health = (float) ((JsonNumericValue) collection[9]).Value;
+                MaxHealth = (float) ((JsonNumericValue) collection[10]).Value;
+                GodMode = ((JsonStringValue) collection[11]).Value == "True";
+                DamageTimer = (int) ((JsonNumericValue) collection[12]).Value;
             }
         }
 
@@ -86,41 +86,46 @@ namespace GlLib.Common.Entities
         {
             base.Update();
 
-            if (Health <= 0 && DamageTimer == 0)
+            if (Health <= 0 && DamageTimer == 0 && CanDie)
                 SetDead();
             if (DamageTimer > 0)
                 DamageTimer--;
             if (DamageTimer < 0)
                 DamageTimer++;
+
+            if (state is EntityState.Dead && Health > 0) SetState(EntityState.Idle, -1, true);
+            if (!(state is EntityState.Dead) && Health <= 0) SetState(EntityState.Dead, -1, true);
         }
 
-        public void DealDamage(float _damage)
+        public virtual void DealDamage(float _damage)
         {
-
             if (GodMode) return;
-            var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
-            if (takenDamage >= Health)
+            if (!state.Equals(EntityState.Dead))
             {
-                Health = 0;
-                DamageTimer = 2;
-                SidedConsole.WriteLine("Dead");
+                SetState(EntityState.AttackInterrupted, 3);
+                var takenDamage = _damage * (1 - Armor / (float) MaxArmor);
+                if (takenDamage >= Health)
+                {
+                    Health = 0;
+                    DamageTimer = 2;
+                    SetState(EntityState.Dead, -1);
+//                    SidedConsole.WriteLine("Dead");
+                }
+                else
+                {
+                    DamageTimer = 2;
+                    Health -= takenDamage;
+                }
+
+//            SidedConsole.WriteLine("Damage Dealt: " + takenDamage + "; " + Health);
             }
-            else
-            {
-                DamageTimer = 2;
-                Health -= takenDamage;
-            }
-            SidedConsole.WriteLine("Damage Dealt: "+takenDamage+"; "+Health);
         }
 
-        public void Heal(float _damage)
+        public virtual void Heal(float _damage)
         {
             Health += _damage;
             DamageTimer = -2;
-            if (Health > MaxHealth)
-            {
-                Health = MaxHealth;
-            }
+            if (Health > MaxHealth) Health = MaxHealth;
         }
 
 //        public virtual void PerformAttack()
