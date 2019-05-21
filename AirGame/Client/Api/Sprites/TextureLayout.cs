@@ -8,6 +8,7 @@ namespace GlLib.Client.Api.Sprites
     {
         public Layout layout;
         public Texture texture;
+//        public 
 
         /// <summary>
         ///     Layouts part of Texture to be rendered as animation or different state of game object
@@ -60,21 +61,10 @@ namespace GlLib.Client.Api.Sprites
         {
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(_stepCount);
 
-            var du = endU - startU;
-            var dv = endV - startV;
-
             GL.PushMatrix();
-//            GL.ClearColor(0, 0, 0, 2);
-            GL.Scale(2, 2, 1);
             Vertexer.BindTexture(texture);
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(0, 0, startU, startV);
-            Vertexer.VertexWithUvAt(texture.width * du, 0, endU, startV);
-            Vertexer.VertexWithUvAt(texture.width * du, texture.height * dv, endU, endV);
-            Vertexer.VertexWithUvAt(0, texture.height * dv, startU, endV);
-
-            Vertexer.Draw();
+            Vertexer.DrawSquare(-1, -1,
+                1, 1, startU, startV, endU, endV);
             GL.PopMatrix();
         }
     }

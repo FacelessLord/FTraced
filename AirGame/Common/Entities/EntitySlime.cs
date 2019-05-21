@@ -94,10 +94,13 @@ namespace GlLib.Common.Entities
                 if (!(Target is null) &&
                     (Target.Position - position).Length > 1)
                 {
+                    SetState(EntityState.Walk, -1);
                     MoveToTarget();
                 }
 
             }
+            else
+                SetState(EntityState.Idle, -1, true);
 
             base.Update();
         }

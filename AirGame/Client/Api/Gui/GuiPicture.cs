@@ -23,17 +23,8 @@ namespace GlLib.Client.API.Gui
         {
             GL.PushMatrix();
             Vertexer.Colorize(color);
-
             Vertexer.BindTexture(texture);
-
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(x, y, 0, 0);
-            Vertexer.VertexWithUvAt(x + width, y, 1, 0);
-            Vertexer.VertexWithUvAt(x + width, y + height, 1, 1);
-            Vertexer.VertexWithUvAt(x, y + height, 0, 1);
-
-            Vertexer.Draw();
+            Vertexer.DrawSquare(x,y, x+width, y+height);
             Vertexer.ClearColor();
 
             GL.PopMatrix();

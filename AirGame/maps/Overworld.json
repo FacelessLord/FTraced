@@ -21,6 +21,15 @@
       ],
       "block": "block.indoor.bricks"
     },
+    "Rect0": {
+      "borders": [
+        8,
+        12,
+        15,
+        15
+      ],
+      "block": "block.void"
+    },
     "15,15":"block.castle"
   },
   "0,1": {

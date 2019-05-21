@@ -10,7 +10,7 @@ namespace GlLib.Client.Graphic.Renderers
 {
     internal class FireBallRenderer : EntityRenderer
     {
-        private ISprite _sprite;
+        private LinearSprite _sprite;
         private readonly double rotation;
 
         public FireBallRenderer(PlanarVector _aim, Direction direction)
@@ -32,6 +32,9 @@ namespace GlLib.Client.Graphic.Renderers
         {
             var layout = new TextureLayout(@"11_fire_spritesheet.png", 8, 8);
             _sprite = new LinearSprite(layout, 61, 6);
+            _sprite.Scale(3f, 2);
+            var box = _e.AaBb;
+            _sprite.Scale((float) box.Width, (float) box.Height);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

@@ -40,9 +40,9 @@ namespace GlLib.Client.Api.Gui
             GL.PushMatrix();
             Vertexer.Colorize(color);
 
-            GuiUtils.DrawSizedSquare(scrollBar, x, y, width, height, width / 3f, width);
+            Vertexer.DrawSizedSquare(scrollBar, x, y, width, height, width / 3f, width);
             GL.Translate(0, scrollerPos + 2 * width / 3, 0);
-            GuiUtils.DrawSizedSquare(scroller, x, y, width, width, width / 3f);
+            Vertexer.DrawSizedSquare(scroller, x, y, width, width, width / 3f);
 
             Vertexer.ClearColor();
             GL.PopMatrix();

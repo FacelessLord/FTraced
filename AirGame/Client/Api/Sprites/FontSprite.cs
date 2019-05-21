@@ -82,14 +82,8 @@ namespace GlLib.Client.Api.Sprites
         {
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(registry[_character]);
             var dh = 0.5 / layout.height;
-            Vertexer.StartDrawingQuads();
-
-            Vertexer.VertexWithUvAt(0, 0, startU, startV + dh);
-            Vertexer.VertexWithUvAt(1, 0, endU, startV + dh);
-            Vertexer.VertexWithUvAt(1, 1, endU, endV);
-            Vertexer.VertexWithUvAt(0, 1, startU, endV);
-
-            Vertexer.Draw();
+            
+            Vertexer.DrawSquare(0,0,1,1, startU, startV+dh, endU, endV);
         }
 
         public double GetTextWidth(string _text, int _size)

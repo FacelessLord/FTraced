@@ -35,7 +35,7 @@ namespace GlLib.Client.Api.Sprites
             step = _step;
 
             _moveTo = new PlanarVector(0, 0);
-            scale = new Vector3(1, 1, 0);
+            scale = new Vector3(32, 32, 1);
         }
 
         public long FullFrameCount => _frameCount / maxFrameCount / step;
@@ -44,8 +44,7 @@ namespace GlLib.Client.Api.Sprites
         {
             _frameCount++;
             GL.PushMatrix();
-            GL.Translate(-texture.layout.FrameWidth() - _moveTo.x,
-                -texture.layout.FrameHeight() - _moveTo.y,0);
+            GL.Translate(_moveTo.x, _moveTo.y, 0);
 
             GL.Scale(scale);
             Vertexer.Colorize(color);
@@ -59,20 +58,35 @@ namespace GlLib.Client.Api.Sprites
             GL.PopMatrix();
         }
 
-        public void MoveSpriteTo(PlanarVector _vector)
+        public LinearSprite Translate(double _x, double _y)
         {
-            _moveTo = _vector;
+            _moveTo += new PlanarVector(_x,_y);
+            return this;
         }
 
-        public void SetSize(Vector3 _scale)
+        public LinearSprite Translate(PlanarVector _vector)
+        {
+            _moveTo += _vector;
+            return this;
+        }
+
+        public LinearSprite Scale(float _x, float _y)
+        {
+            scale = new Vector3(_x * scale.X, _y * scale.Y, 1);
+            return this;
+        }
+
+        public LinearSprite Scale(Vector3 _scale)
         {
             scale = _scale;
+            return this;
         }
 
-        public void SetColor(Color4 _color)
+        public LinearSprite SetColor(Color4 _color)
         {
             hasColor = true;
             color = _color;
+            return this;
         }
 
         public LinearSprite SetFrozen(bool _freeze = true)

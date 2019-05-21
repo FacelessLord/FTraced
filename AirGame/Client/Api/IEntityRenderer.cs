@@ -33,7 +33,7 @@ namespace GlLib.Client.API
             get
             {
                 var layout = new TextureLayout(SystemPath + "spawn.png", 7, 6);
-                return new LinearSprite(layout, 7 * 6, 10);
+                return new LinearSprite(layout, 7 * 6, 3);
             }
         }
 
@@ -42,9 +42,13 @@ namespace GlLib.Client.API
             Setup(_e);
             isSetUp = true;
 
+            var box = _e.AaBb;
             spawnSprite = SpawnSprite;
-            spawnSprite.MoveSpriteTo(new PlanarVector(-2, 40));
-            spawnSprite.SetColor(new Color4(1, 1, 1, 0.5f));
+            spawnSprite.Translate(new PlanarVector(6, box.Height*-128));
+            spawnSprite.SetColor(new Color4(1, 1, 1, 0.8f));
+            
+            spawnSprite.Scale(8, 8);
+            spawnSprite.Scale((float) box.Width, (float) box.Height);
         }
 
         public abstract void Setup(Entity _e);
@@ -74,19 +78,12 @@ namespace GlLib.Client.API
             if (_e.direction.Equals(Direction.Left))
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
-            Vertexer.LoadTexture("monochromatic.png").Bind();
-            Vertexer.StartDrawing(PrimitiveType.Quads);
-            Vertexer.VertexWithUvAt(-2, -2, 0, 0);
-            Vertexer.VertexWithUvAt(-2, 2, 0, 1);
-            Vertexer.VertexWithUvAt(2, 2, 1, 1);
-            Vertexer.VertexWithUvAt(2, -2, 1, 0);
-            Vertexer.Draw();
-            GuiUtils.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
+            Vertexer.BindTexture("monochromatic.png");
+            Vertexer.DrawSquare(-2, -2, 2, 2);
+            Vertexer.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if (_e is EntityLiving)
                 if (spawnSprite.FullFrameCount < 1)
                 {
-                    var box = _e.AaBb;
-                    GL.Scale(box.Width * 2, box.Height, 1);
                     spawnSprite.Render();
                 }
 

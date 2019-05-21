@@ -43,7 +43,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.Colorize(color);
             try
             {
-                GuiUtils.DrawSizedSquare(background, x, y, width, height, grainSize);
+                Vertexer.DrawSizedSquare(background, x, y, width, height, grainSize);
             }
             catch (Exception e)
             {

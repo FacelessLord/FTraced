@@ -1,5 +1,6 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using OpenTK;
 using OpenTK.Input;
@@ -59,7 +60,7 @@ namespace GlLib.Client.Api.Gui
         {
             slotTexture.texture.Bind();
             if (inventory.GetStackInSlot(slot) != null)
-                GuiUtils.DrawLayoutPart(slotTexture, x + 1, y + 1, (int) inventory.GetStackInSlot(slot).item.type,
+                Vertexer.DrawLayoutPart(slotTexture, x + 1, y + 1, (int) inventory.GetStackInSlot(slot).item.type,
                     width, height);
         }
     }

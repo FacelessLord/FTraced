@@ -7,12 +7,14 @@ namespace GlLib.Client.Graphic.Renderers
 {
     internal class StreetlightRenderer : EntityRenderer
     {
-        private ISprite _sprite;
+        private LinearSprite _sprite;
 
         public override void Setup(Entity _e)
         {
             var layout = new TextureLayout(SimpleStructPath + @"Streetlight.png", 1, 1);
             _sprite = new LinearSprite(layout, 1, 1).SetFrozen();
+            var box = _e.AaBb;
+            _sprite.Scale((float) box.Width, (float) box.Height);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

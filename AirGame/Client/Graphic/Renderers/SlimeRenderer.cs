@@ -30,6 +30,9 @@ namespace GlLib.Client.Graphic.Renderers
             
             idleSprite.SetColor(s.color);
             walkSprite.SetColor(s.color);
+            var box = _p.AaBb;
+            idleSprite.Scale((float) box.Width*2, (float) box.Height);
+            walkSprite.Scale((float) box.Width, (float) box.Height);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

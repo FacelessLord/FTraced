@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using GlLib.Client.Api.Sprites;
+using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -12,7 +14,7 @@ namespace GlLib.Client.Graphic
 
         public static Texture Null { get; private set; }
 
-        public static Color4 color { get; private set; } = Color4.White;
+        public static Color4 Color { get; private set; } = Color4.White;
         public static ColorAdditionMode ColorMode { get; private set; } = 0;
 
         public enum ColorAdditionMode
@@ -32,15 +34,15 @@ namespace GlLib.Client.Graphic
             switch (ColorMode)
             {
                 case ColorAdditionMode.HalfSum:
-                    color = new Color4((color.R + _color.R) / 2, (color.G + _color.G) / 2, (color.B + _color.B) / 2,
-                        (color.A + _color.A) / 2);
+                    Color = new Color4((Color.R + _color.R) / 2, (Color.G + _color.G) / 2, (Color.B + _color.B) / 2,
+                        (Color.A + _color.A) / 2);
                     break;
                 case ColorAdditionMode.Override:
-                    color = _color;
+                    Color = _color;
                     break;
                 case ColorAdditionMode.OnlyFirst:
-                    if (color == Color4.White)
-                        color = _color;
+                    if (Color == Color4.White)
+                        Color = _color;
                     break;
             }
         }
@@ -50,21 +52,21 @@ namespace GlLib.Client.Graphic
             switch (ColorMode)
             {
                 case ColorAdditionMode.HalfSum:
-                    color = new Color4((color.R + _r) / 2, (color.G + _g) / 2, (color.B + _b) / 2, (color.A + _a) / 2);
+                    Color = new Color4((Color.R + _r) / 2, (Color.G + _g) / 2, (Color.B + _b) / 2, (Color.A + _a) / 2);
                     break;
                 case ColorAdditionMode.Override:
-                    color = new Color4(_r, _g, _b, _a);
+                    Color = new Color4(_r, _g, _b, _a);
                     break;
                 case ColorAdditionMode.OnlyFirst:
-                    if (color == Color4.White)
-                        color = new Color4(_r, _g, _b, _a);
+                    if (Color == Color4.White)
+                        Color = new Color4(_r, _g, _b, _a);
                     break;
             }
         }
 
         public static void ClearColor()
         {
-            color = Color4.White;
+            Color = Color4.White;
             ColorMode = ColorAdditionMode.OnlyFirst;
         }
 
@@ -80,13 +82,13 @@ namespace GlLib.Client.Graphic
 
         public static void StartDrawingQuads()
         {
-            GL.Color4(color);
+            GL.Color4(Color);
             GL.Begin(PrimitiveType.Quads);
         }
 
         public static void StartDrawing(PrimitiveType _type)
         {
-            GL.Color4(color);
+            GL.Color4(Color);
             GL.Begin(_type);
         }
 
@@ -147,6 +149,40 @@ namespace GlLib.Client.Graphic
             }
         }
 
+
+        public static void DrawSquare(double _sX, double _sY, double _eX, double _eY)
+        {
+            StartDrawing(PrimitiveType.Quads);
+            VertexWithUvAt(_sX, _sY, 0, 0);
+            VertexWithUvAt(_sX, _eY, 0, 1);
+            VertexWithUvAt(_eX, _eY, 1, 1);
+            VertexWithUvAt(_eX, _sY, 1, 0);
+            Draw();
+        }
+
+        public static void DrawSquare(double _sX, double _sY, double _eX, double _eY, double _sU, double _sV,
+            double _eU, double _eV)
+        {
+            StartDrawing(PrimitiveType.Quads);
+            VertexWithUvAt(_sX, _sY, _sU, _sV);
+            VertexWithUvAt(_sX, _eY, _sU, _eV);
+            VertexWithUvAt(_eX, _eY, _eU, _eV);
+            VertexWithUvAt(_eX, _sY, _eU, _sV);
+            Draw();
+        }
+
+        public static void DrawCircle(int _accuracy = 16)
+        {
+            StartDrawing(PrimitiveType.TriangleFan);
+
+            var angleStep = 2 * Math.PI / _accuracy;
+            var r = 1;
+            for (var i = _accuracy - 1; i >= 0; i--)
+                VertexAt(r * Math.Cos(angleStep * i), r * Math.Sin(angleStep * i));
+
+            Draw();
+        }
+
         public static void DrawTexturedModalRect(Texture _texture, double _x, double _y, double _u, double _v,
             double _width,
             double _height)
@@ -169,6 +205,62 @@ namespace GlLib.Client.Graphic
             VertexWithUvAt(textureRight, textureDown, uvRight, uvDown);
             VertexWithUvAt(textureLeft, textureDown, uvLeft, uvDown);
 
+            Draw();
+        }
+
+        public static void RenderAaBb(AxisAlignedBb _box, double _blockWidth, double _blockHeight)
+        {
+            GL.PushMatrix();
+            GL.Scale(_blockWidth, _blockHeight, 1);
+            BindTexture("monochromatic.png");
+            StartDrawing(PrimitiveType.LineLoop);
+            VertexWithUvAt(_box.startX, _box.startY, 0, 0);
+            VertexWithUvAt(_box.endX, _box.startY, 1, 0);
+            VertexWithUvAt(_box.endX, _box.endY, 1, 1);
+            VertexWithUvAt(_box.startX, _box.endY, 0, 1);
+            Draw();
+            GL.PopMatrix();
+        }
+
+        public static void DrawSizedSquare(TextureLayout _layout, int _x, int _y, int _width, int _height,
+            float _grainSize = 32f)
+        {
+            DrawSizedSquare(_layout, _x, _y, _width, _height, _grainSize, _grainSize);
+        }
+
+        public static void DrawSizedSquare(TextureLayout _layout, int _x, int _y, int _width, int _height,
+            float _grainSizeX, float _grainSizeY)
+        {
+            var bordW = _width - _grainSizeX * 2;
+            var bordH = _height - _grainSizeY * 2;
+            GL.PushMatrix();
+            GL.Translate(_x, _y, 0);
+            DrawLayoutPart(_layout, 0, 0, 0, _grainSizeX, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX, 0, 1, bordW, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX + bordW, 0, 2, _grainSizeX, _grainSizeY);
+
+            DrawLayoutPart(_layout, 0, _grainSizeY, 3, _grainSizeX, bordH);
+            DrawLayoutPart(_layout, _grainSizeX, _grainSizeY, 4, bordW, bordH);
+            DrawLayoutPart(_layout, _grainSizeX + bordW, _grainSizeY, 5, _grainSizeX, bordH);
+
+            DrawLayoutPart(_layout, 0, _grainSizeY + bordH, 6, _grainSizeX, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX, _grainSizeY + bordH, 7, bordW, _grainSizeY);
+            DrawLayoutPart(_layout, _grainSizeX + bordW, _grainSizeY + bordH, 8, _grainSizeX, _grainSizeY);
+
+            GL.PopMatrix();
+        }
+
+        public static void DrawLayoutPart(TextureLayout _layout, float _x, float _y, int _frame, float _width,
+            float _height)
+        {
+            var (startX, startY, endX, endY) = _layout.layout.GetFrameUvProportions(_frame);
+
+            BindTexture(_layout.texture);
+            StartDrawingQuads();
+            VertexWithUvAt(_x, _y, startX, startY);
+            VertexWithUvAt(_width + _x, _y, endX, startY);
+            VertexWithUvAt(_width + _x, _height + _y, endX, endY);
+            VertexWithUvAt(_x, _height + _y, startX, endY);
             Draw();
         }
 

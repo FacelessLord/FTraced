@@ -55,13 +55,13 @@ namespace GlLib.Client.Api.Gui
             switch (state)
             {
                 case ButtonState.Enabled:
-                    GuiUtils.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
                     break;
                 case ButtonState.Pressed:
-                    GuiUtils.DrawSizedSquare(spritePressed, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spritePressed, x, y, width, height, 16);
                     break;
                 case ButtonState.Disabled:
-                    GuiUtils.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
                     break;
             }
 

@@ -165,7 +165,6 @@ namespace GlLib.Common.Entities
                         var blockBox = block.GetCollisionBox();
                         var x = Position.x - Position.Ix;
                         var y = Position.y - Position.Iy;
-                        SidedConsole.WriteLine(blockX + " | " + blockY + " | " + x + " | " + y);
                         if (blockBox != null && blockBox.IsVectorInside(x, y))
                         {
                             Position = oldPos;
