@@ -43,6 +43,7 @@ namespace GlLib.Common.Entities
 
         private void Initialization()
         {
+            Brush = Proxy.GetRegistry().GetBlockFromId(0);
             SidedConsole.WriteLine("Setting Player Renderer");
             SetCustomRenderer(new AttackingLivingRenderer("player/dwarf"));
             SidedConsole.WriteLine("Setting Player Inventory");

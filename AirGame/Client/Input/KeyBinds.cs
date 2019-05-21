@@ -52,8 +52,7 @@ namespace GlLib.Client.Input
             var blockX = _p.Position.Ix % 16;
             var blockY = _p.Position.Iy % 16;
 
-            _p.worldObj[chunkX, chunkY][blockX, blockY] =
-                (TerrainBlock) Proxy.GetRegistry().blocksById[0];
+            _p.worldObj[chunkX, chunkY][blockX, blockY] = Proxy.GetClient().player.Brush;
             return true;
         };
 

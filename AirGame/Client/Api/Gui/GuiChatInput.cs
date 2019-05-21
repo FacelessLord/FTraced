@@ -118,7 +118,7 @@ namespace GlLib.Client.Api.Gui
                         _io.Output("Wrong ID, can't chose this block.");
                 }
 
-                else if (!_s[0].StartsWith("block."))
+                else if (_s[0].StartsWith("block."))
                 {
                     if (Proxy.GetRegistry().TryGetBlockFromName("block." + _s[0], out block))
                         Proxy.GetClient().player.Brush = block;
@@ -134,6 +134,11 @@ namespace GlLib.Client.Api.Gui
                 }
             }, "Chose block to set to.");
 
+
+            _parser.AddParse("brush", (_s, _io) =>
+            {
+                _io.Output($"Now brush have block {Proxy.GetClient().player.Brush.Name}");
+            });
             _parser.AddParse("list", (_s, _io) =>
             {
                 if (_s.Length == 0)
