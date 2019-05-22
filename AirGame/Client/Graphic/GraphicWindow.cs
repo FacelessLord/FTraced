@@ -1,29 +1,28 @@
+using System;
+using System.Threading;
+using GlLib.Client.Api.Cameras;
 using GlLib.Client.API.Gui;
+using GlLib.Client.Graphic.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Common.Entities;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using System;
-using System.Threading;
-using GlLib.Client.Api.Cameras;
-using GlLib.Client.Api.Gui;
-using GlLib.Client.Api.Sprites;
-using GlLib.Client.Graphic.Gui;
 
 namespace GlLib.Client.Graphic
 {
     public class GraphicWindow : GameWindow
     {
-        public bool enableHud = false;
+        public ICamera camera;
+        public bool enableHud;
 
         public GuiFrame guiFrame;
-        public ICamera camera;
 
         public Hud hud;
-        public bool serverStarted = false;
+        public bool serverStarted;
 
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height,
             GraphicsMode.Default,
@@ -35,105 +34,180 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine("Window constructed");
         }
 
+        public bool CanMovementBeHandled()
+        {
+            return (guiFrame == null || guiFrame.focusedObject == null) &&
+                   Proxy.GetClient() != null && Proxy.GetClient().player != null
+                   && !Proxy.GetClient().player.IsDead && !Proxy.GetClient().player.state
+                       .Equals(EntityState.Dead);
+        }
+
         protected override void OnUpdateFrame(FrameEventArgs _e)
         {
-            MouseHandler.Update();
-            KeyboardHandler.Update();
+            try
+            {
+                MouseHandler.Update();
+                KeyboardHandler.Update();
 
-            base.OnUpdateFrame(_e);
+                base.OnUpdateFrame(_e);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnKeyPress(KeyPressEventArgs _e)
         {
-            guiFrame?.OnKeyTyped(this, _e);
+            try
+            {
+                guiFrame?.OnKeyTyped(this, _e);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs _e)
         {
-            base.OnKeyDown(_e);
-            KeyboardHandler.SetClicked(_e.Key, true);
-            KeyboardHandler.SetPressed(_e.Key, true);
-            if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+            try
             {
-                KeyBinds.clickBinds[_e.Key](Proxy.GetClient()?.player);
-            }
+                base.OnKeyDown(_e);
+                KeyboardHandler.SetClicked(_e.Key, true);
+                KeyboardHandler.SetPressed(_e.Key, true);
+                if (KeyBinds.clickBinds.ContainsKey(_e.Key) && (bool) KeyboardHandler.ClickedKeys[_e.Key])
+                    if (KeyBinds.clickBinds[_e.Key](Proxy.GetClient()?.player))
+                        return;
 
-            guiFrame?.OnKeyDown(this, _e);
+                guiFrame?.OnKeyDown(this, _e);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnKeyUp(KeyboardKeyEventArgs _e)
         {
-            base.OnKeyUp(_e);
-            KeyboardHandler.SetPressed(_e.Key, false);
+            try
+            {
+                base.OnKeyUp(_e);
+                KeyboardHandler.SetPressed(_e.Key, false);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnResize(EventArgs _e)
         {
-            base.OnResize(_e);
-            GL.Viewport(0, 0, Width, Height);
-            guiFrame?.Update(this);
+            try
+            {
+                base.OnResize(_e);
+                GL.Viewport(0, 0, Width, Height);
+                guiFrame?.Update(this);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnLoad(EventArgs _e)
         {
-            base.OnLoad(_e);
-            VSync = VSyncMode.Off;
-            TryOpenGui(new GuiMainMenu());
-            Core.profiler.SetState(State.MainMenu);
+            try
+            {
+                base.OnLoad(_e);
+                VSync = VSyncMode.Off;
+                TryOpenGui(new GuiMainMenu());
+                Core.profiler.SetState(State.MainMenu);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs _e)
         {
-            base.OnMouseDown(_e);
-            guiFrame?.OnMouseClick(this, _e.Button, _e.X, _e.Y);
+            try
+            {
+                base.OnMouseDown(_e);
+                guiFrame?.OnMouseClick(this, _e.Button, _e.X, _e.Y);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs _e)
         {
-            base.OnMouseMove(_e);
-            if ((bool) MouseHandler.pressed[MouseButton.Left])
-                guiFrame?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
+            try
+            {
+                base.OnMouseMove(_e);
+                if ((bool) MouseHandler.pressed[MouseButton.Left])
+                    guiFrame?.OnMouseDrag(this, _e.X, _e.Y, _e.XDelta, _e.YDelta);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs _e)
         {
-            base.OnMouseUp(_e);
-            guiFrame?.OnMouseRelease(this, _e.Button, _e.X, _e.Y);
+            try
+            {
+                base.OnMouseUp(_e);
+                guiFrame?.OnMouseRelease(this, _e.Button, _e.X, _e.Y);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
-            base.OnRenderFrame(_e);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            if (serverStarted)
-                RenderWorld();
-
-            
-
-            GL.Clear(ClearBufferMask.DepthBufferBit);
-            //GUI render is not connected to the world
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
-            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
-            GL.PushMatrix();
-            GL.Scale(1d / Width, 1d / Height, 1);
-
-            Vertexer.EnableTextures();
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-            if (enableHud)
+            try
             {
-                hud.Update(this);
-                hud.Render(this);
+                base.OnRenderFrame(_e);
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+                if (serverStarted)
+                    RenderWorld();
+
+                GL.Clear(ClearBufferMask.DepthBufferBit);
+                //GUI render is not connected to the world
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.LoadIdentity();
+                GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
+                GL.PushMatrix();
+                GL.Scale(1d / Width, 1d / Height, 1);
+
+                Vertexer.EnableTextures();
+                GL.Enable(EnableCap.Blend);
+                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+                if (enableHud && !(hud is null))
+                {
+                    hud.Update(this);
+                    hud.Render(this);
+                }
+
+                guiFrame?.Update(this);
+                guiFrame?.Render(this);
+                GL.PopMatrix();
+                GL.Disable(EnableCap.Blend);
+
+                SwapBuffers();
             }
-
-            guiFrame?.Update(this);
-            guiFrame?.Render(this);
-            GL.PopMatrix();
-            GL.Disable(EnableCap.Blend);
-
-            SwapBuffers();
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         public void OnClientStarted()
@@ -141,35 +215,50 @@ namespace GlLib.Client.Graphic
             hud = new Hud();
             camera = new PlayerTrackingCamera();
             serverStarted = true;
+            enableHud = true;
         }
 
         public void RenderWorld()
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
-            GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
+            try
+            {
+                GL.MatrixMode(MatrixMode.Modelview);
+                GL.LoadIdentity();
+                GL.Ortho(0.0, 1.0, 1.0, 0.0, -4.0, 4.0);
 
-            GL.Scale(1d / Width, 1d / Height, 1);
+                GL.Scale(1d / Width, 1d / Height, 1);
 
-            Vertexer.EnableTextures();
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                Vertexer.EnableTextures();
+                GL.Enable(EnableCap.Blend);
+                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            GL.PushMatrix();
-            GL.Translate(Width / 2d, Height / 2d, 0);
-            camera.Update(this);
-            camera.PerformTranslation(this);
-            Proxy.GetClient().worldRenderer.Render(000, 000);
-            GL.PopMatrix();
-            
-            GL.Disable(EnableCap.Blend);
+                GL.PushMatrix();
+                GL.Translate(Width / 2d, Height / 2d, 0);
+                camera.Update(this);
+                camera.PerformTranslation(this);
+                Proxy.GetClient().worldRenderer.Render(000, 000);
+                GL.PopMatrix();
+
+                GL.Disable(EnableCap.Blend);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         protected override void OnUnload(EventArgs _e)
         {
-            foreach (var key in Vertexer.textures.Keys) Vertexer.textures[key].Dispose();
+            try
+            {
+                foreach (var key in Vertexer.textures.Keys) Vertexer.textures[key].Dispose();
 
-            base.OnUnload(_e);
+                base.OnUnload(_e);
+            }
+            catch (Exception e)
+            {
+                SidedConsole.WriteLine(e);
+            }
         }
 
         public static void RunWindow()
@@ -180,7 +269,18 @@ namespace GlLib.Client.Graphic
             graphicThread.Start();
         }
 
-        public void TryOpenGui(GuiFrame _gui)
+        public void CloseGui(bool _force = false)
+        {
+            if (guiFrame is null || !guiFrame.NoClose || _force)
+                guiFrame = null;
+        }
+
+        public void OpenGui(GuiFrame _gui)
+        {
+            guiFrame = _gui;
+        }
+
+        public void TryOpenGui(GuiFrame _gui, bool _unfocus = false)
         {
             if (guiFrame == null)
             {
@@ -189,7 +289,9 @@ namespace GlLib.Client.Graphic
             else
             {
                 if (guiFrame.focusedObject == null)
-                    guiFrame = null;
+                    CloseGui();
+                else if (_unfocus)
+                    guiFrame.focusedObject = null;
             }
         }
     }

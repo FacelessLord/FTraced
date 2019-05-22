@@ -1,4 +1,3 @@
-using System;
 using GlLib.Common.Map;
 using GlLib.Utils;
 using OpenTK.Graphics.OpenGL;
@@ -7,7 +6,7 @@ namespace GlLib.Client.Graphic
 {
     public class WorldRenderer
     {
-        private World _world;
+        private readonly World _world;
 
         public WorldRenderer(World _world)
         {
@@ -18,8 +17,8 @@ namespace GlLib.Client.Graphic
         {
             lock (_world.chunks)
             {
-                int width = _world.width;
-                int height = _world.height;
+                var width = _world.width;
+                var height = _world.height;
                 var xAxis = new PlanarVector(Chunk.BlockWidth, 0);
                 var yAxis = new PlanarVector(0, Chunk.BlockHeight);
 
@@ -35,22 +34,19 @@ namespace GlLib.Client.Graphic
                 {
                     var chunk = _world[i, j];
                     if (chunk.isLoaded)
-                    {
-                        foreach (var level in chunk.entities)
-                        foreach (var entity in level)
+                        foreach (var entity in chunk.entities)
                         {
                             if (!entity.GetRenderer().isSetUp)
                                 entity.GetRenderer().CallSetup(entity);
 
-                            var coord = xAxis * (entity.Position.x) + yAxis * (entity.Position.y);
+                            var coord = xAxis * entity.Position.x + yAxis * entity.Position.y;
                             GL.PushMatrix();
 
                             GL.Translate(coord.x, coord.y, 0);
                             GL.Scale(1.5, 1.5, 1);
-                            entity.GetRenderer().Render(entity, xAxis, yAxis);
+                            entity.GetRenderer().CallRender(entity, xAxis, yAxis);
                             GL.PopMatrix();
                         }
-                    }
                 }
             }
 

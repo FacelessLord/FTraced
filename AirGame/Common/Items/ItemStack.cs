@@ -1,6 +1,5 @@
 using System.Net.Json;
 using GlLib.Common.API;
-using GlLib.Common.Map;
 using GlLib.Utils;
 
 namespace GlLib.Common.Items
@@ -14,6 +13,24 @@ namespace GlLib.Common.Items
         public ItemStack(Item _item, int _stackSize = 1, NbtTag _tag = null)
         {
             (item, stackSize, stackTag) = (_item, _stackSize, _tag);
+        }
+
+        public JsonObject CreateJsonObject()
+        {
+            var tag = new NbtTag();
+            SaveToNbt(tag);
+            return new JsonStringValue("Item" + GetHashCode(), tag.ToString());
+        }
+
+        public void LoadFromJsonObject(JsonObject _jsonObject)
+        {
+            if (_jsonObject is JsonStringValue jsonString)
+            {
+                var jsonStack = LoadFromJson(jsonString);
+                item = jsonStack.item;
+                stackSize = jsonStack.stackSize;
+                stackTag = jsonStack.stackTag;
+            }
         }
 
         public static ItemStack LoadFromJson(JsonStringValue _rawTag)
@@ -41,13 +58,6 @@ namespace GlLib.Common.Items
             return item.GetName(this);
         }
 
-        public JsonObject CreateJsonObject()
-        {
-            var tag = new NbtTag();
-            SaveToNbt(tag);
-            return new JsonStringValue("Item" + GetHashCode(), tag.ToString());
-        }
-
         public override int GetHashCode()
         {
             unchecked
@@ -56,17 +66,6 @@ namespace GlLib.Common.Items
                 hashCode = (hashCode * 397) ^ stackSize.GetHashCode();
                 hashCode = (hashCode * 397) ^ (stackTag != null ? stackTag.GetHashCode() : 0);
                 return hashCode;
-            }
-        }
-
-        public void LoadFromJsonObject(JsonObject _jsonObject)
-        {
-            if (_jsonObject is JsonStringValue jsonString)
-            {
-                var jsonStack = LoadFromJson(jsonString);
-                item = jsonStack.item;
-                stackSize = jsonStack.stackSize;
-                stackTag = jsonStack.stackTag;
             }
         }
     }

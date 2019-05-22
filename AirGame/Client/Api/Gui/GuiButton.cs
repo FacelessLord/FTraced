@@ -1,10 +1,8 @@
-
 using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -13,9 +11,15 @@ namespace GlLib.Client.Api.Gui
 {
     public class GuiButton : GuiObject
     {
+        public static FontSprite font;
+        public Action<GuiFrame, GuiButton> clickAction = (_f, _b) => { };
+        public Action<GuiFrame, GuiButton, int, int> dragAction = (_f, _b, _dx, _dy) => { };
+        public Action<GuiFrame, GuiButton> releaseAction = (_f, _b) => { };
+        public TextureLayout spriteDisabled;
+        public TextureLayout spriteEnabled;
+        public TextureLayout spritePressed;
         public ButtonState state = ButtonState.Enabled;
         public string text;
-        public Action<GuiFrame, GuiButton> action = (_f, _b) => { };
 
         public GuiButton(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
@@ -28,10 +32,10 @@ namespace GlLib.Client.Api.Gui
             spritePressed = new TextureLayout(textureSelected, layout);
             spriteDisabled = new TextureLayout(textureDisabled, layout);
             font = new AlagardFontSprite();
-
         }
 
-        public GuiButton(string _text,int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width, _height, _color)
+        public GuiButton(string _text, int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width,
+            _height, _color)
         {
             text = _text;
             var texture = Vertexer.LoadTexture("gui/button.png");
@@ -44,11 +48,6 @@ namespace GlLib.Client.Api.Gui
             font = new AlagardFontSprite();
         }
 
-        public static FontSprite font;
-        public TextureLayout spriteEnabled;
-        public TextureLayout spritePressed;
-        public TextureLayout spriteDisabled;
-
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
@@ -56,24 +55,23 @@ namespace GlLib.Client.Api.Gui
             switch (state)
             {
                 case ButtonState.Enabled:
-                    GuiUtils.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spriteEnabled, x, y, width, height, 16);
                     break;
                 case ButtonState.Pressed:
-                    GuiUtils.DrawSizedSquare(spritePressed, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spritePressed, x, y, width, height, 16);
                     break;
                 case ButtonState.Disabled:
-                    GuiUtils.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
+                    Vertexer.DrawSizedSquare(spriteDisabled, x, y, width, height, 16);
                     break;
-
             }
 
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
-            var heightCenter = (height - 11d) / 2;
+            var heightCenter = (height - 11d) / 2 - 2;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
 
             GL.PopMatrix();
@@ -85,24 +83,29 @@ namespace GlLib.Client.Api.Gui
             base.OnMouseClick(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Enabled)
             {
-                action(_gui, this);
+                clickAction(_gui, this);
                 state = ButtonState.Pressed;
             }
+
             return this;
         }
 
         public override void OnMouseDrag(GuiFrame _gui, int _mouseX, int _mouseY, int _dx, int _dy)
         {
             base.OnMouseDrag(_gui, _mouseX, _mouseY, _dx, _dy);
-            x += _dx;
-            y += _dy;
+            dragAction(_gui, this, _dx, _dy);
+//            x += _dx;
+//            y += _dy;
         }
 
         public override void OnMouseRelease(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
             base.OnMouseRelease(_gui, _button, _mouseX, _mouseY);
             if (state == ButtonState.Pressed)
+            {
+                releaseAction(_gui, this);
                 state = ButtonState.Enabled;
+            }
         }
     }
 

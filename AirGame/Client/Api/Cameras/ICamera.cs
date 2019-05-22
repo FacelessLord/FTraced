@@ -1,4 +1,3 @@
-using GlLib.Client.Graphic;
 using OpenTK;
 
 namespace GlLib.Client.Api.Cameras

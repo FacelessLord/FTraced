@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using GlLib.Common.Entities;
 using OpenTK.Input;
 
 namespace GlLib.Client.Input
@@ -9,6 +12,10 @@ namespace GlLib.Client.Input
         public static readonly Hashtable PressedKeys = new Hashtable();
         public static readonly Hashtable ClickedKeys = new Hashtable();
         public static List<Key> keys = new List<Key>();
+
+        internal static ConcurrentBag<Action<Player>> implementedActions = new ConcurrentBag<Action<Player>>();
+        internal static List<BindPattern> patterns = new List<BindPattern>();
+
 
         public static void RegisterKey(Key _key)
         {
@@ -45,6 +52,7 @@ namespace GlLib.Client.Input
                 else
                     ClickedKeys[_key] = _clicked;
         }
+
 
         public static void Update()
         {

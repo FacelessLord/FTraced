@@ -1,6 +1,8 @@
+using System;
+using System.Diagnostics;
 using System.Threading;
-using GlLib.Common.Map;
 using GlLib.Common.Registries;
+using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -8,17 +10,38 @@ namespace GlLib.Common
     {
         public const int FrameTime = 50;
 
-        public GameRegistry registry;
+        public readonly long startTime;
+        public bool askedToStop;
         public Profiler profiler = new Profiler();
+
+        public GameRegistry registry;
 
         public int serverId;
         public Side side;
 
-        public SideService(Side _side)
+
+        protected SideService(Side _side)
         {
+            startTime = DateTime.UtcNow.Ticks;
             side = _side;
             registry = new GameRegistry();
         }
+
+        public long InternalTicks =>
+            (DateTime.UtcNow - Process.GetCurrentProcess()
+                 .StartTime
+                 .ToUniversalTime())
+            .Ticks;
+
+        public DateTime MachineTime =>
+            DateTime.UtcNow
+                .ToUniversalTime();
+
+        public double InternalMilliseconds =>
+            (DateTime.UtcNow - Process.GetCurrentProcess()
+                 .StartTime
+                 .ToUniversalTime())
+            .TotalMilliseconds;
 
         public void Start()
         {
@@ -32,7 +55,7 @@ namespace GlLib.Common
         public void Loop()
         {
             profiler.SetState(State.Loop);
-            while (!Proxy.Exit)
+            while (!Proxy.Exit && !askedToStop)
             {
                 OnServiceUpdate();
                 Thread.Sleep(FrameTime);
@@ -44,6 +67,12 @@ namespace GlLib.Common
             profiler.SetState(State.Exiting);
             OnExit();
             profiler.SetState(State.Off);
+        }
+
+        public void AskToStop(string _cause)
+        {
+            askedToStop = true;
+            SidedConsole.WriteLine("Asked to stop. Preparing to stop.");
         }
 
         public abstract void OnServiceUpdate();

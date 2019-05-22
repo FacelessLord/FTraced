@@ -1,5 +1,4 @@
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
 using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
@@ -11,9 +10,12 @@ namespace GlLib.Client.Api.Gui
 {
     public class GuiScrollBar : GuiObject
     {
-        public int scrollerPos = 0;
-        public int maxValue;
         public int maximum;
+        public int maxValue;
+
+        public TextureLayout scrollBar;
+        public TextureLayout scroller;
+        public int scrollerPos;
 
         public GuiScrollBar(int _maxValue, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
@@ -33,20 +35,16 @@ namespace GlLib.Client.Api.Gui
             maxValue = _maxValue;
         }
 
-        public TextureLayout scrollBar;
-        public TextureLayout scroller;
-
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
 
-            GuiUtils.DrawSizedSquare(scrollBar, x, y, width, height, width / 3f, width);
+            Vertexer.DrawSizedSquare(scrollBar, x, y, width, height, width / 3f, width);
             GL.Translate(0, scrollerPos + 2 * width / 3, 0);
-            GuiUtils.DrawSizedSquare(scroller, x, y, width, width, width / 3f);
+            Vertexer.DrawSizedSquare(scroller, x, y, width, width, width / 3f);
 
-
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
             GL.PopMatrix();
         }
 

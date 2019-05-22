@@ -10,17 +10,16 @@ namespace GlLib.Common.Registries
 {
     public class GameRegistry
     {
+        private bool _loaded;
         public BlocksRegistry blockRegistry;
-        public EntityRegistry entitieRegistry;
-        public ItemRegistry itemRegistry;
 
         public Hashtable blocks = new Hashtable();
         public Hashtable blocksById = new Hashtable();
+        public EntityRegistry entitieRegistry;
         public Hashtable entities = new Hashtable();
+        public ItemRegistry itemRegistry;
         public Hashtable items = new Hashtable();
         public Hashtable itemsById = new Hashtable();
-
-        private bool _loaded = false;
 
         public GameRegistry()
         {
@@ -89,7 +88,21 @@ namespace GlLib.Common.Registries
         {
             if (blocks.ContainsKey(_blockName))
                 return (TerrainBlock) blocks[_blockName];
+            // TODO translate code into console like this:
+            SidedConsole.WriteErrorLine($"Block cannot be loaded: {_blockName}");
             return null;
+        }
+
+        public bool TryGetBlockFromName(string _blockName, out TerrainBlock _block)
+        {
+            if (blocks.ContainsKey(_blockName))
+            {
+                _block =  (TerrainBlock) blocks[_blockName];
+                return true;
+            }
+
+            _block = null;
+            return false;
         }
 
         public TerrainBlock GetBlockFromId(int _id)
@@ -97,22 +110,52 @@ namespace GlLib.Common.Registries
             return (TerrainBlock) blocksById[_id];
         }
 
-        public Entity GetEntityFromName(string _entityName, params object[] _args)
+        public bool TryGetBlockFromId(int _blockId, out TerrainBlock _block)
         {
+            if (blocksById.ContainsKey(_blockId))
+            {
+                _block = (TerrainBlock) blocksById[_blockId];
+                return true;
+            }
+
+            _block = null;
+            return false;
+        }
+
+
+
+        public Entity GetEntityFromName(string _entityName)
+        {
+            SidedConsole.WriteLine(_entityName + ", " + entities.ContainsKey(_entityName));
             if (entities.ContainsKey(_entityName))
             {
                 var clazz = (Type) entities[_entityName];
-                return (Entity) Activator.CreateInstance(clazz, _args);
+                return (Entity) Activator.CreateInstance(clazz);
             }
 
             return null;
         }
 
+        public bool TryGetEntityFromName(string _entityName, out Entity _entity)
+        {
+            if (entities.ContainsKey(_entityName))
+            {
+                var clazz = (Type)entities[_entityName];
+                _entity = (Entity)Activator.CreateInstance(clazz);
+                return true;
+            }
+
+            _entity = null;
+            return false;
+        }
+
+
+
+
         public Entity GetEntityFromJson(JsonObjectCollection _collection)
         {
-            string entityId = ((JsonStringValue) _collection[0]).Value;
+            var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
-            SidedConsole.WriteLine(entityId+", "+_loaded);
             entity.LoadFromJsonObject(_collection);
             return entity;
         }

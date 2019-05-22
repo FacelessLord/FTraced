@@ -3,42 +3,50 @@ using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.API.Gui;
 using GlLib.Common;
+using GlLib.Common.Api.Inventory;
 using GlLib.Common.Entities;
 using GlLib.Common.Items;
 using OpenTK;
 
 namespace GlLib.Client.Graphic.Gui
 {
-    public class PlayerFrameInventoryGuiFrame : GuiFrameInventory
+    public class PlayerInventoryGui : GuiInventory
     {
-        public List<GuiSign> signs = new List<GuiSign>();
+        public List<GuiSlotSign> signs = new List<GuiSlotSign>();
+        public Player player;
 
-        public PlayerFrameInventoryGuiFrame(Player _p) : base(_p.inventory)
+        public PlayerInventoryGui(Player _p) : base(_p.inventory)
         {
+//            AddRectangle(100, 16, 4 * w / 9, 2 * h / 5);
+            player = _p;
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
-//            AddRectangle(100, 16, 4 * w / 9, 2 * h / 5);
+            AddInventory(_p.inventory, 100, 16);
+            AddEquipment(_p.equip, 100 + 4 * w / 9, 16);
 
+        }
+
+        private int AddInventory(IInventory _inv, int _x, int _y)
+        {
+            var slotSize = GuiSlot.SlotSize;
+            var w = Proxy.GetWindow().Width;
+            var h = Proxy.GetWindow().Height;
             var d = 4;
-            var slotSize = GuiSlotTypeRenderer.SlotSize;
-            var texture = Vertexer.LoadTexture("gui/window_back.png");
-            var background =
-                new TextureLayout(texture, 0, 0, 96, 96, 3, 3);
-            var panel = new GuiPanel(100, 16, 50 + 4 * w / 9, 2 * h / 5);
+            var panel = new GuiPanel(_x, _y, 50 + 3 * w / 9, 2 * h / 5);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
-            for (int i = 0; i < _p.inventory.GetMaxSize(); i++)
+            for (var i = 0; i < _inv.GetMaxSize(); i++)
             {
-                int dy = slotSize + 2;
-                var rect = new GuiRectangle(background, slotSize, dy * i,
+                var dy = slotSize + 2;
+                var rect = new GuiRectangle(slotSize, dy * i,
                     panel.width - slotSize - panel.bar.width - d, slotSize);
                 panel.Add(rect);
-                var slotRect = new GuiRectangle(background, 0, dy * i,
+                var slotRect = new GuiRectangle(0, dy * i,
                     slotSize, slotSize);
                 panel.Add(slotRect);
-                var slot = new GuiSlotTypeRenderer(inventory, i, 0, dy * i);
+                var slot = new GuiSlotTypeRenderer(_inv, i, 0, dy * i);
                 panel.Add(slot);
-                var text = new GuiSign("", slotSize, dy * i,
+                var text = new GuiSlotSign(_inv, i, slotSize, dy * i,
                     4 * w / 9 - d - slotSize * 5 / 2, slotSize);
                 panel.Add(text);
                 signs.Add(text);
@@ -46,31 +54,46 @@ namespace GlLib.Client.Graphic.Gui
 
             panel.bar.maxValue = (int) (panel.GetPanelBox().Height - panel.GetViewbox().Height);
 
-            var itemPanel = new GuiPanel(100, 32 + 2 * h / 5, 50 + 4 * w / 9, h / 5);
+            var itemPanel = new GuiPanel(_x, _y + 16 + 2 * h / 5, 50 + 3 * w / 9, h / 5);
             Add(itemPanel);
 
-            var dh = (itemPanel.height - GuiSlot.SlotSize) / 2;
-            var itemSlot = new GuiPlayerSlot(_p.inventory, 5, dh);
+            var dh = itemPanel.height / 2 - GuiSlot.SlotSize;
+            var itemSlot = new GuiSlot(_inv, 5, dh);
             itemPanel.Add(itemSlot);
-
-            var inputRect = new GuiRectangle(20, 20, 204, 204);
-            Add(inputRect);
-            var input = new GuiText("", 24, 24, 200, 200);
-            input.oneLineMode = false;
-            Add(input);
+            return dh;
         }
 
-
-        public override void Update(GameWindow _window)
+        private int AddEquipment(IInventory _inv, int _x, int _y)
         {
-            base.Update(_window);
-            for (int i = 0; i < signs.Count; i++)
-            {
-                if (inventory.GetStackInSlot(i) is ItemStack stack)
-                    signs[i].text = stack.item.GetName(stack);
-                else
-                    signs[i].text = "";
-            }
+            var slotSize = GuiSlot.SlotSize;
+            var w = Proxy.GetWindow().Width;
+            var h = Proxy.GetWindow().Height;
+            var pw = 50 + 3 * w / 9;
+            var panel = new GuiPanel(_x, _y, pw, 2 * h / 5);
+            Add(panel);
+
+            AddSlotWithEquipmentType(_inv, 0, ItemType.Weapon, pw / 2 - slotSize * 2, 50, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 1, ItemType.Shield, pw / 2 + slotSize, 50, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 2, ItemType.Helmet, pw / 2 - slotSize / 2, 50, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 3, ItemType.Armor, pw / 2 - slotSize / 2, 50 + slotSize, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 4, ItemType.Belt, pw / 2 - slotSize / 2,
+                50 + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 5, ItemType.Boots, pw / 2 - slotSize / 2,
+                50 + slotSize * 3, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 6, ItemType.Ring, pw / 2 - slotSize * 2,
+                50 + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 7, ItemType.Ring, pw / 2 + slotSize,
+                50 + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 8, ItemType.Varia, pw / 2 + slotSize * 2,
+                50 + slotSize * 2, slotSize, panel);
+
+            var itemPanel = new GuiPanel(_x, _y + 16 + 2 * h / 5, 50 + 3 * w / 9, h / 5);
+            Add(itemPanel);
+
+            var dh = itemPanel.height / 2 - GuiSlot.SlotSize;
+            var itemSlot = new GuiSlot(_inv, 5, dh);
+            itemPanel.Add(itemSlot);
+            return dh;
         }
     }
 }

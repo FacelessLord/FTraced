@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
@@ -11,28 +10,29 @@ namespace GlLib.Common.Map
 {
     public class World
     {
-        public List<(Entity e, Chunk chk)> entityAddQueue = new List<(Entity e, Chunk chk)>();
-        public List<(Entity e, Chunk chk)> entityRemoveQueue = new List<(Entity e, Chunk chk)>();
-
         public Chunk[,] chunks;
+        public ThreadSafeList<(Entity e, Chunk chk)> entityAddQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
 
-        public Mutex entityMutex = new Mutex();
+        public ThreadSafeList<(Entity e, Chunk chk)> entityRemoveQueue = new ThreadSafeList<(Entity e, Chunk chk)>();
         public int height;
 
         public JsonObjectCollection jsonObj;
+        public int MaxEntityCount { get; private set; } = 200;
+        public int EntityCount { get; private set; }
 
         public string mapName;
-        public bool FromStash { get; }
 
         public int width;
         public int worldId;
 
-        public World(string _mapName, int _worldId, bool _fromStash=false)
+        public World(string _mapName, int _worldId, bool _fromStash = false)
         {
-            FromStash = _fromStash; 
+            FromStash = _fromStash;
             mapName = _mapName;
             worldId = _worldId;
         }
+
+        public bool FromStash { get; }
 
         public Chunk this[int _i, int _j]
         {
@@ -42,34 +42,53 @@ namespace GlLib.Common.Map
 
         public void Update()
         {
-            entityMutex.WaitOne();
-            foreach (var pair in entityRemoveQueue) pair.chk.entities[pair.e.Position.z].Remove(pair.e);
+            foreach (var pair in entityRemoveQueue)
+                lock (pair.chk.entities)
+                {
+                    pair.chk.entities.Remove(pair.e);
+                }
 
             entityRemoveQueue.Clear();
-            foreach (var pair in entityAddQueue) pair.chk.entities[pair.e.Position.z].Add(pair.e);
+            foreach (var pair in entityAddQueue)
+                lock (pair.chk.entities)
+                {
+                    pair.chk.entities.Add(pair.e);
+                }
 
             entityAddQueue.Clear();
             lock (chunks)
+            {
                 foreach (var chunk in chunks)
                     if (chunk.isLoaded)
                         chunk.Update();
-            entityMutex.ReleaseMutex();
-            WorldManager.SaveWorld(this);
-            Proxy.GetServer().profiler.SetState(State.Loop);
+            }
+
+//            WorldManager.SaveWorld(this);
+//            Proxy.GetServer().profiler.SetState(State.Loop);
         }
 
         public void SpawnEntity(Entity _e)
         {
-            if (EventBus.OnEntitySpawn(_e)) return;
+            if (EntityCount < MaxEntityCount)
+            {
+                if (EventBus.OnEntitySpawn(_e)) return;
 
-            entityMutex.WaitOne();
-            _e.worldObj = this;
+                _e.worldObj = this;
 
-            if (_e.chunkObj is null)
-                _e.chunkObj = Entity.GetProjection(_e.Position, this);
-            _e.chunkObj.entities[_e.Position.z].Add(_e); //todo entity null
-            entityMutex.ReleaseMutex();
-            SidedConsole.WriteLine($"Entity {_e} spawned in world");
+                if (_e.chunkObj is null)
+                    _e.chunkObj = Entity.GetProjection(_e.Position, this);
+                lock (_e.chunkObj.entities)
+                {
+                    _e.chunkObj.entities.Add(_e); //todo entity null
+                }
+
+                EntityCount++;
+                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+            }
+            else
+            {
+                SidedConsole.WriteLine($"Entity count exceds maximum value({MaxEntityCount}). Couldn't spawn entity");
+            }
         }
 
         public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
@@ -79,50 +98,53 @@ namespace GlLib.Common.Map
             _e.chunkObj = _next;
         }
 
-        public IEnumerable<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
+        public ThreadSafeList<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
         {
-            var entities = new List<Entity>();
-
             var chunks = new List<Chunk>();
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = _aabb.EndXi / 16;
-            var chkEndY = _aabb.EndYi / 16;
+            var chkEndX = (_aabb.EndXi + _aabb.WidthI) / 16;
+            var chkEndY = (_aabb.EndYi + _aabb.HeightI) / 16;
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
-            {
-                var chk = this[i, j];
-                if (chk != null) chunks.Add(chk);
-            }
-
-            return chunks.SelectMany(_c => _c.entities).SelectMany(_el => _el);
-        }
-
-        public IEnumerable<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
-        {
-            var entities = new List<Entity>();
-
-            var chunks = new List<Chunk>();
-
-            var chkStartX = _aabb.StartXi / 16;
-            var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = _aabb.EndXi / 16;
-            var chkEndY = _aabb.EndYi / 16;
-
-            for (var i = chkStartX; i <= chkEndX; i++)
-            for (var j = chkStartY; j <= chkEndY; j++)
-            {
-                if (i >= 0 && j >= 0 && i < width && j < _height)
+                if (i >= 0 && j >= 0 && i < width && j < height)
                 {
                     var chk = this[i, j];
                     if (chk != null) chunks.Add(chk);
                 }
-            }
 
-            return chunks.SelectMany(_c => _c.entities[_height])
-                .Where(_entity => _entity.GetAaBb().IntersectsWith(_aabb));
+            return chunks.SelectMany(_c => _c.entities)
+                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
+                .ToThreadSafeList();
+        }
+
+        public ThreadSafeList<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
+        {
+            var chunks = new ThreadSafeList<Chunk>();
+
+            var chkStartX = _aabb.StartXi / 16;
+            var chkStartY = _aabb.StartYi / 16;
+            var chkEndX = chkStartX + _aabb.Width / 16;
+            var chkEndY = chkStartY + _aabb.Height / 16;
+            for (var i = chkStartX; i <= chkEndX; i++)
+            for (var j = chkStartY; j <= chkEndY; j++)
+                if (i >= 0 && j >= 0 && i < width && j < height)
+                {
+                    var chk = this[i, j];
+                    if (chk != null) chunks.Add(chk);
+                }
+
+            return chunks.SelectMany(_c => _c.entities)
+                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
+                .ToThreadSafeList();
+        }
+
+        public void DespawnEntity(Entity _entity)
+        {
+            entityRemoveQueue.Add((_entity, _entity.chunkObj));
+            EntityCount--;
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Tests.Client
         [Test]
         public void Layout_SomeNumbers()
         {
-
         }
 
         #endregion

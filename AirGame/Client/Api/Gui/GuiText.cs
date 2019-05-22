@@ -1,6 +1,6 @@
-using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
+using GlLib.Common.Api.Inventory;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -10,6 +10,7 @@ namespace GlLib.Client.API.Gui
 {
     public class GuiSign : GuiObject
     {
+        public static FontSprite font;
         public string text;
 
         public GuiSign(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
@@ -25,26 +26,74 @@ namespace GlLib.Client.API.Gui
             font = new AlagardFontSprite();
         }
 
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
+        {
+            var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
+            var heightCenter = (height - 11d) / 2;
+            GL.PushMatrix();
+            Vertexer.Colorize(color);
+            GL.Translate(x + widthCenter, y + heightCenter, 0);
+            font.DrawText(text, 11);
+            Vertexer.ClearColor();
+
+            GL.PopMatrix();
+        }
+    }
+    
+    public class GuiSlotSign : GuiObject
+    {
         public static FontSprite font;
+        public string text;
+        public IInventory inventory;
+        public int slot;
+
+        public GuiSlotSign(IInventory _inv, int _slot, int _x, int _y, int _width, int _height) : base(_x, _y, _width,
+            _height)
+        {
+            inventory = _inv;
+            slot = _slot;
+            var stack = _inv.GetStackInSlot(_slot);
+            text = stack is null ? "" : stack.item.GetName(stack);
+            font = new AlagardFontSprite();
+        }
+
+        public GuiSlotSign(IInventory _inv, int _slot, int _x, int _y, int _width, int _height, Color _color)
+            : base(_x, _y, _width, _height, _color)
+        {
+            inventory = _inv;
+            slot = _slot;
+            var stack = _inv.GetStackInSlot(_slot);
+            text = stack is null ? "" : stack.item.GetName(stack);
+            font = new AlagardFontSprite();
+        }
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
             var heightCenter = (height - 11d) / 2;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
             font.DrawText(text, 11);
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
+        }
+
+        public override void Update(GuiFrame _gui)
+        {
+            base.Update(_gui);
+            var stack = inventory.GetStackInSlot(slot);
+            text = stack is null ? "" : stack.item.GetName(stack);
         }
     }
 
     public class GuiText : GuiSign
     {
         public int cursorX;
-        public int timer = 0;
+
+        public bool oneLineMode = true;
+        public int timer;
 
         public GuiText(string _baseText, int _x, int _y, int _width, int _height) : base(_baseText, _x, _y, _width,
             _height)
@@ -70,15 +119,25 @@ namespace GlLib.Client.API.Gui
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
-            int timerSpeed = 40;
+            var timerSpeed = 40;
             timer = (timer + 1) % timerSpeed;
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             GL.Translate(x, y, 0);
+            if (oneLineMode)
+            {
+                var heightCenter = (height - 16d) / 2;
+                GL.Translate(0, heightCenter, 0);
+            }
+
             if (timer < timerSpeed / 2 || _gui.focusedObject != this)
+            {
                 font.DrawText(text, 11);
+            }
             else if (cursorX == text.Length)
+            {
                 font.DrawText(text + "|", 11);
+            }
             else
             {
                 var t1 = text.Substring(0, cursorX);
@@ -86,7 +145,7 @@ namespace GlLib.Client.API.Gui
                 font.DrawText(t1 + "|" + t2, 11);
             }
 
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
         }
@@ -102,8 +161,6 @@ namespace GlLib.Client.API.Gui
             }
         }
 
-        public bool oneLineMode = true;
-
         public virtual void HandleEnterKey()
         {
         }
@@ -112,11 +169,12 @@ namespace GlLib.Client.API.Gui
         {
             var k = _e.Key;
             if (k == Key.BackSpace)
-            {
                 if (cursorX > 0)
                 {
                     if (cursorX == text.Length)
+                    {
                         text = text.Substring(0, text.Length - 1);
+                    }
                     else
                     {
                         var t1 = text.Substring(0, cursorX - 1);
@@ -126,26 +184,16 @@ namespace GlLib.Client.API.Gui
 
                     cursorX--;
                 }
-            }
 
             if (k == Key.Left)
-            {
                 if (cursorX > 0)
-                {
                     cursorX--;
-                }
-            }
 
             if (k.Equals(Key.Right))
-            {
                 if (cursorX < text.Length)
-                {
                     cursorX++;
-                }
-            }
 
             if (k.Equals(Key.Delete))
-            {
                 if (cursorX < text.Length)
                 {
                     if (cursorX == 0)
@@ -159,20 +207,17 @@ namespace GlLib.Client.API.Gui
                         text = t1 + t2;
                     }
                 }
-            }
 
             if (k.Equals(Key.Enter))
             {
                 if (oneLineMode)
                 {
                     HandleEnterKey();
-                    SidedConsole.WriteLine("handl");
                 }
                 else
                 {
-                    text = text.Insert(cursorX,"\n");
+                    text = text.Insert(cursorX, "\n");
                     cursorX++;
-                    SidedConsole.WriteLine("\\n");
                 }
             }
         }

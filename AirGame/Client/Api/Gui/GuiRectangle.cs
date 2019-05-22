@@ -9,6 +9,9 @@ namespace GlLib.Client.API.Gui
 {
     public class GuiRectangle : GuiObject
     {
+        public TextureLayout background;
+        public float grainSize = 16f;
+
         public GuiRectangle(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             var texture = Vertexer.LoadTexture("gui/window_back.png");
@@ -34,23 +37,20 @@ namespace GlLib.Client.API.Gui
             background = _layout;
         }
 
-        public TextureLayout background;
-        public float grainSize = 16f;
-
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-            GL.Color4(color.R, color.G, color.B, color.A);
+            Vertexer.Colorize(color);
             try
             {
-                GuiUtils.DrawSizedSquare(background, x, y, width, height, grainSize);
+                Vertexer.DrawSizedSquare(background, x, y, width, height, grainSize);
             }
             catch (Exception e)
             {
                 SidedConsole.WriteLine(e);
             }
 
-            GL.Color4(1.0, 1, 1, 1);
+            Vertexer.ClearColor();
 
             GL.PopMatrix();
         }

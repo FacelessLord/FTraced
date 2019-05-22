@@ -2,17 +2,20 @@
 using System.Linq;
 using System.Threading;
 using GlLib.Client;
-using GlLib.Client.Api.Gui;
 using GlLib.Client.Graphic;
+using GlLib.Common.Events;
 using GlLib.Server;
 using GlLib.Utils;
-using GlLib.Common.Events;
 
 namespace GlLib.Common
 {
     public static class Core
     {
         public static Profiler profiler = new Profiler();
+
+        public static Thread clientThread;
+        public static Thread serverThread;
+
         public static void Main(string[] _args)
         {
             profiler.SetState(State.CoreStarting);
@@ -28,7 +31,6 @@ namespace GlLib.Common
 
                 GraphicWindow.RunWindow();
                 Proxy.AwaitWhile(() => profiler.state < State.MainMenu);
-                StartWorld();
             }
             catch (Exception e)
             {
@@ -39,10 +41,11 @@ namespace GlLib.Common
             // ClientService._instance.ConnectToIntegratedServer();
         }
 
+
         public static void StartWorld()
         {
             var server = new ServerInstance();
-            var serverThread = new Thread(() =>
+            serverThread = new Thread(() =>
             {
                 server.Start();
                 server.Loop();
@@ -52,7 +55,7 @@ namespace GlLib.Common
             Proxy.AwaitWhile(() => server.profiler.state < State.Loop);
 
             var client = new ClientService(Config.playerName, Config.playerPassword);
-            var clientThread = new Thread(() =>
+            clientThread = new Thread(() =>
             {
                 client.Start();
                 client.Loop();
@@ -60,6 +63,15 @@ namespace GlLib.Common
             }) {Name = Side.Client.ToString()};
             clientThread.Start();
             Proxy.AwaitWhile(() => client.profiler.state < State.Loop);
+        }
+
+        public static void StopWorld(string _cause)
+        {
+            Proxy.GetClient().AskToStop(_cause);
+            Proxy.AwaitWhile(() => Proxy.GetClient().profiler.state < State.Off);
+            Proxy.GetServer().AskToStop(_cause);
+            Proxy.AwaitWhile(() => Proxy.GetServer().profiler.state < State.Off);
+            Proxy.GetWindow().serverStarted = false;
         }
     }
 }

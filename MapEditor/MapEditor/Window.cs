@@ -1,30 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using MapEditor.BlocksStruct;
+﻿using MapEditor.BlocksStruct;
 using MapEditor.Common;
 
 namespace MapEditor
 {
     public class Window : Form
     {
-        private readonly IBlock[] Brushes = {new BlocksStruct.Bricks(), new Grass()};
-        private PictureBox BrushPicture { get; set; }
-
-        private ListView BrushView { get; set; }
-
-        private ChunkMapRender ChunkMap { get; set; }
-        private IContainer Components { get; set; }
-
-        private MenuStrip MenuStrip { get; set; }
-        private OpenFileDialog OpenFileDialog { get; set; }
-
-        private RenderPanel PaintField { get; set; }
-        private SaveFileDialog SaveFileDialog { get; set; }
-
-        private Button AddBrush { get; set; }
+        private readonly IBlock[] Brushes = {new Bricks(), new Grass()};
 
         public Window()
         {
@@ -49,6 +30,21 @@ namespace MapEditor
             AddBrush.Click += AddBrush_Click;
         }
 
+        private PictureBox BrushPicture { get; set; }
+
+        private ListView BrushView { get; set; }
+
+        private ChunkMapRender ChunkMap { get; set; }
+        private IContainer Components { get; set; }
+
+        private MenuStrip MenuStrip { get; set; }
+        private OpenFileDialog OpenFileDialog { get; set; }
+
+        private RenderPanel PaintField { get; set; }
+        private SaveFileDialog SaveFileDialog { get; set; }
+
+        private Button AddBrush { get; set; }
+
         private void AddBrush_Click(object _sender, EventArgs _e)
         {
             MessageBox.Show("");
@@ -67,7 +63,9 @@ namespace MapEditor
             ChunkMap.Invalidate();
         }
 
-        protected override void OnMouseMove(MouseEventArgs _e) { }
+        protected override void OnMouseMove(MouseEventArgs _e)
+        {
+        }
 
         protected void OnFieldPaint(object _sender, PaintEventArgs _e)
         {
@@ -100,7 +98,6 @@ namespace MapEditor
         }
 
 
-        
         private void InitializeComponent()
         {
             BrushView = new ListView();

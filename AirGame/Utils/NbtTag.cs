@@ -8,11 +8,10 @@ namespace GlLib.Utils
     public class NbtTag : IEnumerable<string>
     {
         private readonly Hashtable _table;
-        private int _suppressExistenceErrorsNumber;
 
         public NbtTag()
         {
-            _suppressExistenceErrorsNumber = 0;
+            GetErrorNumber = 0;
             _table = new Hashtable();
         }
 
@@ -22,7 +21,7 @@ namespace GlLib.Utils
         {
             return _table.Keys.Cast<string>();
         }
-        
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -36,7 +35,7 @@ namespace GlLib.Utils
         public void Set<T>(string _key, T _obj)
         {
             if (!typeof(T).IsPrimitive && !(_obj is string))
-                _suppressExistenceErrorsNumber++;
+                GetErrorNumber++;
             if (_table.ContainsKey(_key)) _table.Remove(_key);
             _table.Add(_key, _obj);
         }
@@ -50,11 +49,11 @@ namespace GlLib.Utils
             }
             catch (InvalidCastException e)
             {
-                _suppressExistenceErrorsNumber++;
+                GetErrorNumber++;
                 SidedConsole.WriteLine("Cast error: " + e.Message);
             }
 
-            return default(T);
+            return default;
         }
 
         public int GetInt(string _key)
@@ -110,7 +109,7 @@ namespace GlLib.Utils
             for (var i = 0; i < entries.Length / 2; i++)
             {
                 if (entries[2 * i + 1] == "") continue;
-                
+
                 var valueType = entries[2 * i + 1][0];
                 var value = entries[2 * i + 1].Substring(1);
                 switch (valueType)
@@ -134,7 +133,7 @@ namespace GlLib.Utils
                         tag._table[entries[2 * i]] = value;
                         break;
                     default:
-                        tag._suppressExistenceErrorsNumber++;
+                        tag.GetErrorNumber++;
                         continue;
                 }
             }
@@ -163,7 +162,7 @@ namespace GlLib.Utils
             return tag;
         }
 
-        public int GetErrorNumber => _suppressExistenceErrorsNumber;
+        public int GetErrorNumber { get; private set; }
 
         public bool CanRetrieveTag(string _prefix)
         {

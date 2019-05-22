@@ -285,7 +285,7 @@ namespace Tests.utils
             var v1 = new PlanarVector(1, 2);
             var v2 = new PlanarVector(2, 1);
             //Act
-            var resultVector = v1 + -v2;
+            var resultVector = v1 - v2;
             //Assert
             Assert.AreEqual(resultVector, new PlanarVector(-1, 1));
         }

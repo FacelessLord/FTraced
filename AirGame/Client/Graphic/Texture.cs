@@ -61,8 +61,10 @@ namespace GlLib.Client.Graphic
 
             //Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
             //We set this to Repeat so that textures will repeat when wrapped. Not demonstrated here since the texture coordinates exactly match
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
+                (int) TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
+                (int) TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
                 (int) TextureMagFilter.Nearest);
 
@@ -123,7 +125,10 @@ namespace GlLib.Client.Graphic
 
         ~Texture()
         {
-            GL.DeleteProgram(_handle);
+            if (!_disposedValue)
+            {
+                GL.DeleteProgram(_handle);
+            }
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GlLib.Common.Items
+﻿namespace GlLib.Common.Items
 {
     public enum ItemType
     {
@@ -11,6 +7,10 @@ namespace GlLib.Common.Items
         Food,
         Weapon,
         Armor,
-        Ring
+        Ring,
+        Shield,
+        Boots,
+        Helmet,
+        Belt,
     }
 }

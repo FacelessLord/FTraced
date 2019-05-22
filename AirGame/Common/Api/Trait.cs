@@ -14,10 +14,10 @@ namespace GlLib.Common.API
         public static readonly Trait WaterLevel = new Trait(7, 1);
         public static readonly Trait EarthLevel = new Trait(8, 1);
 
-        public int baseValue = 0;
-        public int id = 0;
-        
         public static List<Trait> traits = new List<Trait>();
+
+        public int baseValue;
+        public int id;
 
         public Trait(int _id, int _baseValue)
         {

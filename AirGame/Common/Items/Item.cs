@@ -11,7 +11,7 @@ namespace GlLib.Common.Items
 
         public string sprite;
         public ItemType type;
-        public string unlocalizedName = "item.null";
+        public string unlocalizedName;
 
         public Item(string _name, ItemRarity _rarity, ItemType _type = ItemType.Varia)
         {
@@ -27,7 +27,7 @@ namespace GlLib.Common.Items
 
         public virtual string GetTextureName(ItemStack _itemStack)
         {
-            return unlocalizedName + ".png";
+            return "items/"+unlocalizedName + ".png";
         }
 
         public virtual ISprite GetItemSprite(ItemStack _itemStack)
@@ -47,7 +47,7 @@ namespace GlLib.Common.Items
 
         public override string ToString()
         {
-            return unlocalizedName; // todo
+            return unlocalizedName;
         }
     }
 }
