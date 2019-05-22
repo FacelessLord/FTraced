@@ -7,6 +7,10 @@
         Food,
         Weapon,
         Armor,
-        Ring
+        Ring,
+        Shield,
+        Boots,
+        Helmet,
+        Belt,
     }
 }

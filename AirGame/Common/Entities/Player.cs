@@ -19,6 +19,7 @@ namespace GlLib.Common.Entities
         public double accelerationValue = 0.05;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
+        public EquipmentInventory equip = new EquipmentInventory();
 
         public int money = 0;
         public string nickname = "Player";
@@ -50,8 +51,10 @@ namespace GlLib.Common.Entities
             SidedConsole.WriteLine("Setting Player Inventory");
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.varia));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.apple));
-            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.sword));
-            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.armor));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.dawnBlade));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.dawnArmor));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.dawnBoots));
+            inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.dawnShield));
             inventory.AddItemStack(new ItemStack(Proxy.GetRegistry().itemRegistry.ring));
 
             CanDie = false;

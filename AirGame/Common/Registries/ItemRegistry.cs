@@ -20,6 +20,11 @@ namespace GlLib.Common.Registries
 
         public Item varia =
             new Item("item.varia", ItemRarity.Legendary);
+        
+        public Item dawnArmor = new Item("item.dawn_chestplate", ItemRarity.Legendary, ItemType.Armor);
+        public Item dawnBoots = new Item("item.dawn_boots", ItemRarity.Legendary, ItemType.Boots);
+        public Item dawnShield = new Item("item.dawn_shield", ItemRarity.Legendary, ItemType.Shield);
+        public Item dawnBlade = new Item("item.dawn_blade", ItemRarity.Legendary, ItemType.Weapon);
 
         public ItemRegistry(GameRegistry _registry)
         {
@@ -33,6 +38,11 @@ namespace GlLib.Common.Registries
             registry.RegisterItem(ring);
             registry.RegisterItem(armor);
             registry.RegisterItem(varia);
+            
+            registry.RegisterItem(dawnArmor);
+            registry.RegisterItem(dawnBoots);
+            registry.RegisterItem(dawnShield);
+            registry.RegisterItem(dawnBlade);
         }
     }
 }

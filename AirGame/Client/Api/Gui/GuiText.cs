@@ -1,5 +1,6 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
+using GlLib.Common.Api.Inventory;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -36,6 +37,54 @@ namespace GlLib.Client.API.Gui
             Vertexer.ClearColor();
 
             GL.PopMatrix();
+        }
+    }
+    
+    public class GuiSlotSign : GuiObject
+    {
+        public static FontSprite font;
+        public string text;
+        public IInventory inventory;
+        public int slot;
+
+        public GuiSlotSign(IInventory _inv, int _slot, int _x, int _y, int _width, int _height) : base(_x, _y, _width,
+            _height)
+        {
+            inventory = _inv;
+            slot = _slot;
+            var stack = _inv.GetStackInSlot(_slot);
+            text = stack is null ? "" : stack.item.GetName(stack);
+            font = new AlagardFontSprite();
+        }
+
+        public GuiSlotSign(IInventory _inv, int _slot, int _x, int _y, int _width, int _height, Color _color)
+            : base(_x, _y, _width, _height, _color)
+        {
+            inventory = _inv;
+            slot = _slot;
+            var stack = _inv.GetStackInSlot(_slot);
+            text = stack is null ? "" : stack.item.GetName(stack);
+            font = new AlagardFontSprite();
+        }
+
+        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
+        {
+            var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
+            var heightCenter = (height - 11d) / 2;
+            GL.PushMatrix();
+            Vertexer.Colorize(color);
+            GL.Translate(x + widthCenter, y + heightCenter, 0);
+            font.DrawText(text, 11);
+            Vertexer.ClearColor();
+
+            GL.PopMatrix();
+        }
+
+        public override void Update(GuiFrame _gui)
+        {
+            base.Update(_gui);
+            var stack = inventory.GetStackInSlot(slot);
+            text = stack is null ? "" : stack.item.GetName(stack);
         }
     }
 

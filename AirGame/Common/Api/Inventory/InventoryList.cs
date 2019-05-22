@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using GlLib.Common.Items;
+using GlLib.Utils;
 
 namespace GlLib.Common.Api.Inventory
 {
@@ -7,7 +9,7 @@ namespace GlLib.Common.Api.Inventory
     {
         public List<ItemStack> itemList = new List<ItemStack>();
 
-        public int selectedSlot = -1;
+        public int selectedSlot;
 
         public abstract int GetMaxSize();
 
@@ -35,19 +37,48 @@ namespace GlLib.Common.Api.Inventory
             return null;
         }
 
+        public bool IsItemValidForSlot(ItemStack _item, int _slot)
+        {
+            return true;
+        }
+
         public void AddItemStack(ItemStack _itemStack)
         {
+            if ((_itemStack is null && !EnableNull) || itemList.Contains(_itemStack))
+            {
+                return;
+            }
+
             itemList.Add(_itemStack);
+        }
+
+        private bool enableNull = false;
+
+        public bool EnableNull
+        {
+            get => enableNull;
+            set
+            {
+                if (!value)
+                    itemList = itemList.Where(_o => !(_o is null)).ToList();
+                enableNull = value;
+            }
         }
 
         public void SetItemStack(ItemStack _itemStack, int _slot)
         {
-            itemList[_slot] = _itemStack;
+            AddItemStack(_itemStack);
         }
 
         public void RemoveItemStack(int _slot)
         {
-            itemList.RemoveAt(_slot);
+            if (_slot < itemList.Count)
+            {
+                if (EnableNull)
+                    itemList[_slot] = null;
+                else
+                    itemList.RemoveAt(_slot);
+            }
         }
     }
 }

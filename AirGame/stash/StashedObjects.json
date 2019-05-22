@@ -1,7 +1,7 @@
 {
-	"Path": {
-		"Name": "block.outdoor.grass.path",
-		"TextureName": "path.png"
+	"VoidBlock": {
+		"Name": "block.void",
+		"TextureName": "null.png"
 	},
 	"DarkGrassCoastRight": {
 		"Name": "block.outdoor.darkgrasscoastright",
@@ -11,28 +11,28 @@
 		"Name": "block.castle",
 		"TextureName": "."
 	},
-	"SettBrimCorner": {
-		"Name": "block.indoor.settbrimcorner",
-		"TextureName": "blocks/SettBrimCorner.png"
-	},
 	"GrassBlock": {
 		"Name": "block.outdoor.grass",
 		"TextureName": "grass.png"
 	},
-	"SettBrimDown": {
-		"Name": "block.indoor.settbrimdown",
-		"TextureName": "blocks/SettBrimDown.png"
-	},
-	"VoidBlock": {
-		"Name": "block.void",
-		"TextureName": "null.png"
+	"DarkGrass": {
+		"Name": "block.outdoor.darkgrass",
+		"TextureName": "blocks/DarkGrass.png"
 	},
 	"Bricks": {
 		"Name": "block.indoor.bricks",
 		"TextureName": "bricks_worn.png"
 	},
-	"DarkGrass": {
-		"Name": "block.outdoor.darkgrass",
-		"TextureName": "blocks/DarkGrass.png"
+	"SettBrimCorner": {
+		"Name": "block.indoor.settbrimcorner",
+		"TextureName": "blocks/SettBrimCorner.png"
+	},
+	"Path": {
+		"Name": "block.outdoor.grass.path",
+		"TextureName": "path.png"
+	},
+	"SettBrimDown": {
+		"Name": "block.indoor.settbrimdown",
+		"TextureName": "blocks/SettBrimDown.png"
 	}
 }

@@ -13,5 +13,7 @@ namespace GlLib.Common.Api.Inventory
         void RemoveItemStack(int _slot);
         string GetInventoryName();
         ItemStack GetStackInSlot(int _slot);
+
+        bool IsItemValidForSlot(ItemStack _item, int _slot);
     }
 }

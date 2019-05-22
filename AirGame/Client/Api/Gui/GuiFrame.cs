@@ -93,10 +93,11 @@ namespace GlLib.Client.API.Gui
 
         public virtual void OnMouseClick(GameWindow _window, MouseButton _button, int _mouseX, int _mouseY)
         {
-            focusedObject = null;
+            var oldFocusedObject = focusedObject;
             foreach (var obj in ScreenObjects)
                 if (obj.IsMouseOver(this, _mouseX, _mouseY))
                     focusedObject = obj.OnMouseClick(this, _button, _mouseX, _mouseY);
+            oldFocusedObject?.OnMouseRelease(this, _button, _mouseX, _mouseY);
         }
 
         public virtual void OnKeyTyped(GameWindow _window, KeyPressEventArgs _keyEvent)
