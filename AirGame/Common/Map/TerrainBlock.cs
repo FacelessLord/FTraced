@@ -17,6 +17,7 @@ namespace GlLib.Common.Map
         public abstract string Name { get; protected set; }
 
         public abstract string TextureName { get; internal set; }
+        public double Rotation { get; protected set; }
 
         public JsonObject CreateJsonObject()
         {

@@ -4,24 +4,9 @@ namespace GlLib.Common.Blocks
 {
     public class DarkGrass : TerrainBlock
     {
-        public override string Name
-        {
-            get
-                => "block.outdoor.darkgrass"
-            ;
-            protected set
-            {
-                //TODO
-            }
-        }
 
-        public override string TextureName
-        {
-            get => Path + "DarkGrass.png";
-            internal set
-            {
-                //TODO
-            }
-        }
+        public override string Name { get; protected set; } = "block.outdoor.darkgrass";
+
+        public override string TextureName { get; internal set; } = Path + "DarkGrass.png";
     }
 }

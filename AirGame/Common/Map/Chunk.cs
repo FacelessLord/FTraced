@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Json;
@@ -76,11 +77,19 @@ namespace GlLib.Common.Map
                     GL.Translate(coord.x, coord.y, 0);
                     //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
-                    Vertexer.StartDrawingQuads();
+//                    var sin = Math.Sin(block.Rotation);
+//                    var cos = Math.Cos(block.Rotation);
 
-                    Vertexer.VertexWithUvAt(BlockWidth, 0, 1, 0);
-                    Vertexer.VertexWithUvAt(BlockWidth, BlockHeight, 1, 1);
-                    Vertexer.VertexWithUvAt(0, BlockHeight, 0, 1);
+                    GL.Scale(BlockWidth, BlockHeight, 1);
+                    GL.Translate(1 / 2d, 1 / 2d, 0);
+                    GL.Rotate(block.Rotation, 0, 0, 1);
+                    GL.Translate(-1 / 2d, -1 / 2d, 0);
+
+                    Vertexer.StartDrawingQuads();
+                    
+                    Vertexer.VertexWithUvAt(1, 0, 1, 0);
+                    Vertexer.VertexWithUvAt(1, 1, 1, 1);
+                    Vertexer.VertexWithUvAt(0, 1, 0, 1);
                     Vertexer.VertexWithUvAt(0, 0, 0, 0);
 
                     Vertexer.Draw();
