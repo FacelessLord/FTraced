@@ -36,10 +36,10 @@ namespace GlLib.Common.Entities
                 if (r.Next(10) > 4)
                 {
                     worldObj.SpawnEntity(new Coin(worldObj, Position,
-                        PlanarVector.GetRandom(0.2)));
+                        PlanarVector.GetRandom(0.2f)));
                     if (r.Next(10) > 7)
                         worldObj.SpawnEntity(new Potion(worldObj, Position,
-                            PlanarVector.GetRandom(0.2)));
+                            PlanarVector.GetRandom(0.2f)));
                 }
                 else
                 {

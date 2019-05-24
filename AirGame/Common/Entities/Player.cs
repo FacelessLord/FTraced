@@ -16,7 +16,7 @@ namespace GlLib.Common.Entities
 
         public TerrainBlock Brush { get; internal set; }
 
-        public double accelerationValue = 0.05;
+        public float accelerationValue = 0.05f;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
         public EquipmentInventory equip = new EquipmentInventory();

@@ -13,7 +13,7 @@ namespace GlLib.Client.Graphic
             this._world = _world;
         }
 
-        public void Render(double _x, double _y)
+        public void Render(float _x, float _y)
         {
             lock (_world.chunks)
             {

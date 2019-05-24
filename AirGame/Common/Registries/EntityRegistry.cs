@@ -22,6 +22,7 @@ namespace GlLib.Common.Registries
             registry.RegisterEntity("entity.coin", typeof(Coin));
             registry.RegisterEntity("entity.streetlight", typeof(Streetlight));
             registry.RegisterEntity("entity.potion", typeof(Potion));
+            registry.RegisterEntity("entity.spawnbox",typeof(SpawnBox));
         }
     }
 }

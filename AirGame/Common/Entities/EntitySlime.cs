@@ -117,7 +117,7 @@ namespace GlLib.Common.Entities
 
         private void MoveToTarget()
         {
-            velocity = Target.Position - position;
+            velocity = (Target.Position - position).ToPlanarVector();
             velocity.Normalize();
             velocity /= 5;
         }

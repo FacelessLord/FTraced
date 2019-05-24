@@ -22,12 +22,9 @@ namespace GlLib.Client.Api.Sprites
         public int step;
         public TextureLayout texture;
 
-        // ReSharper disable once InconsistentNaming
-        private float transparency;
 
         public LinearSprite(TextureLayout _texture, int _maxFrameCount, int _step = 1, int _frameCount = 0)
         {
-            transparency = 1;
             _frameCount = 0;
             texture = _texture;
             frameCount = _frameCount;
@@ -58,7 +55,7 @@ namespace GlLib.Client.Api.Sprites
             GL.PopMatrix();
         }
 
-        public LinearSprite Translate(double _x, double _y)
+        public LinearSprite Translate(float _x, float _y)
         {
             _moveTo += new PlanarVector(_x,_y);
             return this;

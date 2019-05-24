@@ -25,7 +25,7 @@ namespace Tests.utils
             //Act
             //Rotating to U-turn
             //Assert
-            Assert.AreEqual(vector.Rotate(Math.PI), expected);
+            Assert.AreEqual(vector.Rotate(MathF.PI), expected);
         }
 
         [Test]

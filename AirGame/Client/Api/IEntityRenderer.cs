@@ -44,7 +44,7 @@ namespace GlLib.Client.API
 
             var box = _e.AaBb;
             spawnSprite = SpawnSprite;
-            spawnSprite.Translate(new PlanarVector(6, box.Height*-128));
+            spawnSprite.Translate(new PlanarVector(6, (float)box.Height*-128));
             spawnSprite.SetColor(new Color4(1, 1, 1, 0.8f));
             
             spawnSprite.Scale(8, 8);

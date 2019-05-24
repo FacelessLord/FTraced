@@ -9,6 +9,7 @@ namespace GlLib.Client.Graphic.Renderers
     internal class BatRenderer : EntityRenderer
     {
         public LinearSprite batSprite;
+        // TODO 
         public LinearSprite spawnSprite;
 
         public override void Setup(Entity _p)

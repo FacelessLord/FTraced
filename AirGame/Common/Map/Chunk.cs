@@ -10,8 +10,8 @@ namespace GlLib.Common.Map
 {
     public class Chunk
     {
-        public const double BlockWidth = 64;
-        public const double BlockHeight = 32;
+        public const short BlockWidth = 64;
+        public const short BlockHeight = 32;
         public TerrainBlock[,] blocks; // = new TerrainBlock[16,16];
 
         public int chunkX;

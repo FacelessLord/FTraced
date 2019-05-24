@@ -20,7 +20,7 @@ namespace GlLib.Common.Entities
         private bool isDead;
 
         public bool isVelocityDinamic = true;
-        public PlanarVector maxVel = new PlanarVector(0.7, 0.7);
+        public PlanarVector maxVel = new PlanarVector(0.7f, 0.7f);
 
         public NbtTag nbtTag = new NbtTag();
 
@@ -83,7 +83,7 @@ namespace GlLib.Common.Entities
             var jsonObj = new JsonObjectCollection("entity");
 //            SidedConsole.WriteLine((this is Player) +"" + GetName());
             jsonObj.Add(new JsonStringValue("entityId", GetName()));
-            if (position != null && velocity != null && maxVel != null && worldObj != null)
+            if (position != null && worldObj != null)
             {
                 jsonObj.Add(new JsonStringValue("Position", Position + ""));
                 jsonObj.Add(new JsonStringValue("Velocity", velocity + ""));
@@ -133,7 +133,7 @@ namespace GlLib.Common.Entities
 
             MoveEntity();
 
-            if (isVelocityDinamic) velocity *= 0.85;
+            if (isVelocityDinamic) velocity *= 0.85f;
 
 
             foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
@@ -260,8 +260,8 @@ namespace GlLib.Common.Entities
             {
                 var hashCode = worldObj != null ? worldObj.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (position != null ? position.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (velocity != null ? velocity.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (maxVel != null ? maxVel.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (velocity.GetHashCode());
+                hashCode = (hashCode * 397) ^ (maxVel.GetHashCode());
                 hashCode = (hashCode * 397) ^ (chunkObj != null ? chunkObj.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (nbtTag != null ? nbtTag.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ isDead.GetHashCode();
