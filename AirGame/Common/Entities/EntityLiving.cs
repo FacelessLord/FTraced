@@ -27,7 +27,7 @@ namespace GlLib.Common.Entities
             Armor = 0;
             Health = 100;
             MaxHealth = 100;
-            DamageTimer = -1;
+            DamageTimer = 0;
         }
 
         public bool CanDie { get; set; } = true;

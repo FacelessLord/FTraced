@@ -212,10 +212,10 @@ namespace GlLib.Client.Input
             BindClick(Key.G, spawnSlime, "world.spawn.slime");
             BindClick(Key.B, spawnBat, "world.spawn.bat");
 
-            BindClick(Key.Keypad1, spawnBox, "world.spawn.Box");
-            BindClick(Key.Keypad2, spawnPile, "world.spawn.Pile");
-            BindClick(Key.Keypad3, spawnStreetlight, "world.spawn.Streetlight");
-            BindClick(Key.Keypad4, spawnPotion, "world.spawn.Potion");
+            BindClick(Key.Z, spawnBox, "world.spawn.Box");
+            BindClick(Key.X, spawnPile, "world.spawn.Pile");
+            BindClick(Key.C, spawnStreetlight, "world.spawn.Streetlight");
+            BindClick(Key.V, spawnPotion, "world.spawn.Potion");
 
             BindClick(Key.Keypad0, saveWorld, "world.save.world");
             BindClick(Key.Enter, setBlock, "world.set.block");

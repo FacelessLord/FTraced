@@ -37,19 +37,27 @@ namespace GlLib.Common.Map
             }
         }
 
-        public virtual bool RequiresSpecialRenderer(World _world, int _x, int _y)
-        {
-            return false;
-        }
-
         public virtual AxisAlignedBb GetCollisionBox()
         {
             return null;
         }
 
+        public virtual bool RequiresSpecialRenderer(World _world, int _x, int _y)
+        {
+            return false;
+        }
+
         public virtual IBlockRenderer GetSpecialRenderer(World _world, int _x, int _y)
         {
             return null;
+        }
+
+        public enum BlockRotation
+        {
+            Up = 0,
+            Left = 90,
+            Down = 180,
+            Right = 270
         }
     }
 }

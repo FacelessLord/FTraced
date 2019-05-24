@@ -69,9 +69,9 @@ namespace GlLib.Client.API
                     GL.PopMatrix();
                 }
 
-                if (el.DamageTimer > 0 && el.DamageTimer > 3)
+                if ( el.DamageTimer > 1)
                     Vertexer.Colorize(OnDamage);
-                if (el.DamageTimer < 0)
+                if (el.DamageTimer < -1)
                     Vertexer.Colorize(OnHeal);
             }
 
