@@ -120,7 +120,7 @@ namespace GlLib.Client.Graphic
             try
             {
                 base.OnLoad(_e);
-                VSync = VSyncMode.Off;
+                VSync = VSyncMode.On;
                 TryOpenGui(new GuiMainMenu());
                 Core.profiler.SetState(State.MainMenu);
             }
@@ -170,16 +170,27 @@ namespace GlLib.Client.Graphic
             }
         }
 
+        public int FPS => sum / counter;
+        public int counter = 1;
+        public int sum = 50;
+
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
+            if (!(Proxy.GetClient() is null) && Proxy.GetClient().MachineTime.Second % 5 == 0)
+            {
+                sum = FPS;
+                counter = 1;
+            }
+            
+            sum += (int) (1 / _e.Time);
+            counter++;
             try
             {
                 base.OnRenderFrame(_e);
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+//                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 if (serverStarted)
                     RenderWorld();
 
-                GL.Clear(ClearBufferMask.DepthBufferBit);
                 //GUI render is not connected to the world
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadIdentity();
