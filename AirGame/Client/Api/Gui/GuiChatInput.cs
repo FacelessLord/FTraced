@@ -234,6 +234,12 @@ namespace GlLib.Client.Api.Gui
                     text = commands[--historyPointer].Substring(3);
                     cursorX = text.Length;
                 }
+                else
+                {
+                    text = "";
+                    cursorX = 0;
+                    historyPointer = 0;
+                }
             }
         }
 

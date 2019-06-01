@@ -57,7 +57,7 @@ namespace GlLib.Client.Api.Sprites
             layout = new Layout(texture.width, texture.height, _countX, _countY);
         }
 
-        public virtual void Render(int _stepCount)
+        public virtual void Render(long _stepCount)
         {
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(_stepCount);
 

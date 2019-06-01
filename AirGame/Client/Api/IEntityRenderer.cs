@@ -43,7 +43,7 @@ namespace GlLib.Client.API
             isSetUp = true;
 
             var box = _e.AaBb;
-            spawnSprite = SpawnSprite;
+            spawnSprite = SpawnSprite.SetNoRepeat();
             spawnSprite.Translate(new PlanarVector(6, box.Height*-128));
             spawnSprite.SetColor(new Color4(1, 1, 1, 0.8f));
             
@@ -82,7 +82,7 @@ namespace GlLib.Client.API
             Vertexer.DrawSquare(-2, -2, 2, 2);
             Vertexer.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if (_e is EntityLiving)
-                if (spawnSprite.FullFrameCount < 1)
+                if (!spawnSprite.frozen)
                 {
                     spawnSprite.Render();
                 }

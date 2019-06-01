@@ -31,13 +31,6 @@ namespace GlLib.Client.API
             }
 
             sprites[EntityState.Dead].SetNoRepeat();
-
-            //            var idleTexture = Vertexer.LoadTexture(entityName + "_idle.png");
-            //            var walkTexture = Vertexer.LoadTexture(entityName + "_walk.png");
-            //            var aoeAttackTexture = Vertexer.LoadTexture(entityName + "_aoe_attack.png");
-            //            var directedAttackTexture = Vertexer.LoadTexture(entityName + "_directed_attack.png");
-            //            var interruptedAttackTexture = Vertexer.LoadTexture(entityName + "_interrupted.png");
-            //            var deathTexture = Vertexer.LoadTexture(entityName + "_death.png");
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

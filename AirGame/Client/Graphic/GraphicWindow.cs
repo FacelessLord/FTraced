@@ -170,7 +170,7 @@ namespace GlLib.Client.Graphic
             }
         }
 
-        public int FPS => sum / counter;
+        public int Fps => sum / counter;
         public int counter = 1;
         public int sum = 50;
 
@@ -178,7 +178,7 @@ namespace GlLib.Client.Graphic
         {
             if (!(Proxy.GetClient() is null) && Proxy.GetClient().MachineTime.Second % 5 == 0)
             {
-                sum = FPS;
+                sum = Fps;
                 counter = 1;
             }
             
@@ -190,7 +190,6 @@ namespace GlLib.Client.Graphic
 //                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 if (serverStarted)
                     RenderWorld();
-                GL.DrawElements(BeginMode.Lines,2,DrawElementsType.UnsignedInt,);
                 //GUI render is not connected to the world
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadIdentity();

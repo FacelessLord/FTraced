@@ -9,7 +9,7 @@ namespace GlLib.Client.Graphic.Renderers
 {
     public class CastleRenderer : IBlockRenderer
     {
-        public ISprite castleSprite;
+        public Sprite castleSprite;
         protected const string SimpleStructPath = @"simple_structs/";
 
         public CastleRenderer()

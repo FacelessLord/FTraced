@@ -30,7 +30,7 @@ namespace GlLib.Common.Items
             return "items/"+unlocalizedName + ".png";
         }
 
-        public virtual ISprite GetItemSprite(ItemStack _itemStack)
+        public virtual Sprite GetItemSprite(ItemStack _itemStack)
         {
             return new PictureSprite(GetTextureName(_itemStack));
         }

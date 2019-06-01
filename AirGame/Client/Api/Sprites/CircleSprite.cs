@@ -4,7 +4,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Api.Sprites
 {
-    public class CircleSprite : ISprite
+    public class CircleSprite : Sprite
     {
         public int accuracy;
 
@@ -18,7 +18,7 @@ namespace GlLib.Client.Api.Sprites
             accuracy = _accuracy;
         }
 
-        public void Render()
+        protected override void RenderSprite()
         {
             Vertexer.BindTexture("monochromatic.png");
             Vertexer.DrawCircle(accuracy);
