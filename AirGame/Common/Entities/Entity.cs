@@ -78,9 +78,14 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public virtual JsonObject CreateJsonObject()
+        public string GetStandardName()
         {
-            var jsonObj = new JsonObjectCollection("entity");
+            return "entity";
+        }
+
+        public virtual JsonObject CreateJsonObject(string _objectName)
+        {
+            var jsonObj = new JsonObjectCollection(_objectName);
 //            SidedConsole.WriteLine((this is Player) +"" + GetName());
             jsonObj.Add(new JsonStringValue("entityId", GetName()));
             if (position != null && velocity != null && maxVel != null && worldObj != null)

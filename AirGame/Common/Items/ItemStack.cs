@@ -15,11 +15,11 @@ namespace GlLib.Common.Items
             (item, stackSize, stackTag) = (_item, _stackSize, _tag);
         }
 
-        public JsonObject CreateJsonObject()
+        public JsonObject CreateJsonObject(string _objectName)
         {
             var tag = new NbtTag();
             SaveToNbt(tag);
-            return new JsonStringValue("Item" + GetHashCode(), tag.ToString());
+            return new JsonStringValue(_objectName, tag.ToString());
         }
 
         public void LoadFromJsonObject(JsonObject _jsonObject)
@@ -31,6 +31,11 @@ namespace GlLib.Common.Items
                 stackSize = jsonStack.stackSize;
                 stackTag = jsonStack.stackTag;
             }
+        }
+
+        public string GetStandardName()
+        {
+            return "itemStack";
         }
 
         public static ItemStack LoadFromJson(JsonStringValue _rawTag)

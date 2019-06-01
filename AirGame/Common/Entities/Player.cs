@@ -78,7 +78,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
             if (state.Equals(EntityState.Dead))
-                if (!(Proxy.GetWindow().guiFrame is ResurrectionGui))
+                if (!(Proxy.GetWindow().guiFrame is ResurrectionGui) && this == Proxy.GetClient().player)
                 {
                     Proxy.GetWindow().CloseGui();
                     Proxy.GetWindow().TryOpenGui(new ResurrectionGui());
@@ -96,9 +96,9 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public override JsonObject CreateJsonObject()
+        public override JsonObject CreateJsonObject(string _objectName)
         {
-            var obj = base.CreateJsonObject();
+            var obj = base.CreateJsonObject(_objectName);
             if (obj is JsonObjectCollection collection)
             {
                 collection.Add(new JsonStringValue("nickName", nickname));

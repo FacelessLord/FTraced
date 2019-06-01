@@ -54,9 +54,9 @@ namespace GlLib.Common.Entities
             GodMode = _enable;
         }
 
-        public override JsonObject CreateJsonObject()
+        public override JsonObject CreateJsonObject(string _objectName)
         {
-            var obj = base.CreateJsonObject();
+            var obj = base.CreateJsonObject(_objectName);
             if (obj is JsonObjectCollection collection)
             {
                 collection.Add(new JsonNumericValue("Armor", Armor));

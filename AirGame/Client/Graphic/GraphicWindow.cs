@@ -190,7 +190,7 @@ namespace GlLib.Client.Graphic
 //                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 if (serverStarted)
                     RenderWorld();
-
+                GL.DrawElements(BeginMode.Lines,2,DrawElementsType.UnsignedInt,);
                 //GUI render is not connected to the world
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadIdentity();

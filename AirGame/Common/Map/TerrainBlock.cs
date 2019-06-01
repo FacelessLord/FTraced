@@ -19,9 +19,9 @@ namespace GlLib.Common.Map
         public abstract string TextureName { get; internal set; }
         public double Rotation { get; protected set; }
 
-        public JsonObject CreateJsonObject()
+        public JsonObject CreateJsonObject(string _objectName)
         {
-            var jsonObj = new JsonObjectCollection(GetType().Name);
+            var jsonObj = new JsonObjectCollection(_objectName);
             jsonObj.Add(new JsonStringValue("Name", Name));
             jsonObj.Add(new JsonStringValue("TextureName", TextureName));
 
@@ -35,6 +35,11 @@ namespace GlLib.Common.Map
                 Name = ((JsonStringValue) collection[0]).Value;
                 TextureName = ((JsonStringValue) collection[1]).Value;
             }
+        }
+
+        public string GetStandardName()
+        {
+            return "block";
         }
 
         public virtual AxisAlignedBb GetCollisionBox()

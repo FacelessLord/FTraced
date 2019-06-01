@@ -4,7 +4,9 @@ namespace GlLib.Common.API
 {
     public interface IJsonSerializable
     {
-        JsonObject CreateJsonObject();
+        JsonObject CreateJsonObject(string _objectName);
         void LoadFromJsonObject(JsonObject _jsonObject);
+
+        string GetStandardName();
     }
 }
