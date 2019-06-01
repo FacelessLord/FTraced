@@ -34,7 +34,7 @@ namespace GlLib.Client.Graphic.Gui
             var d = 4;
             var panel = new GuiPanel(_x, _y, 50 + 3 * w / 9, 2 * h / 5);
             Add(panel);
-            panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
+            panel.bar = new GuiScrollBar(panel.width - 50, 0, 50, panel.height);
             for (var i = 0; i < _inv.GetMaxSize(); i++)
             {
                 var dy = slotSize + 2;

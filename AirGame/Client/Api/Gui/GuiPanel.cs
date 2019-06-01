@@ -15,7 +15,7 @@ namespace GlLib.Client.Api.Gui
         public static int d = 4;
         public GuiScrollBar bar;
         public int dx = 0;
-        public int dy;
+        public int dy = 0;
         public bool enableBackground = true;
 
         public TextureLayout rectangleLayout;
@@ -86,7 +86,7 @@ namespace GlLib.Client.Api.Gui
 
             if (bar != null && objFocus is null)
                 if (bar.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    return bar.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
+                    objFocus = bar.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
 
             return objFocus;
         }
