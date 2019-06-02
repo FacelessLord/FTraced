@@ -2,6 +2,7 @@ using System;
 using System.Net.Json;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {

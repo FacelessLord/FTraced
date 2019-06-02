@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Math
 {
     public class RestrictedVector3D : PlanarVector
     {
@@ -16,8 +16,8 @@ namespace GlLib.Utils
             z = _z;
         }
 
-        public int Ix => (int) Math.Floor(x);
-        public int Iy => (int) Math.Floor(y);
+        public int Ix => (int) System.Math.Floor(x);
+        public int Iy => (int) System.Math.Floor(y);
 
         public static RestrictedVector3D operator +(RestrictedVector3D _a, RestrictedVector3D _b)
         {
@@ -72,13 +72,13 @@ namespace GlLib.Utils
 
         public static RestrictedVector3D FromAngleAndHeight(double _angle, int _height)
         {
-            return new RestrictedVector3D(Math.Cos(_angle), Math.Sin(_angle), _height);
+            return new RestrictedVector3D(System.Math.Cos(_angle), System.Math.Sin(_angle), _height);
         }
 
         public RestrictedVector3D Rotate(double _angle)
         {
-            var cos = Math.Cos(_angle);
-            var sin = Math.Sin(_angle);
+            var cos = System.Math.Cos(_angle);
+            var sin = System.Math.Sin(_angle);
             return new RestrictedVector3D(x * cos - y * sin, x * sin + y * cos, z);
         }
 
@@ -110,8 +110,8 @@ namespace GlLib.Utils
 
         protected bool Equals(RestrictedVector3D _item)
         {
-            return Math.Abs(_item.x - x) < 1e-3
-                   && Math.Abs(_item.y - y) < 1e-3
+            return System.Math.Abs(_item.x - x) < 1e-3
+                   && System.Math.Abs(_item.y - y) < 1e-3
                    && _item.z == z;
         }
 
@@ -141,18 +141,18 @@ namespace GlLib.Utils
             (x, y) = (_x, _y);
         }
 
-        public double Angle => Math.Atan2(y, x);
+        public double Angle => System.Math.Atan2(y, x);
 
-        public double Length => Math.Sqrt(x * x + y * y);
+        public double Length => System.Math.Sqrt(x * x + y * y);
 
         public PlanarVector Normalized
         {
             get
             {
-                if (Math.Abs(Length) < 1e-4) return new PlanarVector(0, 0);
+                if (System.Math.Abs(Length) < 1e-4) return new PlanarVector(0, 0);
 
-                var newX = Math.Round(x * 1 / Length);
-                var newY = Math.Round(y * 1 / Length);
+                var newX = System.Math.Round(x * 1 / Length);
+                var newY = System.Math.Round(y * 1 / Length);
                 return new PlanarVector(newX, newY);
             }
         }
@@ -212,15 +212,15 @@ namespace GlLib.Utils
 
         public void Normalize()
         {
-            if (Math.Abs(Length) < 1e-4)
+            if (System.Math.Abs(Length) < 1e-4)
             {
                 x = 0;
                 y = 0;
                 return;
             }
 
-            x = Math.Round(x * 1 / Length);
-            y = Math.Round(y * 1 / Length);
+            x = System.Math.Round(x * 1 / Length);
+            y = System.Math.Round(y * 1 / Length);
         }
 
         public static PlanarVector FromString(string _s)
@@ -248,8 +248,8 @@ namespace GlLib.Utils
 
         protected bool Equals(PlanarVector _item)
         {
-            return Math.Abs(_item.x - x) < 1e-3
-                   && Math.Abs(_item.y - y) < 1e-3;
+            return System.Math.Abs(_item.x - x) < 1e-3
+                   && System.Math.Abs(_item.y - y) < 1e-3;
         }
 
         public override int GetHashCode()
@@ -334,7 +334,7 @@ namespace GlLib.Utils
             //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
             //    SidedConsole.WriteLine(this + " | " + _box);
             //TODO it's magic check please
-            return Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
+            return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
         }
 
         public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)
@@ -388,10 +388,10 @@ namespace GlLib.Utils
 
         protected bool Equals(AxisAlignedBb _item)
         {
-            return Math.Abs(_item.startX - startX) < 1e-3
-                   && Math.Abs(_item.startY - startY) < 1e-3
-                   && Math.Abs(_item.endX - endX) < 1e-3
-                   && Math.Abs(_item.endY - endY) < 1e-3;
+            return System.Math.Abs(_item.startX - startX) < 1e-3
+                   && System.Math.Abs(_item.startY - startY) < 1e-3
+                   && System.Math.Abs(_item.endX - endX) < 1e-3
+                   && System.Math.Abs(_item.endY - endY) < 1e-3;
         }
 
         public override int GetHashCode()

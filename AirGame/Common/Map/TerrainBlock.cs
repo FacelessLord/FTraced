@@ -1,7 +1,8 @@
 using System.Net.Json;
-using GlLib.Client.API;
-using GlLib.Common.API;
+using GlLib.Client.Api.Renderers;
+using GlLib.Common.Api;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Map
 {

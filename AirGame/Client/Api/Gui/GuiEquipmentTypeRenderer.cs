@@ -1,5 +1,4 @@
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;

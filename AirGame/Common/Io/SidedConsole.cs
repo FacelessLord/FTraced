@@ -1,7 +1,6 @@
 using System;
-using GlLib.Common;
 
-namespace GlLib.Utils
+namespace GlLib.Common.Io
 {
     public static class SidedConsole
     {

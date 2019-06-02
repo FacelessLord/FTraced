@@ -1,8 +1,7 @@
 using GlLib.Client.Graphic;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiHorizontalBar : GuiObject
     {

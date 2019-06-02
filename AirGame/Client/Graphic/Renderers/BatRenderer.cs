@@ -1,7 +1,8 @@
-﻿using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
+﻿using GlLib.Client.Api.Renderers;
+using GlLib.Client.Api.Sprites;
 using GlLib.Common.Entities;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics;
 
 namespace GlLib.Client.Graphic.Renderers

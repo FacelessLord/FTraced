@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Json;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -11,6 +10,7 @@ using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Input;
 
 namespace GlLib.Client.Input

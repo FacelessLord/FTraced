@@ -1,14 +1,13 @@
 using System;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API
+namespace GlLib.Client.Api.Renderers
 {
     public abstract class EntityRenderer
     {

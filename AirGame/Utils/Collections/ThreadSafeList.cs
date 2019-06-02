@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Collections
 {
     public class ThreadSafeList<T> : IList<T>
     {

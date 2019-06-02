@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;

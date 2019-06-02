@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GlLib.Client.API;
+using GlLib.Client.Api;
 
 namespace GlLib.Utils.StringParser
 {

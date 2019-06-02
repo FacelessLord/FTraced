@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Common.Io;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Collections
 {
     public class NbtTag : IEnumerable<string>
     {

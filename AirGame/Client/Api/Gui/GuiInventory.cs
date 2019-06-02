@@ -1,8 +1,7 @@
-using GlLib.Client.Api.Gui;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiInventory : GuiFrame
     {

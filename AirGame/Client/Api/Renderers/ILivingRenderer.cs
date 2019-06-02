@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API
+namespace GlLib.Client.Api.Renderers
 {
     public class AttackingLivingRenderer : EntityRenderer
     {

@@ -1,5 +1,5 @@
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
 
 namespace GlLib.Common.Items
 {

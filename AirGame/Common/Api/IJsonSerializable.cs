@@ -1,6 +1,6 @@
 using System.Net.Json;
 
-namespace GlLib.Common.API
+namespace GlLib.Common.Api
 {
     public interface IJsonSerializable
     {

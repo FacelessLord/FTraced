@@ -1,4 +1,4 @@
-using GlLib.Client.API.Gui;
+using GlLib.Client.Api.Gui;
 using GlLib.Client.Graphic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;

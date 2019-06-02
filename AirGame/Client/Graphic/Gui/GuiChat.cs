@@ -1,7 +1,6 @@
 using GlLib.Client.Api.Gui;
-using GlLib.Client.API;
-using GlLib.Client.API.Gui;
 using GlLib.Common;
+using GlLib.Common.Io;
 using OpenTK;
 
 namespace GlLib.Client.Graphic.Gui

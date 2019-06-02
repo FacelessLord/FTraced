@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using GlLib.Common.Api.Inventory;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Input;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiFrame
     {

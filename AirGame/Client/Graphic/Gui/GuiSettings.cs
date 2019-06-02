@@ -1,6 +1,5 @@
 using System.Linq;
 using GlLib.Client.Api.Gui;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
 using OpenTK;

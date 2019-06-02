@@ -1,8 +1,9 @@
+using GlLib.Client.Api.Gui;
 using GlLib.Common;
 using GlLib.Common.SpellCastSystem;
 using OpenTK;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Graphic.Gui
 {
     public class Hud : GuiFrame
     {

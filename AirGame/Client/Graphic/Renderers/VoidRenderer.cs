@@ -1,4 +1,4 @@
-using GlLib.Client.API;
+using GlLib.Client.Api.Renderers;
 using GlLib.Common.Map;
 
 namespace GlLib.Client.Graphic.Renderers

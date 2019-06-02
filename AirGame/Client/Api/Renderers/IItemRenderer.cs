@@ -1,6 +1,6 @@
 using GlLib.Common.Items;
 
-namespace GlLib.Client.API
+namespace GlLib.Client.Api.Renderers
 {
     public interface IItemRenderer
     {

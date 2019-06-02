@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Utils;
 
-namespace GlLib.Common.API
+namespace GlLib.Common.Api
 {
     public class TraitStack : IJsonSerializable
     {

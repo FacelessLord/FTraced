@@ -1,4 +1,4 @@
-namespace GlLib.Client.API
+namespace GlLib.Client.Api
 {
     public class Layout
     {

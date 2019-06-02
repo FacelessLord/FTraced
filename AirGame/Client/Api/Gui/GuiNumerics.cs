@@ -2,7 +2,7 @@ using GlLib.Client.Api.Sprites;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiNumeric : GuiObject
     {

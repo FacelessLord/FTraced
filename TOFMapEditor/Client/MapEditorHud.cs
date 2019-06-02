@@ -1,4 +1,4 @@
-﻿using GlLib.Client.API.Gui;
+﻿using GlLib.Client.Api.Gui;
 using OpenTK;
 
 namespace TOFMapEditor.Client

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Common;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Entities;

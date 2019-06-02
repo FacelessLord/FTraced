@@ -1,12 +1,12 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Utils;
+using GlLib.Common.Io;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiSign : GuiObject
     {

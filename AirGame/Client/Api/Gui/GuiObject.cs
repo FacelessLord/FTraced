@@ -1,8 +1,8 @@
-using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Input;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public abstract class GuiObject
     {

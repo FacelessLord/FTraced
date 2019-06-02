@@ -1,6 +1,7 @@
 using System.Net.Json;
-using GlLib.Common.API;
+using GlLib.Common.Api;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
 
 namespace GlLib.Common.Items
 {

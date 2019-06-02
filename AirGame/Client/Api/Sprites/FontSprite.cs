@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GlLib.Client.API;
 using GlLib.Client.Graphic;
 using OpenTK.Graphics.OpenGL;
 

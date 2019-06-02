@@ -1,5 +1,5 @@
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Utils;

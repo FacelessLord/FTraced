@@ -1,10 +1,9 @@
-using System.Diagnostics;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiSlot : GuiObject
     {

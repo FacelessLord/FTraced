@@ -3,8 +3,10 @@ using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
+using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 
 namespace GlLib.Client
 {

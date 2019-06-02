@@ -1,7 +1,5 @@
 using System;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
-using GlLib.Client.API;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -138,7 +136,7 @@ namespace GlLib.Client.Api.Gui
 
 
             _parser.AddParse("brush",
-                (_s, _io) => { _io.Output($"Now brush have block {Proxy.GetClient().player.Brush.Name}"); });
+                (_s, _io) => { _io.Output($"Now brush is {Proxy.GetClient().player.Brush.Name}"); });
             _parser.AddParse("list", (_s, _io) =>
             {
                 if (_s.Length == 0)

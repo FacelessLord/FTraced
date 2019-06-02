@@ -1,4 +1,6 @@
-namespace GlLib.Common.Map.Blocks
+using GlLib.Common.Map;
+
+namespace GlLib.Common.Blocks
 {
     public class Path : TerrainBlock
     {

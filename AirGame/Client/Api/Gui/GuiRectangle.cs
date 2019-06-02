@@ -1,11 +1,11 @@
 using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
-using GlLib.Utils;
+using GlLib.Common.Io;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiRectangle : GuiObject
     {

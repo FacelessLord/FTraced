@@ -1,10 +1,9 @@
 ﻿using System;
 using GlLib.Client.Graphic.Renderers;
-using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 
-namespace GlLib.Common.Entities
+namespace GlLib.Common.Entities.Items
 {
     public class Box : EntityLiving
     {

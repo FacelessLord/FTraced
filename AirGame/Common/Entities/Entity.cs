@@ -1,11 +1,13 @@
 using System;
 using System.Net.Json;
-using GlLib.Client.API;
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Graphic.Renderers;
-using GlLib.Common.API;
+using GlLib.Common.Api;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
@@ -19,7 +21,7 @@ namespace GlLib.Common.Entities
 
         private bool isDead;
 
-        public bool isVelocityDinamic = true;
+        public bool isAffectedByFriction = true;
         public PlanarVector maxVel = new PlanarVector(0.7, 0.7);
 
         public NbtTag nbtTag = new NbtTag();
@@ -138,7 +140,7 @@ namespace GlLib.Common.Entities
 
             MoveEntity();
 
-            if (isVelocityDinamic) velocity *= 0.85;
+            if (isAffectedByFriction) velocity *= 0.85;
 
 
             foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
@@ -207,11 +209,14 @@ namespace GlLib.Common.Entities
 
         public void SetDead(bool _dead = true)
         {
-            OnDead();
-            isDead = _dead;
-            lock (worldObj.entityRemoveQueue)
+            if (EventBus.OnEntityDeath(this))
             {
-                worldObj.DespawnEntity(this);
+                OnDead();
+                isDead = _dead;
+                lock (worldObj.entityRemoveQueue)
+                {
+                    worldObj.DespawnEntity(this);
+                }
             }
         }
 

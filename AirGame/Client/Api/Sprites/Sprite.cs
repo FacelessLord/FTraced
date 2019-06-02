@@ -1,5 +1,6 @@
 using GlLib.Client.Graphic;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;

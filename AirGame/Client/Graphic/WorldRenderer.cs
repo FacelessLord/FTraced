@@ -1,5 +1,6 @@
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic
