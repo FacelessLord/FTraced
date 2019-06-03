@@ -36,7 +36,7 @@ namespace GlLib.Client.Graphic.Gui
                 var dw = settings.width - settings.bar.width;
                 var n = 3;
                 var key = new GuiBindButton(bind.Key, bind.Value, 0, i * d, d * n, d);
-                var sign = new GuiSign(KeyBinds.delegateNames[bind.Value], d * n, i * d, dw - d * n, d);
+                var sign = new GuiSign(KeyBinds.delegateNames[bind.Value], 16, d * n, i * d, dw - d * n, d);
                 settings.Add(key);
                 settings.Add(sign);
             }

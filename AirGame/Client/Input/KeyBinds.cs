@@ -116,7 +116,12 @@ namespace GlLib.Client.Input
             return true;
         };
 
-        public static Func<Player, bool> exit = _p => Proxy.Exit = true;
+        public static Func<Player, bool> exit = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled())
+                Proxy.Exit = true;
+            return true;
+        };
 
         public static Func<Player, bool> spellFire = _p =>
         {

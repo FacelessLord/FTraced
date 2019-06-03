@@ -29,7 +29,7 @@ namespace GlLib.Client.Api.Gui
             spriteEnabled = new TextureLayout(texture, layout);
             spritePressed = new TextureLayout(textureSelected, layout);
             spriteDisabled = new TextureLayout(textureDisabled, layout);
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public GuiButton(string _text, int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width,
@@ -43,7 +43,7 @@ namespace GlLib.Client.Api.Gui
             spriteEnabled = new TextureLayout(texture, layout);
             spritePressed = new TextureLayout(textureSelected, layout);
             spriteDisabled = new TextureLayout(textureDisabled, layout);
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)

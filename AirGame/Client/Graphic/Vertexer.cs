@@ -68,6 +68,10 @@ namespace GlLib.Client.Graphic
         public static void ClearColor()
         {
             Color = Color4.White;
+        }
+        
+        public static void ResetMode()
+        {
             ColorMode = ColorAdditionMode.OnlyFirst;
         }
 

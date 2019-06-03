@@ -19,12 +19,12 @@ namespace GlLib.Client.Api.Renderers
         protected Color4 OnHeal = new Color4(0, 1, 0, 1.0f);
 
         public LinearSprite spawnSprite;
-        protected AlagardFontSprite Text;
+        protected FontSprite Text;
         private float start = -4;
 
         public EntityRenderer()
         {
-            Text = new AlagardFontSprite();
+            Text = FontSprite.Alagard;
         }
 
         protected static LinearSprite SpawnSprite
@@ -43,9 +43,9 @@ namespace GlLib.Client.Api.Renderers
 
             var box = _e.AaBb;
             spawnSprite = SpawnSprite.SetNoRepeat();
-            spawnSprite.Translate(new PlanarVector(6, box.Height*-128));
+            spawnSprite.Translate(new PlanarVector(6, box.Height * -128));
             spawnSprite.SetColor(new Color4(1, 1, 1, 0.8f));
-            
+
             spawnSprite.Scale(8, 8);
             spawnSprite.Scale((float) box.Width, (float) box.Height);
         }
@@ -59,16 +59,16 @@ namespace GlLib.Client.Api.Renderers
 
             if (_e is EntityLiving el)
             {
+
                 if (el.DamageTimer > 0)
                 {
                     GL.PushMatrix();
                     GL.Translate(Math.Sin(Math.Abs(el.DamageTimer) * 2) * 8, (-5 + Math.Abs(el.DamageTimer)) * 16, 0);
                     el.DamageTimer -= 0.05f * Math.Sign(el.DamageTimer);
-                    Text.DrawText($"{el.LastDamage}", 12, 0.85f, 0, 0);
+                    Text.DrawText($"{el.LastDamage}", 12, 0.85f);
                     GL.PopMatrix();
                 }
-
-                if ( el.DamageTimer > 1)
+                if (el.DamageTimer > 1)
                     Vertexer.Colorize(OnDamage);
                 if (el.DamageTimer < -1)
                     Vertexer.Colorize(OnHeal);
@@ -87,6 +87,7 @@ namespace GlLib.Client.Api.Renderers
                 }
 
             Vertexer.ClearColor();
+            Vertexer.ResetMode();
             GL.PopMatrix();
         }
 

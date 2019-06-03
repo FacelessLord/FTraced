@@ -45,7 +45,7 @@ namespace GlLib.Client.Graphic.Gui
                 panel.Add(slotRect);
                 var slot = new GuiSlotTypeRenderer(_inv, i, 0, dy * i);
                 panel.Add(slot);
-                var text = new GuiSlotSign(_inv, i, slotSize, dy * i,
+                var text = new GuiSlotSign(_inv, 16, i, slotSize, dy * i,
                     4 * w / 9 - d - slotSize * 5 / 2, slotSize);
                 panel.Add(text);
                 signs.Add(text);

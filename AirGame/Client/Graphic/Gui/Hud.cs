@@ -17,11 +17,11 @@ namespace GlLib.Client.Graphic.Gui
             var col = new Color(80, 80, 80, 120);
             AddRectangle(16, 16, 64, 64);
             AddRectangle(16, 20 + 64, 64, 20);
-            AddText(playerName, 16, 12 + 64, 64, 30);
+            AddText(playerName, 16, 16, 12 + 64, 64, 30);
 //            AddPicture("head.png", 16, 16, 64, 64);
             cast = AddHorizontalBar(80, 48, 500, 30, new Color(240, 200, 60, 255));
             health = AddHorizontalBar(80, 16, 500, 30, new Color(240, 60, 40, 255));
-            moneySign = new GuiSign(Proxy.GetWindow().Fps+ "", 40, 20, 8, 8, Color.Gold);
+            moneySign = new GuiSign(Proxy.GetWindow().Fps+ "", 16, 40, 20, 8, 8, Color.Gold);
             Add(moneySign);
             //            AddNumeric(350, 80, 20, 10);
         }

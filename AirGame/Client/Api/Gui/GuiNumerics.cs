@@ -13,13 +13,13 @@ namespace GlLib.Client.Api.Gui
 
         public GuiNumeric(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public GuiNumeric(int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width, _height,
             _color)
         {
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public override void Update(GuiFrame _gui)

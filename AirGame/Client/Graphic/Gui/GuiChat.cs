@@ -20,7 +20,7 @@ namespace GlLib.Client.Graphic.Gui
             historyRect = AddRectangle(d / 2, h - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3, w - d,
                 d * (ChatIo.MaxLines + 1) * 2 / 3);
             chatRect = AddRectangle(d / 2, h - d * 2, w - d, d);
-            chat = new GuiChatInput("", d * 2 / 3, h - d * 2, w - d, d);
+            chat = new GuiChatInput("", 16, d * 2 / 3, h - d * 2, w - d, d);
             Add(chat);
         }
 

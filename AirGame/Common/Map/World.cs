@@ -86,7 +86,7 @@ namespace GlLib.Common.Map
                 }
 
                 EntityCount++;
-                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+//                SidedConsole.WriteLine($"Entity {_e} spawned in world");
             }
             else
             {
@@ -148,6 +148,7 @@ namespace GlLib.Common.Map
         {
             entityRemoveQueue.Add((_entity, _entity.chunkObj));
             EntityCount--;
+//            SidedConsole.WriteLine($"Entity {_entity} despawned in world");
         }
     }
 }

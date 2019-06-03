@@ -47,14 +47,14 @@ namespace GlLib.Client.Api.Gui
             return Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }
 
-        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height)
+        public GuiSign AddText(string _text, int _fontSize, int _x, int _y, int _width, int _height)
         {
-            return Add(new GuiSign(_text, _x, _y, _width, _height));
+            return Add(new GuiSign(_text, _fontSize, _x, _y, _width, _height));
         }
 
-        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height, Color _color)
+        public GuiSign AddText(string _text, int _fontSize, int _x, int _y, int _width, int _height, Color _color)
         {
-            return Add(new GuiSign(_text, _x, _y, _width, _height, _color));
+            return Add(new GuiSign(_text, _fontSize, _x, _y, _width, _height, _color));
         }
 
         public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height)

@@ -209,7 +209,7 @@ namespace GlLib.Common.Entities
 
         public void SetDead(bool _dead = true)
         {
-            if (EventBus.OnEntityDeath(this))
+            if (!EventBus.OnEntityDeath(this))
             {
                 OnDead();
                 isDead = _dead;
