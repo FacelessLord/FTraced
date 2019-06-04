@@ -128,11 +128,11 @@ namespace GlLib.Client.Api.Sprites
 
                 if (character != '\n')
                 {
-                    GL.Translate(-leftKern, vertKern / 2, 0);
+                    GL.Translate(-leftKern * _size / 12, vertKern * _size / 14 / 2, 0);
                     Render(character);
 
-                    d += 1.00 - rightKern - leftKern;
-                    GL.Translate(1.0 - rightKern, -vertKern / 2, 0);
+                    d += 1.00 - rightKern * _size / 12 - leftKern * _size / 12;
+                    GL.Translate(1.0 - rightKern * _size / 12, -vertKern * _size / 14 / 2, 0);
                 }
                 else
                 {

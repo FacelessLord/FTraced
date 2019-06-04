@@ -121,10 +121,11 @@ namespace GlLib.Client.Api.Gui
         {
             return false;
         }
+        
+        public static int timerSpeed = 40;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
-            var timerSpeed = 40;
             timer = (timer + 1) % timerSpeed;
             GL.PushMatrix();
             Vertexer.Colorize(color);
@@ -188,21 +189,21 @@ namespace GlLib.Client.Api.Gui
                     }
 
                     cursorX--;
-                    timer = 0;
+                    timer = timerSpeed / 2 + 1;
                 }
 
             if (k == Key.Left)
                 if (cursorX > 0)
                 {
                     cursorX--;
-                    timer = 0;
+                    timer = timerSpeed / 2 + 1;
                 }
 
             if (k.Equals(Key.Right))
                 if (cursorX < text.Length)
                 {
                     cursorX++;
-                    timer = 0;
+                    timer = timerSpeed / 2 + 1;
                 }
 
             if (k.Equals(Key.Delete))
@@ -218,7 +219,7 @@ namespace GlLib.Client.Api.Gui
                         var t2 = text.Substring(cursorX + 1);
                         text = t1 + t2;
                     }
-                    timer = 0;
+                    timer = timerSpeed / 2 + 1;
                 }
 
             if (k.Equals(Key.Enter))

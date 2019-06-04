@@ -24,7 +24,8 @@ namespace GlLib.Client.Api.Gui
         public int historyPointer = 0;
         private Parser _parser;
 
-        public GuiChatInput(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText, _fontSize, _x, _y, _width,
+        public GuiChatInput(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText,
+            _fontSize, _x, _y, _width,
             _height)
         {
             Initialize();
@@ -100,7 +101,8 @@ namespace GlLib.Client.Api.Gui
             var io = Proxy.GetClient().player.chatIo;
 
             io.Output("$> " + text);
-            _parser.Parse(text, io);
+            if (text.StartsWith('/'))
+                _parser.Parse(text.Substring(1), io);
 
             cursorX = 0;
             historyPointer = -1;

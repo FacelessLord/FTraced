@@ -143,8 +143,9 @@ namespace GlLib.Common.Entities
             if (isAffectedByFriction) velocity *= 0.85;
 
 
-            foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
-                OnCollideWith(e);
+            if (!noClip)
+                foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
+                    OnCollideWith(e);
 
 
             CheckVelocity();
@@ -166,7 +167,7 @@ namespace GlLib.Common.Entities
                 {
                     var blockX = Position.Ix % 16;
                     var blockY = Position.Iy % 16;
-                    if (blockX != prevBlockX || blockY != prevBlockY)
+                    if ((blockX != prevBlockX || blockY != prevBlockY) && !noClip)
                     {
                         var block = chunkObj[blockX, blockY];
                         var blockBox = block.GetCollisionBox();

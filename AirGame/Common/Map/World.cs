@@ -140,7 +140,7 @@ namespace GlLib.Common.Map
                 }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
+                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb) && !_entity.noClip)
                 .ToThreadSafeList();
         }
 

@@ -5,6 +5,7 @@ using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Utils.StringParser;
+using SixLabors.ImageSharp.MetaData.Profiles.Icc;
 
 namespace GlLib.Common.Chat
 {
@@ -27,6 +28,8 @@ namespace GlLib.Common.Chat
                 "Spawns entity.living. Use name. Example: lspawn box");
             AddParse("gm", (_s, _io) => ChangeGameMode(_s, _io),
                 "Change player's god mode.0 - if it should be on, 1 - if it should be off.");
+            AddParse("noclip", (_s, _io) => SwitchNoClip(_s, _io),
+                "Switches current player noClip state");
             AddParse("setbrush", (_s, _io) => ChangeBrush(_s, _io),
                 "Chose block to set to.");
             AddParse("brush",
@@ -35,9 +38,22 @@ namespace GlLib.Common.Chat
             AddParse("list", (_s, _io) => GetRegistryList(_s, _io),
                 "Shows game registry.");
             AddParse("save", (_p, _io) => SaveWorld(_p, _io),
-                "Saves whole world(including blocks)");
+                "Saves whole world (including blocks)");
             AddParse("killchunk", (_p, _io) => KillChunk(_p, _io),
                 "Kills all entities in chunk that can be killed");
+        }
+
+        public static void SwitchNoClip(string[] _s, IStringIo _io)
+        {
+            bool newState = !Proxy.GetClient().player.noClip;
+            if (_s.Length > 0 && bool.TryParse(_s[0], out bool definedState))
+            {
+                Proxy.GetClient().player.noClip = definedState;
+            }
+
+            Proxy.GetClient().player.noClip = newState;
+
+            _io.Output("Current noclip state: " + Proxy.GetClient().player.noClip);
         }
 
         public static void KillChunk(string[] _s, IStringIo _io)
