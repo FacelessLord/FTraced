@@ -12,7 +12,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            _texture = Vertexer.LoadTexture("monochromatic.png");
+            _texture = Textures.monochromatic;
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

@@ -13,7 +13,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            var layout = new TextureLayout(SimpleStructPath + "Coins.png", 8, 1);
+            var layout = new TextureLayout(Textures.coin, 8, 1);
             coinSprite = new LinearSprite(layout, 8, 18);
 //            coinSprite.Translate(new PlanarVector(-8, -8));
 //            coinSprite.Scale(new Vector3(0.5f, 0.5f, 1));

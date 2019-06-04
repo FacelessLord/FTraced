@@ -11,8 +11,6 @@ namespace GlLib.Client.Api.Renderers
 {
     public abstract class EntityRenderer
     {
-        protected const string SimpleStructPath = @"simple_structs/";
-        protected const string SystemPath = @"system/";
         public bool isSetUp;
 
         protected Color4 OnDamage = new Color4(1, 0, 0, 1.0f);
@@ -31,7 +29,7 @@ namespace GlLib.Client.Api.Renderers
         {
             get
             {
-                var layout = new TextureLayout(SystemPath + "spawn.png", 7, 6);
+                var layout = new TextureLayout(Textures.spawn, 7, 6);
                 return new LinearSprite(layout, 7 * 6, 3);
             }
         }

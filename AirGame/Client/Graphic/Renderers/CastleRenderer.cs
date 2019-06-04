@@ -10,11 +10,10 @@ namespace GlLib.Client.Graphic.Renderers
     public class CastleRenderer : IBlockRenderer
     {
         public Sprite castleSprite;
-        protected const string SimpleStructPath = @"simple_structs/";
 
         public CastleRenderer()
         {
-            var layout = new TextureLayout(SimpleStructPath + "Castle.png", 1, 1);
+            var layout = new TextureLayout(Textures.castle, 1, 1);
             castleSprite = new LinearSprite(layout, 1, 20).SetFrozen();
         }
 

@@ -19,8 +19,8 @@ namespace GlLib.Client.Api.Gui
 
         public GuiScrollBar(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            scrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
-            scroller = new TextureLayout("gui/scroller.png", 3, 3);
+            scrollBar = new TextureLayout(Textures.scrollBar, 3, 3);
+            scroller = new TextureLayout(Textures.scroller, 3, 3);
             maximum = height - 7 * width / 3;
         }
 
@@ -28,8 +28,8 @@ namespace GlLib.Client.Api.Gui
             _height,
             _color)
         {
-            scrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
-            scroller = new TextureLayout("gui/scroller.png", 3, 3);
+            scrollBar = new TextureLayout(Textures.scrollBar, 3, 3);
+            scroller = new TextureLayout(Textures.scroller, 3, 3);
             maximum = height - 7 * width / 3;
             maxValue = _maxValue;
         }

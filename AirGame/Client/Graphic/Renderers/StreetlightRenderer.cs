@@ -12,7 +12,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            var layout = new TextureLayout(SimpleStructPath + @"Streetlight.png", 1, 1);
+            var layout = new TextureLayout(Textures.streetLight, 1, 1);
             _sprite = new LinearSprite(layout, 1, 1).SetFrozen();
             var box = _e.AaBb;
             _sprite.Scale((float) box.Width, (float) box.Height);

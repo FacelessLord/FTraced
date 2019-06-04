@@ -13,7 +13,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            var layout = new TextureLayout(SimpleStructPath + "Relics.png", 1, 1);
+            var layout = new TextureLayout(Textures.bonePile, 1, 1);
             boneSprite = new LinearSprite(layout, 1, 20).SetFrozen();
             var box = _e.AaBb;
             boneSprite.Scale((float) box.Width, (float) box.Height);

@@ -21,8 +21,8 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _p)
         {
-            var idle = new TextureLayout("slime/slime_idle.png", 10, 1);
-            var walk = new TextureLayout("slime/slime_waiting.png", 7, 1);
+            var idle = new TextureLayout(Textures.slimeIdle, 10, 1);
+            var walk = new TextureLayout(Textures.slimeWalk, 7, 1);
 
             idleSprite = new LinearSprite(idle, 10, 30);
             walkSprite = new LinearSprite(walk, 7, 30);

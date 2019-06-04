@@ -12,7 +12,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            var layout = new TextureLayout(SimpleStructPath + "HealthPotion.png", 1, 1);
+            var layout = new TextureLayout(Textures.healthPotion, 1, 1);
             potionSprite = new LinearSprite(layout, 1, 1).SetFrozen();
             var box = _e.AaBb;
             potionSprite.Scale((float) box.Width, (float) box.Height);

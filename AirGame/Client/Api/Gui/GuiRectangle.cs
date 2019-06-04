@@ -14,15 +14,13 @@ namespace GlLib.Client.Api.Gui
 
         public GuiRectangle(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            var texture = Vertexer.LoadTexture("gui/window_back.png");
-            background = new TextureLayout(texture, 0, 0, 96, 96, 3, 3);
+            background = new TextureLayout(Textures.windowBack, 0, 0, 96, 96, 3, 3);
         }
 
         public GuiRectangle(int _x, int _y, int _width, int _height, Color _color)
             : base(_x, _y, _width, _height, _color)
         {
-            var texture = Vertexer.LoadTexture("gui/window_back.png");
-            background = new TextureLayout(texture, 0, 0, 96, 96, 3, 3);
+            background = new TextureLayout(Textures.windowBack, 0, 0, 96, 96, 3, 3);
         }
 
         public GuiRectangle(TextureLayout _layout, int _x, int _y, int _width, int _height) : base(_x, _y, _width,

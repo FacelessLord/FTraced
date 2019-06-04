@@ -4,7 +4,7 @@ namespace GlLib.Client.Api.Sprites
 {
     public class AlagardFontSprite : FontSprite
     {
-        public AlagardFontSprite() : base(Vertexer.LoadTexture("fonts/alagard.png"),
+        public AlagardFontSprite() : base(Textures.alagard,
             0, 0, 192, 98, 16, 7)
         {
             SetupKern();

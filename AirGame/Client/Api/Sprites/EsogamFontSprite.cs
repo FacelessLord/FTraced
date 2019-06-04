@@ -4,7 +4,7 @@ namespace GlLib.Client.Api.Sprites
 {
     public class EsogamFontSprite : FontSprite
     {
-        public EsogamFontSprite() : base(Vertexer.LoadTexture("fonts/esogam.png"),
+        public EsogamFontSprite() : base(Textures.esogam,
             0, 0, 192, 98, 16, 7)
         {
             SetupKern();

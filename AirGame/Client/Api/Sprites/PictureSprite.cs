@@ -11,10 +11,10 @@ namespace GlLib.Client.Api.Sprites
         public Texture texture;
         public int width;
 
-        public PictureSprite(string _textureName, int _width = GuiSlot.SlotSize, int _height
+        public PictureSprite(Texture _texture, int _width = GuiSlot.SlotSize, int _height
             = GuiSlot.SlotSize)
         {
-            texture = Vertexer.LoadTexture(_textureName);
+            texture = _texture;
             width = _width;
             height = _height;
             scale = new Vector3(1, 1, 1);

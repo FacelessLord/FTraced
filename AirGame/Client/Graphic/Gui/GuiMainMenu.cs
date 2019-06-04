@@ -17,7 +17,7 @@ namespace GlLib.Client.Graphic.Gui
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
             var d = h / 25;
-            background = AddPicture("background.png", 0, 0, w, h);
+            background = AddPicture(Textures.background, 0, 0, w, h);
             rectangle = AddRectangle(w / 4 - 10, h / 3 - 10, w / 2 + 20, h / 3);
             startButton = new GuiButton("Singleplayer Game", 3 * w / 8, h / 3, w / 4, d);
             Add(startButton);

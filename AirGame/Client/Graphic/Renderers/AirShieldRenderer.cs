@@ -12,7 +12,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            var layout = new TextureLayout(@"air_shield.png", 4, 1);
+            var layout = new TextureLayout(Textures.airShield, 4, 1);
             _sprite = new LinearSprite(layout, 4, 6);
             var box = _e.AaBb;
             _sprite.Scale((float) box.Width*2, (float) box.Height);

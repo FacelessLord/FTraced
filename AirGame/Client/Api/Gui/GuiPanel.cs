@@ -24,7 +24,7 @@ namespace GlLib.Client.Api.Gui
         public GuiPanel(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             screenObjects = new List<GuiObject>();
-            rectangleLayout = new TextureLayout("gui/window_back.png", 0, 0, 96, 96, 3, 3);
+            rectangleLayout = new TextureLayout(Textures.windowBack, 0, 0, 96, 96, 3, 3);
 //            bar = new GuiScrollBar(_width - 50, 0, 50, _height);
 //            bar.maximum = _height - 7 * bar.width / 3;
         }

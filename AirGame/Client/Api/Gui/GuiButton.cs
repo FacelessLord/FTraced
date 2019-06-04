@@ -22,9 +22,9 @@ namespace GlLib.Client.Api.Gui
         public GuiButton(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             text = _text;
-            var texture = Vertexer.LoadTexture("gui/button.png");
-            var textureSelected = Vertexer.LoadTexture("gui/button_selected.png");
-            var textureDisabled = Vertexer.LoadTexture("gui/button_disabled.png");
+            var texture = Textures.button;
+            var textureSelected = Textures.buttonSelected;
+            var textureDisabled = Textures.buttonDisabled;
             var layout = new Layout(texture.width, texture.height, 3, 3);
             spriteEnabled = new TextureLayout(texture, layout);
             spritePressed = new TextureLayout(textureSelected, layout);
@@ -36,9 +36,9 @@ namespace GlLib.Client.Api.Gui
             _height, _color)
         {
             text = _text;
-            var texture = Vertexer.LoadTexture("gui/button.png");
-            var textureSelected = Vertexer.LoadTexture("gui/button_selected.png");
-            var textureDisabled = Vertexer.LoadTexture("gui/button_disabled.png");
+            var texture = Textures.button;
+            var textureSelected = Textures.buttonSelected;
+            var textureDisabled = Textures.buttonDisabled;
             var layout = new Layout(texture.width, texture.height, 3, 3);
             spriteEnabled = new TextureLayout(texture, layout);
             spritePressed = new TextureLayout(textureSelected, layout);
