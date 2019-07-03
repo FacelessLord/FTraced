@@ -107,8 +107,8 @@ namespace GlLib.Common.Map
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = (_aabb.EndXi + _aabb.WidthI) / 16;
-            var chkEndY = (_aabb.EndYi + _aabb.HeightI) / 16;
+            var chkEndX = chkStartX + _aabb.Width / 16 + 1;
+            var chkEndY = chkStartY + _aabb.Height / 16 + 1;
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
@@ -129,8 +129,8 @@ namespace GlLib.Common.Map
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = chkStartX + _aabb.Width / 16;
-            var chkEndY = chkStartY + _aabb.Height / 16;
+            var chkEndX = chkStartX + _aabb.Width / 16 + 1;
+            var chkEndY = chkStartY + _aabb.Height / 16 + 1;
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
                 if (i >= 0 && j >= 0 && i < width && j < height)
