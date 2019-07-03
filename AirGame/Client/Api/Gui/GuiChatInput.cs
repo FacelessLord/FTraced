@@ -46,7 +46,6 @@ namespace GlLib.Client.Api.Gui
         {
             base.Render(_gui, _centerX, _centerY);
             GL.PushMatrix();
-            Vertexer.Colorize(color);
             GL.Translate(x, y, 0);
             if (oneLineMode)
             {
@@ -55,7 +54,7 @@ namespace GlLib.Client.Api.Gui
                 foreach (var line in Proxy.GetClient().player.chatIo.InputStream())
                 {
                     GL.Translate(0, -height * 2d / 3, 0);
-                    font.DrawText(line, fontSize);
+                    font.DrawText(line, fontSize, _a: 0.75f);
                 }
             }
 

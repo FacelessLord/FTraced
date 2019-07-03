@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GlLib.Client.Api.Sprites;
+using GlLib.Common.Io;
 using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK;
@@ -144,6 +145,7 @@ namespace GlLib.Client.Graphic
                     {
                         if (Null is null)
                             Null = LoadTexture("null.png");
+                        SidedConsole.WriteErrorLine("Couldn't find texture " + _path);
                         texture = Null;
                         textures.Add(_path, texture);
                         return texture;
