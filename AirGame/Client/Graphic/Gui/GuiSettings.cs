@@ -1,6 +1,5 @@
 using System.Linq;
 using GlLib.Client.Api.Gui;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
 using OpenTK;
@@ -26,23 +25,21 @@ namespace GlLib.Client.Graphic.Gui
 
             rectangle = AddRectangle(w / 4 - 10, h / 3 - 10, w / 2 + 20, h / 3);
             settings = new GuiPanel(w / 4 - 10, h / 3 - 10, w / 2 + 20, h / 3);
-            settings.bar = new GuiScrollBar(settings.height, settings.width - 50, 0, 50, settings.height);
+            Add(settings);
+            settings.bar = new GuiScrollBar(settings.width - 50, 0, 50, settings.height);
 
             var binds = KeyBinds.clickBinds.Concat(KeyBinds.binds).OrderBy(_ka => KeyBinds.delegateNames[_ka.Value])
                 .ToList();
-            var i = 0;
-            foreach (var bind in binds)
+            for (int i = 0; i < binds.Count; i++)
             {
+                var bind = binds[i];
                 var dw = settings.width - settings.bar.width;
                 var n = 3;
                 var key = new GuiBindButton(bind.Key, bind.Value, 0, i * d, d * n, d);
-                var sign = new GuiSign(KeyBinds.delegateNames[bind.Value], d * n, i * d, dw - d * n, d);
+                var sign = new GuiSign(KeyBinds.delegateNames[bind.Value], 12, d * n, i * d, dw - d * n, d);
                 settings.Add(key);
                 settings.Add(sign);
-                i++;
             }
-
-            Add(settings);
 
             settings.bar.maxValue = (int) (settings.GetPanelBox().Height - settings.GetViewbox().Height);
             exitButton = new GuiButton("Return to menu", 3 * w / 8, h / 3, w / 4, d);
@@ -52,6 +49,7 @@ namespace GlLib.Client.Graphic.Gui
 
         public override void Update(GameWindow _window)
         {
+            base.Update(_window);
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
             var d = h / 25;
@@ -68,7 +66,6 @@ namespace GlLib.Client.Graphic.Gui
             settings.width = w / 2 + 20;
             settings.height = h / 3;
 
-            settings.bar.maxValue = settings.height;
             settings.bar.x = settings.width - 50;
             settings.bar.y = 0;
             settings.bar.width = 50;

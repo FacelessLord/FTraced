@@ -1,5 +1,4 @@
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using GlLib.Utils;
@@ -18,12 +17,14 @@ namespace GlLib.Client.Api.Gui
         public Texture switchTexture;
         public TextureLayout slotTexture;
 
+        public bool showSelection = true;
+
         public GuiSlotTypeRenderer(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, GuiSlot.SlotSize,
             GuiSlot.SlotSize)
         {
-            slotTexture = new TextureLayout("gui/item_classes.png", 4, 4);
-            selectedTexture = Vertexer.LoadTexture("gui/slot_selected.png");
-            switchTexture = Vertexer.LoadTexture("gui/slot_switch.png");
+            slotTexture = new TextureLayout(Textures.itemClasses, 4, 4);
+            selectedTexture = Textures.slotSelected;
+            switchTexture = Textures.slotSwitch;
             inventory = _inventory;
             slot = _slot;
         }
@@ -31,9 +32,9 @@ namespace GlLib.Client.Api.Gui
         public GuiSlotTypeRenderer(IInventory _inventory, int _slot, int _x, int _y, Color _color) : base(
             _x, _y, GuiSlot.SlotSize, GuiSlot.SlotSize, _color)
         {
-            slotTexture = new TextureLayout("gui/item_classes.png", 4, 4);
-            selectedTexture = Vertexer.LoadTexture("gui/slot_selected.png");
-            switchTexture = Vertexer.LoadTexture("gui/slot_switch.png");
+            slotTexture = new TextureLayout(Textures.itemClasses, 4, 4);
+            selectedTexture = Textures.slotSelected;
+            switchTexture = Textures.slotSwitch;
             inventory = _inventory;
             slot = _slot;
         }
@@ -85,23 +86,28 @@ namespace GlLib.Client.Api.Gui
             if (inventory.GetStackInSlot(slot) != null)
             {
                 GL.PushMatrix();
-                GL.Translate(x + GuiSlot.SlotSize / 2, y + GuiSlot.SlotSize / 2, 0);
+                GL.Translate(x, y, 0);
+                GL.Scale(width / (float) GuiSlot.SlotSize, height / (float) GuiSlot.SlotSize, 1);
+                GL.Translate(GuiSlot.SlotSize / 2d, GuiSlot.SlotSize / 2d, 0);
                 inventory.GetStackInSlot(slot).item.GetItemSprite(inventory.GetStackInSlot(slot)).Render();
 //                Vertexer.DrawLayoutPart(slotTexture, x, y, (int) inventory.GetStackInSlot(slot).item.type,
 //                    width, height);
                 GL.PopMatrix();
             }
 
-            if (slot == inventory.GetSelectedSlot())
+            if (showSelection)
             {
-                selectedTexture.Bind();
-                Vertexer.DrawSquare(x, y, x + width, y + height);
-            }
+                if (slot == inventory.GetSelectedSlot())
+                {
+                    selectedTexture.Bind();
+                    Vertexer.DrawSquare(x, y, x + width, y + height);
+                }
 
-            if (_gui.focusedObject == this)
-            {
-                switchTexture.Bind();
-                Vertexer.DrawSquare(x, y, x + width, y + height);
+                if (_gui.focusedObject == this)
+                {
+                    switchTexture.Bind();
+                    Vertexer.DrawSquare(x, y, x + width, y + height);
+                }
             }
         }
     }

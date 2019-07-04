@@ -1,7 +1,5 @@
 using System;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -24,28 +22,28 @@ namespace GlLib.Client.Api.Gui
         public GuiButton(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             text = _text;
-            var texture = Vertexer.LoadTexture("gui/button.png");
-            var textureSelected = Vertexer.LoadTexture("gui/button_selected.png");
-            var textureDisabled = Vertexer.LoadTexture("gui/button_disabled.png");
+            var texture = Textures.button;
+            var textureSelected = Textures.buttonSelected;
+            var textureDisabled = Textures.buttonDisabled;
             var layout = new Layout(texture.width, texture.height, 3, 3);
             spriteEnabled = new TextureLayout(texture, layout);
             spritePressed = new TextureLayout(textureSelected, layout);
             spriteDisabled = new TextureLayout(textureDisabled, layout);
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public GuiButton(string _text, int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width,
             _height, _color)
         {
             text = _text;
-            var texture = Vertexer.LoadTexture("gui/button.png");
-            var textureSelected = Vertexer.LoadTexture("gui/button_selected.png");
-            var textureDisabled = Vertexer.LoadTexture("gui/button_disabled.png");
+            var texture = Textures.button;
+            var textureSelected = Textures.buttonSelected;
+            var textureDisabled = Textures.buttonDisabled;
             var layout = new Layout(texture.width, texture.height, 3, 3);
             spriteEnabled = new TextureLayout(texture, layout);
             spritePressed = new TextureLayout(textureSelected, layout);
             spriteDisabled = new TextureLayout(textureDisabled, layout);
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
@@ -66,11 +64,11 @@ namespace GlLib.Client.Api.Gui
             }
 
             var widthCenter = (width - font.GetTextWidth(text, 11)) / 2;
-            var heightCenter = (height - 11d) / 2 - 2;
+            var heightCenter = (height - 12d) / 2 - 2;
             GL.PushMatrix();
             Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
-            font.DrawText(text, 11);
+            font.DrawText(text, 12);
             Vertexer.ClearColor();
             GL.PopMatrix();
 

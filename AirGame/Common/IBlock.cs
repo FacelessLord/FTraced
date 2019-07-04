@@ -1,4 +1,4 @@
-﻿namespace MapEditor.BlocksStruct
+﻿namespace GlLib.Common
 {
     public interface IBlock
     {

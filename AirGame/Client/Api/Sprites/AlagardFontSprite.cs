@@ -4,8 +4,8 @@ namespace GlLib.Client.Api.Sprites
 {
     public class AlagardFontSprite : FontSprite
     {
-        public AlagardFontSprite() : base(Vertexer.LoadTexture("fonts/alagard.png"),
-            0, 0, 192, 84, 16, 6)
+        public AlagardFontSprite() : base(Textures.alagard,
+            0, 0, 192, 98, 16, 7)
         {
             SetupKern();
         }
@@ -32,15 +32,15 @@ namespace GlLib.Client.Api.Sprites
             SetHorizontalKern('W', -1, -1);
 
             SetHorizontalKern(' ', 4, 4);
-            SetHorizontalKern('a', 2, 2);
+            SetHorizontalKern('a', 1, 3);
             SetHorizontalKern('b', 3, 2);
             SetHorizontalKern('c', 2, 2);
             SetHorizontalKern('d', 2, 2);
             SetHorizontalKern('e', 2, 3);
             SetHorizontalKern('f', 2, 3);
             SetHorizontalKern('g', 2, 2);
-            SetHorizontalKern('h', 2, 2);
-            SetHorizontalKern('i', 4, 4);
+            SetHorizontalKern('h', 1, 2);
+            SetHorizontalKern('i', 4, 3);
             SetHorizontalKern('j', 4, 2);
             SetHorizontalKern('l', 4, 3);
             SetHorizontalKern('k', 2, 0);
@@ -74,6 +74,7 @@ namespace GlLib.Client.Api.Sprites
             SetHorizontalKern('\"', 4, 3);
             SetHorizontalKern('?', 4, 3);
             SetHorizontalKern('|', 4, 4);
+            SetHorizontalKern('/', 1, 1);
             SetHorizontalKern(';', 4, 3);
             SetHorizontalKern(':', 4, 3);
         }

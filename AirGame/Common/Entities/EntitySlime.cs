@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic.Renderers;
+using GlLib.Common.Api.Entity;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics;
 
 namespace GlLib.Common.Entities

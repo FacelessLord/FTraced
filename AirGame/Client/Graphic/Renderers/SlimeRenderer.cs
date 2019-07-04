@@ -1,8 +1,9 @@
 using System;
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -20,8 +21,8 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _p)
         {
-            var idle = new TextureLayout("slime/slime_idle.png", 10, 1);
-            var walk = new TextureLayout("slime/slime_waiting.png", 7, 1);
+            var idle = new TextureLayout(Textures.slimeIdle, 10, 1);
+            var walk = new TextureLayout(Textures.slimeWalk, 7, 1);
 
             idleSprite = new LinearSprite(idle, 10, 30);
             walkSprite = new LinearSprite(walk, 7, 30);

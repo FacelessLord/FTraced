@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
 using NUnit.Framework;
 
 namespace Tests.utils

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Utils;
 
-namespace GlLib.Common.API
+namespace GlLib.Common.Api
 {
     public class TraitStack : IJsonSerializable
     {
@@ -29,9 +29,9 @@ namespace GlLib.Common.API
             baseValue = _baseValue;
         }
 
-        public JsonObject CreateJsonObject()
+        public JsonObject CreateJsonObject(string _objectName)
         {
-            var jsonObj = new JsonObjectCollection("traitStack");
+            var jsonObj = new JsonObjectCollection(_objectName);
             jsonObj.Add(new JsonNumericValue("traitId", trait.id));
             jsonObj.Add(new JsonNumericValue("baseValue", baseValue));
             if (modifiers != null && modifiers.Count != 0) jsonObj.Add(JsonHelper.SaveList("modifiers", modifiers));
@@ -47,6 +47,11 @@ namespace GlLib.Common.API
                 baseValue = (float) ((JsonNumericValue) collection[1]).Value;
                 modifiers = JsonHelper.LoadList<TraitModifier>((JsonArrayCollection) collection[2]);
             }
+        }
+
+        public string GetStandardName()
+        {
+            return "traitStack";
         }
 
         public void ApplyModifier(TraitModifier _tm)

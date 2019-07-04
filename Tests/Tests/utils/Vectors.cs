@@ -1,5 +1,6 @@
 ﻿using System;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using NUnit.Framework;
 
 namespace Tests.utils

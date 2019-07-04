@@ -1,7 +1,8 @@
-using GlLib.Client.API;
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Blocks
 {

@@ -1,5 +1,4 @@
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
@@ -18,14 +17,14 @@ namespace GlLib.Client.Api.Gui
         public GuiEquipmentTypeRenderer(ItemType _type, int _x, int _y) : base(_x, _y, GuiSlot.SlotSize,
             GuiSlot.SlotSize)
         {
-            slotTexture = new TextureLayout("gui/equipment_sub.png", 4, 4);
+            slotTexture = new TextureLayout(Textures.equipBackground, 4, 4);
             type = _type;
         }
 
         public GuiEquipmentTypeRenderer(ItemType _type, int _x, int _y, Color _color) : base(
             _x, _y, GuiSlot.SlotSize, GuiSlot.SlotSize, _color)
         {
-            slotTexture = new TextureLayout("gui/equipment_sub.png", 4, 4);
+            slotTexture = new TextureLayout(Textures.equipBackground, 4, 4);
             type = _type;
         }
 

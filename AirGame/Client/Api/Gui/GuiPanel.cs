@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -15,7 +15,7 @@ namespace GlLib.Client.Api.Gui
         public static int d = 4;
         public GuiScrollBar bar;
         public int dx = 0;
-        public int dy;
+        public int dy = 0;
         public bool enableBackground = true;
 
         public TextureLayout rectangleLayout;
@@ -24,7 +24,7 @@ namespace GlLib.Client.Api.Gui
         public GuiPanel(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             screenObjects = new List<GuiObject>();
-            rectangleLayout = new TextureLayout("gui/window_back.png", 0, 0, 96, 96, 3, 3);
+            rectangleLayout = new TextureLayout(Textures.windowBack, 0, 0, 96, 96, 3, 3);
 //            bar = new GuiScrollBar(_width - 50, 0, 50, _height);
 //            bar.maximum = _height - 7 * bar.width / 3;
         }
@@ -86,7 +86,7 @@ namespace GlLib.Client.Api.Gui
 
             if (bar != null && objFocus is null)
                 if (bar.IsMouseOver(_gui, -x + _mouseX, -y + _mouseY))
-                    return bar.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
+                    objFocus = bar.OnMouseClick(_gui, _button, -x + _mouseX, -y + _mouseY);
 
             return objFocus;
         }

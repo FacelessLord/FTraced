@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Net.Json;
 using GlLib.Common.Entities;
+using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Utils;

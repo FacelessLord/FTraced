@@ -4,7 +4,10 @@ using System.Net.Json;
 using System.Threading;
 using GlLib.Common.Entities;
 using GlLib.Common.Events;
+using GlLib.Common.Io;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Map
 {
@@ -83,7 +86,7 @@ namespace GlLib.Common.Map
                 }
 
                 EntityCount++;
-                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+//                SidedConsole.WriteLine($"Entity {_e} spawned in world");
             }
             else
             {
@@ -104,8 +107,8 @@ namespace GlLib.Common.Map
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = (_aabb.EndXi + _aabb.WidthI) / 16;
-            var chkEndY = (_aabb.EndYi + _aabb.HeightI) / 16;
+            var chkEndX = chkStartX + _aabb.Width / 16 + 1;
+            var chkEndY = chkStartY + _aabb.Height / 16 + 1;
 
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
@@ -126,8 +129,8 @@ namespace GlLib.Common.Map
 
             var chkStartX = _aabb.StartXi / 16;
             var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = chkStartX + _aabb.Width / 16;
-            var chkEndY = chkStartY + _aabb.Height / 16;
+            var chkEndX = chkStartX + _aabb.Width / 16 + 1;
+            var chkEndY = chkStartY + _aabb.Height / 16 + 1;
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
                 if (i >= 0 && j >= 0 && i < width && j < height)
@@ -137,7 +140,7 @@ namespace GlLib.Common.Map
                 }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
+                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb) && !_entity.noClip)
                 .ToThreadSafeList();
         }
 
@@ -145,6 +148,7 @@ namespace GlLib.Common.Map
         {
             entityRemoveQueue.Add((_entity, _entity.chunkObj));
             EntityCount--;
+//            SidedConsole.WriteLine($"Entity {_entity} despawned in world");
         }
     }
 }

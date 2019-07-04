@@ -4,23 +4,8 @@ namespace GlLib.Common.Blocks
 {
     public class SettBrimDown : TerrainBlock
     {
-        public override string Name
-        {
-            get => "block.indoor.settbrimdown";
-            protected set
+        public override string Name { get; protected set; } = "block.indoor.settbrimdown";
 
-            {
-                //TODO 
-            }
-        }
-
-        public override string TextureName
-        {
-            get => Path + "SettBrimDown.png";
-            internal set
-            {
-                //TODO 
-            }
-        }
+        public override string TextureName { get; internal set; } = Path + "SettBrimDown.png";
     }
 }

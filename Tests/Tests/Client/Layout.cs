@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using GlLib.Client.API;
+using GlLib.Client.Api;
 using NUnit.Framework;
 
 namespace Tests.Client

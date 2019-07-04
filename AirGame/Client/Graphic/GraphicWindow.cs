@@ -1,11 +1,12 @@
 using System;
 using System.Threading;
 using GlLib.Client.Api.Cameras;
-using GlLib.Client.API.Gui;
+using GlLib.Client.Api.Gui;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
+using GlLib.Common.Io;
 using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
@@ -120,7 +121,7 @@ namespace GlLib.Client.Graphic
             try
             {
                 base.OnLoad(_e);
-                VSync = VSyncMode.Off;
+                VSync = VSyncMode.On;
                 TryOpenGui(new GuiMainMenu());
                 Core.profiler.SetState(State.MainMenu);
             }
@@ -170,16 +171,26 @@ namespace GlLib.Client.Graphic
             }
         }
 
+        public int Fps => sum / counter;
+        public int counter = 1;
+        public int sum = 50;
+
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
+            if (!(Proxy.GetClient() is null) && Proxy.GetClient().MachineTime.Second % 5 == 0)
+            {
+                sum = Fps;
+                counter = 1;
+            }
+            
+            sum += (int) (1 / _e.Time);
+            counter++;
             try
             {
                 base.OnRenderFrame(_e);
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+//                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 if (serverStarted)
                     RenderWorld();
-
-                GL.Clear(ClearBufferMask.DepthBufferBit);
                 //GUI render is not connected to the world
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadIdentity();

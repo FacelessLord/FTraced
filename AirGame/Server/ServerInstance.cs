@@ -6,6 +6,7 @@ using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
 
 namespace GlLib.Server
 {

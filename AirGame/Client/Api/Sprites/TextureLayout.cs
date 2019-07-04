@@ -1,4 +1,3 @@
-using GlLib.Client.API;
 using GlLib.Client.Graphic;
 using OpenTK.Graphics.OpenGL;
 
@@ -33,11 +32,11 @@ namespace GlLib.Client.Api.Sprites
             layout = new Layout(_texture.width, _texture.height, _startU, _startV, _endU, _endV, _countX, _countY);
         }
 
-        public TextureLayout(string _texture, int _startU, int _startV, int _endU, int _endV, int _countX, int _countY)
-        {
-            texture = Vertexer.LoadTexture(_texture);
-            layout = new Layout(texture.width, texture.height, _startU, _startV, _endU, _endV, _countX, _countY);
-        }
+//        public TextureLayout(string _texture, int _startU, int _startV, int _endU, int _endV, int _countX, int _countY)
+//        {
+//            texture = Vertexer.LoadTexture(_texture);
+//            layout = new Layout(texture.width, texture.height, _startU, _startV, _endU, _endV, _countX, _countY);
+//        }
 
         public TextureLayout(Texture _texture, Layout _layout)
         {
@@ -45,11 +44,11 @@ namespace GlLib.Client.Api.Sprites
             layout = _layout;
         }
 
-        public TextureLayout(string _texture, int _countX, int _countY)
-        {
-            texture = Vertexer.LoadTexture(_texture);
-            layout = new Layout(texture.width, texture.height, _countX, _countY);
-        }
+//        public TextureLayout(string _texture, int _countX, int _countY)
+//        {
+//            texture = Vertexer.LoadTexture(_texture);
+//            layout = new Layout(texture.width, texture.height, _countX, _countY);
+//        }
 
         public TextureLayout(Texture _texture, int _countX, int _countY)
         {
@@ -57,7 +56,7 @@ namespace GlLib.Client.Api.Sprites
             layout = new Layout(texture.width, texture.height, _countX, _countY);
         }
 
-        public virtual void Render(int _stepCount)
+        public virtual void Render(long _stepCount)
         {
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(_stepCount);
 

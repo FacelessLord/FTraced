@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using GlLib.Client.Api.Cameras;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
@@ -14,7 +13,10 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
 using System.Threading;
+using GlLib.Client.Api.Gui;
 using GlLib.Common.Entities;
+using GlLib.Common.Io;
+using GlLib.Utils.Math;
 
 namespace TOFMapEditor.Client
 {

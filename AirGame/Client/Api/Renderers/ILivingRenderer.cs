@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API
+namespace GlLib.Client.Api.Renderers
 {
     public class AttackingLivingRenderer : EntityRenderer
     {
@@ -24,18 +24,13 @@ namespace GlLib.Client.API
                 var texture = Vertexer.LoadTexture(entityName + "_" + i.ToString().ToLower() + ".png");
                 var layout = new TextureLayout(texture, texture.width / texture.height, 1);
                 var sprite = new LinearSprite(layout, layout.layout.countX, 6);
-                
+
                 var box = _e.AaBb;
-                sprite.Scale((float) box.Width * 1.5f, (float) box.Height * 1.5f);
+                sprite.Scale((float)box.Width * 1.5f, (float)box.Height * 1.5f);
                 sprites.Add(i, sprite);
             }
 
-//            var idleTexture = Vertexer.LoadTexture(entityName + "_idle.png");
-//            var walkTexture = Vertexer.LoadTexture(entityName + "_walk.png");
-//            var aoeAttackTexture = Vertexer.LoadTexture(entityName + "_aoe_attack.png");
-//            var directedAttackTexture = Vertexer.LoadTexture(entityName + "_directed_attack.png");
-//            var interruptedAttackTexture = Vertexer.LoadTexture(entityName + "_interrupted.png");
-//            var deathTexture = Vertexer.LoadTexture(entityName + "_death.png");
+            sprites[EntityState.Dead].SetNoRepeat();
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
@@ -43,7 +38,7 @@ namespace GlLib.Client.API
             GL.PushMatrix();
             GL.Translate(0, _e.AaBb.Height / 2, 0);
             sprites[_e.state].Render();
-            if (!_e.state.Equals(EntityState.Dead) && sprites[EntityState.Dead].FullFrameCount != 0)
+            if (!(_e.state is EntityState.Dead) && sprites[EntityState.Dead].frozen)
                 sprites[EntityState.Dead].Reset();
             GL.PopMatrix();
         }

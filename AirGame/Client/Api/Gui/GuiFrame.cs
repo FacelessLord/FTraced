@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Input;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiFrame
     {
@@ -38,24 +38,24 @@ namespace GlLib.Client.API.Gui
             return Add(new GuiRectangle(_x, _y, _width, _height, _color));
         }
 
-        public GuiPicture AddPicture(string _texture, int _x, int _y, int _width, int _height)
+        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height)
         {
             return Add(new GuiPicture(_texture, _x, _y, _width, _height));
         }
 
-        public GuiPicture AddPicture(string _texture, int _x, int _y, int _width, int _height, Color _color)
+        public GuiPicture AddPicture(Texture _texture, int _x, int _y, int _width, int _height, Color _color)
         {
             return Add(new GuiPicture(_texture, _x, _y, _width, _height, _color));
         }
 
-        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height)
+        public GuiSign AddText(string _text, int _fontSize, int _x, int _y, int _width, int _height)
         {
-            return Add(new GuiSign(_text, _x, _y, _width, _height));
+            return Add(new GuiSign(_text, _fontSize, _x, _y, _width, _height));
         }
 
-        public GuiSign AddText(string _text, int _x, int _y, int _width, int _height, Color _color)
+        public GuiSign AddText(string _text, int _fontSize, int _x, int _y, int _width, int _height, Color _color)
         {
-            return Add(new GuiSign(_text, _x, _y, _width, _height, _color));
+            return Add(new GuiSign(_text, _fontSize, _x, _y, _width, _height, _color));
         }
 
         public GuiHorizontalBar AddHorizontalBar(int _x, int _y, int _width, int _height)

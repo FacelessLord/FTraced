@@ -1,5 +1,4 @@
 using GlLib.Client.Api.Gui;
-using GlLib.Client.API.Gui;
 using GlLib.Common;
 using GlLib.Common.Map;
 using OpenTK;

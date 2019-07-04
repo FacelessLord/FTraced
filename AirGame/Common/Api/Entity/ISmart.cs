@@ -1,4 +1,4 @@
-﻿namespace GlLib.Common.Entities
+﻿namespace GlLib.Common.Api.Entity
 {
     internal interface ISmart
     {

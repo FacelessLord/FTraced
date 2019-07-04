@@ -1,5 +1,6 @@
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
+using GlLib.Client.Graphic;
 
 namespace GlLib.Common.Items
 {
@@ -13,6 +14,8 @@ namespace GlLib.Common.Items
         public ItemType type;
         public string unlocalizedName;
 
+        public Texture texture = Textures.monochromatic;
+
         public Item(string _name, ItemRarity _rarity, ItemType _type = ItemType.Varia)
         {
             rarity = _rarity;
@@ -25,14 +28,15 @@ namespace GlLib.Common.Items
             return unlocalizedName;
         }
 
-        public virtual string GetTextureName(ItemStack _itemStack)
+        public Item SetItemTexture(Texture _texture)
         {
-            return "items/"+unlocalizedName + ".png";
+            texture = _texture;
+            return this;
         }
 
-        public virtual ISprite GetItemSprite(ItemStack _itemStack)
+        public virtual Sprite GetItemSprite(ItemStack _itemStack)
         {
-            return new PictureSprite(GetTextureName(_itemStack));
+            return new PictureSprite(texture);
         }
 
         public virtual bool RequiresSpecialRenderer(ItemStack _itemStack)

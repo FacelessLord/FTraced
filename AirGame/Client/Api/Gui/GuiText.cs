@@ -1,29 +1,32 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Utils;
+using GlLib.Common.Io;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiSign : GuiObject
     {
+        public int fontSize = 16;
         public static FontSprite font;
         public string text;
 
-        public GuiSign(string _text, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
+        public GuiSign(string _text, int _fontSize, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
             text = _text;
-            font = new AlagardFontSprite();
+            fontSize = _fontSize;
+            font = FontSprite.Alagard;
         }
 
-        public GuiSign(string _baseText, int _x, int _y, int _width, int _height, Color _color)
+        public GuiSign(string _baseText, int _fontSize, int _x, int _y, int _width, int _height, Color _color)
             : base(_x, _y, _width, _height, _color)
         {
+            fontSize = _fontSize;
             text = _baseText;
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
@@ -33,7 +36,7 @@ namespace GlLib.Client.API.Gui
             GL.PushMatrix();
             Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
-            font.DrawText(text, 11);
+            font.DrawText(text, fontSize);
             Vertexer.ClearColor();
 
             GL.PopMatrix();
@@ -42,19 +45,21 @@ namespace GlLib.Client.API.Gui
     
     public class GuiSlotSign : GuiObject
     {
+        public int fontSize = 16;
         public static FontSprite font;
         public string text;
         public IInventory inventory;
         public int slot;
 
-        public GuiSlotSign(IInventory _inv, int _slot, int _x, int _y, int _width, int _height) : base(_x, _y, _width,
+        public GuiSlotSign(IInventory _inv, int _fontSize, int _slot, int _x, int _y, int _width, int _height) : base(_x, _y, _width,
             _height)
         {
+            fontSize = _fontSize;
             inventory = _inv;
             slot = _slot;
             var stack = _inv.GetStackInSlot(_slot);
             text = stack is null ? "" : stack.item.GetName(stack);
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public GuiSlotSign(IInventory _inv, int _slot, int _x, int _y, int _width, int _height, Color _color)
@@ -64,7 +69,7 @@ namespace GlLib.Client.API.Gui
             slot = _slot;
             var stack = _inv.GetStackInSlot(_slot);
             text = stack is null ? "" : stack.item.GetName(stack);
-            font = new AlagardFontSprite();
+            font = FontSprite.Alagard;
         }
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
@@ -74,7 +79,7 @@ namespace GlLib.Client.API.Gui
             GL.PushMatrix();
             Vertexer.Colorize(color);
             GL.Translate(x + widthCenter, y + heightCenter, 0);
-            font.DrawText(text, 11);
+            font.DrawText(text, fontSize);
             Vertexer.ClearColor();
 
             GL.PopMatrix();
@@ -95,13 +100,13 @@ namespace GlLib.Client.API.Gui
         public bool oneLineMode = true;
         public int timer;
 
-        public GuiText(string _baseText, int _x, int _y, int _width, int _height) : base(_baseText, _x, _y, _width,
+        public GuiText(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText, _fontSize, _x, _y, _width,
             _height)
         {
             cursorX = _baseText.Length;
         }
 
-        public GuiText(string _baseText, int _x, int _y, int _width, int _height, Color _color) : base(_baseText, _x,
+        public GuiText(string _baseText, int _fontSize, int _x, int _y, int _width, int _height, Color _color) : base(_baseText, _fontSize, _x,
             _y, _width, _height, _color)
         {
             cursorX = _baseText.Length;
@@ -116,10 +121,11 @@ namespace GlLib.Client.API.Gui
         {
             return false;
         }
+        
+        public static int timerSpeed = 40;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
-            var timerSpeed = 40;
             timer = (timer + 1) % timerSpeed;
             GL.PushMatrix();
             Vertexer.Colorize(color);
@@ -132,17 +138,17 @@ namespace GlLib.Client.API.Gui
 
             if (timer < timerSpeed / 2 || _gui.focusedObject != this)
             {
-                font.DrawText(text, 11);
+                font.DrawText(text, fontSize);
             }
             else if (cursorX == text.Length)
             {
-                font.DrawText(text + "|", 11);
+                font.DrawText(text + "|", fontSize);
             }
             else
             {
                 var t1 = text.Substring(0, cursorX);
                 var t2 = text.Substring(cursorX);
-                font.DrawText(t1 + "|" + t2, 11);
+                font.DrawText(t1 + "|" + t2, fontSize);
             }
 
             Vertexer.ClearColor();
@@ -183,15 +189,22 @@ namespace GlLib.Client.API.Gui
                     }
 
                     cursorX--;
+                    timer = timerSpeed / 2 + 1;
                 }
 
             if (k == Key.Left)
                 if (cursorX > 0)
+                {
                     cursorX--;
+                    timer = timerSpeed / 2 + 1;
+                }
 
             if (k.Equals(Key.Right))
                 if (cursorX < text.Length)
+                {
                     cursorX++;
+                    timer = timerSpeed / 2 + 1;
+                }
 
             if (k.Equals(Key.Delete))
                 if (cursorX < text.Length)
@@ -206,6 +219,7 @@ namespace GlLib.Client.API.Gui
                         var t2 = text.Substring(cursorX + 1);
                         text = t1 + t2;
                     }
+                    timer = timerSpeed / 2 + 1;
                 }
 
             if (k.Equals(Key.Enter))

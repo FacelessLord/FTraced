@@ -1,8 +1,7 @@
 using GlLib.Client.Graphic;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiHorizontalBar : GuiObject
     {
@@ -26,12 +25,7 @@ namespace GlLib.Client.API.Gui
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
-            var start = Vertexer.LoadTexture("gui/bar_start.png");
-            var center = Vertexer.LoadTexture("gui/bar_center.png");
-            var end = Vertexer.LoadTexture("gui/bar_end.png");
-            var filler = Vertexer.LoadTexture("gui/bar_filler.png");
-
-            Vertexer.BindTexture(start);
+            Vertexer.BindTexture(Textures.barStart);
             Vertexer.StartDrawingQuads();
             Vertexer.VertexWithUvAt(x, y, 0, 0);
             Vertexer.VertexWithUvAt(x + height, y, 1, 0);
@@ -39,7 +33,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.VertexWithUvAt(x, y + height, 0, 1);
             Vertexer.Draw();
 
-            Vertexer.BindTexture(center);
+            Vertexer.BindTexture(Textures.barCenter);
             Vertexer.StartDrawingQuads();
             Vertexer.VertexWithUvAt(x + height, y, 0, 0);
             Vertexer.VertexWithUvAt(x + width - height, y, 1, 0);
@@ -47,7 +41,7 @@ namespace GlLib.Client.API.Gui
             Vertexer.VertexWithUvAt(x + height, y + height, 0, 1);
             Vertexer.Draw();
 
-            Vertexer.BindTexture(end);
+            Vertexer.BindTexture(Textures.barEnd);
             Vertexer.StartDrawingQuads();
             Vertexer.VertexWithUvAt(x + width - height, y, 0, 0);
             Vertexer.VertexWithUvAt(x + width, y, 1, 0);
@@ -58,7 +52,7 @@ namespace GlLib.Client.API.Gui
             var proportions = value / maxValue;
             Vertexer.Colorize(color);
             var fluidWidth = (width - height) * proportions;
-            Vertexer.BindTexture(filler);
+            Vertexer.BindTexture(Textures.barFiller);
             Vertexer.StartDrawingQuads();
             Vertexer.VertexWithUvAt(x + height / 2, y, 0, 0);
             Vertexer.VertexWithUvAt(x + fluidWidth * proportions + height / 2, y, 1, 0);

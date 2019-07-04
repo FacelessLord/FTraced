@@ -1,6 +1,7 @@
-using GlLib.Client.API;
+using GlLib.Client.Api.Renderers;
 using GlLib.Common.Entities;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic.Renderers
@@ -11,7 +12,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            _texture = Vertexer.LoadTexture("monochromatic.png");
+            _texture = Textures.monochromatic;
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
