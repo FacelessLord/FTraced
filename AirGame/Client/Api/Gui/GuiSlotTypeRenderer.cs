@@ -39,6 +39,26 @@ namespace GlLib.Client.Api.Gui
             slot = _slot;
         }
 
+        public GuiSlotTypeRenderer(IInventory _inventory, int _slot, int _x, int _y, int _size) : base(_x, _y, _size,
+            _size)
+        {
+            slotTexture = new TextureLayout(Textures.itemClasses, 4, 4);
+            selectedTexture = Textures.slotSelected;
+            switchTexture = Textures.slotSwitch;
+            inventory = _inventory;
+            slot = _slot;
+        }
+
+        public GuiSlotTypeRenderer(IInventory _inventory, int _slot, int _x, int _y, Color _color, int _size) : base(
+            _x, _y, _size, _size, _color)
+        {
+            slotTexture = new TextureLayout(Textures.itemClasses, 4, 4);
+            selectedTexture = Textures.slotSelected;
+            switchTexture = Textures.slotSwitch;
+            inventory = _inventory;
+            slot = _slot;
+        }
+
         public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
         {
             if (_button == MouseButton.Right)
