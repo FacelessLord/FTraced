@@ -162,7 +162,7 @@ namespace GlLib.Client.Input
                 else
                     _p.SetState(EntityState.DirectedAttack, 6);
                 var entities = _p.worldObj.GetEntitiesWithinAaBb(
-                    _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 1), 1.05));
+                    _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 1), 1.05f));
                 entities.Where(_e => _e is EntityLiving el && !el.state.Equals(EntityState.Dead) && _e != _p)
                     .Cast<EntityLiving>().ToList()
                     .ForEach(_e => _e.DealDamage(30));

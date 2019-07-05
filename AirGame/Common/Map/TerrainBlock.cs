@@ -45,7 +45,7 @@ namespace GlLib.Common.Map
 
         public virtual AxisAlignedBb GetCollisionBox()
         {
-            return null;
+            return AxisAlignedBb.Zero;
         }
 
         public virtual bool RequiresSpecialRenderer(World _world, int _x, int _y)

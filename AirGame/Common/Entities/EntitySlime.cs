@@ -62,7 +62,7 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new SlimeRenderer());
             AttackRange = 2;
             AttackValue = 2;
-            AaBb = new AxisAlignedBb(-0.25, 0, 0.25, 0.5);
+            AaBb = new AxisAlignedBb(-0.25f, 0f, 0.25f, 0.5f);
         }
 
         public override string GetName()

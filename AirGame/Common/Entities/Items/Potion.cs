@@ -28,7 +28,7 @@ namespace GlLib.Common.Entities.Items
 
         public void Initialize()
         {
-            AaBb = new AxisAlignedBb(-0.15, -0.25, 0.15, 0.25);
+            AaBb = new AxisAlignedBb(-0.15f, -0.25f, 0.15f, 0.25f);
         }
 
         public override void OnCollideWith(Entity _obj)

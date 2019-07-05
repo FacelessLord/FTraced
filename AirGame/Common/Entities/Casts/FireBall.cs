@@ -24,7 +24,7 @@ namespace GlLib.Common.Entities.Casts
 
             velocity = _velocity.Normalized == new PlanarVector(0, 0) ? sightDirection : _velocity.Normalized;
             SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
-            AaBb = new AxisAlignedBb(-0.5, -1, 0.5, 1);
+            AaBb = new AxisAlignedBb(-0.5f, -1f, 0.5f, 1f);
         }
 
         internal uint DieTime { get; }

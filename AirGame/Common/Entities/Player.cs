@@ -20,7 +20,7 @@ namespace GlLib.Common.Entities
 
         public TerrainBlock Brush { get; internal set; }
 
-        public double accelerationValue = 0.05;
+        public float accelerationValue = 0.05f;
         public PlayerData data;
         public PlayerInventory inventory = new PlayerInventory();
         public EquipmentInventory equip = new EquipmentInventory();
@@ -64,7 +64,7 @@ namespace GlLib.Common.Entities
             CanDie = false;
             spells = new SpellSystem(this);
 
-            AaBb = new AxisAlignedBb(-0.4, 0.1, 0.4, 0.8);
+            AaBb = new AxisAlignedBb(-0.4f, 0.1f, 0.4f, 0.8f);
         }
 
         public override void DealDamage(float _damage)

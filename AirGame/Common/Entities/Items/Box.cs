@@ -18,7 +18,7 @@ namespace GlLib.Common.Entities.Items
             ushort _armor = 1) : base(_health, _armor, _world, _position)
         {
             SetCustomRenderer(new BoxRenderer());
-            AaBb = new AxisAlignedBb(-1.5 / 4f, -0.75 / 4f, 1.5 / 4f, 3 / 4f);
+            AaBb = new AxisAlignedBb(-1.5f / 4f, -0.75f / 4f, 1.5f / 4f, 3 / 4f);
         }
 
         private void Initialize()
@@ -34,10 +34,10 @@ namespace GlLib.Common.Entities.Items
                 if (r.Next(10) > 4)
                 {
                     worldObj.SpawnEntity(new Coin(worldObj, Position,
-                        PlanarVector.GetRandom(0.7)));
+                        PlanarVector.GetRandom(0.7f)));
                     if (r.Next(10) > 7)
                         worldObj.SpawnEntity(new Potion(worldObj, Position,
-                            PlanarVector.GetRandom(0.7)));
+                            PlanarVector.GetRandom(0.7f)));
                 }
                 else
                 {

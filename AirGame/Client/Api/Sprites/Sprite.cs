@@ -34,7 +34,7 @@ namespace GlLib.Client.Api.Sprites
 
         protected abstract void RenderSprite();
 
-        public Sprite Translate(double _x, double _y)
+        public Sprite Translate(float _x, float _y)
         {
             moveTo += new PlanarVector(_x, _y);
             return this;

@@ -24,7 +24,7 @@ namespace GlLib.Common.Entities.Items
             if (Proxy.GetWindow().serverStarted)
                 worldObj.SpawnEntity(
                     new Coin(worldObj, Position,
-                        PlanarVector.GetRandom(0.2)));
+                        PlanarVector.GetRandom(0.2f)));
         }
 
         public override string GetName()

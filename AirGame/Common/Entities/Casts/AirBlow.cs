@@ -15,7 +15,7 @@ namespace GlLib.Common.Entities.Casts
         {
             DieTime = _dieTime;
             Damage = _damage;
-            position = _position + _velocity / _velocity.Length * 1.5;
+            position = _position + _velocity * 1 / _velocity.Length * 1.5f;
             velocity = _baseVelocity;
             SetCustomRenderer(new AirBlowRenderer());
         }

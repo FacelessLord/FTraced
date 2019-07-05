@@ -22,7 +22,7 @@ namespace GlLib.Common.Entities
         private bool isDead;
 
         public bool isAffectedByFriction = true;
-        public PlanarVector maxVel = new PlanarVector(0.7, 0.7);
+        public PlanarVector maxVel = new PlanarVector(0.7f, 0.7f);
 
         public NbtTag nbtTag = new NbtTag();
 
@@ -64,7 +64,7 @@ namespace GlLib.Common.Entities
         }
 
         public bool IsDead { get; } = false;
-        public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375, -0.25, 0.375, 0.75);
+        public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375f, -0.25f, 0.375f, 0.75f);
 
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
@@ -140,7 +140,7 @@ namespace GlLib.Common.Entities
 
             MoveEntity();
 
-            if (isAffectedByFriction) velocity *= 0.85;
+            if (isAffectedByFriction) velocity *= 0.85f;
             
             if (!noClip)
                 foreach (var e in worldObj.GetEntitiesWithinAaBb(GetTranslatedAaBb()))
@@ -172,7 +172,7 @@ namespace GlLib.Common.Entities
                         var blockBox = block.GetCollisionBox();
                         var x = Position.x - Position.Ix;
                         var y = Position.y - Position.Iy;
-                        if (blockBox != null && blockBox.IsVectorInside(x, y))
+                        if (!Equals(blockBox, AxisAlignedBb.Zero) && blockBox.IsVectorInside(x, y))
                         {
                             Position = oldPos;
                             velocity = new PlanarVector();
