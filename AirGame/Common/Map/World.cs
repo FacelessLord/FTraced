@@ -103,34 +103,12 @@ namespace GlLib.Common.Map
 
         public ThreadSafeList<Entity> GetEntitiesWithinAaBb(AxisAlignedBb _aabb)
         {
-            var chunks = new List<Chunk>();
-
-            var chkStartX = _aabb.StartXi / 16;
-            var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = chkStartX + _aabb.Width / 16 + 1;
-            var chkEndY = chkStartY + _aabb.Height / 16 + 1;
-
-            for (var i = chkStartX; i <= chkEndX; i++)
-            for (var j = chkStartY; j <= chkEndY; j++)
-                if (i >= 0 && j >= 0 && i < width && j < height)
-                {
-                    var chk = this[i, j];
-                    if (chk != null) chunks.Add(chk);
-                }
-
-            return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb))
-                .ToThreadSafeList();
-        }
-
-        public ThreadSafeList<Entity> GetEntitiesWithinAaBbAndHeight(AxisAlignedBb _aabb, int _height)
-        {
             var chunks = new ThreadSafeList<Chunk>();
 
-            var chkStartX = _aabb.StartXi / 16;
-            var chkStartY = _aabb.StartYi / 16;
-            var chkEndX = chkStartX + _aabb.Width / 16 + 1;
-            var chkEndY = chkStartY + _aabb.Height / 16 + 1;
+            var chkStartX = (_aabb.StartXi - 4) / 16;
+            var chkStartY = (_aabb.StartYi - 4) / 16;
+            var chkEndX = chkStartX + (_aabb.Width + 4) / 16 + 1;
+            var chkEndY = chkStartY + (_aabb.Height + 4) / 16 + 1;
             for (var i = chkStartX; i <= chkEndX; i++)
             for (var j = chkStartY; j <= chkEndY; j++)
                 if (i >= 0 && j >= 0 && i < width && j < height)
@@ -140,7 +118,7 @@ namespace GlLib.Common.Map
                 }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.GetTranslatedAaBb().IntersectsWith(_aabb) && !_entity.noClip)
+                .ThreadSafeWhere(_entity => _entity.AaBb.IntersectsWithAt(_aabb, _entity.Position) && !_entity.noClip)
                 .ToThreadSafeList();
         }
 

@@ -141,10 +141,9 @@ namespace GlLib.Common.Entities
             MoveEntity();
 
             if (isAffectedByFriction) velocity *= 0.85;
-
-
+            
             if (!noClip)
-                foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
+                foreach (var e in worldObj.GetEntitiesWithinAaBb(GetTranslatedAaBb()))
                     OnCollideWith(e);
 
 

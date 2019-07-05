@@ -333,7 +333,23 @@ namespace GlLib.Utils.Math
 
             //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
             //    SidedConsole.WriteLine(this + " | " + _box);
-            //TODO it's magic check please
+            //TODO magical 1.5 constant
+            return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
+        }
+
+        public bool IntersectsWithAt(AxisAlignedBb _box, PlanarVector _pos)
+        {
+            var cx1 = (startX + endX) / 2 + _pos.x;
+            var cy1 = (startY + endY) / 2 + _pos.y;
+            var cx2 = (_box.startX + _box.endX) / 2;
+            var cy2 = (_box.startY + _box.endY) / 2;
+
+            var halfWidth = Width / 2 + _box.Width / 2;
+            var halfHeight = Height / 2 + _box.Height / 2;
+
+            //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
+            //    SidedConsole.WriteLine(this + " | " + _box);
+            //TODO magical 1.5 constant
             return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
         }
 
