@@ -45,7 +45,6 @@ namespace GlLib.Client.Input
         {
 
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
-            //if (!(Proxy.GetClient().player is SystemAdmin)) return; <- TODO
             var chunkX = _p.Position.Ix / 16;
             var chunkY = _p.Position.Iy / 16;
 

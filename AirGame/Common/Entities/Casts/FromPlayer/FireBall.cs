@@ -3,9 +3,9 @@ using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils.Math;
 
-namespace GlLib.Common.Entities.Casts
+namespace GlLib.Common.Entities.Casts.FromPlayer
 {
-    public class FireBall : Entity
+    public class FireBall : Entities.Entity
     {
         private const short BaseVelocity = 2;
 
@@ -41,7 +41,7 @@ namespace GlLib.Common.Entities.Casts
                 SetDead();
         }
 
-        public override void OnCollideWith(Entity _obj)
+        public override void OnCollideWith(Entities.Entity _obj)
         {
             if (_obj is EntityLiving && !(_obj is Player))
                 (_obj as EntityLiving).DealDamage(Damage);

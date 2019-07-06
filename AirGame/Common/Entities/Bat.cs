@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using GlLib.Client.Graphic.Renderers;
-using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Common.Map; 
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities

@@ -37,8 +37,8 @@ namespace GlLib.Utils.Math
             {
                 if (System.Math.Abs(Length) < 1e-4) return new PlanarVector(0);
 
-                var newX =(float) System.Math.Round(x * 1 / Length);
-                var newY =(float) System.Math.Round(y * 1 / Length);
+                var newX = (float) System.Math.Round(x * 1 / Length);
+                var newY = (float) System.Math.Round(y * 1 / Length);
                 return new PlanarVector(newX, newY);
             }
         }
@@ -155,5 +155,11 @@ namespace GlLib.Utils.Math
             y /= _j;
             return this;
         }
+
+
+
+        public static PlanarVector Null
+            => new PlanarVector(0, 0);
+
     }
 }

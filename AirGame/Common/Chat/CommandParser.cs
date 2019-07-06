@@ -5,6 +5,7 @@ using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Utils.StringParser;
+using OpenTK.Graphics.ES20;
 using SixLabors.ImageSharp.MetaData.Profiles.Icc;
 
 namespace GlLib.Common.Chat
@@ -41,6 +42,8 @@ namespace GlLib.Common.Chat
                 "Saves whole world (including blocks)");
             AddParse("killchunk", (_p, _io) => KillChunk(_p, _io),
                 "Kills all entities in chunk that can be killed");
+            AddParse("setrotation", (_p, _io) => SetBlockRotation(_p, _io), 
+                "Change block rotation player staying on.");
         }
 
         public static void SwitchNoClip(string[] _s, IStringIo _io)
@@ -165,6 +168,25 @@ namespace GlLib.Common.Chat
             if (_s[0] == "0")
                 Proxy.GetClient().player.SetGodMode(false);
         }
+
+        public static void SetBlockRotation(string[] _s, IStringIo _io)
+        {
+            int angle = 0;
+            if (_s.Length != 1 && !int.TryParse(_s[0], out angle))
+            {
+                _io.Output("You should use right string format. \nUse degrees. \n/setrotation <angle>");
+                return;
+            }
+
+            var chunkX = Proxy.GetClient().player.Position.Ix / 16;
+            var chunkY = Proxy.GetClient().player.Position.Iy / 16;
+
+            var blockX = Proxy.GetClient().player.Position.Ix % 16;
+            var blockY = Proxy.GetClient().player.Position.Iy % 16;
+
+            Proxy.GetClient().player.worldObj[chunkX, chunkY][blockX, blockY].SetRotation(angle);
+        }
+
 
         public static void ChangeBrush(string[] _s, IStringIo _io)
         {

@@ -86,7 +86,7 @@ namespace GlLib.Common.Map
                 }
 
                 EntityCount++;
-//                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+                SidedConsole.WriteLine($"Entity {_e} spawned in world");
             }
             else
             {

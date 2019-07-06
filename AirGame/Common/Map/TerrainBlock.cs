@@ -1,3 +1,4 @@
+using System;
 using System.Net.Json;
 using GlLib.Client.Api.Renderers;
 using GlLib.Common.Api;
@@ -18,7 +19,12 @@ namespace GlLib.Common.Map
         public abstract string Name { get; protected set; }
 
         public abstract string TextureName { get; internal set; }
-        public double Rotation { get; protected set; }
+        public int Rotation { get; protected set; }
+
+        public void SetRotation(int _angle)
+        {
+            Rotation = _angle;
+        }
 
         public JsonObject CreateJsonObject(string _objectName)
         {
