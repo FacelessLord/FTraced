@@ -1,10 +1,9 @@
-using System.Diagnostics;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GlLib.Client.API.Gui
+namespace GlLib.Client.Api.Gui
 {
     public class GuiSlot : GuiObject
     {
@@ -16,14 +15,14 @@ namespace GlLib.Client.API.Gui
         public GuiSlot(IInventory _inventory, int _x, int _y) : base(_x, _y, SlotSize,
             SlotSize)
         {
-            slotTexture = Vertexer.LoadTexture("gui/slot.png");
+            slotTexture = Textures.slot;
             inventory = _inventory;
         }
 
         public GuiSlot(PlayerInventory _inventory, int _x, int _y, Color _color) : base(
             _x, _y, SlotSize, SlotSize, _color)
         {
-            slotTexture = Vertexer.LoadTexture("gui/slot.png");
+            slotTexture = Textures.slot;
             inventory = _inventory;
         }
 

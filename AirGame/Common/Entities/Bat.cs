@@ -2,6 +2,7 @@
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
@@ -80,7 +81,7 @@ namespace GlLib.Common.Entities
 
         private void MoveToTarget()
         {
-            velocity = (Target.Position - position).ToPlanarVector();
+            velocity = Target.Position - position;
             velocity.Normalize();
             velocity /= 5;
         }

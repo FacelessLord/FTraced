@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Json;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -11,6 +10,7 @@ using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Input;
 
 namespace GlLib.Client.Input
@@ -116,7 +116,12 @@ namespace GlLib.Client.Input
             return true;
         };
 
-        public static Func<Player, bool> exit = _p => Proxy.Exit = true;
+        public static Func<Player, bool> exit = _p =>
+        {
+            if (Proxy.GetWindow().CanMovementBeHandled())
+                Proxy.Exit = true;
+            return true;
+        };
 
         public static Func<Player, bool> spellFire = _p =>
         {
@@ -156,8 +161,8 @@ namespace GlLib.Client.Input
                     _p.SetState(EntityState.AoeAttack, 6);
                 else
                     _p.SetState(EntityState.DirectedAttack, 6);
-                var entities = _p.worldObj.GetEntitiesWithinAaBbAndHeight(
-                    _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 2), 1.05), _p.Position.z);
+                var entities = _p.worldObj.GetEntitiesWithinAaBb(
+                    _p.GetTranslatedAaBb().Scaled(_p.velocity.Normalized.Divide(4, 1), 1.05f));
                 entities.Where(_e => _e is EntityLiving el && !el.state.Equals(EntityState.Dead) && _e != _p)
                     .Cast<EntityLiving>().ToList()
                     .ForEach(_e => _e.DealDamage(30));
@@ -212,10 +217,10 @@ namespace GlLib.Client.Input
             BindClick(Key.G, spawnSlime, "world.spawn.slime");
             BindClick(Key.B, spawnBat, "world.spawn.bat");
 
-            BindClick(Key.Keypad1, spawnBox, "world.spawn.Box");
-            BindClick(Key.Keypad2, spawnPile, "world.spawn.Pile");
-            BindClick(Key.Keypad3, spawnStreetlight, "world.spawn.Streetlight");
-            BindClick(Key.Keypad4, spawnPotion, "world.spawn.Potion");
+            BindClick(Key.Z, spawnBox, "world.spawn.Box");
+            BindClick(Key.X, spawnPile, "world.spawn.Pile");
+            BindClick(Key.C, spawnStreetlight, "world.spawn.Streetlight");
+            BindClick(Key.V, spawnPotion, "world.spawn.Potion");
 
             BindClick(Key.Keypad0, saveWorld, "world.save.world");
             BindClick(Key.Enter, setBlock, "world.set.block");

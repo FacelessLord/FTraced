@@ -1,24 +1,16 @@
-namespace GlLib.Common.Map.Blocks
+using GlLib.Common.Map;
+
+namespace GlLib.Common.Blocks
 {
     public class Bricks : TerrainBlock
     {
-        public override string Name
+        public Bricks()
         {
-            get => "block.indoor.bricks";
-            protected set
-
-            {
-                //TODO 
-            }
+            Rotation = 90;
         }
 
-        public override string TextureName
-        {
-            get => "bricks_worn.png";
-            internal set
-            {
-                //TODO 
-            }
-        }
+        public override string Name { get; protected set; } = "block.indoor.bricks";
+
+        public override string TextureName { get; internal set; } = Path + "bricks_worn.png";
     }
 }

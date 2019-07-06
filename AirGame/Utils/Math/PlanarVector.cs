@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Math
 {
     public struct PlanarVector
     {
         public bool Equals(PlanarVector _other)
         {
-            return Math.Abs(x - _other.x) < 1e-3 &&
-                   Math.Abs(y - _other.y) < 1e-3;
+            return System.Math.Abs(x - _other.x) < 1e-3 &&
+                   System.Math.Abs(y - _other.y) < 1e-3;
         }
 
         public override bool Equals(object _obj)
@@ -35,10 +35,10 @@ namespace GlLib.Utils
         {
             get
             {
-                if (Math.Abs(Length) < 1e-4) return new PlanarVector(0);
+                if (System.Math.Abs(Length) < 1e-4) return new PlanarVector(0);
 
-                var newX =(float) Math.Round(x * 1 / Length);
-                var newY =(float) Math.Round(y * 1 / Length);
+                var newX =(float) System.Math.Round(x * 1 / Length);
+                var newY =(float) System.Math.Round(y * 1 / Length);
                 return new PlanarVector(newX, newY);
             }
         }
@@ -102,15 +102,15 @@ namespace GlLib.Utils
 
         public void Normalize()
         {
-            if (Math.Abs(Length) < 1e-4)
+            if (System.Math.Abs(Length) < 1e-4)
             {
                 x = 0;
                 y = 0;
                 return;
             }
 
-            x = (float) Math.Round(x * 1 / Length);
-            y = (float) Math.Round(y * 1 / Length);
+            x = (float) System.Math.Round(x * 1 / Length);
+            y = (float) System.Math.Round(y * 1 / Length);
         }
 
         public static PlanarVector FromString(string _s)
@@ -123,7 +123,7 @@ namespace GlLib.Utils
                 float.Parse(coords[1], NumberStyles.Any, CultureInfo.InvariantCulture));
         }
 
-        public AxisAlignedBb Expand(double _width, double _height)
+        public AxisAlignedBb Expand(float _width, float _height)
         {
             return new AxisAlignedBb(x, y, x + _width, y + _height);
         }

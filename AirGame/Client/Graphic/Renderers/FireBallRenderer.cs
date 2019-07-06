@@ -1,8 +1,9 @@
 ﻿using System;
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API;
 using GlLib.Common.Entities;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -30,7 +31,7 @@ namespace GlLib.Client.Graphic.Renderers
 
         public override void Setup(Entity _e)
         {
-            var layout = new TextureLayout(@"11_fire_spritesheet.png", 8, 8);
+            var layout = new TextureLayout(Textures.fireBall, 8, 8);
             _sprite = new LinearSprite(layout, 61, 6);
             _sprite.Scale(3f, 2);
             var box = _e.AaBb;

@@ -1,6 +1,6 @@
 using GlLib.Common.Map;
 
-namespace GlLib.Client.API
+namespace GlLib.Client.Api.Renderers
 {
     public interface IBlockRenderer
     {

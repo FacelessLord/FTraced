@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GlLib.Common.API
+namespace GlLib.Common.Api
 {
     public class Trait
     {

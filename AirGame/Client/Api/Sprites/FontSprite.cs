@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GlLib.Client.API;
 using GlLib.Client.Graphic;
 using OpenTK.Graphics.OpenGL;
 
@@ -70,9 +69,18 @@ namespace GlLib.Client.Api.Sprites
             l.AddRange(new List<char>
             {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+',
-                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~', '\'', '\"', '-','_', ' ',
-                '\t', '\n'
+                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~', '\'', '\"', '-', '_'
             });
+
+
+            l.Add('ĉ');
+            l.Add('ĝ');
+            l.Add('ĥ');
+            l.Add('ĵ');
+            l.Add('ŝ');
+            l.Add('ŭ');
+
+            l.AddRange(new List<char> {' ', '\t', '\n'});
 
             for (var i = 0; i < l.Count; i++)
                 registry.Add(l[i], i);
@@ -84,7 +92,7 @@ namespace GlLib.Client.Api.Sprites
             var (startU, startV, endU, endV) = layout.GetFrameUvProportions(registry[_character]);
             var dh = 0.35 / layout.height;
 
-            Vertexer.DrawSquare(0, 0, 1, 1, startU, startV + dh, endU, endV+dh);
+            Vertexer.DrawSquare(0, 0, 1, 1, startU, startV + dh, endU, endV + dh);
         }
 
         public double GetTextWidth(string _text, int _size)
@@ -120,11 +128,11 @@ namespace GlLib.Client.Api.Sprites
 
                 if (character != '\n')
                 {
-                    GL.Translate(-leftKern, vertKern / 2, 0);
-                    if (character != ' ') Render(character);
+                    GL.Translate(-leftKern * _size / 12, vertKern * _size / 14 / 2, 0);
+                    Render(character);
 
-                    d += 1.00 - rightKern - leftKern;
-                    GL.Translate(1.0 - rightKern, -vertKern / 2, 0);
+                    d += 1.00 - rightKern * _size / 12 - leftKern * _size / 12;
+                    GL.Translate(1.0 - rightKern * _size / 12, -vertKern * _size / 14 / 2, 0);
                 }
                 else
                 {
@@ -134,7 +142,17 @@ namespace GlLib.Client.Api.Sprites
             }
 
             Vertexer.ClearColor();
+            Vertexer.ResetMode();
             GL.PopMatrix();
+        }
+
+        public static readonly FontSprite Alagard;
+        public static readonly FontSprite Esogam;
+
+        static FontSprite()
+        {
+            Alagard = new AlagardFontSprite();
+            Esogam = new EsogamFontSprite();
         }
     }
 }

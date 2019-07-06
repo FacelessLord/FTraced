@@ -1,6 +1,6 @@
 using GlLib.Common.Map;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Collections
 {
     public class PlayerData
     {

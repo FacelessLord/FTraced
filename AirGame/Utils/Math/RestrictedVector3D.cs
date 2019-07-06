@@ -1,15 +1,15 @@
 using System;
 using System.Globalization;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Math
 {
     public struct RestrictedVector3D
     {
         public bool Equals(RestrictedVector3D _other)
         {
             return z == _other.z &&
-                   Math.Abs(x - _other.x) < 1e-3 &&
-                   Math.Abs(y - _other.y) < 1e-3;
+                   System.Math.Abs(x - _other.x) < 1e-3 &&
+                   System.Math.Abs(y - _other.y) < 1e-3;
         }
 
         public override bool Equals(object _obj)
@@ -47,7 +47,7 @@ namespace GlLib.Utils
             return new RestrictedVector3D(-_a.x, -_a.y, _a.z);
         }
 
-        public AxisAlignedBb ExpandBothTo(double _width, double _height)
+        public AxisAlignedBb ExpandBothTo(float _width, float _height)
         {
             return new AxisAlignedBb(x - _width, y - _height, x + _width, y + _height);
         }
@@ -97,6 +97,11 @@ namespace GlLib.Utils
         public PlanarVector ToPlanarVector()
         {
             return new PlanarVector(x, y);
+        }
+        
+        public static implicit operator PlanarVector(RestrictedVector3D v)
+        {
+            return v.ToPlanarVector();
         }
 
         public override string ToString()

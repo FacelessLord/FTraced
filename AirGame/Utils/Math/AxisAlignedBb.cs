@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace GlLib.Utils
+namespace GlLib.Utils.Math
 {
-    public class AxisAlignedBb
+    public struct AxisAlignedBb
     {
-        public double endX;
-        public double endY;
-        public double startX;
-        public double startY;
+        public float endX;
+        public float endY;
+        public float startX;
+        public float startY;
 
-        public AxisAlignedBb(double _startX, double _startY, double _endX, double _endY)
+        public AxisAlignedBb(float _startX, float _startY, float _endX, float _endY)
         {
             (startX, startY, endX, endY) =
                 (_startX, _startY, _endX, _endY);
@@ -25,16 +25,17 @@ namespace GlLib.Utils
             CheckCoordinates();
         }
 
-        public int StartXi => (int)startX;
-        public int StartYi => (int)startY;
-        public int EndXi => (int)endX;
-        public int EndYi => (int)endY;
+        public int StartXi => (int) startX;
+        public int StartYi => (int) startY;
+        public int EndXi => (int) endX;
+        public int EndYi => (int) endY;
 
-        public double Width => endX - startX;
-        public double Height => endY - startY;
+        public float Width => endX - startX;
+        public float Height => endY - startY;
 
         public int WidthI => EndXi - StartXi;
         public int HeightI => EndYi - StartYi;
+        public static AxisAlignedBb Zero { get; } = new AxisAlignedBb(0, 0, 0, 0);
 
         public bool IsVectorInside(PlanarVector _vector)
         {
@@ -58,8 +59,24 @@ namespace GlLib.Utils
 
             //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
             //    SidedConsole.WriteLine(this + " | " + _box);
-            //TODO it's magic check please
-            return Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
+            //TODO magical 1.5 constant
+            return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
+        }
+
+        public bool IntersectsWithAt(AxisAlignedBb _box, PlanarVector _pos)
+        {
+            var cx1 = (startX + endX) / 2 + _pos.x;
+            var cy1 = (startY + endY) / 2 + _pos.y;
+            var cx2 = (_box.startX + _box.endX) / 2;
+            var cy2 = (_box.startY + _box.endY) / 2;
+
+            var halfWidth = Width / 2 + _box.Width / 2;
+            var halfHeight = Height / 2 + _box.Height / 2;
+
+            //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
+            //    SidedConsole.WriteLine(this + " | " + _box);
+            //TODO magical 1.5 constant
+            return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
         }
 
         public static AxisAlignedBb operator +(AxisAlignedBb _a, PlanarVector _v)
@@ -81,7 +98,7 @@ namespace GlLib.Utils
             return this;
         }
 
-        public AxisAlignedBb Scaled(PlanarVector _v, double _s)
+        public AxisAlignedBb Scaled(PlanarVector _v, float _s)
         {
             if (_v.x > 0)
             {
@@ -110,18 +127,12 @@ namespace GlLib.Utils
 
         public override bool Equals(object _obj)
         {
-            var item = _obj as AxisAlignedBb;
-            if (item is null)
-                return false;
-            return Equals(item);
-        }
-
-        protected bool Equals(AxisAlignedBb _item)
-        {
-            return Math.Abs(_item.startX - startX) < 1e-3
-                   && Math.Abs(_item.startY - startY) < 1e-3
-                   && Math.Abs(_item.endX - endX) < 1e-3
-                   && Math.Abs(_item.endY - endY) < 1e-3;
+            if (_obj is AxisAlignedBb item)
+                return System.Math.Abs(item.startX - startX) < 1e-3
+                       && System.Math.Abs(item.startY - startY) < 1e-3
+                       && System.Math.Abs(item.endX - endX) < 1e-3
+                       && System.Math.Abs(item.endY - endY) < 1e-3;
+            return false;
         }
 
         public override int GetHashCode()

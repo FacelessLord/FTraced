@@ -1,8 +1,8 @@
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 
-namespace GlLib.Common.Entities
+namespace GlLib.Common.Entities.Items
 {
     public class Coin : Entity
     {
@@ -27,7 +27,7 @@ namespace GlLib.Common.Entities
 
         public void Initialize()
         {
-            AaBb = new AxisAlignedBb(-0.15, 0.05, 0.15, 0.25);
+            AaBb = new AxisAlignedBb(-0.15f, 0.05f, 0.15f, 0.25f);
         }
 
         public override void OnCollideWith(Entity _obj)

@@ -1,6 +1,6 @@
 using System.Net.Json;
 
-namespace GlLib.Common.API
+namespace GlLib.Common.Api
 {
     public class TraitModifier : IJsonSerializable
     {
@@ -28,9 +28,9 @@ namespace GlLib.Common.API
             operation = _operation;
         }
 
-        public JsonObject CreateJsonObject()
+        public JsonObject CreateJsonObject(string _objectName)
         {
-            var jsonObj = new JsonObjectCollection("traitModifier");
+            var jsonObj = new JsonObjectCollection(_objectName);
             jsonObj.Add(new JsonStringValue("id", uuid));
             jsonObj.Add(new JsonNumericValue("traitId", trait.id));
             jsonObj.Add(new JsonNumericValue("value", value));
@@ -47,6 +47,11 @@ namespace GlLib.Common.API
                 value = (float) ((JsonNumericValue) collection[2]).Value;
                 operation = (Operation) ((JsonNumericValue) collection[3]).Value;
             }
+        }
+
+        public string GetStandardName()
+        {
+            return "traitModifier";
         }
 
         public override bool Equals(object _obj)

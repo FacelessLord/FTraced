@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GlLib.Client.API
+namespace GlLib.Client.Api
 {
     public interface IStringIo
     {

@@ -1,20 +1,19 @@
 ﻿using System;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 
-namespace GlLib.Common.Entities
+namespace GlLib.Common.Entities.Casts
 {
     public class FireBall : Entity
     {
         private const short BaseVelocity = 2;
 
-
         public FireBall(World _world, RestrictedVector3D _position, Direction direction, PlanarVector _velocity,
             uint _dieTime, int _damage)
             : base(_world, _position)
         {
-            isVelocityDinamic = false;
+            isAffectedByFriction = false;
             PlanarVector sightDirection;
             if (direction == Direction.Right)
                 sightDirection = new PlanarVector(1, 0);
@@ -25,7 +24,7 @@ namespace GlLib.Common.Entities
 
             velocity = _velocity.Normalized == new PlanarVector(0, 0) ? sightDirection : _velocity.Normalized;
             SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
-            AaBb = new AxisAlignedBb(-0.5, -1, 0.5, 1);
+            AaBb = new AxisAlignedBb(-0.5f, -1f, 0.5f, 1f);
         }
 
         internal uint DieTime { get; }

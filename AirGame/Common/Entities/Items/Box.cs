@@ -1,10 +1,9 @@
 ﻿using System;
 using GlLib.Client.Graphic.Renderers;
-using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 
-namespace GlLib.Common.Entities
+namespace GlLib.Common.Entities.Items
 {
     public class Box : EntityLiving
     {
@@ -19,9 +18,8 @@ namespace GlLib.Common.Entities
             ushort _armor = 1) : base(_health, _armor, _world, _position)
         {
             SetCustomRenderer(new BoxRenderer());
-            AaBb = new AxisAlignedBb(-0.5, -0.25, 0.5, 1);
+            AaBb = new AxisAlignedBb(-1.5f / 4f, -0.75f / 4f, 1.5f / 4f, 3 / 4f);
         }
-
 
         private void Initialize()
         {
@@ -36,10 +34,10 @@ namespace GlLib.Common.Entities
                 if (r.Next(10) > 4)
                 {
                     worldObj.SpawnEntity(new Coin(worldObj, Position,
-                        PlanarVector.GetRandom(0.2f)));
+                        PlanarVector.GetRandom(0.7f)));
                     if (r.Next(10) > 7)
                         worldObj.SpawnEntity(new Potion(worldObj, Position,
-                            PlanarVector.GetRandom(0.2f)));
+                            PlanarVector.GetRandom(0.7f)));
                 }
                 else
                 {

@@ -1,8 +1,8 @@
 ﻿using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 
-namespace GlLib.Common.Entities
+namespace GlLib.Common.Entities.Casts
 {
     public class AirBlow : Entity
     {
@@ -15,7 +15,7 @@ namespace GlLib.Common.Entities
         {
             DieTime = _dieTime;
             Damage = _damage;
-            position = _position + _velocity / _velocity.Length * 1.5f;
+            position = _position + _velocity * 1 / _velocity.Length * 1.5f;
             velocity = _baseVelocity;
             SetCustomRenderer(new AirBlowRenderer());
         }

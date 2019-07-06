@@ -1,17 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
+using GlLib.Common.Io;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
+using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Common.Map
 {
     public class Chunk
     {
-        public const short BlockWidth = 64;
-        public const short BlockHeight = 32;
+        public const float BlockWidth = 64;
+        public const float BlockHeight = 32;
         public TerrainBlock[,] blocks; // = new TerrainBlock[16,16];
 
         public int chunkX;
@@ -76,11 +80,19 @@ namespace GlLib.Common.Map
                     GL.Translate(coord.x, coord.y, 0);
                     //Vertexer.DrawTexturedModalRect(btexture,0, 0, 0, 0, btexture.width, btexture.height);
 
-                    Vertexer.StartDrawingQuads();
+//                    var sin = Math.Sin(block.Rotation);
+//                    var cos = Math.Cos(block.Rotation);
 
-                    Vertexer.VertexWithUvAt(BlockWidth, 0, 1, 0);
-                    Vertexer.VertexWithUvAt(BlockWidth, BlockHeight, 1, 1);
-                    Vertexer.VertexWithUvAt(0, BlockHeight, 0, 1);
+                    GL.Scale(BlockWidth, BlockHeight, 1);
+                    GL.Translate(1 / 2d, 1 / 2d, 0);
+                    GL.Rotate(block.Rotation, 0, 0, 1);
+                    GL.Translate(-1 / 2d, -1 / 2d, 0);
+
+                    Vertexer.StartDrawingQuads();
+                    
+                    Vertexer.VertexWithUvAt(1, 0, 1, 0);
+                    Vertexer.VertexWithUvAt(1, 1, 1, 1);
+                    Vertexer.VertexWithUvAt(0, 1, 0, 1);
                     Vertexer.VertexWithUvAt(0, 0, 0, 0);
 
                     Vertexer.Draw();
@@ -190,7 +202,7 @@ namespace GlLib.Common.Map
             lock (entities)
             {
                 foreach (var entity in entities)
-                    objects.Add(entity.CreateJsonObject());
+                    objects.Add(entity.CreateJsonObject("entity"));
             }
 
             return objects;

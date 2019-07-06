@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Common;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Entities;
@@ -34,7 +33,7 @@ namespace GlLib.Client.Graphic.Gui
             var d = 4;
             var panel = new GuiPanel(_x, _y, 50 + 3 * w / 9, 2 * h / 5);
             Add(panel);
-            panel.bar = new GuiScrollBar(panel.height, panel.width - 50, 0, 50, panel.height);
+            panel.bar = new GuiScrollBar(panel.width - 50, 0, 50, panel.height);
             for (var i = 0; i < _inv.GetMaxSize(); i++)
             {
                 var dy = slotSize + 2;
@@ -46,7 +45,7 @@ namespace GlLib.Client.Graphic.Gui
                 panel.Add(slotRect);
                 var slot = new GuiSlotTypeRenderer(_inv, i, 0, dy * i);
                 panel.Add(slot);
-                var text = new GuiSlotSign(_inv, i, slotSize, dy * i,
+                var text = new GuiSlotSign(_inv, 12, i, slotSize, dy * i,
                     4 * w / 9 - d - slotSize * 5 / 2, slotSize);
                 panel.Add(text);
                 signs.Add(text);

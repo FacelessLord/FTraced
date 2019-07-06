@@ -2,6 +2,7 @@ using System;
 using System.Net.Json;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
@@ -27,7 +28,7 @@ namespace GlLib.Common.Entities
             Armor = 0;
             Health = 100;
             MaxHealth = 100;
-            DamageTimer = -1;
+            DamageTimer = 0;
         }
 
         public bool CanDie { get; set; } = true;
@@ -54,9 +55,9 @@ namespace GlLib.Common.Entities
             GodMode = _enable;
         }
 
-        public override JsonObject CreateJsonObject()
+        public override JsonObject CreateJsonObject(string _objectName)
         {
-            var obj = base.CreateJsonObject();
+            var obj = base.CreateJsonObject(_objectName);
             if (obj is JsonObjectCollection collection)
             {
                 collection.Add(new JsonNumericValue("Armor", Armor));

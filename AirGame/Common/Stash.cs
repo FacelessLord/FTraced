@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.IO;
 using System.Net.Json;
+using GlLib.Common.Io;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;
 using GlLib.Utils;
@@ -26,7 +27,7 @@ namespace GlLib.Common
                 foreach (var obj in blocks)
                 {
                     var block = obj as TerrainBlock;
-                    result.Add(block?.CreateJsonObject());
+                    result.Add(block?.CreateJsonObject(block.Name));
                 }
 
                 result.WriteTo(file);

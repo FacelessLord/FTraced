@@ -1,7 +1,7 @@
 using GlLib.Client.Api.Sprites;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -17,20 +17,19 @@ namespace GlLib.Client.Api.Gui
         public TextureLayout scroller;
         public int scrollerPos;
 
-        public GuiScrollBar(int _maxValue, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
+        public GuiScrollBar(int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
         {
-            scrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
-            scroller = new TextureLayout("gui/scroller.png", 3, 3);
+            scrollBar = new TextureLayout(Textures.scrollBar, 3, 3);
+            scroller = new TextureLayout(Textures.scroller, 3, 3);
             maximum = height - 7 * width / 3;
-            maxValue = _maxValue;
         }
 
         public GuiScrollBar(int _maxValue, int _x, int _y, int _width, int _height, Color _color) : base(_x, _y, _width,
             _height,
             _color)
         {
-            scrollBar = new TextureLayout("gui/scroll_bar.png", 3, 3);
-            scroller = new TextureLayout("gui/scroller.png", 3, 3);
+            scrollBar = new TextureLayout(Textures.scrollBar, 3, 3);
+            scroller = new TextureLayout(Textures.scroller, 3, 3);
             maximum = height - 7 * width / 3;
             maxValue = _maxValue;
         }

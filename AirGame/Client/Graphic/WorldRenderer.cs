@@ -1,5 +1,6 @@
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
 namespace GlLib.Client.Graphic
@@ -13,7 +14,7 @@ namespace GlLib.Client.Graphic
             this._world = _world;
         }
 
-        public void Render(float _x, float _y)
+        public void Render(double _x, double _y)
         {
             lock (_world.chunks)
             {

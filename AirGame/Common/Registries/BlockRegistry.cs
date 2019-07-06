@@ -1,6 +1,5 @@
 using GlLib.Common.Blocks;
 using GlLib.Common.Map;
-using GlLib.Common.Map.Blocks;
 
 namespace GlLib.Common.Registries
 {

@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
-using GlLib.Client.API.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic.Renderers;
+using GlLib.Common.Api.Entity;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK.Graphics;
 
 namespace GlLib.Common.Entities
@@ -61,7 +62,7 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new SlimeRenderer());
             AttackRange = 2;
             AttackValue = 2;
-            AaBb = new AxisAlignedBb(-0.25, 0, 0.25, 0.5);
+            AaBb = new AxisAlignedBb(-0.25f, 0f, 0.25f, 0.5f);
         }
 
         public override string GetName()
@@ -117,7 +118,7 @@ namespace GlLib.Common.Entities
 
         private void MoveToTarget()
         {
-            velocity = (Target.Position - position).ToPlanarVector();
+            velocity = Target.Position - position;
             velocity.Normalize();
             velocity /= 5;
         }

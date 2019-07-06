@@ -1,11 +1,13 @@
 using System;
 using System.Net.Json;
-using GlLib.Client.API;
+using GlLib.Client.Api.Renderers;
 using GlLib.Client.Graphic.Renderers;
-using GlLib.Common.API;
+using GlLib.Common.Api;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
 using GlLib.Utils;
+using GlLib.Utils.Collections;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
@@ -19,7 +21,7 @@ namespace GlLib.Common.Entities
 
         private bool isDead;
 
-        public bool isVelocityDinamic = true;
+        public bool isAffectedByFriction = true;
         public PlanarVector maxVel = new PlanarVector(0.7f, 0.7f);
 
         public NbtTag nbtTag = new NbtTag();
@@ -62,7 +64,7 @@ namespace GlLib.Common.Entities
         }
 
         public bool IsDead { get; } = false;
-        public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375, -0.25, 0.375, 0.75);
+        public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375f, -0.25f, 0.375f, 0.75f);
 
         public virtual void LoadFromJsonObject(JsonObject _jsonObject)
         {
@@ -78,12 +80,17 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public virtual JsonObject CreateJsonObject()
+        public string GetStandardName()
         {
-            var jsonObj = new JsonObjectCollection("entity");
+            return "entity";
+        }
+
+        public virtual JsonObject CreateJsonObject(string _objectName)
+        {
+            var jsonObj = new JsonObjectCollection(_objectName);
 //            SidedConsole.WriteLine((this is Player) +"" + GetName());
             jsonObj.Add(new JsonStringValue("entityId", GetName()));
-            if (position != null && worldObj != null)
+            if (position != null && velocity != null && maxVel != null && worldObj != null)
             {
                 jsonObj.Add(new JsonStringValue("Position", Position + ""));
                 jsonObj.Add(new JsonStringValue("Velocity", velocity + ""));
@@ -133,11 +140,11 @@ namespace GlLib.Common.Entities
 
             MoveEntity();
 
-            if (isVelocityDinamic) velocity *= 0.85f;
-
-
-            foreach (var e in worldObj.GetEntitiesWithinAaBbAndHeight(GetTranslatedAaBb(), Position.z))
-                OnCollideWith(e);
+            if (isAffectedByFriction) velocity *= 0.85f;
+            
+            if (!noClip)
+                foreach (var e in worldObj.GetEntitiesWithinAaBb(GetTranslatedAaBb()))
+                    OnCollideWith(e);
 
 
             CheckVelocity();
@@ -159,13 +166,13 @@ namespace GlLib.Common.Entities
                 {
                     var blockX = Position.Ix % 16;
                     var blockY = Position.Iy % 16;
-                    if (blockX != prevBlockX || blockY != prevBlockY)
+                    if ((blockX != prevBlockX || blockY != prevBlockY) && !noClip)
                     {
                         var block = chunkObj[blockX, blockY];
                         var blockBox = block.GetCollisionBox();
                         var x = Position.x - Position.Ix;
                         var y = Position.y - Position.Iy;
-                        if (blockBox != null && blockBox.IsVectorInside(x, y))
+                        if (!Equals(blockBox, AxisAlignedBb.Zero) && blockBox.IsVectorInside(x, y))
                         {
                             Position = oldPos;
                             velocity = new PlanarVector();
@@ -202,11 +209,14 @@ namespace GlLib.Common.Entities
 
         public void SetDead(bool _dead = true)
         {
-            OnDead();
-            isDead = _dead;
-            lock (worldObj.entityRemoveQueue)
+            if (!EventBus.OnEntityDeath(this))
             {
-                worldObj.DespawnEntity(this);
+                OnDead();
+                isDead = _dead;
+                lock (worldObj.entityRemoveQueue)
+                {
+                    worldObj.DespawnEntity(this);
+                }
             }
         }
 
@@ -260,8 +270,8 @@ namespace GlLib.Common.Entities
             {
                 var hashCode = worldObj != null ? worldObj.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (position != null ? position.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (velocity.GetHashCode());
-                hashCode = (hashCode * 397) ^ (maxVel.GetHashCode());
+                hashCode = (hashCode * 397) ^ (velocity != null ? velocity.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (maxVel != null ? maxVel.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (chunkObj != null ? chunkObj.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (nbtTag != null ? nbtTag.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ isDead.GetHashCode();

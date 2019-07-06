@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Client.Api;
 
-namespace GlLib.Client.API
+namespace GlLib.Common.Io
 {
     public class ChatIo : IStringIo
     {
