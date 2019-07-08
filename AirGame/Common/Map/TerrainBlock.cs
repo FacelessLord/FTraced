@@ -19,11 +19,16 @@ namespace GlLib.Common.Map
         public abstract string Name { get; protected set; }
 
         public abstract string TextureName { get; internal set; }
-        public int Rotation { get; protected set; }
+        public Rotation Rotation { get; protected set; }
 
         public void SetRotation(int _angle)
         {
-            Rotation = _angle;
+            Rotation = (Rotation) _angle;
+        }
+
+        public void SetRotation(Rotation _rotation)
+        {
+            Rotation = _rotation;
         }
 
         public JsonObject CreateJsonObject(string _objectName)
@@ -64,12 +69,5 @@ namespace GlLib.Common.Map
             return null;
         }
 
-        public enum BlockRotation
-        {
-            Up = 0,
-            Left = 90,
-            Down = 180,
-            Right = 270
-        }
     }
 }

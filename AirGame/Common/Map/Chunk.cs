@@ -85,7 +85,7 @@ namespace GlLib.Common.Map
 
                     GL.Scale(BlockWidth, BlockHeight, 1);
                     GL.Translate(1 / 2d, 1 / 2d, 0);
-                    GL.Rotate(block.Rotation, 0, 0, 1);
+                    GL.Rotate((uint) block.Rotation, 0, 0, 1);
                     GL.Translate(-1 / 2d, -1 / 2d, 0);
 
                     Vertexer.StartDrawingQuads();

@@ -13,6 +13,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         protected LinearSprite idleSprite;
         protected LinearSprite walkSprite;
+        protected LinearSprite deathSprite;
 
         public SlimeRenderer() : base()
         {
@@ -22,17 +23,22 @@ namespace GlLib.Client.Graphic.Renderers
         public override void Setup(Entity _p)
         {
             var idle = new TextureLayout(Textures.slimeIdle, 10, 1);
+            var death = new TextureLayout(Textures.slimeDeath, 10, 1);
             var walk = new TextureLayout(Textures.slimeWalk, 7, 1);
 
             idleSprite = new LinearSprite(idle, 10, 30);
+            deathSprite = new LinearSprite(death, 10, 15);
             walkSprite = new LinearSprite(walk, 7, 30);
 
             var s = _p as EntitySlime;
-            
+
             idleSprite.SetColor(s.color);
             walkSprite.SetColor(s.color);
+            deathSprite.SetColor(s.color);
+
             var box = _p.AaBb;
             idleSprite.Scale((float) box.Width*2, (float) box.Height);
+            deathSprite.Scale((float)box.Width * 2, (float)box.Height);
             walkSprite.Scale((float) box.Width, (float) box.Height);
         }
 
@@ -42,6 +48,8 @@ namespace GlLib.Client.Graphic.Renderers
             switch (_e.state)
             {
                 case (EntityState.Dead):
+                    deathSprite.Render();
+                    break;
                 case (EntityState.Idle):
                     idleSprite.Render();
                     break;

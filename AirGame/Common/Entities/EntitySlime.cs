@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic.Renderers;
@@ -15,13 +16,18 @@ namespace GlLib.Common.Entities
         private const int UpdateFrame = 12;
         public Color4 color;
 
-        public new EntityState state
+        public EntityState State
         {
             get =>
                 Target is null 
                     ? EntityState.Idle
                     : EntityState.Walk;
-            private set { state = value; }
+            private set
+            {
+                if (!Enum.IsDefined(typeof(EntityState), value))
+                    throw new InvalidEnumArgumentException(nameof(value), (int) value, typeof(EntityState));
+                State = value;
+            }
         }
 
         public EntitySlime()
@@ -40,7 +46,7 @@ namespace GlLib.Common.Entities
             InWaiting = _inWaiting;
             Target = null;
             Initialize();
-            state = EntityState.Idle;
+            State = EntityState.Idle;
         }
 
         private Player Target { get; set; }

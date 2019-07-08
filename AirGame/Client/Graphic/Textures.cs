@@ -47,6 +47,7 @@ namespace GlLib.Client.Graphic
         public static Texture dawnShield;
         public static Texture dawnBlade;
         public static Texture varia;
+        public static Texture slimeDeath;
 
         static Textures()
         {
@@ -64,6 +65,7 @@ namespace GlLib.Client.Graphic
             fireBall = LoadTexture("11_fire_spritesheet.png");
             healthPotion = LoadTexture(SimpleStructPath + "HealthPotion.png");
             slimeIdle = LoadTexture("slime/slime_idle.png");
+            slimeDeath = LoadTexture("slime/slime_death.png");
             slimeWalk = LoadTexture("slime/slime_jump.png");
             streetLight = LoadTexture(SimpleStructPath + "Streetlight.png");
             spawn = LoadTexture(SystemPath + "spawn.png");

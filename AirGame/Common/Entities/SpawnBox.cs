@@ -1,6 +1,7 @@
-﻿using GlLib.Utils.Math;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GlLib.Common.Io;
+using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
@@ -19,18 +20,18 @@ namespace GlLib.Common.Entities
 
         private void Initialize()
         {
-            
         }
 
         public override void Update()
         {
             base.Update();
 
+
+   
             if (Proxy.GetServer().InternalTicks % LivingTime == 0 &&
-                !worldObj.GetEntitiesWithinAaBb(AaBb).Any())
-            {
+                worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AaBb.Width,
+                        AaBb.Height)).Count == 1 )
                 worldObj.SpawnEntity(new EntitySlime(worldObj, Position));
-            }
         }
 
         public override string GetName()
