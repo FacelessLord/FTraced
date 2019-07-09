@@ -19,8 +19,6 @@ namespace GlLib.Common
 
         public static void Main(string[] _args)
         {
-            var proxy = new GameServer();
-            proxy.Start();
             profiler.SetState(State.CoreStarting);
             try
             {
@@ -43,7 +41,6 @@ namespace GlLib.Common
             SidedConsole.WriteLine("Core finished");
             // ClientService._instance.ConnectToIntegratedServer();
         }
-
 
         public static void StartWorld()
         {
