@@ -29,7 +29,7 @@ namespace GlLib.Common.Api
             baseValue = _baseValue;
         }
 
-        public JsonObject CreateJsonObject(string _objectName)
+        public JsonObject Serialize(string _objectName)
         {
             var jsonObj = new JsonObjectCollection(_objectName);
             jsonObj.Add(new JsonNumericValue("traitId", trait.id));
@@ -39,7 +39,7 @@ namespace GlLib.Common.Api
             return jsonObj;
         }
 
-        public void LoadFromJsonObject(JsonObject _jsonObject)
+        public void Deserialize(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
             {

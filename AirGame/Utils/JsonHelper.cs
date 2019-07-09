@@ -9,7 +9,7 @@ namespace GlLib.Utils
     {
         public static JsonArrayCollection SaveList<T>(string _name, List<T> _objects) where T : IJsonSerializable
         {
-            return new JsonArrayCollection(_name, _objects?.Select(_o => _o.CreateJsonObject(_o.GetStandardName())));
+            return new JsonArrayCollection(_name, _objects?.Select(_o => _o.Serialize(_o.GetStandardName())));
         }
 
         public static List<T> LoadList<T>(JsonArrayCollection _objects)
@@ -18,7 +18,7 @@ namespace GlLib.Utils
             return _objects.Select(_o =>
             {
                 var obj = new T();
-                obj.LoadFromJsonObject(_o);
+                obj.Deserialize(_o);
                 return obj;
             }).ToList();
         }
@@ -26,7 +26,7 @@ namespace GlLib.Utils
         public static JsonArrayCollection SaveDict<T>(string _name, Dictionary<string, T> _objects)
             where T : IJsonSerializable
         {
-            return new JsonArrayCollection(_name, _objects.Keys?.Select(_k => _objects[_k].CreateJsonObject(_k)));
+            return new JsonArrayCollection(_name, _objects.Keys?.Select(_k => _objects[_k].Serialize(_k)));
         }
 
         public static Dictionary<string, T> LoadDict<T>(JsonArrayCollection _objects)
@@ -36,7 +36,7 @@ namespace GlLib.Utils
             var values = _objects.Select(_o =>
             {
                 var obj = new T();
-                obj.LoadFromJsonObject(_o);
+                obj.Deserialize(_o);
                 dict.Add(_o.Name, obj);
                 return obj;
             }).ToList();

@@ -89,9 +89,9 @@ namespace GlLib.Common.Entities
                 }
         }
 
-        public override void LoadFromJsonObject(JsonObject _jsonObject)
+        public override void Deserialize(JsonObject _jsonObject)
         {
-            base.LoadFromJsonObject(_jsonObject);
+            base.Deserialize(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
             {
 //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
@@ -100,9 +100,9 @@ namespace GlLib.Common.Entities
             }
         }
 
-        public override JsonObject CreateJsonObject(string _objectName)
+        public override JsonObject Serialize(string _objectName)
         {
-            var obj = base.CreateJsonObject(_objectName);
+            var obj = base.Serialize(_objectName);
             if (obj is JsonObjectCollection collection)
             {
                 collection.Add(new JsonStringValue("nickName", nickname));

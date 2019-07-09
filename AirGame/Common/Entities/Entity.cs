@@ -66,7 +66,7 @@ namespace GlLib.Common.Entities
         public bool IsDead { get; } = false;
         public AxisAlignedBb AaBb { get; set; } = new AxisAlignedBb(-0.375, -0.25, 0.375, 0.75);
 
-        public virtual void LoadFromJsonObject(JsonObject _jsonObject)
+        public virtual void Deserialize(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
             {
@@ -85,7 +85,7 @@ namespace GlLib.Common.Entities
             return "entity";
         }
 
-        public virtual JsonObject CreateJsonObject(string _objectName)
+        public virtual JsonObject Serialize(string _objectName)
         {
             var jsonObj = new JsonObjectCollection(_objectName);
 //            SidedConsole.WriteLine((this is Player) +"" + GetName());

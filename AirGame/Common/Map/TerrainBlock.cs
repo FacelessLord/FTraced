@@ -20,7 +20,7 @@ namespace GlLib.Common.Map
         public abstract string TextureName { get; internal set; }
         public double Rotation { get; protected set; }
 
-        public JsonObject CreateJsonObject(string _objectName)
+        public JsonObject Serialize(string _objectName)
         {
             var jsonObj = new JsonObjectCollection(_objectName);
             jsonObj.Add(new JsonStringValue("Name", Name));
@@ -29,7 +29,7 @@ namespace GlLib.Common.Map
             return jsonObj;
         }
 
-        public void LoadFromJsonObject(JsonObject _jsonObject)
+        public void Deserialize(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
             {

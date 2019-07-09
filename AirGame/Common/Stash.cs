@@ -27,7 +27,7 @@ namespace GlLib.Common
                 foreach (var obj in blocks)
                 {
                     var block = obj as TerrainBlock;
-                    result.Add(block?.CreateJsonObject(block.Name));
+                    result.Add(block?.Serialize(block.Name));
                 }
 
                 result.WriteTo(file);

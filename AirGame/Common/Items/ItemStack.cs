@@ -16,14 +16,14 @@ namespace GlLib.Common.Items
             (item, stackSize, stackTag) = (_item, _stackSize, _tag);
         }
 
-        public JsonObject CreateJsonObject(string _objectName)
+        public JsonObject Serialize(string _objectName)
         {
             var tag = new NbtTag();
             SaveToNbt(tag);
             return new JsonStringValue(_objectName, tag.ToString());
         }
 
-        public void LoadFromJsonObject(JsonObject _jsonObject)
+        public void Deserialize(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonStringValue jsonString)
             {

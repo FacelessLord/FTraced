@@ -202,7 +202,7 @@ namespace GlLib.Common.Map
             lock (entities)
             {
                 foreach (var entity in entities)
-                    objects.Add(entity.CreateJsonObject("entity"));
+                    objects.Add(entity.Serialize("entity"));
             }
 
             return objects;

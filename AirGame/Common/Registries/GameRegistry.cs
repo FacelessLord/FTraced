@@ -157,7 +157,7 @@ namespace GlLib.Common.Registries
         {
             var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
-            entity.LoadFromJsonObject(_collection);
+            entity.Deserialize(_collection);
             return entity;
         }
 

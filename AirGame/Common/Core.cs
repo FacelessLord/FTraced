@@ -19,6 +19,8 @@ namespace GlLib.Common
 
         public static void Main(string[] _args)
         {
+            var proxy = new GameServer();
+            proxy.Start();
             profiler.SetState(State.CoreStarting);
             try
             {
