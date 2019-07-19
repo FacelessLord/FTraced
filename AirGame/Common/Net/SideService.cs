@@ -94,7 +94,7 @@ namespace GlLib.Common
         public void AskToStop(string _cause)
         {
             askedToStop = true;
-            SidedConsole.WriteLine("Asked to stop." + _cause + ". Preparing to stop.");
+            SidedConsole.WriteLine("Asked to stop." + _cause + " Preparing to stop.");
         }
 
         /// <summary>

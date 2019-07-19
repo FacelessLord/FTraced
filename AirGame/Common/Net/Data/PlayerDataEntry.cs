@@ -29,6 +29,7 @@ namespace GlLib.Common
         {
             uuid = _uuid;
             password = _password;
+            
             //todo username
         }
     }

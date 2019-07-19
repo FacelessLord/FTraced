@@ -96,7 +96,7 @@ namespace GlLib.Common.Entities
             {
 //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
                 nickname = ((JsonStringValue) collection[13]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[14]).Value));
+//                data = new PlayerData().Deserialize(((JsonStringValue) collection[14]).Value);
             }
         }
 
@@ -109,7 +109,7 @@ namespace GlLib.Common.Entities
                 if (data != null)
                 {
                     var tag = new NbtTag();
-                    data.SaveToNbt(tag);
+//                    data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
             }

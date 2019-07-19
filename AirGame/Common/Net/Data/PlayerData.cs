@@ -1,5 +1,6 @@
 using System.Net.Json;
 using GlLib.Common.Api;
+using GlLib.Common.Entities;
 using GlLib.Common.Map;
 using GlLib.Utils.Collections;
 
@@ -7,23 +8,13 @@ namespace GlLib.Common
 {
     public class PlayerData : IJsonSerializable
     {
-        public World world;
         
         public PlayerData()
         {
-            CastLevel = 100;
         }
 
-        public ushort CastLevel { get; }
-
-        public void SaveToNbt(NbtTag _tag)
-        {
-        }
-
-        public static PlayerData LoadFromNbt(NbtTag _tag)
-        {
-            return new PlayerData();
-        }
+        public ushort CastLevel { get; } = 100;
+        public int WorldId { get; } = 0;
 
         public JsonObject Serialize(string _objectName)
         {
@@ -38,6 +29,26 @@ namespace GlLib.Common
         public string GetStandardName()
         {
             return "playerdata";
+        }
+
+        /// <summary>
+        /// Sets stored data to Player fields 
+        /// </summary>
+        /// <param name="_player">Player to imprint to</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void ImprintToPlayer(Player _player)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Creates data based on current Player field values
+        /// </summary>
+        /// <param name="_player">Player to get data from</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void GetDataFromPlayer(Player _player)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

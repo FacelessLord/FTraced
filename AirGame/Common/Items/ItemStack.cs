@@ -7,30 +7,44 @@ namespace GlLib.Common.Items
 {
     public class ItemStack : IJsonSerializable
     {
+        /// <summary>
+        /// Item held in this stack
+        /// </summary>
         public Item item;
+        
+        /// <summary>
+        /// Items count
+        /// </summary>
         public int stackSize;
+        
+        /// <summary>
+        /// Tag that contains this stack data
+        /// </summary>
         public NbtTag stackTag;
-
-        public ItemStack(Item _item, int _stackSize = 1, NbtTag _tag = null)
+        
+        public ItemStack(Item _item = null, int _stackSize = 1, NbtTag _tag = null)
         {
             (item, stackSize, stackTag) = (_item, _stackSize, _tag);
         }
 
         public JsonObject Serialize(string _objectName)
         {
-            var tag = new NbtTag();
-            SaveToNbt(tag);
-            return new JsonStringValue(_objectName, tag.ToString());
+            var coll = new JsonArrayCollection(_objectName);
+            coll.Add(new JsonNumericValue("id", item.id));
+            coll.Add(new JsonNumericValue("size", stackSize));
+            coll.Add(new JsonStringValue("tag", stackTag.ToString()));
+
+            return coll;
         }
 
         public void Deserialize(JsonObject _jsonObject)
         {
-            if (_jsonObject is JsonStringValue jsonString)
+            if (_jsonObject is JsonArrayCollection jsonCollection)
             {
-                var jsonStack = LoadFromJson(jsonString);
-                item = jsonStack.item;
-                stackSize = jsonStack.stackSize;
-                stackTag = jsonStack.stackTag;
+                var itemId = (int) ((JsonNumericValue) jsonCollection[0]).Value;
+                item = Proxy.GetClient().registry.GetItemFromId(itemId);
+                stackSize = (int) ((JsonNumericValue) jsonCollection[1]).Value;
+                stackTag = NbtTag.FromString(((JsonStringValue) jsonCollection[2]).Value);
             }
         }
 
@@ -39,26 +53,10 @@ namespace GlLib.Common.Items
             return "itemStack";
         }
 
-        public static ItemStack LoadFromJson(JsonStringValue _rawTag)
-        {
-            var itemTag = NbtTag.FromString(_rawTag.Value);
-            var item = Proxy.GetRegistry().GetItemFromId(itemTag.GetInt("ItemId"));
-            return new ItemStack(item);
-        }
-
-        public virtual void SaveToNbt(NbtTag _tag)
-        {
-            _tag.Set("ItemStack", GetName());
-            if (item != null)
-            {
-                _tag.Set("Item", item + "");
-                _tag.Set("StackSize", stackSize);
-
-                if (stackTag != null)
-                    _tag.AppendTag(stackTag, "ItemTag");
-            }
-        }
-
+        /// <summary>
+        /// Name used in tooltip
+        /// </summary>
+        /// <returns></returns>
         private string GetName()
         {
             return item.GetName(this);

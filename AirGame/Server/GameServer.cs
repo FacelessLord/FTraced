@@ -81,7 +81,7 @@ namespace GlLib.Server
             //TODO Create data token
             
             //TODO Send PlayerData
-            //TODO Send World
+            //TODO Send World = world.Serialize -> Client
         }
 
         /// <summary>
@@ -90,6 +90,17 @@ namespace GlLib.Server
         /// <param name="_client">Client to handle</param>
         /// <exception cref="NotImplementedException"></exception>
         private static void HandleClient(TcpClient _client)
+        {
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Handles received packet
+        /// </summary>
+        /// <param name="_client">Client the packet</param>
+        /// <param name="_packet">Packet to handle</param>
+        /// <exception cref="NotImplementedException"></exception>
+        private static void HandlePacket(TcpClient _client, Packet _packet)
         {
             throw new NotImplementedException();
         }
