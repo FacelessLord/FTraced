@@ -2,7 +2,7 @@
 	"entity": {
 		"entityId": "entity.living.player",
 		"Position": "(23.6813114755421,26.521494217945,0)",
-		"Velocity": "(-2.70845477783898E-41,2.42409505632906E-40)",
+		"Velocity": "(-3.91519136752369E-227,3.5041367927763E-226)",
 		"MaxVelocity": "(0.7,0.7)",
 		"WorldId": 0,
 		"IsDead": "False",
@@ -14,6 +14,16 @@
 		"GodMode": "False",
 		"IsTakingDamage": 0,
 		"nickName": "Noname"
+	},
+	"entity": {
+		"entityId": "entity.coin",
+		"Position": "(24,24,0)",
+		"Velocity": "(0,0)",
+		"MaxVelocity": "(0.7,0.7)",
+		"WorldId": 0,
+		"IsDead": "False",
+		"Noclip": "False",
+		"entityTag": ""
 	},
 	"entity": {
 		"entityId": "entity.null",

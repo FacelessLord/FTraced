@@ -20,7 +20,7 @@ namespace GlLib.Client.Graphic.Renderers
             var walk = new TextureLayout(Textures.slimeWalk, 10, 1);
 
             idleSprite = new LinearSprite(idle, 10, 20);
-            walkSprite = new LinearSprite(walk, 10, 2);
+            walkSprite = new LinearSprite(walk, 10, 5);
 
             var s = _p as EntitySlime;
             

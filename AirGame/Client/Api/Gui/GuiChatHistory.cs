@@ -41,14 +41,13 @@ namespace GlLib.Client.Api.Gui
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
             GL.PushMatrix();
-            GL.Translate(x, y, 0);
-                var heightCenter = (height - 16d) / 2;
-                GL.Translate(0, heightCenter - height / 2d, 0);
-                foreach (var line in Proxy.GetClient().player.chatIo.InputStream().Take(height/fontSize))
-                {
-                    GL.Translate(0, -height * 2d / 3, 0);
-                    font.DrawText(line, fontSize, _a: 0.75f);
-                }
+            GL.Translate(x, y + height, 0);
+            
+            foreach (var line in Proxy.GetClient().player.chatIo.InputStream().Take(height*2/fontSize/3))
+            {
+                GL.Translate(0, -fontSize * 3d / 2, 0);
+                font.DrawText(line, fontSize, _a: 0.75f);
+            }
 
             Vertexer.ClearColor();
             GL.PopMatrix();

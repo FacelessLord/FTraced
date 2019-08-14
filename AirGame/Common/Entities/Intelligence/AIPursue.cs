@@ -4,10 +4,12 @@ namespace GlLib.Common.Entities.Intelligence
     {
         private readonly int UpdateFrequency = 12;
         public AISearch<TTargetType> searchAI { get; set; }
+        public float Speed { get; set; } = 0.2f;
 
-        public AIPursue(AISearch<TTargetType> _search)
+        public AIPursue(AISearch<TTargetType> _search, float _speed)
         {
             searchAI = _search;
+            Speed = _speed;
         }
 
         public void Setup(EntityLiving _entity)
@@ -28,7 +30,7 @@ namespace GlLib.Common.Entities.Intelligence
         {
             _entity.velocity = _target.Position - _entity.Position;
             _entity.velocity.Normalize();
-            _entity.velocity /= 5;//TODO just rotation towards target or with given speed
+            _entity.velocity *= Speed;//TODO just rotation towards target or with given speed
         }
 
         public void OnCollision(EntityLiving _entity, Entity _collider)

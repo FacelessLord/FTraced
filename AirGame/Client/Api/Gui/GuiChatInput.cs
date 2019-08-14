@@ -87,5 +87,10 @@ namespace GlLib.Client.Api.Gui
             historyPointer = -1;
             text = "";
         }
+
+        public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
+        {
+            return this;
+        }
     }
 }

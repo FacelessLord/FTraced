@@ -38,7 +38,7 @@ namespace GlLib.Common.Entities
             AaBb = new AxisAlignedBb(-0.2, -0.2, 0.2, 0.2);
 
             playerSearchAI = new AISearch<Player>(7);
-            playerPursueAI = new AIPursue<Player>(playerSearchAI);
+            playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.2f);
             playerAttackAI = new AIAttackOnCollide<Player>(5);
         }
 

@@ -40,7 +40,7 @@ namespace GlLib.Common.Entities
             AaBb = new AxisAlignedBb(-0.25, 0, 0.25, 0.5);
             
             playerSearchAI = new AISearch<Player>(7);
-            playerPursueAI = new AIPursue<Player>(playerSearchAI);
+            playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.1f);
             playerAttackAI = new AIAttackOnCollide<Player>(AttackValue);
         }
 
