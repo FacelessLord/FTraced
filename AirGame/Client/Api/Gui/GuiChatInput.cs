@@ -42,26 +42,6 @@ namespace GlLib.Client.Api.Gui
             _parser = new CommandParser();
         }
 
-        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
-        {
-            base.Render(_gui, _centerX, _centerY);
-            GL.PushMatrix();
-            GL.Translate(x, y, 0);
-            if (oneLineMode)
-            {
-                var heightCenter = (height - 16d) / 2;
-                GL.Translate(0, heightCenter - height / 2d, 0);
-                foreach (var line in Proxy.GetClient().player.chatIo.InputStream())
-                {
-                    GL.Translate(0, -height * 2d / 3, 0);
-                    font.DrawText(line, fontSize, _a: 0.75f);
-                }
-            }
-
-            Vertexer.ClearColor();
-            GL.PopMatrix();
-        }
-
         public override void OnKeyDown(GuiFrame _guiFrame, KeyboardKeyEventArgs _e)
         {
             base.OnKeyDown(_guiFrame, _e);

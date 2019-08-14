@@ -5,36 +5,51 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using GlLib.Common;
 using GlLib.Common.Entities;
+using GlLib.Common.Io;
 
 namespace GlLib.Server
 {
-    public static class GameServer
+    public class GameServer
     {
         /// <summary>
         /// TCPListener instance
         /// </summary>
-        private static TcpListener _server;
+        private TcpListener _server;
 
         /// <summary>
         /// Addreess of this Server 
         /// </summary>
-        private static IPAddress _address;
+        private IPAddress _address;
 
         /// <summary>
         /// The port the connection will be running through 
         /// </summary>
-        private static int _port = 25560;
+        private int _port = 25560;
 
-        public static bool isOpened;
+        public bool isOpened;
 
+        /// <summary>
+        /// Contains data-Token and corresponding TcpClient for player 
+        /// </summary>
+        public Dictionary<string, TcpClient> clients = new Dictionary<string, TcpClient>();
+        /// <summary>
+        /// Contains data-Token and corresponding PlayerData entry
+        /// </summary>
+        public Dictionary<string, PlayerDataEntry> dataEntries = new Dictionary<string, PlayerDataEntry>();//TODO auth token usage
+        
+        public static Thread serviceThread;
+        
         /// <summary>
         /// Loads Server Net side
         /// Starts writing Server_net.log
         /// </summary>
-        public static async void Start()
+        public async void Start()
         {
+            StartService();
+            
             _address = GetAddresses().First();
             _server = new TcpListener(_address, _port);
             _server.Start();
@@ -52,34 +67,40 @@ namespace GlLib.Server
             }
         }
 
-        /// <summary>
-        /// Contains data-Token and corresponding TcpClient for player 
-        /// </summary>
-        public static Dictionary<string, TcpClient> clients = new Dictionary<string, TcpClient>();
-        /// <summary>
-        /// Contains data-Token and corresponding PlayerData entry
-        /// </summary>
-        public static Dictionary<string, PlayerDataEntry> dataEntries = new Dictionary<string, PlayerDataEntry>();//TODO auth token usage
-        
+        public void StartService()
+        {
+            var server = new ServerInstance();
+            serviceThread = new Thread(() =>
+            {
+                server.Start();
+                server.Loop();
+                server.Exit();
+            }) {Name = Side.Server.ToString()};
+            serviceThread.Start();
+            Proxy.AwaitWhile(() => server.profiler.state < State.Loop);
+        }
+
         /// <summary>
         /// Registers client on the server
         /// Sends PlayerData and World data
         /// </summary>
         /// <param name="_client">Client to register</param>
         /// <exception cref="NotImplementedException"></exception>
-        private static void RegisterClient(TcpClient _client)
+        private void RegisterClient(TcpClient _client)
         {
             var stream = _client.GetStream();
-            byte nicknameLength = ReadFromStream(stream,1)[0];
-            byte passwordLength = ReadFromStream(stream,1)[0];
+            byte nicknameLength = ReadFromStream(stream, 1)[0];
+            byte passwordLength = ReadFromStream(stream, 1)[0];
             byte[] nicknameBytes = ReadFromStream(stream, nicknameLength);
             byte[] passwordBytes = ReadFromStream(stream, passwordLength);
 
             string nickname = Encoding.Unicode.GetString(nicknameBytes, 0, nicknameLength);
             string password = Encoding.Unicode.GetString(passwordBytes, 0, passwordLength);
-            
+
+            SidedConsole.Write(nickname + " : " + password);
+
             //TODO Create data token
-            
+
             //TODO Send PlayerData
             //TODO Send World = world.Serialize -> Client
         }
@@ -89,7 +110,7 @@ namespace GlLib.Server
         /// </summary>
         /// <param name="_client">Client to handle</param>
         /// <exception cref="NotImplementedException"></exception>
-        private static void HandleClient(TcpClient _client)
+        private void HandleClient(TcpClient _client)
         {
             throw new NotImplementedException();
         }
@@ -100,7 +121,7 @@ namespace GlLib.Server
         /// <param name="_client">Client the packet</param>
         /// <param name="_packet">Packet to handle</param>
         /// <exception cref="NotImplementedException"></exception>
-        private static void HandlePacket(TcpClient _client, Packet _packet)
+        private void HandlePacket(TcpClient _client, Packet _packet)
         {
             throw new NotImplementedException();
         }
@@ -146,7 +167,7 @@ namespace GlLib.Server
         /// <remarks>
         /// Used to notify players
         /// </remarks>
-        public static void SendPacketTo(Packet _pkt, Player _player)
+        public void SendPacketTo(Packet _pkt, Player _player)
         {
             throw new System.NotImplementedException();
         }
@@ -159,7 +180,7 @@ namespace GlLib.Server
         /// Used in synchronization
         /// </remarks>
         /// <exception cref="NotImplementedException"></exception>
-        public static void SendPacketToAll(Packet _pkt)
+        public void SendPacketToAll(Packet _pkt)
         {
             throw new System.NotImplementedException();
         }

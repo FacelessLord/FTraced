@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
@@ -52,6 +53,11 @@ namespace GlLib.Common.Items
         public override string ToString()
         {
             return unlocalizedName;
+        }
+
+        public virtual void AddInformation(ItemStack _itemStack, List<string> _tooltip)
+        {
+            
         }
     }
 }

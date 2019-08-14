@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Common.Api;
 using GlLib.Utils;
@@ -71,6 +72,15 @@ namespace GlLib.Common.Items
                 hashCode = (hashCode * 397) ^ (stackTag != null ? stackTag.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public List<string> GetTooltip()
+        {
+            var tooltip = new List<string>();
+            
+            tooltip.Add(GetName());
+            item.AddInformation(this, tooltip);
+            return tooltip;
         }
     }
 }

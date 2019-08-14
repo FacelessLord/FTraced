@@ -22,12 +22,6 @@ namespace GlLib.Common.Entities
         }
 
         private Player Target { get; set; }
-        public bool InMove { get; }
-        public bool InWaiting { get; }
-
-        public bool IsAttacking => !(Target is null);
-
-        public bool IsWaiting => Target is null;
 
         public AISearch<Player> playerSearchAI;
         public AIPursue<Player> playerPursueAI;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GlLib.Client.Api.Gui;
 using GlLib.Common;
 using GlLib.Common.SpellCastSystem;
@@ -11,6 +12,8 @@ namespace GlLib.Client.Graphic.Gui
         private readonly GuiHorizontalBar health;
         private readonly GuiSign fpsSign;
         private readonly GuiRectangle fpsRect;
+        
+        private readonly List<GuiFrame> subGuis = new List<GuiFrame>();
 
         public Hud()
         {

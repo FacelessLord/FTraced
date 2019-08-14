@@ -1,11 +1,11 @@
 namespace GlLib.Common.Entities.Intelligence
 {
-    public class AIPursue<TTargetType> : IArtificialIntelligence where TTargetType : Entity
+    public class AIJumpingPursue<TTargetType> : IArtificialIntelligence where TTargetType : Entity
     {
         private readonly int UpdateFrequency = 12;
         public AISearch<TTargetType> searchAI { get; set; }
 
-        public AIPursue(AISearch<TTargetType> _search)
+        public AIJumpingPursue(AISearch<TTargetType> _search)
         {
             searchAI = _search;
         }
@@ -19,7 +19,8 @@ namespace GlLib.Common.Entities.Intelligence
             var target = searchAI.Target;
             if (!(target is null))
             {
-                UpdateEntityHeading(_entity, target);
+                if (_entity.InternalTicks % UpdateFrequency == 0 && _entity.velocity.Length < 1)
+                    UpdateEntityHeading(_entity, target);
                 _entity.state = EntityState.DirectedAttack;
             }
         }

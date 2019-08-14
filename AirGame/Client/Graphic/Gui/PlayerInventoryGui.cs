@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Common;
@@ -13,6 +14,7 @@ namespace GlLib.Client.Graphic.Gui
     {
         public List<GuiSlotSign> signs = new List<GuiSlotSign>();
         public Player player;
+        private GuiSign tooltip;
 
         public PlayerInventoryGui(Player _p) : base(_p.inventory)
         {
@@ -60,6 +62,8 @@ namespace GlLib.Client.Graphic.Gui
             var dh = itemPanel.height / 2 - GuiSlot.SlotSize;
             var itemSlot = new GuiSlot(_inv, 5, dh);
             itemPanel.Add(itemSlot);
+            tooltip = new GuiSign("",16,GuiSlot.SlotSize*2 + 5,dh,0,0);
+            itemPanel.Add(tooltip);
             return dh;
         }
 
@@ -95,6 +99,17 @@ namespace GlLib.Client.Graphic.Gui
             var itemSlot = new GuiSlot(_inv, 5, dh);
             itemPanel.Add(itemSlot);
             return dh;
+        }
+
+        public override void Update(GameWindow _window)
+        {
+            base.Update(_window);
+
+            var stack = inventory.GetStackInSlot(inventory.GetSelectedSlot());
+            if (stack != null)
+            {
+                tooltip.text = stack.GetTooltip().Aggregate((_a, _b) => _a + "\n" + _b);
+            }
         }
     }
 }
