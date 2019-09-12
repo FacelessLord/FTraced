@@ -5,36 +5,36 @@ using GlLib.Client.Api;
 
 namespace GlLib.Utils.StringParser
 {
-    internal class Parser
+    public class Parser : IParser
     {
         public Parser()
         {
-            _args = new Dictionary<string, Action<string[], IStringIo>>();
-            _actionDescription = new Dictionary<string, string>();
+            _actions = new Dictionary<string, Action<string[], IStringIo>>();
+            actionDescription = new Dictionary<string, string>();
         }
 
-        private readonly Dictionary<string, Action<string[], IStringIo>> _args;
-        private readonly Dictionary<string, string> _actionDescription;
+        private readonly Dictionary<string, Action<string[], IStringIo>> _actions;
+        protected readonly Dictionary<string, string> actionDescription;
 
 
-        public string GetCommandList()
+        public string[] GetCommandList()
         {
-            return _args.Keys.Aggregate((_a, _b) => _a + "\n" + $"{_b,12}: {_actionDescription[_b],-10:NO}");
+            return _actions.Keys.Skip(1).Select((_c) => $"{_c} : {actionDescription[_c]}").ToArray();
         }
 
         public void AddParse(string _word, Action<string[], IStringIo> _delegate, string _description = "")
         {
-            _args.Add(_word, _delegate);
-            _actionDescription.Add(_word, _description);
+            _actions.Add(_word, _delegate);
+            actionDescription.Add(_word, _description);
         }
 
         public void Parse(string _arg, IStringIo _io)
         {
-            _arg += " ";
+//            _arg += " ";
             var parsed = _arg.Split(' ');
-            if (_args.ContainsKey(parsed[0].ToLower()))
+            if (_actions.ContainsKey(parsed[0].ToLower()))
             {
-                _args[parsed[0].ToLower()](parsed
+                _actions[parsed[0].ToLower()](parsed
                     .Skip(1)
                     .ToArray(), _io);
             }

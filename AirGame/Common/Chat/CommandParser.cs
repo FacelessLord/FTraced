@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Xml.Linq;
 using GlLib.Client.Api;
 using GlLib.Common.Entities;
@@ -19,7 +20,7 @@ namespace GlLib.Common.Chat
         public void Init()
         {
             AddParse("", (_s, _io) => { });
-            AddParse("help", (_s, _io) => _io.Output("This is Help" + "\n" + GetCommandList()),
+            AddParse("help", (_s, _io) => PrintHelp(_s,_io),
                 "Prints help message");
             AddParse("clear", (_s, _io) => _io.TryClearStream(), "Clears all output");
             AddParse("spawn", (_s, _io) => Spawn(_s, _io),
@@ -43,6 +44,19 @@ namespace GlLib.Common.Chat
                 "Kills all entities in chunk that can be killed");
         }
 
+        public void PrintHelp(string[] _s, IStringIo _io)
+        {
+//            _io.Output(Utils.MiscUtils.Compact(_s));
+            if (_s.Length == 0)
+            {
+                _io.Output("This is Help" + "\n" + GetCommandList().Select(_l => "::" + _l).Aggregate((_a,_b) => _a + "\n" + _b));
+            }
+            else
+            {
+                _io.Output( _s[0]+" command: "+ "\n\t" + actionDescription[_s[0]]);
+            }
+        }
+
         public static void SwitchNoClip(string[] _s, IStringIo _io)
         {
             bool newState = !Proxy.GetClient().player.noClip;
@@ -50,8 +64,8 @@ namespace GlLib.Common.Chat
             {
                 Proxy.GetClient().player.noClip = definedState;
             }
-
-            Proxy.GetClient().player.noClip = newState;
+            else
+                Proxy.GetClient().player.noClip = newState;
 
             _io.Output("Current noclip state: " + Proxy.GetClient().player.noClip);
         }

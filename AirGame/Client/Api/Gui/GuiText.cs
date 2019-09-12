@@ -224,7 +224,7 @@ namespace GlLib.Client.Api.Gui
 
             if (k.Equals(Key.Enter))
             {
-                if (oneLineMode)
+                if (oneLineMode && !_e.Shift)
                 {
                     HandleEnterKey();
                 }
