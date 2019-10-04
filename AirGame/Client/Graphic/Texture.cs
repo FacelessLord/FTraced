@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
 using GlLib.Common.Io;
-using GlLib.Utils;
 using OpenTK.Graphics.OpenGL4;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
+using System;
+using System.Collections.Generic;
 
 namespace GlLib.Client.Graphic
 {
@@ -32,7 +31,7 @@ namespace GlLib.Client.Graphic
             SidedConsole.WriteLine($"Texture: path: {_path}, width: {width}, height: {height}");
             //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
             //This will correct that, making the texture display properly.
-//            image.Mutate(x => x.Flip(FlipMode.Vertical));
+            //            image.Mutate(x => x.Flip(FlipMode.Vertical));
 
             //Get an array of the pixels, in ImageSharp's internal format.
             var tempPixels = image.GetPixelSpan().ToArray();
@@ -55,18 +54,18 @@ namespace GlLib.Client.Graphic
             //Here, we use Linear for both. This means that OpenGL will try to blend pixels, meaning that textures scaled too far will look blurred.
             //You could also use (amongst other options) Nearest, which just grabs the nearest pixel, which makes the texture look pixelated if scaled too far.
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int) TextureMinFilter.Linear);
+                (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int) TextureMagFilter.Linear);
+                (int)TextureMagFilter.Linear);
 
 
             //Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
-                (int) TextureWrapMode.Repeat);
+                (int)TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
-                (int) TextureWrapMode.Repeat);
+                (int)TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int) TextureMagFilter.Nearest);
+                (int)TextureMagFilter.Nearest);
 
             //Now that our pixels have been loaded and our settings are prepared, it's time to generate a texture. We do this with GL.TexImage2D
             //Arguments:
@@ -123,12 +122,17 @@ namespace GlLib.Client.Graphic
             }
         }
 
-        ~Texture()
-        {
-            if (!_disposedValue)
-            {
-                GL.DeleteProgram(_handle);
-            }
-        }
+
+        // Check the main tests.
+        // There is something happened that break the app in Windows OS, without any exceptions 
+
+
+        //~Texture()
+        //{
+        //    if (!_disposedValue)
+        //    {
+        //        GL.DeleteProgram(_handle);
+        //    }
+        //}
     }
 }

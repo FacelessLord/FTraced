@@ -125,7 +125,7 @@ namespace GlLib.Common.Map
                 }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.AaBb.IntersectsWithAt(_aabb, _entity.Position) && !_entity.noClip)
+                .ThreadSafeWhere(_entity => _entity.AaBb.IntersectsWithAt(ref _aabb, _entity.Position) && !_entity.noClip)
                 .ToThreadSafeList();
         }
 

@@ -69,7 +69,7 @@ namespace GlLib.Client.Api.Gui
             {
                 var objRight = new PlanarVector(obj.x + obj.width, obj.y + obj.height);
                 var objLeft = new PlanarVector(obj.x, obj.y);
-                if (box.IsVectorInside(objRight) && box.IsVectorInside(objLeft))
+                if (box.IsVectorInside(ref objRight) && box.IsVectorInside(ref objLeft))
                     obj.Render(_gui, centerX, centerY);
             }
 
