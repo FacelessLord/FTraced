@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
@@ -93,6 +94,12 @@ namespace GlLib.Common.Map
                 SidedConsole.WriteLine($"Entity count exceds maximum value({MaxEntityCount}). Couldn't spawn entity");
             }
         }
+
+        public void SpawnEntityFromType(Type _type)
+        {
+            SpawnEntity((Entity) Activator.CreateInstance(_type));
+        }
+
 
         public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
         {

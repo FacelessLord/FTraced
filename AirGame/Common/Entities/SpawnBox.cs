@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GlLib.Common.Io;
 using GlLib.Utils.Math;
@@ -9,29 +10,33 @@ namespace GlLib.Common.Entities
     {
         // Don't know how does it work ... 
         private const ushort LivingTime = 250;
-        public List<EntityLiving> entitiesSpawnList;
+        public List<Type> entitiesSpawnList;
 
 
         public SpawnBox()
         {
             Initialize();
-            velocity = PlanarVector.Null;
         }
 
         private void Initialize()
         {
+            velocity = PlanarVector.Null;
         }
 
         public override void Update()
         {
             base.Update();
 
-
    
             if (Proxy.GetServer().InternalTicks % LivingTime == 0 &&
                 worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AaBb.Width,
                         AaBb.Height)).Count == 1 )
-                worldObj.SpawnEntity(new EntitySlime(worldObj, Position));
+                foreach (var type in entitiesSpawnList)
+                {
+                    worldObj.SpawnEntityFromType(type);
+                }
+
+            ;
         }
 
         public override string GetName()

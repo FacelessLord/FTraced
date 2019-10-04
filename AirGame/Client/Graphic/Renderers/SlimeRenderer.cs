@@ -27,7 +27,8 @@ namespace GlLib.Client.Graphic.Renderers
             var walk = new TextureLayout(Textures.slimeWalk, 7, 1);
 
             idleSprite = new LinearSprite(idle, 10, 30);
-            deathSprite = new LinearSprite(death, 10, 15);
+            deathSprite = new LinearSprite(death, 10, 15)
+                .SetNoRepeat();
             walkSprite = new LinearSprite(walk, 7, 30);
 
             var s = _p as EntitySlime;
@@ -40,6 +41,7 @@ namespace GlLib.Client.Graphic.Renderers
             idleSprite.Scale((float) box.Width*2, (float) box.Height);
             deathSprite.Scale((float)box.Width * 2, (float)box.Height);
             walkSprite.Scale((float) box.Width, (float) box.Height);
+
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
