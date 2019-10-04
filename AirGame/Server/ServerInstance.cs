@@ -27,7 +27,6 @@ namespace GlLib.Server
 
         public override void OnStart()
         {
-            serverId = new Random().Next();
             UpdateServerConfiguration();
 
             profiler.SetState(State.LoadingWorld);

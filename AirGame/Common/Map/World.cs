@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
@@ -86,13 +87,19 @@ namespace GlLib.Common.Map
                 }
 
                 EntityCount++;
-//                SidedConsole.WriteLine($"Entity {_e} spawned in world");
+                SidedConsole.WriteLine($"Entity {_e} spawned in world");
             }
             else
             {
                 SidedConsole.WriteLine($"Entity count exceds maximum value({MaxEntityCount}). Couldn't spawn entity");
             }
         }
+
+        public void SpawnEntityFromType(Type _type)
+        {
+            SpawnEntity((Entity) Activator.CreateInstance(_type));
+        }
+
 
         public void ChangeEntityChunk(Entity _e, Chunk _old, Chunk _next)
         {
@@ -118,7 +125,7 @@ namespace GlLib.Common.Map
                 }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.AaBb.IntersectsWithAt(_aabb, _entity.Position) && !_entity.noClip)
+                .ThreadSafeWhere(_entity => _entity.AaBb.IntersectsWithAt(ref _aabb, _entity.Position) && !_entity.noClip)
                 .ToThreadSafeList();
         }
 

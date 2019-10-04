@@ -36,7 +36,7 @@ namespace Tests.utils
             var v2 = new PlanarVector(15, 15);
             var expectedBb = new AxisAlignedBb(5, 5, 15, 15);
             //Act
-            var bb = new AxisAlignedBb(v1, v2);
+            var bb = new AxisAlignedBb(ref v1, ref v2);
             //Assert
             Assert.AreEqual(bb, expectedBb);
         }
@@ -106,7 +106,7 @@ namespace Tests.utils
 
         private static void CheckIfIntersectsIsTrue(AxisAlignedBb _bb1, AxisAlignedBb _bb2)
         {
-            Assert.IsTrue(_bb1.IntersectsWith(_bb2),
+            Assert.IsTrue(_bb1.IntersectsWith(ref _bb2),
                 $"{_bb1} should have intersection with {_bb2}");
         }
 
@@ -128,7 +128,7 @@ namespace Tests.utils
 
         private static void CheckIfIntersectsIs(AxisAlignedBb _bb1, AxisAlignedBb _bb2, bool _intersects)
         {
-            Assert.AreEqual(_bb1.IntersectsWith(_bb2), _intersects,
+            Assert.AreEqual(_bb1.IntersectsWith(ref _bb2), _intersects,
                 $"{_bb1} shouldn't have intersection with {_bb2}");
         }
 

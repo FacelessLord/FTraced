@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Json;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GlLib.Client.Input
 {
@@ -45,7 +42,6 @@ namespace GlLib.Client.Input
         {
 
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
-            //if (!(Proxy.GetClient().player is SystemAdmin)) return; <- TODO
             var chunkX = _p.Position.Ix / 16;
             var chunkY = _p.Position.Iy / 16;
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Xml.Linq;
 using GlLib.Client.Api;
 using GlLib.Common.Entities;
@@ -5,6 +6,7 @@ using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Utils.StringParser;
+using OpenTK.Graphics.ES20;
 using SixLabors.ImageSharp.MetaData.Profiles.Icc;
 
 namespace GlLib.Common.Chat
@@ -19,7 +21,7 @@ namespace GlLib.Common.Chat
         public void Init()
         {
             AddParse("", (_s, _io) => { });
-            AddParse("help", (_s, _io) => _io.Output("This is Help" + "\n" + GetCommandList()),
+            AddParse("help", (_s, _io) => PrintHelp(_s,_io),
                 "Prints help message");
             AddParse("clear", (_s, _io) => _io.TryClearStream(), "Clears all output");
             AddParse("spawn", (_s, _io) => Spawn(_s, _io),
@@ -41,6 +43,34 @@ namespace GlLib.Common.Chat
                 "Saves whole world (including blocks)");
             AddParse("killchunk", (_p, _io) => KillChunk(_p, _io),
                 "Kills all entities in chunk that can be killed");
+            AddParse("setrotation", (_p, _io) => SetBlockRotation(_p, _io), 
+                "Change block rotation player staying on.");
+        }
+
+        public void PrintHelp(string[] _s, IStringIo _io)
+        {
+//            _io.Output(Utils.MiscUtils.Compact(_s));
+            if (_s.Length == 0)
+            {
+                _io.Output("This is Help" + "\n" + GetCommandList().Select(_l => "::" + _l).Aggregate((_a,_b) => _a + "\n" + _b));
+            }
+            else
+            {
+                _io.Output( _s[0]+" command: "+ "\n\t" + actionDescription[_s[0]]);
+            }
+        }
+
+        public void PrintHelp(string[] _s, IStringIo _io)
+        {
+//            _io.Output(Utils.MiscUtils.Compact(_s));
+            if (_s.Length == 0)
+            {
+                _io.Output("This is Help" + "\n" + GetCommandList().Select(_l => "::" + _l).Aggregate((_a,_b) => _a + "\n" + _b));
+            }
+            else
+            {
+                _io.Output( _s[0]+" command: "+ "\n\t" + actionDescription[_s[0]]);
+            }
         }
 
         public static void SwitchNoClip(string[] _s, IStringIo _io)
@@ -50,8 +80,8 @@ namespace GlLib.Common.Chat
             {
                 Proxy.GetClient().player.noClip = definedState;
             }
-
-            Proxy.GetClient().player.noClip = newState;
+            else
+                Proxy.GetClient().player.noClip = newState;
 
             _io.Output("Current noclip state: " + Proxy.GetClient().player.noClip);
         }
@@ -165,6 +195,25 @@ namespace GlLib.Common.Chat
             if (_s[0] == "0")
                 Proxy.GetClient().player.SetGodMode(false);
         }
+
+        public static void SetBlockRotation(string[] _s, IStringIo _io)
+        {
+            int angle = 0;
+            if (_s.Length != 1 && !int.TryParse(_s[0], out angle))
+            {
+                _io.Output("You should use right string format. \nUse degrees. \n/setrotation <angle>");
+                return;
+            }
+
+            var chunkX = Proxy.GetClient().player.Position.Ix / 16;
+            var chunkY = Proxy.GetClient().player.Position.Iy / 16;
+
+            var blockX = Proxy.GetClient().player.Position.Ix % 16;
+            var blockY = Proxy.GetClient().player.Position.Iy % 16;
+
+            Proxy.GetClient().player.worldObj[chunkX, chunkY][blockX, blockY].SetRotation(angle);
+        }
+
 
         public static void ChangeBrush(string[] _s, IStringIo _io)
         {

@@ -1,16 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Json;
 using GlLib.Common.Items;
 using GlLib.Utils;
 
 namespace GlLib.Common.Api.Inventory
 {
-    public abstract class InventoryList : IInventory
+    public abstract class InventoryList : IInventory, IJsonSerializable
     {
+        /// <summary>
+        /// List of items stored in Inventory
+        /// </summary>
         public List<ItemStack> itemList = new List<ItemStack>();
 
-        public int selectedSlot;
-
+        /// <summary>
+        /// Currently selected slot
+        /// </summary>
+        private int selectedSlot;
         public abstract int GetMaxSize();
 
         public int GetCurrentSize()
@@ -79,6 +85,21 @@ namespace GlLib.Common.Api.Inventory
                 else
                     itemList.RemoveAt(_slot);
             }
+        }
+
+        public JsonObject Serialize(string _objectName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Deserialize(JsonObject _jsonObject)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string GetStandardName()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

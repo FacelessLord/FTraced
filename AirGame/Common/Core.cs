@@ -14,8 +14,8 @@ namespace GlLib.Common
     {
         public static Profiler profiler = new Profiler();
 
-        public static Thread clientThread;
-        public static Thread serverThread;
+        public static GameClient client = new GameClient();
+        public static GameServer server = new GameServer();
 
         public static void Main(string[] _args)
         {
@@ -42,28 +42,12 @@ namespace GlLib.Common
             // ClientService._instance.ConnectToIntegratedServer();
         }
 
-
         public static void StartWorld()
         {
-            var server = new ServerInstance();
-            serverThread = new Thread(() =>
-            {
-                server.Start();
-                server.Loop();
-                server.Exit();
-            }) {Name = Side.Server.ToString()};
-            serverThread.Start();
-            Proxy.AwaitWhile(() => server.profiler.state < State.Loop);
+            server.Start();
+            client.Start();
 
-            var client = new ClientService(Config.playerName, Config.playerPassword);
-            clientThread = new Thread(() =>
-            {
-                client.Start();
-                client.Loop();
-                client.Exit();
-            }) {Name = Side.Client.ToString()};
-            clientThread.Start();
-            Proxy.AwaitWhile(() => client.profiler.state < State.Loop);
+            //TODO Start GameClient
         }
 
         public static void StopWorld(string _cause)

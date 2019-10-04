@@ -1,3 +1,4 @@
+using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Input;
@@ -39,7 +40,7 @@ namespace GlLib.Client.Api.Gui
         {
             var objBox = GetObjectBox(_guiFrame);
             var mouseVec = new PlanarVector(_mouseX, _mouseY);
-            return objBox.IsVectorInside(mouseVec);
+            return objBox.IsVectorInside(ref mouseVec);
         }
 
         public virtual GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)

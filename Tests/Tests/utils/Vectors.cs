@@ -26,7 +26,7 @@ namespace Tests.utils
             //Act
             //Rotating to U-turn
             //Assert
-            Assert.AreEqual(vector.Rotate(Math.PI), expected);
+            Assert.AreEqual(vector.Rotate((float) Math.PI), expected);
         }
 
         [Test]
@@ -135,10 +135,9 @@ namespace Tests.utils
             var v1 = new RestrictedVector3D(1, 2, 0);
             var v2 = new RestrictedVector3D(2, 1, 2);
             //Act
-            Func<RestrictedVector3D, RestrictedVector3D, RestrictedVector3D> sum = (vector1, vector2) =>
-                vector1 + vector2;
+            RestrictedVector3D Sum(RestrictedVector3D vector1, RestrictedVector3D vector2) => vector1 + vector2;
             //Assert
-            Assert.Throws<ArgumentException>(() => sum(v1, v2));
+            Assert.Throws<ArgumentException>(() => Sum(v1, v2));
         }
 
         [Test]

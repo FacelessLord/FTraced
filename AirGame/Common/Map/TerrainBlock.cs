@@ -1,3 +1,4 @@
+using System;
 using System.Net.Json;
 using GlLib.Client.Api.Renderers;
 using GlLib.Common.Api;
@@ -18,22 +19,34 @@ namespace GlLib.Common.Map
         public abstract string Name { get; protected set; }
 
         public abstract string TextureName { get; internal set; }
-        public double Rotation { get; protected set; }
+        public Rotation Rotation { get; protected set; }
 
-        public JsonObject CreateJsonObject(string _objectName)
+        public void SetRotation(int _angle)
+        {
+            Rotation = (Rotation) _angle;
+        }
+
+        public void SetRotation(Rotation _rotation)
+        {
+            Rotation = _rotation;
+        }
+
+        public JsonObject Serialize(string _objectName)
         {
             var jsonObj = new JsonObjectCollection(_objectName);
-            jsonObj.Add(new JsonStringValue("Name", Name));
+            jsonObj.Add(new JsonStringValue("Name", GetInternalName()));
             jsonObj.Add(new JsonStringValue("TextureName", TextureName));
 
             return jsonObj;
         }
 
-        public void LoadFromJsonObject(JsonObject _jsonObject)
+        public void Deserialize(JsonObject _jsonObject)
         {
             if (_jsonObject is JsonObjectCollection collection)
             {
-                Name = ((JsonStringValue) collection[0]).Value;
+                var pair = FromInternalString(((JsonStringValue) collection[0]).Value);
+                Name = pair.Item1;
+                Rotation = (Rotation) pair.Item2;
                 TextureName = ((JsonStringValue) collection[1]).Value;
             }
         }
@@ -53,17 +66,39 @@ namespace GlLib.Common.Map
             return false;
         }
 
+        public string GetInternalName()
+        {
+            return Name + ":" + (Rotation) Rotation;
+        }
+
+        public Tuple<string, int> FromInternalString(string _str)
+        {
+            var parsed = _str.Split(':');
+            if (parsed.Length == 2)
+            {
+                switch (parsed[1])
+                {
+                    case "Down" :
+                        return Tuple.Create(parsed[0], (int)Rotation.Down);
+                    case "Left":
+                        return Tuple.Create(parsed[0], (int)Rotation.Left);
+                    case "Up":
+                        return Tuple.Create(parsed[0], (int)Rotation.Up);
+                    case "Right":
+                        return Tuple.Create(parsed[0], (int)Rotation.Right);
+                    default:
+                        return Tuple.Create(_str, (int)Rotation.Down);
+                }
+            }
+            else return Tuple.Create(_str, (int)Rotation.Down); // return default block 
+
+        }
+
+
         public virtual IBlockRenderer GetSpecialRenderer(World _world, int _x, int _y)
         {
             return null;
         }
 
-        public enum BlockRotation
-        {
-            Up = 0,
-            Left = 90,
-            Down = 180,
-            Right = 270
-        }
     }
 }

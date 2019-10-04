@@ -85,6 +85,8 @@ namespace GlLib.Common.Registries
             }
         }
 
+
+
         public TerrainBlock GetBlockFromName(string _blockName)
         {
             if (blocks.ContainsKey(_blockName))
@@ -157,7 +159,7 @@ namespace GlLib.Common.Registries
         {
             var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
-            entity.LoadFromJsonObject(_collection);
+            entity.Deserialize(_collection);
             return entity;
         }
 

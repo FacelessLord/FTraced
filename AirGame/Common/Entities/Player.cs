@@ -89,27 +89,27 @@ namespace GlLib.Common.Entities
                 }
         }
 
-        public override void LoadFromJsonObject(JsonObject _jsonObject)
+        public override void Deserialize(JsonObject _jsonObject)
         {
-            base.LoadFromJsonObject(_jsonObject);
+            base.Deserialize(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
             {
 //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
                 nickname = ((JsonStringValue) collection[13]).Value;
-                data = PlayerData.LoadFromNbt(NbtTag.FromString(((JsonStringValue) collection[14]).Value));
+//                data = new PlayerData().Deserialize(((JsonStringValue) collection[14]).Value);
             }
         }
 
-        public override JsonObject CreateJsonObject(string _objectName)
+        public override JsonObject Serialize(string _objectName)
         {
-            var obj = base.CreateJsonObject(_objectName);
+            var obj = base.Serialize(_objectName);
             if (obj is JsonObjectCollection collection)
             {
                 collection.Add(new JsonStringValue("nickName", nickname));
                 if (data != null)
                 {
                     var tag = new NbtTag();
-                    data.SaveToNbt(tag);
+//                    data.SaveToNbt(tag);
                     collection.Add(new JsonStringValue("tag", tag.ToString()));
                 }
             }

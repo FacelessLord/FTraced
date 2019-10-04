@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
+﻿using System.Globalization;
 
 namespace GlLib.Utils.Math
 {
@@ -19,7 +16,7 @@ namespace GlLib.Utils.Math
             CheckCoordinates();
         }
 
-        public AxisAlignedBb(PlanarVector _start, PlanarVector _end)
+        public AxisAlignedBb(ref PlanarVector _start, ref PlanarVector _end)
         {
             (startX, startY, endX, endY) = (_start.x, _start.y, _end.x, _end.y);
             CheckCoordinates();
@@ -37,7 +34,7 @@ namespace GlLib.Utils.Math
         public int HeightI => EndYi - StartYi;
         public static AxisAlignedBb Zero { get; } = new AxisAlignedBb(0, 0, 0, 0);
 
-        public bool IsVectorInside(PlanarVector _vector)
+        public bool IsVectorInside(ref PlanarVector _vector)
         {
             return _vector.x <= endX && _vector.x >= startX && _vector.y <= endY && _vector.y >= startY;
         }
@@ -47,7 +44,7 @@ namespace GlLib.Utils.Math
             return _x <= endX && _x >= startX && _y <= endY && _y >= startY;
         }
 
-        public bool IntersectsWith(AxisAlignedBb _box)
+        public bool IntersectsWith(ref AxisAlignedBb _box)
         {
             var cx1 = (startX + endX) / 2;
             var cy1 = (startY + endY) / 2;
@@ -60,10 +57,13 @@ namespace GlLib.Utils.Math
             //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
             //    SidedConsole.WriteLine(this + " | " + _box);
             //TODO magical 1.5 constant
+            // What the hell is going on here? 
+            // |
+            // V
             return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
         }
 
-        public bool IntersectsWithAt(AxisAlignedBb _box, PlanarVector _pos)
+        public bool IntersectsWithAt(ref AxisAlignedBb _box, PlanarVector _pos)
         {
             var cx1 = (startX + endX) / 2 + _pos.x;
             var cy1 = (startY + endY) / 2 + _pos.y;
@@ -76,6 +76,9 @@ namespace GlLib.Utils.Math
             //if(Math.Abs(cx1 - cx2) <= halfWidth && Math.Abs(cy1 - cy2) <= halfHeight)
             //    SidedConsole.WriteLine(this + " | " + _box);
             //TODO magical 1.5 constant
+            // What the hell is going on here? 
+            // |
+            // V
             return System.Math.Abs(cx1 - cx2) <= halfWidth * 1.5 && System.Math.Abs(cy1 - cy2) <= halfHeight * 1.5;
         }
 
@@ -89,7 +92,7 @@ namespace GlLib.Utils.Math
             return new AxisAlignedBb(_a.startX + _v.x, _a.startY + _v.y, _a.endX + _v.x, _a.endY + _v.y);
         }
 
-        public AxisAlignedBb Translate(PlanarVector _v)
+        public AxisAlignedBb Translate(ref PlanarVector _v)
         {
             startX += _v.x;
             startY += _v.y;

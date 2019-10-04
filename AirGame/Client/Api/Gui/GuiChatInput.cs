@@ -22,7 +22,8 @@ namespace GlLib.Client.Api.Gui
     public class GuiChatInput : GuiText
     {
         public int historyPointer = 0;
-        private Parser _parser;
+        private IParser _commandParser;
+        private IParser _jsParser;
 
         public GuiChatInput(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText,
             _fontSize, _x, _y, _width,
@@ -39,27 +40,8 @@ namespace GlLib.Client.Api.Gui
 
         private void Initialize()
         {
-            _parser = new CommandParser();
-        }
-
-        public override void Render(GuiFrame _gui, int _centerX, int _centerY)
-        {
-            base.Render(_gui, _centerX, _centerY);
-            GL.PushMatrix();
-            GL.Translate(x, y, 0);
-            if (oneLineMode)
-            {
-                var heightCenter = (height - 16d) / 2;
-                GL.Translate(0, heightCenter - height / 2d, 0);
-                foreach (var line in Proxy.GetClient().player.chatIo.InputStream())
-                {
-                    GL.Translate(0, -height * 2d / 3, 0);
-                    font.DrawText(line, fontSize, _a: 0.75f);
-                }
-            }
-
-            Vertexer.ClearColor();
-            GL.PopMatrix();
+            _commandParser = new CommandParser();
+            _jsParser = new JsParser();
         }
 
         public override void OnKeyDown(GuiFrame _guiFrame, KeyboardKeyEventArgs _e)
@@ -68,7 +50,7 @@ namespace GlLib.Client.Api.Gui
 
             if (_e.Key is Key.Up)
             {
-                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("$> ")).ToList();
+                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
                 if (historyPointer < commands.Count - 1)
                 {
                     text = commands[++historyPointer].Substring(3);
@@ -78,7 +60,7 @@ namespace GlLib.Client.Api.Gui
 
             if (_e.Key is Key.Down)
             {
-                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("$> ")).ToList();
+                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
                 if (historyPointer > 0)
                 {
                     text = commands[--historyPointer].Substring(3);
@@ -99,13 +81,27 @@ namespace GlLib.Client.Api.Gui
 
             var io = Proxy.GetClient().player.chatIo;
 
-            io.Output("$> " + text);
             if (text.StartsWith('/'))
-                _parser.Parse(text.Substring(1), io);
+            {
+                io.Output("/>" + text.Substring(1));
+                _commandParser.Parse(text.Substring(1), io);
+            }
+            else if (text.StartsWith('~'))
+            {
+                io.Output("~>" + text.Substring(1));
+                _jsParser.Parse(text.Substring(1), io);
+            }
+            else
+                io.Output("!>" + text);
 
             cursorX = 0;
             historyPointer = -1;
             text = "";
+        }
+
+        public override GuiObject OnMouseClick(GuiFrame _gui, MouseButton _button, int _mouseX, int _mouseY)
+        {
+            return this;
         }
     }
 }

@@ -2,27 +2,41 @@ using GlLib.Client.Api.Gui;
 using GlLib.Common;
 using GlLib.Common.Io;
 using OpenTK;
+using OpenTK.Input;
 
 namespace GlLib.Client.Graphic.Gui
 {
     public class GuiChat : GuiFrame
     {
         public GuiChatInput chat;
+        public GuiChatHistory chatHistory;
         public GuiRectangle chatRect;
         public GuiRectangle historyRect;
         public bool justCreated = true;
 
-        public GuiChat()
+        public bool FullWidth { get; set; }
+        public bool FullHeight { get; set; }
+        
+
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
+        public GuiChat(int _width = -1, int _height = -1)
         {
-            var w = Proxy.GetWindow().Width;
-            var h = Proxy.GetWindow().Height;
-            var d = h / 25;
-            historyRect = AddRectangle(d / 2, h - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3, w - d,
-                d * (ChatIo.MaxLines + 1) * 2 / 3, Color.FromArgb(192, 255, 255, 255));
+            FullWidth = _width == -1;
+            FullHeight = _height == -1;
+            
+            Width = _width == -1 ? Proxy.GetWindow().Width : _width;
+            Height = _height == -1 ? Proxy.GetWindow().Height : _height;
+            var d = Height / 25;
+            historyRect = AddRectangle(d / 2, Height - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3, Width - d,
+                d * (ChatIo.MaxLines + 1) * 2 / 3);
 //            historyRect.grainSize = 0;
-            chatRect = AddRectangle(d / 2, h - d * 2, w - d, d);
-            chat = new GuiChatInput("", 12, d * 2 / 3, h - d * 2, w - d, d);
+            chatRect = AddRectangle(d / 2, Height - d * 2, Width - d, d);
+            chat = new GuiChatInput("", 12, d * 2, Height - d * 2, Width - d, d);
+            chatHistory = new GuiChatHistory(12, d * 2 / 3, Height - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3, Width - d, d * (ChatIo.MaxLines + 1) * 2 / 3);
             Add(chat);
+            Add(chatHistory);
         }
 
         public override void Update(GameWindow _window)
@@ -34,21 +48,36 @@ namespace GlLib.Client.Graphic.Gui
                 justCreated = false;
             }
 
-            var w = Proxy.GetWindow().Width;
-            var h = Proxy.GetWindow().Height;
-            var d = h / 25;
+            if (FullWidth)
+            {
+                Width = Proxy.GetWindow().Width;
+            }
+            if (FullHeight)
+            {
+                Height = Proxy.GetWindow().Height;
+            }
+            
+            var d = Height / 25;
+            
             chatRect.x = d / 2;
-            chatRect.y = h - d * 2;
-            chatRect.width = w - d;
+            chatRect.y = Height - d * 2;
+            chatRect.width = Width - d;
             chatRect.height = d;
+            
             historyRect.x = d / 2;
-            historyRect.y = h - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3;
-            historyRect.width = w - d;
+            historyRect.y = Height - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3;
+            historyRect.width = Width - d;
             historyRect.height = d * (ChatIo.MaxLines + 1) * 2 / 3;
+            
             chat.x = d * 2 / 3;
-            chat.y = h - d * 2;
-            chat.width = w - d;
+            chat.y = Height - d * 2;
+            chat.width = Width - d;
             chat.height = d;
+
+            chatHistory.x = d * 2 / 3;
+            chatHistory.y = Height - d * 2 - d * (ChatIo.MaxLines + 1) * 2 / 3;
+            chatHistory.width = Width - d;
+            chatHistory.height = d * (ChatIo.MaxLines + 1) * 2 / 3;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace GlLib.Common.Blocks
     {
         public Bricks()
         {
-            Rotation = 90;
+            Rotation = (Rotation) 90;
         }
 
         public override string Name { get; protected set; } = "block.indoor.bricks";

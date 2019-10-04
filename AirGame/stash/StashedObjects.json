@@ -30,9 +30,5 @@
 	"block.outdoor.grass.path": {
 		"Name": "block.outdoor.grass.path",
 		"TextureName": "path.png"
-	},
-	"block.castle": {
-		"Name": "block.castle",
-		"TextureName": "."
 	}
 }

@@ -29,11 +29,15 @@ namespace GlLib.Utils.Math
             z = _z;
         }
 
-        public int Ix => (int) MathF.Floor(x);
-        public int Iy => (int) MathF.Floor(y);
+        public int Ix => (int)MathF.Floor(x);
+        public int Iy => (int)MathF.Floor(y);
 
         public static RestrictedVector3D operator +(RestrictedVector3D _a, RestrictedVector3D _b)
         {
+            // TODO 
+            // check this code
+            if (_a.z != _b.z)
+                throw new ArgumentException();
             return new RestrictedVector3D(_a.x + _b.x, _a.y + _b.y, _a.z);
         }
 
@@ -89,7 +93,7 @@ namespace GlLib.Utils.Math
 
         public RestrictedVector3D Rotate(float _angle)
         {
-            return new RestrictedVector3D(x * MathF.Cos(_angle) - y * MathF.Sin(_angle), 
+            return new RestrictedVector3D(x * MathF.Cos(_angle) - y * MathF.Sin(_angle),
                 x * MathF.Sin(_angle) + y * MathF.Cos(_angle), z);
         }
 
@@ -98,7 +102,7 @@ namespace GlLib.Utils.Math
         {
             return new PlanarVector(x, y);
         }
-        
+
         public static implicit operator PlanarVector(RestrictedVector3D v)
         {
             return v.ToPlanarVector();

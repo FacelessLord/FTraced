@@ -14,9 +14,6 @@ namespace GlLib.Common.Registries
         public Item ring =
             new Item("item.ring", ItemRarity.Legendary, ItemType.Ring).SetItemTexture(Textures.goldRubyRing);
 
-        public Item sword =
-            new Item("item.sword", ItemRarity.Legendary, ItemType.Weapon).SetItemTexture(Textures.commonSword);
-
         public Item varia =
             new Item("item.varia", ItemRarity.Legendary).SetItemTexture(Textures.varia);
 
@@ -31,7 +28,7 @@ namespace GlLib.Common.Registries
             new Item("item.dawn_shield", ItemRarity.Legendary, ItemType.Shield).SetItemTexture(Textures.dawnShield);
 
         public Item dawnBlade =
-            new Item("item.dawn_blade", ItemRarity.Legendary, ItemType.Weapon).SetItemTexture(Textures.dawnBlade);
+            new ItemTool("item.dawn_blade", ItemRarity.Legendary, new ToolMaterial(23, 0, 5, 20)).SetItemTexture(Textures.dawnBlade);
 
         public ItemRegistry(GameRegistry _registry)
         {
@@ -40,7 +37,6 @@ namespace GlLib.Common.Registries
 
         public void Register()
         {
-            registry.RegisterItem(sword);
             registry.RegisterItem(apple);
             registry.RegisterItem(ring);
             registry.RegisterItem(varia);

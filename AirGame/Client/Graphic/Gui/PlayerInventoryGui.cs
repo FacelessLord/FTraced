@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GlLib.Client.Api.Gui;
 using GlLib.Client.Api.Sprites;
 using GlLib.Common;
@@ -13,6 +14,7 @@ namespace GlLib.Client.Graphic.Gui
     {
         public List<GuiSlotSign> signs = new List<GuiSlotSign>();
         public Player player;
+        private GuiSign tooltip;
 
         public PlayerInventoryGui(Player _p) : base(_p.inventory)
         {
@@ -31,22 +33,23 @@ namespace GlLib.Client.Graphic.Gui
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
             var d = 4;
-            var panel = new GuiPanel(_x, _y, 50 + 3 * w / 9, 2 * h / 5);
+            var ph = 6 * d + slotSize * 4;
+            var panel = new GuiPanel(_x, _y, 50 + 3 * w / 9, ph);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.width - 50, 0, 50, panel.height);
+            var dy = slotSize/2;
             for (var i = 0; i < _inv.GetMaxSize(); i++)
             {
-                var dy = slotSize + 2;
-                var rect = new GuiRectangle(slotSize, dy * i,
-                    panel.width - slotSize - panel.bar.width - d, slotSize);
+                var rect = new GuiRectangle(slotSize/2, dy * i,
+                    panel.width - slotSize/2 - panel.bar.width - d, slotSize/2);
                 panel.Add(rect);
                 var slotRect = new GuiRectangle(0, dy * i,
-                    slotSize, slotSize);
+                    slotSize/2, slotSize/2);
                 panel.Add(slotRect);
-                var slot = new GuiSlotTypeRenderer(_inv, i, 0, dy * i);
+                var slot = new GuiSlotTypeRenderer(_inv, i, 0, dy * i, slotSize / 2);
                 panel.Add(slot);
-                var text = new GuiSlotSign(_inv, 12, i, slotSize, dy * i,
-                    4 * w / 9 - d - slotSize * 5 / 2, slotSize);
+                var text = new GuiSlotSign(_inv, 12, i, slotSize/2, dy * i,
+                    4 * w / 9 - d - slotSize * 5 / 4, slotSize/2);
                 panel.Add(text);
                 signs.Add(text);
             }
@@ -59,6 +62,8 @@ namespace GlLib.Client.Graphic.Gui
             var dh = itemPanel.height / 2 - GuiSlot.SlotSize;
             var itemSlot = new GuiSlot(_inv, 5, dh);
             itemPanel.Add(itemSlot);
+            tooltip = new GuiSign("",16,GuiSlot.SlotSize*2 + 5,dh,0,0);
+            itemPanel.Add(tooltip);
             return dh;
         }
 
@@ -67,24 +72,25 @@ namespace GlLib.Client.Graphic.Gui
             var slotSize = GuiSlot.SlotSize;
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
-            var pw = 50 + 3 * w / 9;
-            var panel = new GuiPanel(_x, _y, pw, 2 * h / 5);
+            int d = 4;
+            var pw = 5 * d + slotSize * 3;
+            var ph = 6 * d + slotSize * 4;
+            var panel = new GuiPanel(_x, _y, pw, ph);
             Add(panel);
-
-            AddSlotWithEquipmentType(_inv, 0, ItemType.Weapon, pw / 2 - slotSize * 2, 50, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 1, ItemType.Shield, pw / 2 + slotSize, 50, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 2, ItemType.Helmet, pw / 2 - slotSize / 2, 50, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 3, ItemType.Armor, pw / 2 - slotSize / 2, 50 + slotSize, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 4, ItemType.Belt, pw / 2 - slotSize / 2,
-                50 + slotSize * 2, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 5, ItemType.Boots, pw / 2 - slotSize / 2,
-                50 + slotSize * 3, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 6, ItemType.Ring, pw / 2 - slotSize * 2,
-                50 + slotSize * 2, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 7, ItemType.Ring, pw / 2 + slotSize,
-                50 + slotSize * 2, slotSize, panel);
-            AddSlotWithEquipmentType(_inv, 8, ItemType.Varia, pw / 2 + slotSize * 2,
-                50 + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 0, ItemType.Weapon, d, d, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 1, ItemType.Shield, 3 * d + slotSize * 2, d, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 2, ItemType.Helmet, 2 * d + slotSize, d, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 3, ItemType.Armor, 2 * d + slotSize, 2 * d + slotSize, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 4, ItemType.Belt, 2 * d + slotSize,
+                3 * d + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 5, ItemType.Boots, 2 * d + slotSize,
+                4 * d + slotSize * 3, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 6, ItemType.Ring, 2 * d + slotSize,
+                3 * d + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 7, ItemType.Ring, 3 * d + 2 * slotSize,
+                3 * d + slotSize * 2, slotSize, panel);
+            AddSlotWithEquipmentType(_inv, 8, ItemType.Varia, 3 * d + 2 * slotSize,
+                2 * d + slotSize, slotSize, panel);
 
             var itemPanel = new GuiPanel(_x, _y + 16 + 2 * h / 5, 50 + 3 * w / 9, h / 5);
             Add(itemPanel);
@@ -93,6 +99,17 @@ namespace GlLib.Client.Graphic.Gui
             var itemSlot = new GuiSlot(_inv, 5, dh);
             itemPanel.Add(itemSlot);
             return dh;
+        }
+
+        public override void Update(GameWindow _window)
+        {
+            base.Update(_window);
+
+            var stack = inventory.GetStackInSlot(inventory.GetSelectedSlot());
+            if (stack != null)
+            {
+                tooltip.text = stack.GetTooltip().Aggregate((_a, _b) => _a + "\n" + _b);
+            }
         }
     }
 }
