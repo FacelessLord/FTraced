@@ -11,19 +11,36 @@ on:
     - faceless
 
 jobs:
-  build:
+  build-windows:
 
-    runs-on: {windows-latest, ubuntu-latest}
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
     - name: Build
       run: dotnet build Tests\Tests\
-  test:
-    needs: build
-    runs-on: {windows-latest, ubuntu-latest}
+  test-windows:
+    needs: build-windows
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
     - name: Test
       run: dotnet test Tests\Tests\
+      
+  build-ubuntu:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: dotnet build Tests/Tests/
+  test-ubuntu:
+    needs: build-ubuntu
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Test
+      run: dotnet test Tests/Tests/
