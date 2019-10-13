@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - master
+  push:
+    branches:
+    - w1jtoo
+    - development
+    - faceless
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a multi-line script
+      run: |
+        dotnet build Tests\Tests\
+        dotnet run --project Tests\Tests\
