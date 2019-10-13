@@ -20,4 +20,11 @@ jobs:
     - name: Run a multi-line script
       run: |
         dotnet build Tests\Tests\
+  test:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run a multi-line script
+      run: |
         dotnet run --project Tests\Tests\
