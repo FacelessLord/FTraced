@@ -31,7 +31,7 @@ namespace GlLib.Common.Entities
         {
             var r = new Random();
             color = new Color4((float) r.NextDouble(), (float) r.NextDouble(), (float) r.NextDouble(),
-                (float)r.NextDouble() * 0.5f + 0.5f);
+                (float) r.NextDouble() * 0.5f + 0.5f);
             SetCustomRenderer(new SlimeRenderer());
             AaBb = new AxisAlignedBb(-0.25f, 0, 0.25f, 0.5f);
 

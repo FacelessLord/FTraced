@@ -46,7 +46,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
                 var F = k * r / (r.Length * r.Length * r.Length);
                 if (F.Length > 0.5f)
                     F.Length = 0.5f;
-                    _obj.velocity += F;
+                _obj.velocity += F;
             }
         }
     }
