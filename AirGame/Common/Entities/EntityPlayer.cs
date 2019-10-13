@@ -13,7 +13,7 @@ using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
-    public class Player : EntityLiving, IAttacker
+    public class EntityPlayer : EntityLiving, IAttacker
     {
         public float accelerationValue = 0.05f;
         public ChatIo chatIo = new ChatIo();
@@ -26,7 +26,7 @@ namespace GlLib.Common.Entities
         internal SpellSystem spells;
         public HashSet<string> usedBinds = new HashSet<string>();
 
-        public Player(string _nickname,
+        public EntityPlayer(string _nickname,
             World _world,
             RestrictedVector3D _position,
             bool _godMode, uint _health,
@@ -36,7 +36,7 @@ namespace GlLib.Common.Entities
             Initialization();
         }
 
-        public Player()
+        public EntityPlayer()
         {
             Initialization();
         }
@@ -80,7 +80,7 @@ namespace GlLib.Common.Entities
         {
             base.Update();
             if (state.Equals(EntityState.Dead))
-                if (!(Proxy.GetWindow().guiFrame is ResurrectionGui) && this == Proxy.GetClient().player)
+                if (!(Proxy.GetWindow().guiFrame is ResurrectionGui) && this == Proxy.GetClient().entityPlayer)
                 {
                     Proxy.GetWindow().CloseGui();
                     Proxy.GetWindow().TryOpenGui(new ResurrectionGui());

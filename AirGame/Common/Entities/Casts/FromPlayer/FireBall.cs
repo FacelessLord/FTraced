@@ -9,13 +9,13 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
     {
         private const short BaseVelocity = 2;
 
-        public FireBall(World _world, RestrictedVector3D _position, Direction direction, PlanarVector _velocity,
+        public FireBall(World _world, RestrictedVector3D _position, Direction _direction, PlanarVector _velocity,
             uint _dieTime, int _damage)
             : base(_world, _position)
         {
             isAffectedByFriction = false;
             PlanarVector sightDirection;
-            if (direction == Direction.Right)
+            if (_direction == Direction.Right)
                 sightDirection = new PlanarVector(1);
             else sightDirection = new PlanarVector(-1);
 
@@ -23,7 +23,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
             Damage = _damage;
 
             velocity = _velocity.Normalized == new PlanarVector(0) ? sightDirection : _velocity.Normalized;
-            SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
+            SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, _direction));
             AaBb = new AxisAlignedBb(-0.5f, -1f, 0.5f, 1f);
         }
 
@@ -43,7 +43,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is EntityLiving && !(_obj is Player))
+            if (_obj is EntityLiving && !(_obj is EntityPlayer))
                 (_obj as EntityLiving).DealDamage(Damage);
         }
     }

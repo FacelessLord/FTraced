@@ -11,14 +11,14 @@ namespace GlLib.Client.Graphic.Gui
 {
     public class PlayerInventoryGui : GuiInventory
     {
-        public Player player;
+        public EntityPlayer entityPlayer;
         public List<GuiSlotSign> signs = new List<GuiSlotSign>();
         private GuiSign tooltip;
 
-        public PlayerInventoryGui(Player _p) : base(_p.inventory)
+        public PlayerInventoryGui(EntityPlayer _p) : base(_p.inventory)
         {
 //            AddRectangle(100, 16, 4 * w / 9, 2 * h / 5);
-            player = _p;
+            entityPlayer = _p;
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
             AddInventory(_p.inventory, 100, 16);

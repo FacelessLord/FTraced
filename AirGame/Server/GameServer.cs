@@ -158,11 +158,11 @@ namespace GlLib.Server
         ///     TODO maybe returning response
         /// </summary>
         /// <param name="_pkt">Packet to send</param>
-        /// <param name="_player">Target</param>
+        /// <param name="_entityPlayer">Target</param>
         /// <remarks>
         ///     Used to notify players
         /// </remarks>
-        public void SendPacketTo(Packet _pkt, Player _player)
+        public void SendPacketTo(Packet _pkt, EntityPlayer _entityPlayer)
         {
             throw new NotImplementedException();
         }

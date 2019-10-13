@@ -25,6 +25,7 @@ namespace GlLib.Client.Graphic.Gui
             startButton.releaseAction += (_f, _b) => { Proxy.GetWindow().CloseGui(); };
             saveButton = new GuiButton("Save game", (w - 180) / 2, h / 3 + 2 * d, w / 4, d);
             Add(saveButton);
+            saveButton.state = ButtonState.Disabled;
             saveButton.releaseAction = (_f, _b) => { WorldManager.SaveWorld(Proxy.GetClient().world); };
             settingsButton = new GuiButton("Settings", (w - 180) / 2, h / 3 + 3 * d, w / 4, d);
             Add(settingsButton);

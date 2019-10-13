@@ -38,7 +38,7 @@ namespace GlLib.Client.Api.Gui
             var formattedLines = new List<string>();
             double maxLength = 0;
 
-            foreach (var line in Proxy.GetClient().player.chatIo.InputStream().Take(height * 2 / fontSize / 3))
+            foreach (var line in Proxy.GetClient().entityPlayer.chatIo.InputStream().Take(height * 2 / fontSize / 3))
                 if (centeringMode || line.StartsWith("^^"))
                 {
                     if (!line.StartsWith("^^"))

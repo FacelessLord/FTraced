@@ -5,24 +5,24 @@ using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
-    internal class Bat : EntityLiving
+    internal class EntityBat : EntityLiving
     {
-        public AiAttackOnCollide<Player> playerAttackAi;
-        public AiPursue<Player> playerPursueAi;
+        public AiAttackOnCollide<EntityPlayer> playerAttackAi;
+        public AiPursue<EntityPlayer> playerPursueAi;
 
-        public AiSearch<Player> playerSearchAi;
+        public AiSearch<EntityPlayer> playerSearchAi;
 
-        public Bat()
+        public EntityBat()
         {
             Initialize();
         }
 
-        public Bat(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
+        public EntityBat(World _world, RestrictedVector3D _position) : base(100, 2, _world, _position)
         {
             Initialize();
         }
 
-        private Player Target { get; set; }
+        private EntityPlayer Target { get; set; }
 
         private void Initialize()
         {
@@ -34,9 +34,9 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(renderer);
             AaBb = new AxisAlignedBb(-0.2f, -0.2f, 0.2f, 0.2f);
 
-            playerSearchAi = new AiSearch<Player>(7);
-            playerPursueAi = new AiPursue<Player>(playerSearchAi);
-            playerAttackAi = new AiAttackOnCollide<Player>(5);
+            playerSearchAi = new AiSearch<EntityPlayer>(7);
+            playerPursueAi = new AiPursue<EntityPlayer>(playerSearchAi);
+            playerAttackAi = new AiAttackOnCollide<EntityPlayer>(5);
         }
 
         public override string GetName()

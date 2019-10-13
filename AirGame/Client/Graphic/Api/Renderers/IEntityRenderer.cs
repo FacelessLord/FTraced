@@ -2,6 +2,7 @@ using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
+using GlLib.Common.Map;
 using GlLib.Utils.Math;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -74,8 +75,8 @@ namespace GlLib.Client.Api.Renderers
                 GL.Rotate(180, 0, 1, 0);
             Render(_e, _xAxis, _yAxis);
             Vertexer.BindTexture("monochromatic.png");
-            //Vertexer.DrawSquare(-2, -2, 2, 2);
-            //Vertexer.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
+            Vertexer.DrawSquare(-2, -2, 2, 2);
+            Vertexer.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if (_e is EntityLiving)
                 if (!spawnSprite.frozen)
                     spawnSprite.Render();

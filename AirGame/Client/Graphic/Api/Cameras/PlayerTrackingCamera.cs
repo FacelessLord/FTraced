@@ -11,14 +11,14 @@ namespace GlLib.Client.Api.Cameras
 
         public PlayerTrackingCamera()
         {
-            posX = Proxy.GetClient().player.Position.x;
-            posY = Proxy.GetClient().player.Position.y;
+            posX = Proxy.GetClient().entityPlayer.Position.x;
+            posY = Proxy.GetClient().entityPlayer.Position.y;
         }
 
         public void Update(GameWindow _window)
         {
-            posX = Proxy.GetClient().player.Position.x;
-            posY = Proxy.GetClient().player.Position.y;
+            posX = Proxy.GetClient().entityPlayer.Position.x;
+            posY = Proxy.GetClient().entityPlayer.Position.y;
         }
 
         public void PerformTranslation(GameWindow _window)

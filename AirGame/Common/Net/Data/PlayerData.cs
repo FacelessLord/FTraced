@@ -28,9 +28,9 @@ namespace GlLib.Common
         /// <summary>
         ///     Sets stored data to Player fields
         /// </summary>
-        /// <param name="_player">Player to imprint to</param>
+        /// <param name="_entityPlayer">Player to imprint to</param>
         /// <exception cref="NotImplementedException"></exception>
-        public void ImprintToPlayer(Player _player)
+        public void ImprintToPlayer(EntityPlayer _entityPlayer)
         {
             throw new NotImplementedException();
         }
@@ -38,9 +38,9 @@ namespace GlLib.Common
         /// <summary>
         ///     Creates data based on current Player field values
         /// </summary>
-        /// <param name="_player">Player to get data from</param>
+        /// <param name="_entityPlayer">Player to get data from</param>
         /// <exception cref="NotImplementedException"></exception>
-        public static void GetDataFromPlayer(Player _player)
+        public static void GetDataFromPlayer(EntityPlayer _entityPlayer)
         {
             throw new NotImplementedException();
         }
