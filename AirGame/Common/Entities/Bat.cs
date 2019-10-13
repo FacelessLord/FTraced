@@ -35,7 +35,7 @@ namespace GlLib.Common.Entities
                 ((SimpleAttackingLivingRenderer) _r).sprites[EntityState.DirectedAttack].step = 3;
             };
             SetCustomRenderer(renderer);
-            AaBb = new AxisAlignedBb(-0.2, -0.2, 0.2, 0.2);
+            AaBb = new AxisAlignedBb(-0.2f, -0.2f, 0.2f, 0.2f);
 
             playerSearchAI = new AISearch<Player>(7);
             playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.2f);

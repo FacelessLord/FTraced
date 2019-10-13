@@ -38,7 +38,7 @@ namespace GlLib.Common.Entities
             var r = new Random();
             color = new Color4((float) r.NextDouble(), (float) r.NextDouble(), (float) r.NextDouble(), 1);
             SetCustomRenderer(new SlimeRenderer());
-            AaBb = new AxisAlignedBb(-0.25, 0, 0.25, 0.5);
+            AaBb = new AxisAlignedBb(-0.25f, 0, 0.25f, 0.5f);
             
             playerSearchAI = new AISearch<Player>(7);
             playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.1f);

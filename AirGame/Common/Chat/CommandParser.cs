@@ -60,32 +60,6 @@ namespace GlLib.Common.Chat
             }
         }
 
-        public void PrintHelp(string[] _s, IStringIo _io)
-        {
-//            _io.Output(Utils.MiscUtils.Compact(_s));
-            if (_s.Length == 0)
-            {
-                _io.Output("This is Help" + "\n" + GetCommandList().Select(_l => "::" + _l).Aggregate((_a,_b) => _a + "\n" + _b));
-            }
-            else
-            {
-                _io.Output( _s[0]+" command: "+ "\n\t" + actionDescription[_s[0]]);
-            }
-        }
-
-        public void PrintHelp(string[] _s, IStringIo _io)
-        {
-//            _io.Output(Utils.MiscUtils.Compact(_s));
-            if (_s.Length == 0)
-            {
-                _io.Output("This is Help" + "\n" + GetCommandList().Select(_l => "::" + _l).Aggregate((_a,_b) => _a + "\n" + _b));
-            }
-            else
-            {
-                _io.Output( _s[0]+" command: "+ "\n\t" + actionDescription[_s[0]]);
-            }
-        }
-
         public static void SwitchNoClip(string[] _s, IStringIo _io)
         {
             bool newState = !Proxy.GetClient().player.noClip;
