@@ -7,7 +7,6 @@ using GlLib.Client.Input;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Io;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -18,12 +17,14 @@ namespace GlLib.Client.Graphic
     public class GraphicWindow : GameWindow
     {
         public ICamera camera;
+        public int counter = 1;
         public bool enableHud;
 
         public GuiFrame guiFrame;
 
         public Hud hud;
         public bool serverStarted;
+        public int sum = 50;
 
         public GraphicWindow(int _width, int _height, string _title) : base(_width, _height,
             GraphicsMode.Default,
@@ -34,6 +35,8 @@ namespace GlLib.Client.Graphic
             KeyBinds.Register();
             SidedConsole.WriteLine("Window constructed");
         }
+
+        public int Fps => sum / counter;
 
         public bool CanMovementBeHandled()
         {
@@ -171,10 +174,6 @@ namespace GlLib.Client.Graphic
             }
         }
 
-        public int Fps => sum / counter;
-        public int counter = 1;
-        public int sum = 50;
-
         protected override void OnRenderFrame(FrameEventArgs _e)
         {
             if (!(Proxy.GetClient() is null) && Proxy.GetClient().MachineTime.Second % 5 == 0)
@@ -182,7 +181,7 @@ namespace GlLib.Client.Graphic
                 sum = Fps;
                 counter = 1;
             }
-            
+
             sum += (int) (1 / _e.Time);
             counter++;
             try

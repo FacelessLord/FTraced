@@ -1,3 +1,4 @@
+using System;
 using GlLib.Common.Items;
 using static GlLib.Common.Items.ItemType;
 
@@ -5,8 +6,8 @@ namespace GlLib.Common.Api.Inventory
 {
     public class EquipmentInventory : IInventory
     {
-        public int selectedSlot;
         public ItemStack[] inventory;
+        public int selectedSlot;
 
         public EquipmentInventory()
         {
@@ -35,7 +36,7 @@ namespace GlLib.Common.Api.Inventory
 
         public void AddItemStack(ItemStack _itemStack)
         {
-            throw new System.InvalidOperationException();
+            throw new InvalidOperationException();
         }
 
         public void SetItemStack(ItemStack _itemStack, int _slot)

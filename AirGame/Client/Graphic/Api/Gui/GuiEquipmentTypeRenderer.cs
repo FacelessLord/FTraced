@@ -1,18 +1,14 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
-using GlLib.Common.Api.Inventory;
 using GlLib.Common.Items;
-using GlLib.Utils;
 using OpenTK;
-using OpenTK.Input;
 
 namespace GlLib.Client.Api.Gui
 {
     public class GuiEquipmentTypeRenderer : GuiObject
     {
-        public ItemType type;
-
         public TextureLayout slotTexture;
+        public ItemType type;
 
         public GuiEquipmentTypeRenderer(ItemType _type, int _x, int _y) : base(_x, _y, GuiSlot.SlotSize,
             GuiSlot.SlotSize)

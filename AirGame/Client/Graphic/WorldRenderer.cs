@@ -1,5 +1,4 @@
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
@@ -20,7 +19,7 @@ namespace GlLib.Client.Graphic
             {
                 var width = _world.width;
                 var height = _world.height;
-                var xAxis = new PlanarVector(Chunk.BlockWidth, 0);
+                var xAxis = new PlanarVector(Chunk.BlockWidth);
                 var yAxis = new PlanarVector(0, Chunk.BlockHeight);
 
                 for (var i = 0; i < width; i++)

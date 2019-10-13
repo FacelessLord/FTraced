@@ -1,22 +1,36 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
 using GlLib.Common.Items;
-using GlLib.Utils;
 
 namespace GlLib.Common.Api.Inventory
 {
     public abstract class InventoryList : IInventory, IJsonSerializable
     {
+        private bool enableNull;
+
         /// <summary>
-        /// List of items stored in Inventory
+        ///     List of items stored in Inventory
         /// </summary>
         public List<ItemStack> itemList = new List<ItemStack>();
 
         /// <summary>
-        /// Currently selected slot
+        ///     Currently selected slot
         /// </summary>
         private int selectedSlot;
+
+        public bool EnableNull
+        {
+            get => enableNull;
+            set
+            {
+                if (!value)
+                    itemList = itemList.Where(_o => !(_o is null)).ToList();
+                enableNull = value;
+            }
+        }
+
         public abstract int GetMaxSize();
 
         public int GetCurrentSize()
@@ -50,25 +64,9 @@ namespace GlLib.Common.Api.Inventory
 
         public void AddItemStack(ItemStack _itemStack)
         {
-            if ((_itemStack is null && !EnableNull) || itemList.Contains(_itemStack))
-            {
-                return;
-            }
+            if (_itemStack is null && !EnableNull || itemList.Contains(_itemStack)) return;
 
             itemList.Add(_itemStack);
-        }
-
-        private bool enableNull = false;
-
-        public bool EnableNull
-        {
-            get => enableNull;
-            set
-            {
-                if (!value)
-                    itemList = itemList.Where(_o => !(_o is null)).ToList();
-                enableNull = value;
-            }
         }
 
         public void SetItemStack(ItemStack _itemStack, int _slot)
@@ -89,17 +87,17 @@ namespace GlLib.Common.Api.Inventory
 
         public JsonObject Serialize(string _objectName)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Deserialize(JsonObject _jsonObject)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string GetStandardName()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace GlLib.Client.Api.Sprites
 
         public void SetupKern()
         {
-            foreach (char chr in registry.Keys)
+            foreach (var chr in registry.Keys)
                 SetHorizontalKern(chr, 1, 1);
 //            for (var i = 'a'; i <= 'z'; i++) SetHorizontalKern(i, 1, 3);
 //

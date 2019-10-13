@@ -8,7 +8,6 @@ using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
-using GlLib.Utils;
 using GlLib.Utils.Collections;
 using GlLib.Utils.Math;
 
@@ -16,14 +15,11 @@ namespace GlLib.Common.Entities
 {
     public class Player : EntityLiving, IAttacker
     {
-        public ChatIo chatIo = new ChatIo();
-
-        public TerrainBlock Brush { get; internal set; }
-
         public float accelerationValue = 0.05f;
+        public ChatIo chatIo = new ChatIo();
         public PlayerData data;
-        public PlayerInventory inventory = new PlayerInventory();
         public EquipmentInventory equip = new EquipmentInventory();
+        public PlayerInventory inventory = new PlayerInventory();
 
         public int money = 0;
         public string nickname = "Player";
@@ -44,6 +40,8 @@ namespace GlLib.Common.Entities
         {
             Initialization();
         }
+
+        public TerrainBlock Brush { get; internal set; }
 
         public int AttackValue { get; set; }
 
@@ -93,11 +91,9 @@ namespace GlLib.Common.Entities
         {
             base.Deserialize(_jsonObject);
             if (_jsonObject is JsonObjectCollection collection)
-            {
-//                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
+                //                SidedConsole.WriteLine(collection.Select(_o => _o.ToString()).Aggregate("", (_a, _b) => _a + _b));
                 nickname = ((JsonStringValue) collection[13]).Value;
 //                data = new PlayerData().Deserialize(((JsonStringValue) collection[14]).Value);
-            }
         }
 
         public override JsonObject Serialize(string _objectName)

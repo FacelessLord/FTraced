@@ -2,13 +2,13 @@ namespace GlLib.Common.Map
 {
     public class WorldInfo
     {
-        public int width;
+        public int entityCount;
         public int height;
 
-        public int maxEntityCount = 200;
-        public int entityCount;
-
         public string mapName;
+
+        public int maxEntityCount = 200;
+        public int width;
 
         public int worldId;
 

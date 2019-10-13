@@ -1,15 +1,16 @@
-﻿using System.Linq;
-using GlLib.Client.Api.Renderers;
-using GlLib.Client.Graphic.Renderers;
+﻿using GlLib.Client.Api.Renderers;
 using GlLib.Common.Entities.Intelligence;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
     internal class Bat : EntityLiving
     {
+        public AiAttackOnCollide<Player> playerAttackAi;
+        public AiPursue<Player> playerPursueAi;
+
+        public AiSearch<Player> playerSearchAi;
 
         public Bat()
         {
@@ -23,10 +24,6 @@ namespace GlLib.Common.Entities
 
         private Player Target { get; set; }
 
-        public AISearch<Player> playerSearchAI;
-        public AIPursue<Player> playerPursueAI;
-        public AIAttackOnCollide<Player> playerAttackAI;
-
         private void Initialize()
         {
             var renderer = new SimpleAttackingLivingRenderer("bat/bat");
@@ -37,9 +34,9 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(renderer);
             AaBb = new AxisAlignedBb(-0.2f, -0.2f, 0.2f, 0.2f);
 
-            playerSearchAI = new AISearch<Player>(7);
-            playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.2f);
-            playerAttackAI = new AIAttackOnCollide<Player>(5);
+            playerSearchAi = new AiSearch<Player>(7);
+            playerPursueAi = new AiPursue<Player>(playerSearchAi);
+            playerAttackAi = new AiAttackOnCollide<Player>(5);
         }
 
         public override string GetName()
@@ -49,16 +46,15 @@ namespace GlLib.Common.Entities
 
         public override void Update()
         {
-            playerSearchAI.Update(this);
-            playerPursueAI.Update(this);
+            playerSearchAi.Update(this);
+            playerPursueAi.Update(this);
 
             base.Update();
         }
 
         public override void OnCollideWith(Entity _obj)
         {
-            playerAttackAI.OnCollision(this, _obj);
+            playerAttackAi.OnCollision(this, _obj);
         }
-
     }
 }

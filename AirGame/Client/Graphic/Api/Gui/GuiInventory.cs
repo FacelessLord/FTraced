@@ -11,7 +11,7 @@ namespace GlLib.Client.Api.Gui
         {
             inventory = _inventory;
         }
-        
+
         public static void AddSlotType(IInventory _inv, int _slotId, int _x, int _y, int _slotSize, GuiPanel _panel)
         {
             var slotRect = new GuiRectangle(_x, _y, _slotSize, _slotSize);
@@ -19,8 +19,9 @@ namespace GlLib.Client.Api.Gui
             var slot = new GuiSlotTypeRenderer(_inv, _slotId, _x, _y);
             _panel.Add(slot);
         }
-        
-        public static void AddSlotWithEquipmentType(IInventory _inv, int _slotId, ItemType _type, int _x, int _y, int _slotSize, GuiPanel _panel)
+
+        public static void AddSlotWithEquipmentType(IInventory _inv, int _slotId, ItemType _type, int _x, int _y,
+            int _slotSize, GuiPanel _panel)
         {
             var slotRect = new GuiRectangle(_x, _y, _slotSize, _slotSize);
             _panel.Add(slotRect);

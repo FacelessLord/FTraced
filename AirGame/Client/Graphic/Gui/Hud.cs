@@ -9,10 +9,10 @@ namespace GlLib.Client.Graphic.Gui
     public class Hud : GuiFrame
     {
         private readonly GuiHorizontalBar cast;
-        private readonly GuiHorizontalBar health;
-        private readonly GuiSign fpsSign;
         private readonly GuiRectangle fpsRect;
-        
+        private readonly GuiSign fpsSign;
+        private readonly GuiHorizontalBar health;
+
         private readonly List<GuiFrame> subGuis = new List<GuiFrame>();
 
         public Hud()
@@ -33,9 +33,9 @@ namespace GlLib.Client.Graphic.Gui
 //            AddPicture("head.png", 16, 16, 64, 64);
             cast = AddHorizontalBar(80 + 68, 48, 500, 30, new Color(240, 200, 60, 255));
             health = AddHorizontalBar(80 + 68, 16, 500, 30, new Color(240, 60, 40, 255));
-            fpsRect = AddRectangle(Proxy.GetWindow().Width-48, 18, 32, 16);
+            fpsRect = AddRectangle(Proxy.GetWindow().Width - 48, 18, 32, 16);
             fpsRect.grainSize = 8;
-            fpsSign = new GuiSign(Proxy.GetWindow().Fps+ "", 12, Proxy.GetWindow().Width-40, 20, 8, 8, Color.Gold);
+            fpsSign = new GuiSign(Proxy.GetWindow().Fps + "", 12, Proxy.GetWindow().Width - 40, 20, 8, 8, Color.Gold);
             Add(fpsSign);
             //            AddNumeric(350, 80, 20, 10);
         }

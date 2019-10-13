@@ -5,7 +5,7 @@ using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities.Casts.FromPlayer
 {
-    public class FireBall : Entities.Entity
+    public class FireBall : Entity
     {
         private const short BaseVelocity = 2;
 
@@ -16,13 +16,13 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
             isAffectedByFriction = false;
             PlanarVector sightDirection;
             if (direction == Direction.Right)
-                sightDirection = new PlanarVector(1, 0);
-            else sightDirection = new PlanarVector(-1, 0);
+                sightDirection = new PlanarVector(1);
+            else sightDirection = new PlanarVector(-1);
 
             DieTime = _dieTime;
             Damage = _damage;
 
-            velocity = _velocity.Normalized == new PlanarVector(0, 0) ? sightDirection : _velocity.Normalized;
+            velocity = _velocity.Normalized == new PlanarVector(0) ? sightDirection : _velocity.Normalized;
             SetCustomRenderer(new FireBallRenderer(_velocity.Normalized, direction));
             AaBb = new AxisAlignedBb(-0.5f, -1f, 0.5f, 1f);
         }
@@ -41,7 +41,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
                 SetDead();
         }
 
-        public override void OnCollideWith(Entities.Entity _obj)
+        public override void OnCollideWith(Entity _obj)
         {
             if (_obj is EntityLiving && !(_obj is Player))
                 (_obj as EntityLiving).DealDamage(Damage);

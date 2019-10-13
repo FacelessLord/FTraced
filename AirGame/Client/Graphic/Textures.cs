@@ -66,7 +66,7 @@ namespace GlLib.Client.Graphic
             healthPotion = LoadTexture(SimpleStructPath + "HealthPotion.png");
             slimeIdle = LoadTexture("slime/slime_idle.png");
             slimeDeath = LoadTexture("slime/slime_death.png");
-            slimeWalk = LoadTexture("slime/slime_jump.png");
+            slimeWalk = LoadTexture("slime/slime_walk.png");
             streetLight = LoadTexture(SimpleStructPath + "Streetlight.png");
             spawn = LoadTexture(SystemPath + "spawn.png");
             equipBackground = LoadTexture("gui/equipment_sub.png");

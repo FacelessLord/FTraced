@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
 using GlLib.Common.Io;
-using GlLib.Utils;
 using GlLib.Utils.Collections;
 using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
@@ -44,15 +42,13 @@ namespace GlLib.Common.Map
 
         public JsonObjectCollection _unloadChunk(World world, int x, int y)
         {
-            List<JsonObject> objects = new List<JsonObject>();
-            for (int i = 0; i < 16; i++)
+            var objects = new List<JsonObject>();
+            for (var i = 0; i < 16; i++)
+            for (var j = 0; j < 16; j++)
             {
-                for (int j = 0; j < 16; j++)
-                {
-                    TerrainBlock block = this[i, j];
-                    if (block != null)
-                        objects.Add(new JsonNumericValue($"{i},{j}", block.id));
-                }
+                var block = this[i, j];
+                if (block != null)
+                    objects.Add(new JsonNumericValue($"{i},{j}", block.id));
             }
 
             return new JsonObjectCollection($"{x},{y}", objects);
@@ -89,7 +85,7 @@ namespace GlLib.Common.Map
                     GL.Translate(-1 / 2d, -1 / 2d, 0);
 
                     Vertexer.StartDrawingQuads();
-                    
+
                     Vertexer.VertexWithUvAt(1, 0, 1, 0);
                     Vertexer.VertexWithUvAt(1, 1, 1, 1);
                     Vertexer.VertexWithUvAt(0, 1, 0, 1);
@@ -131,7 +127,7 @@ namespace GlLib.Common.Map
 
 //                        Console.WriteLine($"Chunk's block {i}x{j} is loaded");
                             if (world.FromStash)
-                                if( stashedBlocks.ContainsKey(gameObject.Value))
+                                if (stashedBlocks.ContainsKey(gameObject.Value))
                                     blocks[i, j] = (TerrainBlock) stashedBlocks[gameObject.Value];
                                 else
                                     SidedConsole.WriteErrorLine($"Stash Block cannot be loaded: {gameObject.Value}");
@@ -140,6 +136,7 @@ namespace GlLib.Common.Map
 
                             break;
                         }
+
                         case JsonNumericValue num:
                         {
                             var coords = num.Name.Split(',');
@@ -190,7 +187,7 @@ namespace GlLib.Common.Map
                     }
 
                 SidedConsole.WriteLine($"Chunk {chunkX}x{chunkY} is loaded");
-                string bStr = this[0, 0] is null ? "null" : this[0, 0] + "";
+                var bStr = this[0, 0] is null ? "null" : this[0, 0] + "";
                 SidedConsole.WriteLine($"Chunk block at 0x0 is {bStr}");
                 isLoaded = true;
             }

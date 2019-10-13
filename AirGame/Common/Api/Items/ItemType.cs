@@ -11,6 +11,6 @@
         Shield,
         Boots,
         Helmet,
-        Belt,
+        Belt
     }
 }

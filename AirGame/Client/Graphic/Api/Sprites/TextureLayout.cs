@@ -6,6 +6,7 @@ namespace GlLib.Client.Api.Sprites
     public class TextureLayout
     {
         public Layout layout;
+
         public Texture texture;
 //        public 
 

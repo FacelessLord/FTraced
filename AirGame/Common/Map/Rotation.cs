@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GlLib.Common.Map
+﻿namespace GlLib.Common.Map
 {
-    public enum  Rotation
+    public enum Rotation
     {
         Down = 0,
         Right = 90,

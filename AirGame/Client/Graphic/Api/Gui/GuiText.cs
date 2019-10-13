@@ -10,11 +10,12 @@ namespace GlLib.Client.Api.Gui
 {
     public class GuiSign : GuiObject
     {
-        public int fontSize = 16;
         public static FontSprite font;
+        public int fontSize = 16;
         public string text;
 
-        public GuiSign(string _text, int _fontSize, int _x, int _y, int _width, int _height) : base(_x, _y, _width, _height)
+        public GuiSign(string _text, int _fontSize, int _x, int _y, int _width, int _height) : base(_x, _y, _width,
+            _height)
         {
             text = _text;
             fontSize = _fontSize;
@@ -42,16 +43,17 @@ namespace GlLib.Client.Api.Gui
             GL.PopMatrix();
         }
     }
-    
+
     public class GuiSlotSign : GuiObject
     {
-        public int fontSize = 16;
         public static FontSprite font;
-        public string text;
+        public int fontSize = 16;
         public IInventory inventory;
         public int slot;
+        public string text;
 
-        public GuiSlotSign(IInventory _inv, int _fontSize, int _slot, int _x, int _y, int _width, int _height) : base(_x, _y, _width,
+        public GuiSlotSign(IInventory _inv, int _fontSize, int _slot, int _x, int _y, int _width, int _height) : base(
+            _x, _y, _width,
             _height)
         {
             fontSize = _fontSize;
@@ -95,18 +97,21 @@ namespace GlLib.Client.Api.Gui
 
     public class GuiText : GuiSign
     {
+        public static int timerSpeed = 40;
         public int cursorX;
 
         public bool oneLineMode = true;
         public int timer;
 
-        public GuiText(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText, _fontSize, _x, _y, _width,
+        public GuiText(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText,
+            _fontSize, _x, _y, _width,
             _height)
         {
             cursorX = _baseText.Length;
         }
 
-        public GuiText(string _baseText, int _fontSize, int _x, int _y, int _width, int _height, Color _color) : base(_baseText, _fontSize, _x,
+        public GuiText(string _baseText, int _fontSize, int _x, int _y, int _width, int _height, Color _color) : base(
+            _baseText, _fontSize, _x,
             _y, _width, _height, _color)
         {
             cursorX = _baseText.Length;
@@ -121,8 +126,6 @@ namespace GlLib.Client.Api.Gui
         {
             return false;
         }
-        
-        public static int timerSpeed = 40;
 
         public override void Render(GuiFrame _gui, int _centerX, int _centerY)
         {
@@ -219,6 +222,7 @@ namespace GlLib.Client.Api.Gui
                         var t2 = text.Substring(cursorX + 1);
                         text = t1 + t2;
                     }
+
                     timer = timerSpeed / 2 + 1;
                 }
 

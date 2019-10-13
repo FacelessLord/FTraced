@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using GlLib.Client.Api.Sprites;
 using GlLib.Common.Io;
-using GlLib.Utils;
 using GlLib.Utils.Math;
-using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -12,19 +10,19 @@ namespace GlLib.Client.Graphic
 {
     public class Vertexer
     {
-        public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
-
-        public static Texture Null { get; private set; }
-
-        public static Color4 Color { get; private set; } = Color4.White;
-        public static ColorAdditionMode ColorMode { get; private set; } = 0;
-
         public enum ColorAdditionMode
         {
             HalfSum,
             Override,
             OnlyFirst
         }
+
+        public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+
+        public static Texture Null { get; private set; }
+
+        public static Color4 Color { get; private set; } = Color4.White;
+        public static ColorAdditionMode ColorMode { get; private set; } = 0;
 
         public static void SetColorMode(ColorAdditionMode _mode)
         {
@@ -70,7 +68,7 @@ namespace GlLib.Client.Graphic
         {
             Color = Color4.White;
         }
-        
+
         public static void ResetMode()
         {
             ColorMode = ColorAdditionMode.OnlyFirst;
@@ -139,7 +137,7 @@ namespace GlLib.Client.Graphic
                     textures.Add(_path, texture);
                     return texture;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (_path != "null.png")
                     {

@@ -1,13 +1,9 @@
 using System.Linq;
-using System.Xml.Linq;
 using GlLib.Client.Api;
 using GlLib.Common.Entities;
-using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
 using GlLib.Utils.StringParser;
-using OpenTK.Graphics.ES20;
-using SixLabors.ImageSharp.MetaData.Profiles.Icc;
 
 namespace GlLib.Common.Chat
 {
@@ -17,11 +13,11 @@ namespace GlLib.Common.Chat
         {
             Init();
         }
-        
+
         public void Init()
         {
             AddParse("", (_s, _io) => { });
-            AddParse("help", (_s, _io) => PrintHelp(_s,_io),
+            AddParse("help", (_s, _io) => PrintHelp(_s, _io),
                 "Prints help message");
             AddParse("clear", (_s, _io) => _io.TryClearStream(), "Clears all output");
             AddParse("spawn", (_s, _io) => Spawn(_s, _io),
@@ -43,7 +39,7 @@ namespace GlLib.Common.Chat
                 "Saves whole world (including blocks)");
             AddParse("killchunk", (_p, _io) => KillChunk(_p, _io),
                 "Kills all entities in chunk that can be killed");
-            AddParse("setrotation", (_p, _io) => SetBlockRotation(_p, _io), 
+            AddParse("setrotation", (_p, _io) => SetBlockRotation(_p, _io),
                 "Change block rotation player staying on.");
         }
 
@@ -51,22 +47,17 @@ namespace GlLib.Common.Chat
         {
 //            _io.Output(Utils.MiscUtils.Compact(_s));
             if (_s.Length == 0)
-            {
-                _io.Output("This is Help" + "\n" + GetCommandList().Select(_l => "::" + _l).Aggregate((_a,_b) => _a + "\n" + _b));
-            }
+                _io.Output("This is Help" + "\n" +
+                           GetCommandList().Select(_l => "::" + _l).Aggregate((_a, _b) => _a + "\n" + _b));
             else
-            {
-                _io.Output( _s[0]+" command: "+ "\n\t" + actionDescription[_s[0]]);
-            }
+                _io.Output(_s[0] + " command: " + "\n\t" + actionDescription[_s[0]]);
         }
 
         public static void SwitchNoClip(string[] _s, IStringIo _io)
         {
-            bool newState = !Proxy.GetClient().player.noClip;
-            if (_s.Length > 0 && bool.TryParse(_s[0], out bool definedState))
-            {
+            var newState = !Proxy.GetClient().player.noClip;
+            if (_s.Length > 0 && bool.TryParse(_s[0], out var definedState))
                 Proxy.GetClient().player.noClip = definedState;
-            }
             else
                 Proxy.GetClient().player.noClip = newState;
 
@@ -82,9 +73,9 @@ namespace GlLib.Common.Chat
                     var force = _s.Length > 1 && _s[1] == "-force";
                     foreach (var entity in Proxy.GetClient().player.chunkObj.entities)
                     {
-                        if(entity is Player)
+                        if (entity is Player)
                             continue;
-                        if (force || !(entity is EntityLiving el) || el.CanDie )
+                        if (force || !(entity is EntityLiving el) || el.CanDie)
                             entity.SetDead();
                     }
 
@@ -92,10 +83,9 @@ namespace GlLib.Common.Chat
                     return;
                 }
 
-                int cx = 0;
-                int cy = 0;
+                var cx = 0;
+                var cy = 0;
                 if (int.TryParse(_s[0], out cx))
-                {
                     if (int.TryParse(_s[1], out cy))
                     {
                         var force = _s.Length > 1 && _s[1] == "-force";
@@ -106,18 +96,15 @@ namespace GlLib.Common.Chat
                             if (chunk != null && chunk.isLoaded)
                             {
                                 foreach (var entity in w[cx, cy].entities)
-                                {
                                     if (force || !(entity is EntityLiving el) || el.CanDie)
                                         entity.SetDead();
-                                }
 
                                 _io.Output("Entities in chunk (" + cx + ", " + cy + ") has been killed");
                                 return;
                             }
                         }
                     }
-                }
-                
+
                 _io.Output("Chunk (" + cx + ", " + cy + ") doesn't exist");
             }
 
@@ -185,7 +172,7 @@ namespace GlLib.Common.Chat
 
         public static void SetBlockRotation(string[] _s, IStringIo _io)
         {
-            int angle = 0;
+            var angle = 0;
             if (_s.Length != 1 && !int.TryParse(_s[0], out angle))
             {
                 _io.Output("You should use right string format. \nUse degrees. \n/setrotation <angle>");
@@ -251,10 +238,7 @@ namespace GlLib.Common.Chat
                 var concatedItems = "Here is information 'bout items.\n";
                 concatedItems += $"{"Name",12} {"ID",15:N0}\n\n";
                 var items = Proxy.GetRegistry().itemsById;
-                foreach (var id in items.Keys)
-                {
-                    concatedItems += $"{(items[id] as Item)?.ToString(),12} {id,15:N0}\n";
-                }
+                foreach (var id in items.Keys) concatedItems += $"{items[id] as Item,12} {id,15:N0}\n";
 
                 _io.Output(concatedItems);
             }
@@ -264,9 +248,7 @@ namespace GlLib.Common.Chat
                 concatedBlocks += $"{"Name",-35} {"ID",10:N0}\n\n";
                 var blocks = Proxy.GetRegistry().blocksById;
                 foreach (var id in blocks.Keys)
-                {
                     concatedBlocks += $"{(blocks[id] as TerrainBlock)?.Name,-35} {id,10:N0}\n";
-                }
 
                 _io.Output(concatedBlocks);
             }
@@ -274,14 +256,14 @@ namespace GlLib.Common.Chat
             {
                 var concateEntities = "Here is information 'bout entities.\n";
                 var entities = Proxy.GetRegistry().entities;
-                foreach (var name in entities.Keys)
-                {
-                    concateEntities += $"{name,8} {name,20:N0}\n";
-                }
+                foreach (var name in entities.Keys) concateEntities += $"{name,8} {name,20:N0}\n";
 
                 _io.Output(concateEntities);
             }
-            else _io.Output("blocks, entities or items please");
+            else
+            {
+                _io.Output("blocks, entities or items please");
+            }
         }
 
         public static void SaveWorld(string[] _s, IStringIo _io)

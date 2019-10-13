@@ -1,8 +1,6 @@
-using System.Linq;
 using System.Net;
 using GlLib.Client.Api.Gui;
 using GlLib.Common;
-using GlLib.Server;
 using OpenTK;
 
 namespace GlLib.Client.Graphic.Gui
@@ -31,8 +29,8 @@ namespace GlLib.Client.Graphic.Gui
             };
             startMultiButton = new GuiButton("Multiplayer Game", 3 * w / 8, h / 3 + d, w / 4, d);
             Add(startMultiButton);
-            startMultiButton.releaseAction = (_frame, _button) => 
-                Core.client.MakeConnection(IPAddress.Parse("localhost"), 25565); 
+            startMultiButton.releaseAction = (_frame, _button) =>
+                Core.client.MakeConnection(IPAddress.Parse("localhost"), 25565);
             settingsButton = new GuiButton("Settings", 3 * w / 8, h / 3 + 2 * d, w / 4, d);
             Add(settingsButton);
             settingsButton.releaseAction = (_f, _b) => Proxy.GetWindow().OpenGui(new GuiSettings(_f));
