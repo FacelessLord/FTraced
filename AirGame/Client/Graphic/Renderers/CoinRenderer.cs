@@ -11,7 +11,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         public LinearSprite coinSprite;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.coin, 8, 1);
             coinSprite = new LinearSprite(layout, 8, 18);

@@ -139,7 +139,7 @@ namespace GlLib.Client.Graphic
                     textures.Add(_path, texture);
                     return texture;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (_path != "null.png")
                     {

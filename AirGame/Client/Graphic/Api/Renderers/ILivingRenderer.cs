@@ -20,7 +20,7 @@ namespace GlLib.Client.Api.Renderers
             entityName = _entityName;
         }
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             for (var i = Idle; i <= Dead; i++)
             {
@@ -58,7 +58,7 @@ namespace GlLib.Client.Api.Renderers
             entityName = _entityName;
         }
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             for (var i = Idle; i <= Dead; i++)
             {

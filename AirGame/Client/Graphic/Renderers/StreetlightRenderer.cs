@@ -10,7 +10,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         private LinearSprite _sprite;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.streetLight, 1, 1);
             _sprite = new LinearSprite(layout, 1, 1).SetFrozen();

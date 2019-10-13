@@ -19,9 +19,9 @@ namespace GlLib.Common.Entities
 
         public int AttackValue { get; set; } = 5;
         
-        public AISearch<Player> playerSearchAI;
-        public AIPursue<Player> playerPursueAI;
-        public AIAttackOnCollide<Player> playerAttackAI;
+        public AiSearch<Player> playerSearchAI;
+        public AiPursue<Player> playerPursueAI;
+        public AiAttackOnCollide<Player> playerAttackAI;
 
         public EntitySlime()
         {
@@ -40,9 +40,9 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(new SlimeRenderer());
             AaBb = new AxisAlignedBb(-0.25f, 0, 0.25f, 0.5f);
             
-            playerSearchAI = new AISearch<Player>(7);
-            playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.1f);
-            playerAttackAI = new AIAttackOnCollide<Player>(AttackValue);
+            playerSearchAI = new AiSearch<Player>(7);
+            playerPursueAI = new AiPursue<Player>(playerSearchAI, 0.1f);
+            playerAttackAI = new AiAttackOnCollide<Player>(AttackValue);
         }
 
         public override string GetName()

@@ -2,12 +2,12 @@ using System.Linq;
 
 namespace GlLib.Common.Entities.Intelligence
 {
-    public class AISearch<TTargetType> : IArtificialIntelligence where TTargetType : Entity
+    public class AiSearch<TTargetType> : IArtificialIntelligence where TTargetType : Entity
     {
         public int SearchRange { get; private set; }
         public TTargetType Target { get; set; }
 
-        public AISearch(int _range)
+        public AiSearch(int _range)
         {
             SearchRange = _range;
         }

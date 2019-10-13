@@ -10,7 +10,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         public LinearSprite potionSprite;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.healthPotion, 1, 1);
             potionSprite = new LinearSprite(layout, 1, 1).SetFrozen();

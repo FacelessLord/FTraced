@@ -29,7 +29,7 @@ namespace GlLib.Client.Graphic.Renderers
             else rotation = _aim.Angle;
         }
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.fireBall, 8, 8);
             _sprite = new LinearSprite(layout, 61, 6);

@@ -15,7 +15,7 @@ namespace GlLib.Client.Graphic.Renderers
         protected LinearSprite walkSprite;
         protected LinearSprite deathSprite;
 
-        public override void Setup(Entity _p)
+        protected override void Setup(Entity _p)
         {
             var idle = new TextureLayout(Textures.slimeIdle, 10, 1);
             var death = new TextureLayout(Textures.slimeDeath, 10, 1);

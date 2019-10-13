@@ -10,7 +10,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         private Texture _texture;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             _texture = Textures.monochromatic;
         }

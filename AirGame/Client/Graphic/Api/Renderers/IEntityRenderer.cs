@@ -2,7 +2,6 @@ using System;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
-using GlLib.Common.Map;
 using GlLib.Utils.Math;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -13,16 +12,15 @@ namespace GlLib.Client.Api.Renderers
     {
         public bool isSetUp;
 
-        protected Color4 OnDamage = new Color4(1, 0, 0, 1.0f);
-        protected Color4 OnHeal = new Color4(0, 1, 0, 1.0f);
+        protected Color4 onDamage = new Color4(1, 0, 0, 1.0f);
+        protected Color4 onHeal = new Color4(0, 1, 0, 1.0f);
 
         public LinearSprite spawnSprite;
-        protected FontSprite Text;
-        private float start = -4;
+        protected FontSprite text;
 
         public EntityRenderer()
         {
-            Text = FontSprite.Alagard;
+            text = FontSprite.Alagard;
         }
 
         protected static LinearSprite SpawnSprite
@@ -45,10 +43,10 @@ namespace GlLib.Client.Api.Renderers
             spawnSprite.SetColor(new Color4(1, 1, 1, 0.8f));
 
             spawnSprite.Scale(8, 8);
-            spawnSprite.Scale((float) box.Width, (float) box.Height);
+            spawnSprite.Scale(box.Width, box.Height);
         }
 
-        public abstract void Setup(Entity _e);
+        protected abstract void Setup(Entity _e);
 
         public void CallRender(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)
         {
@@ -57,19 +55,19 @@ namespace GlLib.Client.Api.Renderers
 
             if (_e is EntityLiving el)
             {
-
                 if (el.DamageTimer > 0)
                 {
                     GL.PushMatrix();
                     GL.Translate(Math.Sin(Math.Abs(el.DamageTimer) * 2) * 8, (-5 + Math.Abs(el.DamageTimer)) * 16, 0);
                     el.DamageTimer -= 0.05f * Math.Sign(el.DamageTimer);
-                    Text.DrawText($"{el.LastDamage}", 12, 0.85f);
+                    text.DrawText($"{el.LastDamage}", 12, 0.85f);
                     GL.PopMatrix();
                 }
+
                 if (el.DamageTimer > 1)
-                    Vertexer.Colorize(OnDamage);
+                    Vertexer.Colorize(onDamage);
                 if (el.DamageTimer < -1)
-                    Vertexer.Colorize(OnHeal);
+                    Vertexer.Colorize(onHeal);
             }
 
             if (_e.direction.Equals(Direction.Left))

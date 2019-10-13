@@ -11,7 +11,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         public LinearSprite boxSprite;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.box, 1, 1);
             boxSprite = new LinearSprite(layout, 1, 20).SetFrozen();

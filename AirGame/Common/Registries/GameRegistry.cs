@@ -11,7 +11,6 @@ namespace GlLib.Common.Registries
 {
     public class GameRegistry
     {
-        private bool _loaded;
         public BlocksRegistry blockRegistry;
 
         public Hashtable blocks = new Hashtable();
@@ -34,7 +33,6 @@ namespace GlLib.Common.Registries
             blockRegistry.Register();
             entitieRegistry.Register();
             itemRegistry.Register();
-            _loaded = true;
         }
 
         public void RegisterItem(Item _item)
@@ -47,7 +45,7 @@ namespace GlLib.Common.Registries
                 itemsById.Add(id, _item);
                 _item.id = id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Item with name {_item.unlocalizedName} had already been registered");
                 throw;
@@ -64,7 +62,7 @@ namespace GlLib.Common.Registries
                 blocksById.Add(id, _block);
                 _block.id = id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Block with name {_block.Name} had already been registered");
                 throw;
@@ -78,7 +76,7 @@ namespace GlLib.Common.Registries
                 SidedConsole.WriteLine("Registered: " + _name);
                 entities.Add(_name, _entityType);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Entity with name {_name} had already been registered");
                 throw;

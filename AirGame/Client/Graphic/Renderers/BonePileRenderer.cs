@@ -11,7 +11,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         public LinearSprite boneSprite;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.bonePile, 1, 1);
             boneSprite = new LinearSprite(layout, 1, 20).SetFrozen();

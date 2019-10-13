@@ -23,9 +23,9 @@ namespace GlLib.Common.Entities
 
         private Player Target { get; set; }
 
-        public AISearch<Player> playerSearchAI;
-        public AIPursue<Player> playerPursueAI;
-        public AIAttackOnCollide<Player> playerAttackAI;
+        public AiSearch<Player> playerSearchAi;
+        public AiPursue<Player> playerPursueAi;
+        public AiAttackOnCollide<Player> playerAttackAi;
 
         private void Initialize()
         {
@@ -37,9 +37,9 @@ namespace GlLib.Common.Entities
             SetCustomRenderer(renderer);
             AaBb = new AxisAlignedBb(-0.2f, -0.2f, 0.2f, 0.2f);
 
-            playerSearchAI = new AISearch<Player>(7);
-            playerPursueAI = new AIPursue<Player>(playerSearchAI, 0.2f);
-            playerAttackAI = new AIAttackOnCollide<Player>(5);
+            playerSearchAi = new AiSearch<Player>(7);
+            playerPursueAi = new AiPursue<Player>(playerSearchAi, 0.2f);
+            playerAttackAi = new AiAttackOnCollide<Player>(5);
         }
 
         public override string GetName()
@@ -49,15 +49,15 @@ namespace GlLib.Common.Entities
 
         public override void Update()
         {
-            playerSearchAI.Update(this);
-            playerPursueAI.Update(this);
+            playerSearchAi.Update(this);
+            playerPursueAi.Update(this);
 
             base.Update();
         }
 
         public override void OnCollideWith(Entity _obj)
         {
-            playerAttackAI.OnCollision(this, _obj);
+            playerAttackAi.OnCollision(this, _obj);
         }
 
     }

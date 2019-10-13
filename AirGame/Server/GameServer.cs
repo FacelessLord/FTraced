@@ -54,9 +54,6 @@ namespace GlLib.Server
             _server = new TcpListener(_address, _port);
             _server.Start();
             
-            // Buffer for reading data
-            Byte[] bytes = new Byte[256];
-            String data;
             isOpened = true;
             while (isOpened)
             {
