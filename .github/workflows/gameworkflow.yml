@@ -13,18 +13,17 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: {windows-latest, ubuntu-latest}
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a multi-line script
-      run: |
-        dotnet build Tests\Tests\
+    - name: Build
+      run: dotnet build Tests\Tests\
   test:
-    runs-on: windows-latest
+    needs: build
+    runs-on: {windows-latest, ubuntu-latest}
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a multi-line script
-      run: |
-        dotnet run --project Tests\Tests\
+    - name: Test
+      run: dotnet run --project Tests\Tests\
