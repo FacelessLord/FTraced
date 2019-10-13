@@ -1,7 +1,6 @@
 using System;
 using GlLib.Common.Entities;
 using GlLib.Common.Io;
-using GlLib.Utils;
 
 namespace GlLib.Common.Events
 {
@@ -44,7 +43,7 @@ namespace GlLib.Common.Events
         {
             return EntityUpdate(_e, _e);
         }
-        
+
         public static bool OnEntityDeath(Entity _e)
         {
             return EntityDeath(_e, _e);

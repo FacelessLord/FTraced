@@ -8,7 +8,7 @@ namespace GlLib.Utils.Collections
 {
     public class NbtTag : IEnumerable<string>
     {
-        private readonly Hashtable _table;
+        private Hashtable _table;
 
         public NbtTag()
         {
@@ -61,34 +61,6 @@ namespace GlLib.Utils.Collections
         {
             return Get<int>(_key);
         }
-
-
-#if false
-        public long GetLong(string _key)
-        {
-            return Get<long>(_key);
-        }
-
-        public float GetFloat(string _key)
-        {
-            return Get<float>(_key);
-        }
-
-        public double GetDouble(string _key)
-        {
-            return Get<double>(_key);
-        }
-
-        public bool GetBool(string _key)
-        {
-            return Get<bool>(_key);
-        }
-
-        public string GetString(string _key)
-        {
-            return Get<string>(_key);
-        }
-#endif
 
         public override string ToString()
         {
@@ -172,6 +144,30 @@ namespace GlLib.Utils.Collections
                     return true;
 
             return false;
+        }
+
+        public override bool Equals(object _obj)
+        {
+            if (!(_obj is NbtTag tag))
+                return false;
+            return Equals(tag);
+        }
+
+        protected bool Equals(NbtTag _other)
+        {
+            return Equals(_table, _other._table);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_table != null ? _table.GetHashCode() : 0);
+        }
+
+        public NbtTag Copy()
+        {
+            var tag = new NbtTag();
+            tag._table = (Hashtable) _table.Clone();
+            return tag;
         }
     }
 }

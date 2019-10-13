@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Entities;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 using static GlLib.Common.Entities.EntityState;
@@ -12,8 +11,8 @@ namespace GlLib.Client.Api.Renderers
 {
     public class AttackingLivingRenderer : EntityRenderer
     {
-        public Dictionary<EntityState, LinearSprite> sprites = new Dictionary<EntityState, LinearSprite>();
         public string entityName;
+        public Dictionary<EntityState, LinearSprite> sprites = new Dictionary<EntityState, LinearSprite>();
 
         public AttackingLivingRenderer(string _entityName)
         {
@@ -29,7 +28,7 @@ namespace GlLib.Client.Api.Renderers
                 var sprite = new LinearSprite(layout, layout.layout.countX, 6);
 
                 var box = _e.AaBb;
-                sprite.Scale((float)box.Width * 1.5f, (float)box.Height * 1.5f);
+                sprite.Scale(box.Width * 1.5f, box.Height * 1.5f);
                 sprites.Add(i, sprite);
             }
 
@@ -46,12 +45,12 @@ namespace GlLib.Client.Api.Renderers
             GL.PopMatrix();
         }
     }
-    
+
     public class SimpleAttackingLivingRenderer : EntityRenderer
     {
-        public Dictionary<EntityState, LinearSprite> sprites = new Dictionary<EntityState, LinearSprite>();
-        public string entityName;
         public Action<Entity, EntityRenderer> customize = (_e, _r) => { };
+        public string entityName;
+        public Dictionary<EntityState, LinearSprite> sprites = new Dictionary<EntityState, LinearSprite>();
 
         public SimpleAttackingLivingRenderer(string _entityName)
         {
@@ -68,7 +67,7 @@ namespace GlLib.Client.Api.Renderers
                 var sprite = new LinearSprite(layout, layout.layout.countX, 6);
 
                 var box = _e.AaBb;
-                sprite.Scale((float) box.Width * 1.5f, (float) box.Height * 1.5f);
+                sprite.Scale(box.Width * 1.5f, box.Height * 1.5f);
                 sprites.Add(i, sprite);
             }
 

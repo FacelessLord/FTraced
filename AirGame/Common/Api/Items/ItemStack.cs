@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Net.Json;
 using GlLib.Common.Api;
-using GlLib.Utils;
 using GlLib.Utils.Collections;
 
 namespace GlLib.Common.Items
@@ -9,20 +8,20 @@ namespace GlLib.Common.Items
     public class ItemStack : IJsonSerializable
     {
         /// <summary>
-        /// Item held in this stack
+        ///     Item held in this stack
         /// </summary>
         public Item item;
-        
+
         /// <summary>
-        /// Items count
+        ///     Items count
         /// </summary>
         public int stackSize;
-        
+
         /// <summary>
-        /// Tag that contains this stack data
+        ///     Tag that contains this stack data
         /// </summary>
         public NbtTag stackTag;
-        
+
         public ItemStack(Item _item = null, int _stackSize = 1, NbtTag _tag = null)
         {
             (item, stackSize, stackTag) = (_item, _stackSize, _tag);
@@ -55,7 +54,7 @@ namespace GlLib.Common.Items
         }
 
         /// <summary>
-        /// Name used in tooltip
+        ///     Name used in tooltip
         /// </summary>
         /// <returns></returns>
         private string GetName()
@@ -77,7 +76,7 @@ namespace GlLib.Common.Items
         public List<string> GetTooltip()
         {
             var tooltip = new List<string>();
-            
+
             tooltip.Add(GetName());
             item.AddInformation(this, tooltip);
             return tooltip;

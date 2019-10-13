@@ -1,6 +1,4 @@
-using System;
 using GlLib.Client.Graphic;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics;
@@ -10,18 +8,17 @@ namespace GlLib.Client.Api.Sprites
 {
     public abstract class Sprite
     {
-        protected PlanarVector moveTo;
-        protected Vector3 scale;
+        private const float Depth = 0.866025f;
         protected Color4 color = new Color4(1, 1, 1, 1.0f);
+        protected PlanarVector moveTo;
 
-
-        private const float Depth = 0.866025f; 
+        protected Vector3 scale;
         // Move it out to constants file
         // This is the sin(2PI/3)
 
         public Sprite()
         {
-            moveTo = new PlanarVector(0, 0);
+            moveTo = new PlanarVector(0);
             scale = new Vector3(32, 32, 1);
         }
 

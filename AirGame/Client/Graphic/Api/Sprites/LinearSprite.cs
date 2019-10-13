@@ -1,9 +1,3 @@
-using GlLib.Client.Graphic;
-using GlLib.Utils;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-
 namespace GlLib.Client.Api.Sprites
 {
     public class LinearSprite : Sprite

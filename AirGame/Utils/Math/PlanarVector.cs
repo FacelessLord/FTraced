@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace GlLib.Utils.Math
 {
@@ -157,9 +155,7 @@ namespace GlLib.Utils.Math
         }
 
 
-
         public static PlanarVector Null
-            => new PlanarVector(0, 0);
-
+            => new PlanarVector(0);
     }
 }

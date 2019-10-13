@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using GlLib.Common.Io;
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
@@ -30,11 +28,9 @@ namespace GlLib.Common.Entities
 
             if (Proxy.GetServer().InternalTicks % LivingTime == 0 &&
                 worldObj.GetEntitiesWithinAaBb(Position.ExpandBothTo(AaBb.Width,
-                        AaBb.Height)).Count == 1 )
+                    AaBb.Height)).Count == 1)
                 foreach (var type in entitiesSpawnList)
-                {
                     worldObj.SpawnEntityFromType(type);
-                }
 
             ;
         }

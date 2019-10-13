@@ -1,7 +1,6 @@
 using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic;
 using GlLib.Common.Api.Inventory;
-using GlLib.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -11,13 +10,13 @@ namespace GlLib.Client.Api.Gui
     public class GuiSlotTypeRenderer : GuiObject
     {
         public IInventory inventory;
-        public int slot;
 
         public Texture selectedTexture;
-        public Texture switchTexture;
-        public TextureLayout slotTexture;
 
         public bool showSelection = true;
+        public int slot;
+        public TextureLayout slotTexture;
+        public Texture switchTexture;
 
         public GuiSlotTypeRenderer(IInventory _inventory, int _slot, int _x, int _y) : base(_x, _y, GuiSlot.SlotSize,
             GuiSlot.SlotSize)

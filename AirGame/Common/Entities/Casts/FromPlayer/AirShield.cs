@@ -27,7 +27,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
             base.Update();
 
             if (InternalTicks > DieTime)
-                SetDead(true);
+                SetDead();
         }
 
         public override void OnCollideWith(Entity _obj)

@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,11 +10,7 @@ namespace GlLib.Client
     {
         public ClientService service;
         public Thread serviceThread;
-        public GameClient()
-        {
-            
-        }
-        
+
         public void Start()
         {
             StartService();
@@ -34,7 +29,7 @@ namespace GlLib.Client
             Proxy.AwaitWhile(() => service.profiler.state < State.Loop);
         }
 
-        public void MakeConnection(IPAddress _address, Int32 _port)
+        public void MakeConnection(IPAddress _address, int _port)
         {
             var client = new TcpClient();
             client.Connect(_address, _port);
@@ -50,7 +45,6 @@ namespace GlLib.Client
 
         public void Disconnect()
         {
-            
         }
     }
 }

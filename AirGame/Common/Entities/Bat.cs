@@ -1,15 +1,16 @@
-﻿using System.Linq;
-using GlLib.Client.Api.Renderers;
-using GlLib.Client.Graphic.Renderers;
+﻿using GlLib.Client.Api.Renderers;
 using GlLib.Common.Entities.Intelligence;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
 {
     internal class Bat : EntityLiving
     {
+        public AiAttackOnCollide<Player> playerAttackAi;
+        public AiPursue<Player> playerPursueAi;
+
+        public AiSearch<Player> playerSearchAi;
 
         public Bat()
         {
@@ -23,10 +24,6 @@ namespace GlLib.Common.Entities
 
         private Player Target { get; set; }
 
-        public AiSearch<Player> playerSearchAi;
-        public AiPursue<Player> playerPursueAi;
-        public AiAttackOnCollide<Player> playerAttackAi;
-
         private void Initialize()
         {
             var renderer = new SimpleAttackingLivingRenderer("bat/bat");
@@ -38,7 +35,7 @@ namespace GlLib.Common.Entities
             AaBb = new AxisAlignedBb(-0.2f, -0.2f, 0.2f, 0.2f);
 
             playerSearchAi = new AiSearch<Player>(7);
-            playerPursueAi = new AiPursue<Player>(playerSearchAi, 0.2f);
+            playerPursueAi = new AiPursue<Player>(playerSearchAi);
             playerAttackAi = new AiAttackOnCollide<Player>(5);
         }
 
@@ -59,6 +56,5 @@ namespace GlLib.Common.Entities
         {
             playerAttackAi.OnCollision(this, _obj);
         }
-
     }
 }

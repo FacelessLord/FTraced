@@ -13,16 +13,6 @@ namespace GlLib.Common.Api.Inventory
             slotId = _slotId;
         }
 
-        public ItemStack GetStack()
-        {
-            return inventory.GetStackInSlot(slotId);
-        }
-
-        public void SetStack(ItemStack _stack)
-        {
-            inventory.SetItemStack(_stack, slotId);
-        }
-
         public int GetMaxSize()
         {
             return inventory.GetMaxSize();
@@ -79,6 +69,16 @@ namespace GlLib.Common.Api.Inventory
         public bool IsItemValidForSlot(ItemStack _item, int _slot)
         {
             return inventory.IsItemValidForSlot(_item, _slot);
+        }
+
+        public ItemStack GetStack()
+        {
+            return inventory.GetStackInSlot(slotId);
+        }
+
+        public void SetStack(ItemStack _stack)
+        {
+            inventory.SetItemStack(_stack, slotId);
         }
     }
 }

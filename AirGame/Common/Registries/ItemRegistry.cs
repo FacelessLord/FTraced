@@ -8,6 +8,20 @@ namespace GlLib.Common.Registries
         public Item apple =
             new Item("item.apple", ItemRarity.Legendary, ItemType.Food).SetItemTexture(Textures.goldApple);
 
+        public Item dawnArmor =
+            new Item("item.dawn_chestplate", ItemRarity.Legendary, ItemType.Armor).SetItemTexture(
+                Textures.dawnChestplate);
+
+        public Item dawnBlade =
+            new ItemTool("item.dawn_blade", ItemRarity.Legendary, new ToolMaterial(23, 0, 5, 20)).SetItemTexture(
+                Textures.dawnBlade);
+
+        public Item dawnBoots =
+            new Item("item.dawn_boots", ItemRarity.Legendary, ItemType.Boots).SetItemTexture(Textures.dawnBoots);
+
+        public Item dawnShield =
+            new Item("item.dawn_shield", ItemRarity.Legendary, ItemType.Shield).SetItemTexture(Textures.dawnShield);
+
 
         public GameRegistry registry;
 
@@ -16,19 +30,6 @@ namespace GlLib.Common.Registries
 
         public Item varia =
             new Item("item.varia", ItemRarity.Legendary).SetItemTexture(Textures.varia);
-
-        public Item dawnArmor =
-            new Item("item.dawn_chestplate", ItemRarity.Legendary, ItemType.Armor).SetItemTexture(
-                Textures.dawnChestplate);
-
-        public Item dawnBoots =
-            new Item("item.dawn_boots", ItemRarity.Legendary, ItemType.Boots).SetItemTexture(Textures.dawnBoots);
-
-        public Item dawnShield =
-            new Item("item.dawn_shield", ItemRarity.Legendary, ItemType.Shield).SetItemTexture(Textures.dawnShield);
-
-        public Item dawnBlade =
-            new ItemTool("item.dawn_blade", ItemRarity.Legendary, new ToolMaterial(23, 0, 5, 20)).SetItemTexture(Textures.dawnBlade);
 
         public ItemRegistry(GameRegistry _registry)
         {

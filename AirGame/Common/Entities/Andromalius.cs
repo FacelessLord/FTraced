@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GlLib.Common.Api.Entity;
+﻿using GlLib.Common.Api.Entity;
 
 namespace GlLib.Common.Entities.Casts
 {
@@ -11,6 +8,5 @@ namespace GlLib.Common.Entities.Casts
         // Looks like old game bosses:
         //      change two directions: left and right
         // Should fly and  make its tentacles to protect itself 
-
     }
 }

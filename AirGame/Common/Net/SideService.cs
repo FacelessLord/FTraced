@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading;
 using GlLib.Common.Io;
 using GlLib.Common.Registries;
-using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -12,21 +11,22 @@ namespace GlLib.Common
         public const int FrameTime = 50;
 
         /// <summary>
-        /// boolean that indicates whether service should stop
+        ///     boolean that indicates whether service should stop
         /// </summary>
         public bool askedToStop;
+
         /// <summary>
-        /// Service Profiler
+        ///     Service Profiler
         /// </summary>
         public Profiler profiler = new Profiler();
 
         /// <summary>
-        /// Registry of all ingame materials 
+        ///     Registry of all ingame materials
         /// </summary>
         public GameRegistry registry;
 
         /// <summary>
-        /// Side the service is working on
+        ///     Side the service is working on
         /// </summary>
         public Side side;
 
@@ -53,7 +53,7 @@ namespace GlLib.Common
             .TotalMilliseconds;
 
         /// <summary>
-        /// Loads Game Service
+        ///     Loads Game Service
         /// </summary>
         public void Start()
         {
@@ -65,7 +65,7 @@ namespace GlLib.Common
         }
 
         /// <summary>
-        /// Performs Tick Logic
+        ///     Performs Tick Logic
         /// </summary>
         public void Loop()
         {
@@ -78,7 +78,7 @@ namespace GlLib.Common
         }
 
         /// <summary>
-        /// Wrapper method to stop the game
+        ///     Wrapper method to stop the game
         /// </summary>
         public void Exit()
         {
@@ -88,7 +88,7 @@ namespace GlLib.Common
         }
 
         /// <summary>
-        /// Wrapper method to stop game service
+        ///     Wrapper method to stop game service
         /// </summary>
         /// <param name="_cause"></param>
         public void AskToStop(string _cause)
@@ -98,17 +98,17 @@ namespace GlLib.Common
         }
 
         /// <summary>
-        /// Event raised every update tick
+        ///     Event raised every update tick
         /// </summary>
         public abstract void OnServiceUpdate();
-        
+
         /// <summary>
-        /// Event raised every update tick
+        ///     Event raised every update tick
         /// </summary>
         public abstract void OnExit();
-        
+
         /// <summary>
-        /// Event raised when service loads
+        ///     Event raised when service loads
         /// </summary>
         public abstract void OnStart();
     }

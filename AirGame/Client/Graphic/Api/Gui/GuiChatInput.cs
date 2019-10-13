@@ -1,29 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Linq;
-using GlLib.Client.Graphic;
 using GlLib.Common;
 using GlLib.Common.Chat;
-using GlLib.Common.Entities;
-using GlLib.Common.Items;
-using GlLib.Common.Map;
-using GlLib.Common.Registries;
-using GlLib.Utils;
 using GlLib.Utils.StringParser;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using OpenTK.Platform.Windows;
 
 namespace GlLib.Client.Api.Gui
 {
     public class GuiChatInput : GuiText
     {
-        public int historyPointer = 0;
         private IParser _commandParser;
         private IParser _jsParser;
+        public int historyPointer;
 
         public GuiChatInput(string _baseText, int _fontSize, int _x, int _y, int _width, int _height) : base(_baseText,
             _fontSize, _x, _y, _width,
@@ -50,20 +38,22 @@ namespace GlLib.Client.Api.Gui
 
             if (_e.Key is Key.Up)
             {
-                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
-                if (historyPointer < commands.Count - 1)
+                var commands = Proxy.GetClient().player.chatIo.InputStream()
+                    .Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
+                if (historyPointer < commands.Count)
                 {
-                    text = commands[++historyPointer].Substring(3);
+                    text = commands[historyPointer++].Substring(2);
                     cursorX = text.Length;
                 }
             }
 
             if (_e.Key is Key.Down)
             {
-                var commands = Proxy.GetClient().player.chatIo.InputStream().Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
+                var commands = Proxy.GetClient().player.chatIo.InputStream()
+                    .Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
                 if (historyPointer > 0)
                 {
-                    text = commands[--historyPointer].Substring(3);
+                    text = commands[--historyPointer].Substring(2);
                     cursorX = text.Length;
                 }
                 else
@@ -92,7 +82,9 @@ namespace GlLib.Client.Api.Gui
                 _jsParser.Parse(text.Substring(1), io);
             }
             else
+            {
                 io.Output("!>" + text);
+            }
 
             cursorX = 0;
             historyPointer = -1;

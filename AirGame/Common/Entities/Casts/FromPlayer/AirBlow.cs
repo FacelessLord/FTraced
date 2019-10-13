@@ -7,7 +7,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
     public class AirBlow : Entity
     {
         //register this
-        private readonly PlanarVector _baseVelocity = new PlanarVector(0, 0);
+        private readonly PlanarVector _baseVelocity = new PlanarVector(0);
 
 
         public AirBlow(World _world, RestrictedVector3D _position, PlanarVector _velocity, uint _dieTime, int _damage)
@@ -28,13 +28,13 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
             base.Update();
 
             if (InternalTicks > DieTime)
-                SetDead(true);
+                SetDead();
         }
 
         public override void OnCollideWith(Entity _obj)
         {
             if (!(_obj is Player) && _obj is EntityLiving)
-                (_obj as EntityLiving).velocity = -(_obj as EntityLiving).velocity + new PlanarVector(1, 0);
+                (_obj as EntityLiving).velocity = -(_obj as EntityLiving).velocity + new PlanarVector(1);
         }
     }
 }

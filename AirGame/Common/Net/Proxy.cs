@@ -6,7 +6,6 @@ using GlLib.Client.Graphic;
 using GlLib.Common.Io;
 using GlLib.Common.Registries;
 using GlLib.Server;
-using GlLib.Utils;
 
 namespace GlLib.Common
 {
@@ -20,10 +19,12 @@ namespace GlLib.Common
         private static ServerInstance _serverInstance;
         private static ClientService _clientInstance;
         private static GraphicWindow _gameWindow;
+
         /// <summary>
-        /// Registry used to work only on one Side (line in Map Editor)
+        ///     Registry used to work only on one Side (line in Map Editor)
         /// </summary>
         private static GameRegistry _registry;
+
         private static readonly Profiler Profiler = new Profiler();
 
         public static bool Exit

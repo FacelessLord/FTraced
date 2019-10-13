@@ -1,12 +1,8 @@
 using System;
-using System.ComponentModel;
-using System.Linq;
-using GlLib.Client.Api.Sprites;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api.Entity;
 using GlLib.Common.Entities.Intelligence;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK.Graphics;
 
@@ -16,12 +12,10 @@ namespace GlLib.Common.Entities
     {
         private const int UpdateFrequency = 12;
         public Color4 color;
-
-        public int AttackValue { get; set; } = 5;
-        
-        public AiSearch<Player> playerSearchAI;
-        public AiPursue<Player> playerPursueAI;
         public AiAttackOnCollide<Player> playerAttackAI;
+        public AiPursue<Player> playerPursueAI;
+
+        public AiSearch<Player> playerSearchAI;
 
         public EntitySlime()
         {
@@ -33,13 +27,15 @@ namespace GlLib.Common.Entities
             Initialize();
         }
 
+        public int AttackValue { get; set; } = 5;
+
         private void Initialize()
         {
             var r = new Random();
             color = new Color4((float) r.NextDouble(), (float) r.NextDouble(), (float) r.NextDouble(), 1);
             SetCustomRenderer(new SlimeRenderer());
             AaBb = new AxisAlignedBb(-0.25f, 0, 0.25f, 0.5f);
-            
+
             playerSearchAI = new AiSearch<Player>(7);
             playerPursueAI = new AiPursue<Player>(playerSearchAI, 0.1f);
             playerAttackAI = new AiAttackOnCollide<Player>(AttackValue);

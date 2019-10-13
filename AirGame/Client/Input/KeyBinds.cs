@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -6,9 +9,6 @@ using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
 using GlLib.Utils.Math;
 using OpenTK.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GlLib.Client.Input
 {
@@ -25,9 +25,8 @@ namespace GlLib.Client.Input
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.direction = Direction.Left;
             _p.SetState(EntityState.Walk, 3);
-            _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
+            _p.velocity += new PlanarVector(-_p.accelerationValue);
             return true;
-
         };
 
         public static Func<Player, bool> moveUp = _p =>
@@ -40,7 +39,6 @@ namespace GlLib.Client.Input
 
         public static Func<Player, bool> setBlock = _p =>
         {
-
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             var chunkX = _p.Position.Ix / 16;
             var chunkY = _p.Position.Iy / 16;
@@ -65,7 +63,7 @@ namespace GlLib.Client.Input
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.SetState(EntityState.Walk, 3);
             _p.direction = Direction.Right;
-            _p.velocity += new PlanarVector(_p.accelerationValue, 0);
+            _p.velocity += new PlanarVector(_p.accelerationValue);
             return true;
         };
 

@@ -6,11 +6,19 @@ namespace GlLib.Client.Api.Sprites
 {
     public class FontSprite
     {
+        public static readonly FontSprite Alagard;
+        public static readonly FontSprite Esogam;
         public Dictionary<char, (int, int)> horizKerning = new Dictionary<char, (int, int)>();
         public Layout layout;
         public Dictionary<char, int> registry = new Dictionary<char, int>();
         public Texture texture;
         public Dictionary<char, int> vertKerning = new Dictionary<char, int>();
+
+        static FontSprite()
+        {
+            Alagard = new AlagardFontSprite();
+            Esogam = new EsogamFontSprite();
+        }
 
         public FontSprite(Texture _texture, int _startU, int _startV, int _endU, int _endV, int _countX, int _countY)
         {
@@ -69,7 +77,8 @@ namespace GlLib.Client.Api.Sprites
             l.AddRange(new List<char>
             {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+',
-                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~', '\'', '\"', '-', '_', '='
+                '\\', '/', '<', '>', ',', '.', '?', '|', ';', ':', '[', ']', '{', '}', '`', '~', '\'', '\"', '-', '_',
+                '='
             });
 
 
@@ -144,15 +153,6 @@ namespace GlLib.Client.Api.Sprites
             Vertexer.ClearColor();
             Vertexer.ResetMode();
             GL.PopMatrix();
-        }
-
-        public static readonly FontSprite Alagard;
-        public static readonly FontSprite Esogam;
-
-        static FontSprite()
-        {
-            Alagard = new AlagardFontSprite();
-            Esogam = new EsogamFontSprite();
         }
     }
 }

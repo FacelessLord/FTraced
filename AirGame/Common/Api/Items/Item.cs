@@ -12,10 +12,10 @@ namespace GlLib.Common.Items
         public ItemRarity rarity;
 
         public string sprite;
-        public ItemType type;
-        public string unlocalizedName;
 
         public Texture texture = Textures.monochromatic;
+        public ItemType type;
+        public string unlocalizedName;
 
         public Item(string _name, ItemRarity _rarity, ItemType _type = ItemType.Varia)
         {
@@ -57,7 +57,6 @@ namespace GlLib.Common.Items
 
         public virtual void AddInformation(ItemStack _itemStack, List<string> _tooltip)
         {
-            
         }
     }
 }

@@ -5,7 +5,6 @@ using GlLib.Common.Entities;
 using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
-using GlLib.Utils;
 
 namespace GlLib.Common.Registries
 {
@@ -84,7 +83,6 @@ namespace GlLib.Common.Registries
         }
 
 
-
         public TerrainBlock GetBlockFromName(string _blockName)
         {
             if (blocks.ContainsKey(_blockName))
@@ -98,7 +96,7 @@ namespace GlLib.Common.Registries
         {
             if (blocks.ContainsKey(_blockName))
             {
-                _block =  (TerrainBlock) blocks[_blockName];
+                _block = (TerrainBlock) blocks[_blockName];
                 return true;
             }
 
@@ -124,7 +122,6 @@ namespace GlLib.Common.Registries
         }
 
 
-
         public Entity GetEntityFromName(string _entityName)
         {
             SidedConsole.WriteLine(_entityName + ", " + entities.ContainsKey(_entityName));
@@ -141,16 +138,14 @@ namespace GlLib.Common.Registries
         {
             if (entities.ContainsKey(_entityName))
             {
-                var clazz = (Type)entities[_entityName];
-                _entity = (Entity)Activator.CreateInstance(clazz);
+                var clazz = (Type) entities[_entityName];
+                _entity = (Entity) Activator.CreateInstance(clazz);
                 return true;
             }
 
             _entity = null;
             return false;
         }
-
-
 
 
         public Entity GetEntityFromJson(JsonObjectCollection _collection)

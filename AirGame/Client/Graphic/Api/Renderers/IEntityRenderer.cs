@@ -78,9 +78,7 @@ namespace GlLib.Client.Api.Renderers
             //Vertexer.RenderAaBb(_e.AaBb, Chunk.BlockWidth, Chunk.BlockHeight);
             if (_e is EntityLiving)
                 if (!spawnSprite.frozen)
-                {
                     spawnSprite.Render();
-                }
 
             Vertexer.ClearColor();
             Vertexer.ResetMode();

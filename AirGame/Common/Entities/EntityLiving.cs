@@ -1,7 +1,6 @@
 using System;
 using System.Net.Json;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Entities
@@ -95,7 +94,7 @@ namespace GlLib.Common.Entities
 
             if (state is EntityState.Dead && Health > 0) SetState(EntityState.Idle, -1, true);
             if (!(state is EntityState.Dead) && Health <= 0) SetState(EntityState.Dead, -1, true);
-            
+
             if (Health <= 0) return;
             base.Update();
         }

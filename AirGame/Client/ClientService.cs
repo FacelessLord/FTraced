@@ -5,7 +5,6 @@ using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Entities.Items;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 
 namespace GlLib.Client
@@ -46,7 +45,7 @@ namespace GlLib.Client
 
             if (player is null) ResurrectPlayer();
             var coin = new Coin();
-            coin.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+            coin.Position = new RestrictedVector3D(world.width * 8, world.height * 8);
             world.SpawnEntity(coin);
 
 //            SidedConsole.WriteLine("Loading window");
@@ -63,7 +62,7 @@ namespace GlLib.Client
 //            SidedConsole.WriteLine("Setting Player Name");
                 player.nickname = nickName;
 //            SidedConsole.WriteLine("Setting Player Pos");
-                player.Position = new RestrictedVector3D(world.width * 8, world.height * 8, 0);
+                player.Position = new RestrictedVector3D(world.width * 8, world.height * 8);
 //            SidedConsole.WriteLine("Setting Player Data");
                 player.data = Proxy.GetServer().GetDataFor(player, password);
                 Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
