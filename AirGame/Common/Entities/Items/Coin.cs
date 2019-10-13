@@ -32,7 +32,7 @@ namespace GlLib.Common.Entities.Items
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (_obj is Player p)
+            if (_obj is EntityPlayer p)
             {
                 p.money += 10;
                 SetDead();

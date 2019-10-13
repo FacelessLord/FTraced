@@ -31,7 +31,7 @@ namespace GlLib.Common.Chat
             AddParse("setbrush", (_s, _io) => ChangeBrush(_s, _io),
                 "Chose block to set to.");
             AddParse("brush",
-                (_s, _io) => _io.Output($"Now brush is {Proxy.GetClient().player.Brush.Name}"),
+                (_s, _io) => _io.Output($"Now brush is {Proxy.GetClient().entityPlayer.Brush.Name}"),
                 "Prints current brush block");
             AddParse("list", (_s, _io) => GetRegistryList(_s, _io),
                 "Shows game registry.");
@@ -55,13 +55,13 @@ namespace GlLib.Common.Chat
 
         public static void SwitchNoClip(string[] _s, IStringIo _io)
         {
-            var newState = !Proxy.GetClient().player.noClip;
+            var newState = !Proxy.GetClient().entityPlayer.noClip;
             if (_s.Length > 0 && bool.TryParse(_s[0], out var definedState))
-                Proxy.GetClient().player.noClip = definedState;
+                Proxy.GetClient().entityPlayer.noClip = definedState;
             else
-                Proxy.GetClient().player.noClip = newState;
+                Proxy.GetClient().entityPlayer.noClip = newState;
 
-            _io.Output("Current noclip state: " + Proxy.GetClient().player.noClip);
+            _io.Output("Current noclip state: " + Proxy.GetClient().entityPlayer.noClip);
         }
 
         public static void KillChunk(string[] _s, IStringIo _io)
@@ -71,9 +71,9 @@ namespace GlLib.Common.Chat
                 if (_s[0] == "~")
                 {
                     var force = _s.Length > 1 && _s[1] == "-force";
-                    foreach (var entity in Proxy.GetClient().player.chunkObj.entities)
+                    foreach (var entity in Proxy.GetClient().entityPlayer.chunkObj.entities)
                     {
-                        if (entity is Player)
+                        if (entity is EntityPlayer)
                             continue;
                         if (force || !(entity is EntityLiving el) || el.CanDie)
                             entity.SetDead();
@@ -89,7 +89,7 @@ namespace GlLib.Common.Chat
                     if (int.TryParse(_s[1], out cy))
                     {
                         var force = _s.Length > 1 && _s[1] == "-force";
-                        var w = Proxy.GetClient().player.worldObj;
+                        var w = Proxy.GetClient().entityPlayer.worldObj;
                         if (w.width > cx && 0 <= cx && w.height > cy && 0 <= cy)
                         {
                             var chunk = w[cx, cy];
@@ -129,9 +129,9 @@ namespace GlLib.Common.Chat
             }
 
             var entity = Proxy.GetRegistry().GetEntityFromName("entity." + _s[0]);
-            entity.worldObj = Proxy.GetClient().player.worldObj;
-            entity.Position = Proxy.GetClient().player.Position;
-            entity.velocity = Proxy.GetClient().player.velocity.Normalized;
+            entity.worldObj = Proxy.GetClient().entityPlayer.worldObj;
+            entity.Position = Proxy.GetClient().entityPlayer.Position;
+            entity.velocity = Proxy.GetClient().entityPlayer.velocity.Normalized;
             Proxy.GetClient().world.SpawnEntity(entity);
         }
 
@@ -150,9 +150,9 @@ namespace GlLib.Common.Chat
             }
 
             var entity = Proxy.GetRegistry().GetEntityFromName("entity.living." + _s[0]);
-            entity.worldObj = Proxy.GetClient().player.worldObj;
-            entity.Position = Proxy.GetClient().player.Position;
-            entity.velocity = Proxy.GetClient().player.velocity.Normalized;
+            entity.worldObj = Proxy.GetClient().entityPlayer.worldObj;
+            entity.Position = Proxy.GetClient().entityPlayer.Position;
+            entity.velocity = Proxy.GetClient().entityPlayer.velocity.Normalized;
             Proxy.GetClient().world.SpawnEntity(entity);
         }
 
@@ -165,9 +165,9 @@ namespace GlLib.Common.Chat
             }
 
             if (_s[0] == "1")
-                Proxy.GetClient().player.SetGodMode();
+                Proxy.GetClient().entityPlayer.SetGodMode();
             if (_s[0] == "0")
-                Proxy.GetClient().player.SetGodMode(false);
+                Proxy.GetClient().entityPlayer.SetGodMode(false);
         }
 
         public static void SetBlockRotation(string[] _s, IStringIo _io)
@@ -179,13 +179,13 @@ namespace GlLib.Common.Chat
                 return;
             }
 
-            var chunkX = Proxy.GetClient().player.Position.Ix / 16;
-            var chunkY = Proxy.GetClient().player.Position.Iy / 16;
+            var chunkX = Proxy.GetClient().entityPlayer.Position.Ix / 16;
+            var chunkY = Proxy.GetClient().entityPlayer.Position.Iy / 16;
 
-            var blockX = Proxy.GetClient().player.Position.Ix % 16;
-            var blockY = Proxy.GetClient().player.Position.Iy % 16;
+            var blockX = Proxy.GetClient().entityPlayer.Position.Ix % 16;
+            var blockY = Proxy.GetClient().entityPlayer.Position.Iy % 16;
 
-            Proxy.GetClient().player.worldObj[chunkX, chunkY][blockX, blockY].SetRotation(angle);
+            Proxy.GetClient().entityPlayer.worldObj[chunkX, chunkY][blockX, blockY].SetRotation(angle);
         }
 
 
@@ -203,7 +203,7 @@ namespace GlLib.Common.Chat
             if (int.TryParse(_s[0], out id))
             {
                 if (Proxy.GetRegistry().TryGetBlockFromId(id, out block))
-                    Proxy.GetClient().player.Brush = block;
+                    Proxy.GetClient().entityPlayer.Brush = block;
                 else
                     _io.Output("Wrong ID, can't chose this block.");
             }
@@ -211,14 +211,14 @@ namespace GlLib.Common.Chat
             else if (!_s[0].StartsWith("block."))
             {
                 if (Proxy.GetRegistry().TryGetBlockFromName("block." + _s[0], out block))
-                    Proxy.GetClient().player.Brush = block;
+                    Proxy.GetClient().entityPlayer.Brush = block;
                 else
                     _io.Output("Wrong block name, can't chose this block.");
             }
             else
             {
                 if (Proxy.GetRegistry().TryGetBlockFromName(_s[0], out block))
-                    Proxy.GetClient().player.Brush = block;
+                    Proxy.GetClient().entityPlayer.Brush = block;
                 else
                     _io.Output("Wrong block name, can't chose this block.");
             }
@@ -268,7 +268,7 @@ namespace GlLib.Common.Chat
 
         public static void SaveWorld(string[] _s, IStringIo _io)
         {
-            WorldManager.SaveWorld(Proxy.GetClient().player.worldObj);
+            WorldManager.SaveWorld(Proxy.GetClient().entityPlayer.worldObj);
             _io.Output("World Saved");
         }
     }

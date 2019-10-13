@@ -152,6 +152,8 @@ namespace GlLib.Common.Registries
         {
             var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
+            if(entity is null)
+                Console.Write("Entity '"+entityId+"' is not registered");
             entity.Deserialize(_collection);
             return entity;
         }

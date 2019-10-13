@@ -97,6 +97,7 @@ namespace GlLib.Common.SpellCastSystem
                     SpellCaster.worldObj.SpawnEntity(
                         new AirShield(
                             SpellCaster.worldObj,
+                            SpellCaster,
                             SpellCaster.Position,
                             SpellCaster.velocity,
                             6000000 + 100000 * (uint) averageTime,

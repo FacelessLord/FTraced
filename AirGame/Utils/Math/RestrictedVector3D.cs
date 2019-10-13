@@ -86,6 +86,12 @@ namespace GlLib.Utils.Math
             return new RestrictedVector3D(_a.x * _k, _a.y * _k, _a.z);
         }
 
+        public static RestrictedVector3D operator /(RestrictedVector3D _a, float _k)
+        {
+            return new RestrictedVector3D(_a.x / _k, _a.y / _k, _a.z);
+        }
+
+
         public static RestrictedVector3D FromAngleAndHeight(float _angle, short _height)
         {
             return new RestrictedVector3D(MathF.Cos(_angle), MathF.Sin(_angle), _height);

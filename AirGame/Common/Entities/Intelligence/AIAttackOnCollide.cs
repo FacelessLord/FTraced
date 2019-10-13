@@ -23,7 +23,7 @@ namespace GlLib.Common.Entities.Intelligence
         {
             if (_collider is TTargetType el
                 && !el.state.Equals(EntityState.Dead)
-                && !(_collider is Bat)
+                && !(_collider is EntityBat)
                 && _entity.InternalTicks % UpdateFrequency == 0
                 && _entity.InternalTicks > 30000000)
                 el.DealDamage(Damage);

@@ -32,7 +32,7 @@ namespace GlLib.Common.Chat
 
         private void SetupEngine(Engine _engine)
         {
-            _engine.SetValue("whoami", new Action<Action<string>>(_io => _io(Proxy.GetClient().player.nickname)));
+            _engine.SetValue("whoami", new Action<Action<string>>(_io => _io(Proxy.GetClient().entityPlayer.nickname)));
 
 //            _engine.SetValue("where", new Action<string, object>(SidedConsole.WriteLine(Proxy.GetServer().playerInfo[_name].Position)));
         }

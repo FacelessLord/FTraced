@@ -10,12 +10,10 @@ namespace GlLib.Common.Entities
 {
     public class EntitySlime : EntityLiving, ISmart, IAttacker
     {
-        private const int UpdateFrequency = 12;
         public Color4 color;
-        public AiAttackOnCollide<Player> playerAttackAI;
-        public AiPursue<Player> playerPursueAI;
-
-        public AiSearch<Player> playerSearchAI;
+        public AiAttackOnCollide<EntityPlayer> playerAttackAi;
+        public AiPursue<EntityPlayer> playerPursueAi;
+        public AiSearch<EntityPlayer> playerSearchAi;
 
         public EntitySlime()
         {
@@ -32,13 +30,14 @@ namespace GlLib.Common.Entities
         private void Initialize()
         {
             var r = new Random();
-            color = new Color4((float) r.NextDouble(), (float) r.NextDouble(), (float) r.NextDouble(), 1);
+            color = new Color4((float) r.NextDouble(), (float) r.NextDouble(), (float) r.NextDouble(),
+                (float)r.NextDouble() * 0.5f + 0.5f);
             SetCustomRenderer(new SlimeRenderer());
             AaBb = new AxisAlignedBb(-0.25f, 0, 0.25f, 0.5f);
 
-            playerSearchAI = new AiSearch<Player>(7);
-            playerPursueAI = new AiPursue<Player>(playerSearchAI, 0.1f);
-            playerAttackAI = new AiAttackOnCollide<Player>(AttackValue);
+            playerSearchAi = new AiSearch<EntityPlayer>(7);
+            playerPursueAi = new AiJumpingPursue<EntityPlayer>(playerSearchAi, 0.1f);
+            playerAttackAi = new AiAttackOnCollide<EntityPlayer>(AttackValue);
         }
 
         public override string GetName()
@@ -49,15 +48,15 @@ namespace GlLib.Common.Entities
         //public override Mov
         public override void Update()
         {
-            playerSearchAI.Update(this);
-            playerPursueAI.Update(this);
+            playerSearchAi.Update(this);
+            playerPursueAi.Update(this);
 
             base.Update();
         }
 
         public override void OnCollideWith(Entity _obj)
         {
-            playerAttackAI.OnCollision(this, _obj);
+            playerAttackAi.OnCollision(this, _obj);
         }
     }
 }

@@ -27,7 +27,16 @@ namespace GlLib.Utils.Math
 
         public float Angle => MathF.Atan2(y, x);
 
-        public float Length => MathF.Sqrt(x * x + y * y);
+        public float Length
+        {
+            get { return MathF.Sqrt(x * x + y * y); }
+            set
+            {
+                Normalize();
+                x *= value;
+                y *= value;
+            }
+        }
 
         public PlanarVector Normalized
         {
@@ -51,6 +60,11 @@ namespace GlLib.Utils.Math
         }
 
         public static PlanarVector operator *(PlanarVector _a, float _k)
+        {
+            return new PlanarVector(_a.x * _k, _a.y * _k);
+        }
+
+        public static PlanarVector operator *(float _k, PlanarVector _a)
         {
             return new PlanarVector(_a.x * _k, _a.y * _k);
         }

@@ -33,7 +33,7 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (!(_obj is Player) && _obj is EntityLiving)
+            if (!(_obj is EntityPlayer) && _obj is EntityLiving)
                 (_obj as EntityLiving).velocity = -(_obj as EntityLiving).velocity + new PlanarVector(1);
         }
     }

@@ -38,7 +38,7 @@ namespace GlLib.Client.Api.Gui
 
             if (_e.Key is Key.Up)
             {
-                var commands = Proxy.GetClient().player.chatIo.InputStream()
+                var commands = Proxy.GetClient().entityPlayer.chatIo.InputStream()
                     .Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
                 if (historyPointer < commands.Count)
                 {
@@ -49,7 +49,7 @@ namespace GlLib.Client.Api.Gui
 
             if (_e.Key is Key.Down)
             {
-                var commands = Proxy.GetClient().player.chatIo.InputStream()
+                var commands = Proxy.GetClient().entityPlayer.chatIo.InputStream()
                     .Where(_l => _l.StartsWith("/>") || _l.StartsWith("~>") || _l.StartsWith("!>")).ToList();
                 if (historyPointer > 0)
                 {
@@ -69,7 +69,7 @@ namespace GlLib.Client.Api.Gui
         {
             base.HandleEnterKey();
 
-            var io = Proxy.GetClient().player.chatIo;
+            var io = Proxy.GetClient().entityPlayer.chatIo;
 
             if (text.StartsWith('/'))
             {

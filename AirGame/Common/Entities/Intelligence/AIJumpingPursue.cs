@@ -1,40 +1,35 @@
+using GlLib.Utils.Math;
+
 namespace GlLib.Common.Entities.Intelligence
 {
-    public class AiJumpingPursue<TTargetType> : IArtificialIntelligence where TTargetType : Entity
+    public class AiJumpingPursue<TTargetType> : AiPursue<TTargetType> where TTargetType : Entity
     {
         private readonly int UpdateFrequency = 12;
 
-        public AiJumpingPursue(AiSearch<TTargetType> _search)
-        {
-            SearchAi = _search;
-        }
-
-        public AiSearch<TTargetType> SearchAi { get; set; }
-
-        public void Setup(EntityLiving _entity)
+        public AiJumpingPursue(AiSearch<TTargetType> _search, float _speed = 0.2f) : base(_search, _speed)
         {
         }
 
-        public void Update(EntityLiving _entity)
+        public override void Update(EntityLiving _entity)
         {
             var target = SearchAi.Target;
             if (!(target is null))
             {
-                if (_entity.InternalTicks % UpdateFrequency == 0 && _entity.velocity.Length < 1)
+                if (_entity.InternalTicks % UpdateFrequency == 0 && _entity.velocity.Length < 0.02)
                     UpdateEntityHeading(_entity, target);
                 _entity.state = EntityState.DirectedAttack;
             }
         }
 
-        public void OnCollision(EntityLiving _entity, Entity _collider)
+        public override void OnCollision(EntityLiving _entity, Entity _collider)
         {
         }
 
-        private void UpdateEntityHeading(EntityLiving _entity, TTargetType _target)
+        protected override void UpdateEntityHeading(EntityLiving _entity, TTargetType _target)
         {
-            _entity.velocity = _target.Position - _entity.Position;
-            _entity.velocity.Normalize();
-            _entity.velocity /= 5; //TODO just rotation towards target or with given speed
+            PlanarVector dvelocity = _target.Position - _entity.Position;
+            dvelocity.Normalize();
+            _entity.velocity += dvelocity / 5;
         }
     }
 }

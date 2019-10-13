@@ -13,7 +13,7 @@ namespace GlLib.Client
     {
         public string nickName;
         public string password;
-        public volatile Player player;
+        public volatile EntityPlayer entityPlayer;
 
         public GraphicWindow window;
         public World world;
@@ -39,11 +39,11 @@ namespace GlLib.Client
 //            SidedConsole.WriteLine("Setting Player");
             foreach (var chunk in world.chunks)
             {
-                var players = chunk.entities.Where(_e => _e is Player).Cast<Player>().ToList();
-                if (players.Any()) player = players.First();
+                var players = chunk.entities.Where(_e => _e is EntityPlayer).Cast<EntityPlayer>().ToList();
+                if (players.Any()) entityPlayer = players.First();
             }
 
-            if (player is null) ResurrectPlayer();
+            if (entityPlayer is null) ResurrectPlayer();
             var coin = new Coin();
             coin.Position = new RestrictedVector3D(world.width * 8, world.height * 8);
             world.SpawnEntity(coin);
@@ -54,18 +54,18 @@ namespace GlLib.Client
 
         public void ResurrectPlayer()
         {
-            if (player is null || player.state is EntityState.Dead)
+            if (entityPlayer is null || entityPlayer.state is EntityState.Dead)
             {
-                if (player.state is EntityState.Dead)
-                    player.SetDead();
-                player = new Player();
+                if (entityPlayer.state is EntityState.Dead)
+                    entityPlayer.SetDead();
+                entityPlayer = new EntityPlayer();
 //            SidedConsole.WriteLine("Setting Player Name");
-                player.nickname = nickName;
+                entityPlayer.nickname = nickName;
 //            SidedConsole.WriteLine("Setting Player Pos");
-                player.Position = new RestrictedVector3D(world.width * 8, world.height * 8);
+                entityPlayer.Position = new RestrictedVector3D(world.width * 8, world.height * 8);
 //            SidedConsole.WriteLine("Setting Player Data");
-                player.data = Proxy.GetServer().GetDataFor(player, password);
-                Proxy.GetServer().GetWorldById(0).SpawnEntity(player);
+                entityPlayer.data = Proxy.GetServer().GetDataFor(entityPlayer, password);
+                Proxy.GetServer().GetWorldById(0).SpawnEntity(entityPlayer);
             }
         }
 
@@ -73,9 +73,9 @@ namespace GlLib.Client
         {
             foreach (var bind in KeyBinds.binds)
                 if (KeyboardHandler.PressedKeys.ContainsKey(bind.Key) && (bool) KeyboardHandler.PressedKeys[bind.Key])
-                    KeyBinds.binds[bind.Key](player);
+                    KeyBinds.binds[bind.Key](entityPlayer);
             //bad idea to update it on client side
-            player.spells.OnUpdate();
+            entityPlayer.spells.OnUpdate();
         }
 
         public override void OnExit()

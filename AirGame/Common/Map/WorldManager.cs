@@ -10,7 +10,7 @@ namespace GlLib.Common.Map
 {
     public static class WorldManager
     {
-        private static Player GetPlayer => Proxy.GetClient().player;
+        private static EntityPlayer GetPlayer => Proxy.GetClient().entityPlayer;
 
         public static void SaveWorld(World _world)
         {

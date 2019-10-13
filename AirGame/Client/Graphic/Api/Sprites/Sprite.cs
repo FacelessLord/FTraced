@@ -55,6 +55,12 @@ namespace GlLib.Client.Api.Sprites
             return this;
         }
 
+        public Sprite Rescale()
+        {
+            scale = new Vector3(1, 1, 1);
+            return this;
+        }
+
         public Sprite Scale(Vector3 _scale)
         {
             scale = _scale;
