@@ -51,21 +51,22 @@ namespace GlLib.Server
         public async void Start()
         {
             StartService();
-
-            _address = GetAddresses().First();
-            _server = new TcpListener(_address, _port);
-            _server.Start();
-
-            isOpened = true;
-            while (isOpened)
-            {
-                var client =
-                    await _server.AcceptTcpClientAsync()
-                        .ConfigureAwait(false); //non blocking waiting                    
-                // We are already in the new task to handle this client...   
-                RegisterClient(client);
-                HandleClient(client);
-            }
+            
+            //_address = GetAddresses().First();
+            //_server = new TcpListener(_address, _port);
+            //_server.Start();
+            
+            //// Buffer for reading data
+            //Byte[] bytes = new Byte[256];
+            //String data;
+            //isOpened = true;
+            //while (isOpened)
+            //{
+            //    TcpClient client = await _server.AcceptTcpClientAsync().ConfigureAwait(false);//non blocking waiting                    
+            //    // We are already in the new task to handle this client...   
+            //    RegisterClient(client);
+            //    HandleClient(client);
+            //}
         }
 
         public void StartService()
