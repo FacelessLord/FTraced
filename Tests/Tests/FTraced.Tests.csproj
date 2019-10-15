@@ -14,7 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AirGame\GlLib.csproj" />
+    <ProjectReference Include="..\..\AirGame\FTraced.Game.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="common\" />
   </ItemGroup>
 
 </Project>
