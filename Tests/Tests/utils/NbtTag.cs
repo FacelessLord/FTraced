@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using GlLib.Utils;
 using GlLib.Utils.Collections;
 using NUnit.Framework;
 
@@ -162,14 +161,25 @@ namespace Tests.utils
         }
 
         [Test]
+        public void NbtTag_Copy()
+        {
+            const string expectedTagString = "SomeID|I23|SomeName|SMask";
+            var tag = NbtTag.FromString(expectedTagString);
+            var tagCopy = tag.Copy();
+
+            tag.Should().BeEquivalentTo(tagCopy, "Copy is defined to be equivalent to source");
+        }
+        
+        [Test]
         public void NbtTag_Retrieve_Empty_String()
         {
             const string expectedTagString = "SomeID|I23|SomeName|SMask";
             var tag = NbtTag.FromString(expectedTagString);
+            var tagCopy = tag.Copy();
 
             tag.CanRetrieveTag("").Should().BeTrue(" \"\" -> *");
 
-            tag.RetrieveTag("").ToString().Should().Be(expectedTagString, "Empty prefix " +
+            tag.RetrieveTag("").Should().BeEquivalentTo(tagCopy, "Empty prefix " +
                                                                           "reproduce all tag items");
         }
 

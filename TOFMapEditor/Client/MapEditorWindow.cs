@@ -1,51 +1,48 @@
 ﻿using System;
 using System.Threading;
 using GlLib.Client.Api.Cameras;
+using GlLib.Client.Api.Gui;
 using GlLib.Client.Graphic;
 using GlLib.Client.Input;
 using GlLib.Common;
+using GlLib.Common.Entities;
+using GlLib.Common.Io;
 using GlLib.Common.Map;
 using GlLib.Common.Registries;
-using GlLib.Utils;
+using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using System;
-using System.Threading;
-using GlLib.Client.Api.Gui;
-using GlLib.Common.Entities;
-using GlLib.Common.Io;
-using GlLib.Utils.Math;
 
 namespace TOFMapEditor.Client
 {
     public class MapEditorWindow : GameWindow
     {
         public ICamera camera;
+        public Entity cameraEntity;
         public GuiFrame guiFrame;
         public int guiTimeout = 0;
 
         public GuiFrame hud;
         public VSyncMode vSync = VSyncMode.On;
-        public Entity cameraEntity;
 
         public MapEditorWindow(int _width, int _height, string _title)
             : base(_width, _height, GraphicsMode.Default, _title)
         {
-            EditWorld = new World("Overworld", 1, false);
+            EditWorld = new World("Overworld", 1);
 
             var registry = new GameRegistry();
             registry.Load();
             Proxy.RegisterRegistry(registry);
-            
+
             WorldManager.LoadWorld(EditWorld);
 
             WorldRenderer = new WorldRenderer(EditWorld);
             MouseHandler.Setup();
             SidedConsole.WriteLine("Window constructed");
             hud = new MapEditorHud();
-            cameraEntity = new Entity(EditWorld, new RestrictedVector3D(0, 0, 0));
+            cameraEntity = new Entity(EditWorld, new RestrictedVector3D(0));
             EditWorld.SpawnEntity(cameraEntity);
             camera = new EntityTrackingCamera(cameraEntity);
         }
@@ -78,27 +75,32 @@ namespace TOFMapEditor.Client
             SidedConsole.WriteLine(_e.Key);
             switch (_e.Key)
             {
-                case (Key.W):
+                case Key.W:
                 {
-                    cameraEntity.Position += new PlanarVector(1, 0);
-                    break;;
+                    cameraEntity.Position += new PlanarVector(1);
+                    break;
+                    ;
                 }
-                case (Key.S):
+
+                case Key.S:
                 {
-                    cameraEntity.Position += new PlanarVector(-1, 0);
-                    break; 
+                    cameraEntity.Position += new PlanarVector(-1);
+                    break;
                 }
-                case (Key.A):
+
+                case Key.A:
                 {
                     cameraEntity.Position += new PlanarVector(0, 1);
                     break;
                 }
-                case (Key.D):
+
+                case Key.D:
                 {
                     cameraEntity.Position += new PlanarVector(0, -1);
                     break;
                 }
             }
+
             base.OnKeyDown(_e);
         }
 

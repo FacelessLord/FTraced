@@ -5,13 +5,12 @@ using System.Linq;
 using System.Net.Json;
 using GlLib.Common.Entities;
 using GlLib.Common.Io;
-using GlLib.Utils;
 
 namespace GlLib.Common.Map
 {
     public static class WorldManager
     {
-        private static Player GetPlayer => Proxy.GetClient().player;
+        private static EntityPlayer GetPlayer => Proxy.GetClient().entityPlayer;
 
         public static void SaveWorld(World _world)
         {
@@ -65,7 +64,7 @@ namespace GlLib.Common.Map
                     return (JsonObjectCollection) parser.Parse(fs);
                 }
             }
-            catch (FormatException e)
+            catch (FormatException)
             {
                 SidedConsole.WriteErrorLine("There something wrong with your entity file.\n" +
                                             "It can be result of death of all entities");

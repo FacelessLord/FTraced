@@ -1,6 +1,5 @@
 using GlLib.Client.Api.Renderers;
 using GlLib.Common.Entities;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK.Graphics.OpenGL;
 
@@ -10,7 +9,7 @@ namespace GlLib.Client.Graphic.Renderers
     {
         private Texture _texture;
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             _texture = Textures.monochromatic;
         }

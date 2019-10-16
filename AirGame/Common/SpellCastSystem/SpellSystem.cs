@@ -1,9 +1,9 @@
-﻿using GlLib.Common.Entities;
-using GlLib.Common.Entities.Casts.FromPlayer;
-using GlLib.Common.Io;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GlLib.Common.Entities;
+using GlLib.Common.Entities.Casts.FromPlayer;
+using GlLib.Common.Io;
 
 namespace GlLib.Common.SpellCastSystem
 {
@@ -97,6 +97,7 @@ namespace GlLib.Common.SpellCastSystem
                     SpellCaster.worldObj.SpawnEntity(
                         new AirShield(
                             SpellCaster.worldObj,
+                            SpellCaster,
                             SpellCaster.Position,
                             SpellCaster.velocity,
                             6000000 + 100000 * (uint) averageTime,

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GlLib.Client.Api.Gui;
-using GlLib.Client.Api.Sprites;
 using GlLib.Common;
 using GlLib.Common.Api.Inventory;
 using GlLib.Common.Entities;
@@ -12,19 +11,18 @@ namespace GlLib.Client.Graphic.Gui
 {
     public class PlayerInventoryGui : GuiInventory
     {
+        public EntityPlayer entityPlayer;
         public List<GuiSlotSign> signs = new List<GuiSlotSign>();
-        public Player player;
         private GuiSign tooltip;
 
-        public PlayerInventoryGui(Player _p) : base(_p.inventory)
+        public PlayerInventoryGui(EntityPlayer _p) : base(_p.inventory)
         {
 //            AddRectangle(100, 16, 4 * w / 9, 2 * h / 5);
-            player = _p;
+            entityPlayer = _p;
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
             AddInventory(_p.inventory, 100, 16);
             AddEquipment(_p.equip, 100 + 4 * w / 9, 16);
-
         }
 
         private int AddInventory(IInventory _inv, int _x, int _y)
@@ -37,19 +35,19 @@ namespace GlLib.Client.Graphic.Gui
             var panel = new GuiPanel(_x, _y, 50 + 3 * w / 9, ph);
             Add(panel);
             panel.bar = new GuiScrollBar(panel.width - 50, 0, 50, panel.height);
-            var dy = slotSize/2;
+            var dy = slotSize / 2;
             for (var i = 0; i < _inv.GetMaxSize(); i++)
             {
-                var rect = new GuiRectangle(slotSize/2, dy * i,
-                    panel.width - slotSize/2 - panel.bar.width - d, slotSize/2);
+                var rect = new GuiRectangle(slotSize / 2, dy * i,
+                    panel.width - slotSize / 2 - panel.bar.width - d, slotSize / 2);
                 panel.Add(rect);
                 var slotRect = new GuiRectangle(0, dy * i,
-                    slotSize/2, slotSize/2);
+                    slotSize / 2, slotSize / 2);
                 panel.Add(slotRect);
                 var slot = new GuiSlotTypeRenderer(_inv, i, 0, dy * i, slotSize / 2);
                 panel.Add(slot);
-                var text = new GuiSlotSign(_inv, 12, i, slotSize/2, dy * i,
-                    4 * w / 9 - d - slotSize * 5 / 4, slotSize/2);
+                var text = new GuiSlotSign(_inv, 12, i, slotSize / 2, dy * i,
+                    4 * w / 9 - d - slotSize * 5 / 4, slotSize / 2);
                 panel.Add(text);
                 signs.Add(text);
             }
@@ -62,7 +60,7 @@ namespace GlLib.Client.Graphic.Gui
             var dh = itemPanel.height / 2 - GuiSlot.SlotSize;
             var itemSlot = new GuiSlot(_inv, 5, dh);
             itemPanel.Add(itemSlot);
-            tooltip = new GuiSign("",16,GuiSlot.SlotSize*2 + 5,dh,0,0);
+            tooltip = new GuiSign("", 16, GuiSlot.SlotSize * 2 + 5, dh, 0, 0);
             itemPanel.Add(tooltip);
             return dh;
         }
@@ -72,7 +70,7 @@ namespace GlLib.Client.Graphic.Gui
             var slotSize = GuiSlot.SlotSize;
             var w = Proxy.GetWindow().Width;
             var h = Proxy.GetWindow().Height;
-            int d = 4;
+            var d = 4;
             var pw = 5 * d + slotSize * 3;
             var ph = 6 * d + slotSize * 4;
             var panel = new GuiPanel(_x, _y, pw, ph);
@@ -106,10 +104,7 @@ namespace GlLib.Client.Graphic.Gui
             base.Update(_window);
 
             var stack = inventory.GetStackInSlot(inventory.GetSelectedSlot());
-            if (stack != null)
-            {
-                tooltip.text = stack.GetTooltip().Aggregate((_a, _b) => _a + "\n" + _b);
-            }
+            if (stack != null) tooltip.text = stack.GetTooltip().Aggregate((_a, _b) => _a + "\n" + _b);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace GlLib.Client.Input
         public static readonly Hashtable ClickedKeys = new Hashtable();
         public static List<Key> keys = new List<Key>();
 
-        internal static ConcurrentBag<Action<Player>> implementedActions = new ConcurrentBag<Action<Player>>();
+        internal static ConcurrentBag<Action<EntityPlayer>> implementedActions = new ConcurrentBag<Action<EntityPlayer>>();
         internal static List<BindPattern> patterns = new List<BindPattern>();
 
 

@@ -2,7 +2,6 @@ using System;
 using System.Net.Json;
 using GlLib.Client.Api.Renderers;
 using GlLib.Common.Api;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Map
@@ -20,16 +19,6 @@ namespace GlLib.Common.Map
 
         public abstract string TextureName { get; internal set; }
         public Rotation Rotation { get; protected set; }
-
-        public void SetRotation(int _angle)
-        {
-            Rotation = (Rotation) _angle;
-        }
-
-        public void SetRotation(Rotation _rotation)
-        {
-            Rotation = _rotation;
-        }
 
         public JsonObject Serialize(string _objectName)
         {
@@ -56,6 +45,16 @@ namespace GlLib.Common.Map
             return "block";
         }
 
+        public void SetRotation(int _angle)
+        {
+            Rotation = (Rotation) _angle;
+        }
+
+        public void SetRotation(Rotation _rotation)
+        {
+            Rotation = _rotation;
+        }
+
         public virtual AxisAlignedBb GetCollisionBox()
         {
             return AxisAlignedBb.Zero;
@@ -68,30 +67,28 @@ namespace GlLib.Common.Map
 
         public string GetInternalName()
         {
-            return Name + ":" + (Rotation) Rotation;
+            return Name + ":" + Rotation;
         }
 
         public Tuple<string, int> FromInternalString(string _str)
         {
             var parsed = _str.Split(':');
             if (parsed.Length == 2)
-            {
                 switch (parsed[1])
                 {
-                    case "Down" :
-                        return Tuple.Create(parsed[0], (int)Rotation.Down);
+                    case "Down":
+                        return Tuple.Create(parsed[0], (int) Rotation.Down);
                     case "Left":
-                        return Tuple.Create(parsed[0], (int)Rotation.Left);
+                        return Tuple.Create(parsed[0], (int) Rotation.Left);
                     case "Up":
-                        return Tuple.Create(parsed[0], (int)Rotation.Up);
+                        return Tuple.Create(parsed[0], (int) Rotation.Up);
                     case "Right":
-                        return Tuple.Create(parsed[0], (int)Rotation.Right);
+                        return Tuple.Create(parsed[0], (int) Rotation.Right);
                     default:
-                        return Tuple.Create(_str, (int)Rotation.Down);
+                        return Tuple.Create(_str, (int) Rotation.Down);
                 }
-            }
-            else return Tuple.Create(_str, (int)Rotation.Down); // return default block 
 
+            return Tuple.Create(_str, (int) Rotation.Down); // return default block 
         }
 
 
@@ -99,6 +96,5 @@ namespace GlLib.Common.Map
         {
             return null;
         }
-
     }
 }

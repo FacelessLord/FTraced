@@ -1,6 +1,5 @@
 ﻿using System;
 using FluentAssertions;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using NUnit.Framework;
 

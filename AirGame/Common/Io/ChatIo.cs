@@ -6,8 +6,8 @@ namespace GlLib.Common.Io
 {
     public class ChatIo : IStringIo
     {
-        private List<string> _input = new List<string>();
         public const int MaxLines = 20;
+        private readonly List<string> _input = new List<string>();
 
         public void Output(string _s)
         {

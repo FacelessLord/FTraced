@@ -1,4 +1,5 @@
-﻿using GlLib.Client.Graphic.Renderers;
+﻿using System;
+using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
 using GlLib.Utils.Math;
 
@@ -7,16 +8,20 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
     public class AirShield : Entity
     {
         private const short BaseVelocity = 0;
+        public float size = 1.1f;
 
+        public Entity Caster { get; }
 
-        public AirShield(World _world, RestrictedVector3D _position, PlanarVector _velocity, uint _dieTime, int _damage)
+        public AirShield(World _world, Entity _caster, RestrictedVector3D _position, PlanarVector _velocity,
+            uint _dieTime, int _damage)
             : base(_world, _position)
         {
             DieTime = _dieTime;
             Damage = _damage;
+            Caster = _caster;
             velocity = _velocity * BaseVelocity;
             SetCustomRenderer(new AirShieldRenderer());
-            AaBb = new AxisAlignedBb(-3, -6, 3, 6);
+            AaBb = new AxisAlignedBb(-30, -30f, 30, 30f);
         }
 
         internal uint DieTime { get; }
@@ -27,13 +32,22 @@ namespace GlLib.Common.Entities.Casts.FromPlayer
             base.Update();
 
             if (InternalTicks > DieTime)
-                SetDead(true);
+                SetDead();
+
+            size *= 1.1f;
         }
 
         public override void OnCollideWith(Entity _obj)
         {
-            if (!(_obj is Player) && _obj is EntityLiving)
-                (_obj as EntityLiving).velocity *= -1;
+            PlanarVector r = _obj.Position - Position;
+            if (Caster != _obj && !(_obj is AirShield) && r.Length * r.Length <= size && r.Length * r.Length > 4)
+            {
+                var k = 8f;
+                var F = k * r / (r.Length * r.Length * r.Length);
+                if (F.Length > 0.5f)
+                    F.Length = 0.5f;
+                _obj.velocity += F;
+            }
         }
     }
 }

@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Json;
-using System.Threading;
 using GlLib.Common.Entities;
 using GlLib.Common.Events;
 using GlLib.Common.Io;
-using GlLib.Utils;
 using GlLib.Utils.Collections;
 using GlLib.Utils.Math;
 
@@ -21,8 +18,6 @@ namespace GlLib.Common.Map
         public int height;
 
         public JsonObjectCollection jsonObj;
-        public int MaxEntityCount { get; private set; } = 200;
-        public int EntityCount { get; private set; }
 
         public string mapName;
 
@@ -35,6 +30,9 @@ namespace GlLib.Common.Map
             mapName = _mapName;
             worldId = _worldId;
         }
+
+        public int MaxEntityCount { get; } = 200;
+        public int EntityCount { get; private set; }
 
         public bool FromStash { get; }
 
@@ -125,7 +123,8 @@ namespace GlLib.Common.Map
                 }
 
             return chunks.SelectMany(_c => _c.entities)
-                .ThreadSafeWhere(_entity => _entity.AaBb.IntersectsWithAt(ref _aabb, _entity.Position) && !_entity.noClip)
+                .ThreadSafeWhere(_entity =>
+                    _entity.AaBb.IntersectsWithAt(ref _aabb, _entity.Position) && !_entity.noClip)
                 .ToThreadSafeList();
         }
 

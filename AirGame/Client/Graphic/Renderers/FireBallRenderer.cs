@@ -2,7 +2,6 @@
 using GlLib.Client.Api.Renderers;
 using GlLib.Client.Api.Sprites;
 using GlLib.Common.Entities;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -11,12 +10,12 @@ namespace GlLib.Client.Graphic.Renderers
 {
     internal class FireBallRenderer : EntityRenderer
     {
-        private LinearSprite _sprite;
         private readonly double rotation;
+        private LinearSprite _sprite;
 
         public FireBallRenderer(PlanarVector _aim, Direction direction)
         {
-            if (_aim == new PlanarVector(0, 0))
+            if (_aim == new PlanarVector(0))
                 switch (direction)
                 {
                     case Direction.Right:
@@ -29,13 +28,13 @@ namespace GlLib.Client.Graphic.Renderers
             else rotation = _aim.Angle;
         }
 
-        public override void Setup(Entity _e)
+        protected override void Setup(Entity _e)
         {
             var layout = new TextureLayout(Textures.fireBall, 8, 8);
             _sprite = new LinearSprite(layout, 61, 6);
             _sprite.Scale(3f, 2);
             var box = _e.AaBb;
-            _sprite.Scale((float) box.Width, (float) box.Height);
+            _sprite.Scale(box.Width, box.Height);
         }
 
         public override void Render(Entity _e, PlanarVector _xAxis, PlanarVector _yAxis)

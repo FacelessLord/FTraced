@@ -5,7 +5,6 @@ using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Api;
 using GlLib.Common.Events;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Collections;
 using GlLib.Utils.Math;
 
@@ -19,21 +18,21 @@ namespace GlLib.Common.Entities
         public Chunk chunkObj;
         public Direction direction = Direction.Right;
 
-        private bool isDead;
-
         public bool isAffectedByFriction = true;
+
+        private bool isDead;
         public PlanarVector maxVel = new PlanarVector(0.7f, 0.7f);
 
         public NbtTag nbtTag = new NbtTag();
 
         public bool noClip;
-        protected RestrictedVector3D oldPosition = new RestrictedVector3D();
-        protected RestrictedVector3D position = new RestrictedVector3D();
+        protected RestrictedVector3D oldPosition;
+        protected RestrictedVector3D position;
 
         public EntityState state = EntityState.Idle;
         public int timeout = -1;
 
-        public PlanarVector velocity = new PlanarVector();
+        public PlanarVector velocity;
         public World worldObj;
 
         public Entity(World _world, RestrictedVector3D _position)
@@ -141,7 +140,7 @@ namespace GlLib.Common.Entities
             MoveEntity();
 
             if (isAffectedByFriction) velocity *= 0.85f;
-            
+
             if (!noClip)
                 foreach (var e in worldObj.GetEntitiesWithinAaBb(GetTranslatedAaBb()))
                     OnCollideWith(e);

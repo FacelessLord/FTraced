@@ -5,13 +5,11 @@ using GlLib.Common.Entities;
 using GlLib.Common.Io;
 using GlLib.Common.Items;
 using GlLib.Common.Map;
-using GlLib.Utils;
 
 namespace GlLib.Common.Registries
 {
     public class GameRegistry
     {
-        private bool _loaded;
         public BlocksRegistry blockRegistry;
 
         public Hashtable blocks = new Hashtable();
@@ -34,7 +32,6 @@ namespace GlLib.Common.Registries
             blockRegistry.Register();
             entitieRegistry.Register();
             itemRegistry.Register();
-            _loaded = true;
         }
 
         public void RegisterItem(Item _item)
@@ -47,7 +44,7 @@ namespace GlLib.Common.Registries
                 itemsById.Add(id, _item);
                 _item.id = id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Item with name {_item.unlocalizedName} had already been registered");
                 throw;
@@ -64,7 +61,7 @@ namespace GlLib.Common.Registries
                 blocksById.Add(id, _block);
                 _block.id = id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Block with name {_block.Name} had already been registered");
                 throw;
@@ -78,13 +75,12 @@ namespace GlLib.Common.Registries
                 SidedConsole.WriteLine("Registered: " + _name);
                 entities.Add(_name, _entityType);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SidedConsole.WriteLine($"Entity with name {_name} had already been registered");
                 throw;
             }
         }
-
 
 
         public TerrainBlock GetBlockFromName(string _blockName)
@@ -100,7 +96,7 @@ namespace GlLib.Common.Registries
         {
             if (blocks.ContainsKey(_blockName))
             {
-                _block =  (TerrainBlock) blocks[_blockName];
+                _block = (TerrainBlock) blocks[_blockName];
                 return true;
             }
 
@@ -126,7 +122,6 @@ namespace GlLib.Common.Registries
         }
 
 
-
         public Entity GetEntityFromName(string _entityName)
         {
             SidedConsole.WriteLine(_entityName + ", " + entities.ContainsKey(_entityName));
@@ -143,8 +138,8 @@ namespace GlLib.Common.Registries
         {
             if (entities.ContainsKey(_entityName))
             {
-                var clazz = (Type)entities[_entityName];
-                _entity = (Entity)Activator.CreateInstance(clazz);
+                var clazz = (Type) entities[_entityName];
+                _entity = (Entity) Activator.CreateInstance(clazz);
                 return true;
             }
 
@@ -153,13 +148,14 @@ namespace GlLib.Common.Registries
         }
 
 
-
-
         public Entity GetEntityFromJson(JsonObjectCollection _collection)
         {
             var entityId = ((JsonStringValue) _collection[0]).Value;
             var entity = GetEntityFromName(entityId);
-            entity.Deserialize(_collection);
+            if (entity is null)
+                Console.Write("Entity '" + entityId + "' is not registered");
+            else
+                entity.Deserialize(_collection);
             return entity;
         }
 

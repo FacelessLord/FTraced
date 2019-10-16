@@ -1,5 +1,4 @@
 ﻿using System;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 using NUnit.Framework;
 
@@ -21,8 +20,8 @@ namespace Tests.utils
         public void RestrictedVector3D_Vectors_Rotate()
         {
             //Arrange
-            var vector = new RestrictedVector3D(1, 0, 0);
-            var expected = new RestrictedVector3D(-1, 0, 0);
+            var vector = new RestrictedVector3D(1);
+            var expected = new RestrictedVector3D(-1);
             //Act
             //Rotating to U-turn
             //Assert
@@ -34,7 +33,7 @@ namespace Tests.utils
         {
             //Arrange
             var stringVector = "(1,1,0)";
-            var expected = new RestrictedVector3D(1, 1, 0);
+            var expected = new RestrictedVector3D(1, 1);
             //Act
             var result = RestrictedVector3D.FromString(stringVector);
             //Assert
@@ -45,7 +44,7 @@ namespace Tests.utils
         public void RestrictedVector3D_To_String()
         {
             //Arrange
-            var vector = new RestrictedVector3D(1, 1, 0);
+            var vector = new RestrictedVector3D(1, 1);
             var expectedString = "(1,1,0)";
             //Act
             var result = vector.ToString();
@@ -96,8 +95,8 @@ namespace Tests.utils
         public void RestrictedVector3D_Equal()
         {
             //Arrange
-            var v1 = new RestrictedVector3D(4, 1, 0);
-            var v2 = new RestrictedVector3D(4, 1, 0);
+            var v1 = new RestrictedVector3D(4, 1);
+            var v2 = new RestrictedVector3D(4, 1);
             //Act
             // operator ==
             //Assert
@@ -108,7 +107,7 @@ namespace Tests.utils
         public void RestrictedVector3D_Not_Equal()
         {
             //Arrange
-            var v1 = new RestrictedVector3D(4, 1, 0);
+            var v1 = new RestrictedVector3D(4, 1);
             var v2 = new RestrictedVector3D(-5, 4, 3);
             //Act
             // operator !=
@@ -120,22 +119,27 @@ namespace Tests.utils
         public void RestrictedVector3D_Sum_Same_Height()
         {
             //Arrange
-            var v1 = new RestrictedVector3D(1, 2, 0);
-            var v2 = new RestrictedVector3D(2, 1, 0);
+            var v1 = new RestrictedVector3D(1, 2);
+            var v2 = new RestrictedVector3D(2, 1);
             //Act
             var resultVector = v1 + v2;
             //Assert
-            Assert.AreEqual(resultVector, new RestrictedVector3D(3, 3, 0));
+            Assert.AreEqual(resultVector, new RestrictedVector3D(3, 3));
         }
 
         [Test]
         public void RestrictedVector3D_Sum_Not_Same_Height()
         {
             //Arrange
-            var v1 = new RestrictedVector3D(1, 2, 0);
+            var v1 = new RestrictedVector3D(1, 2);
             var v2 = new RestrictedVector3D(2, 1, 2);
+
             //Act
-            RestrictedVector3D Sum(RestrictedVector3D vector1, RestrictedVector3D vector2) => vector1 + vector2;
+            RestrictedVector3D Sum(RestrictedVector3D vector1, RestrictedVector3D vector2)
+            {
+                return vector1 + vector2;
+            }
+
             //Assert
             Assert.Throws<ArgumentException>(() => Sum(v1, v2));
         }
@@ -144,19 +148,19 @@ namespace Tests.utils
         public void RestrictedVector3D_Sub_Same_Height()
         {
             //Arrange
-            var v1 = new RestrictedVector3D(1, 2, 0);
-            var v2 = new RestrictedVector3D(2, 1, 0);
+            var v1 = new RestrictedVector3D(1, 2);
+            var v2 = new RestrictedVector3D(2, 1);
             //Act
             var resultVector = v1 - v2;
             //Assert
-            Assert.AreEqual(resultVector, new RestrictedVector3D(-1, 1, 0));
+            Assert.AreEqual(resultVector, new RestrictedVector3D(-1, 1));
         }
 
         [Test]
         public void RestrictedVector3D_Sub_Not_Same_Height()
         {
             //Arrange
-            var v1 = new RestrictedVector3D(1, 2, 0);
+            var v1 = new RestrictedVector3D(1, 2);
             var v2 = new RestrictedVector3D(2, 1, 2);
             //Act
             Func<RestrictedVector3D, RestrictedVector3D, RestrictedVector3D> sub = (vector1, vector2) =>
@@ -169,8 +173,8 @@ namespace Tests.utils
         public void RestrictedVector3D_Mult_Not_Same_Height()
         {
             //Arrange
-            var vector = new RestrictedVector3D(1, 1, 0);
-            var expectedVector = new RestrictedVector3D(2, 2, 0);
+            var vector = new RestrictedVector3D(1, 1);
+            var expectedVector = new RestrictedVector3D(2, 2);
             //Act
             //Multiplications of two vectors
             //Assert

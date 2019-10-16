@@ -29,8 +29,8 @@ namespace GlLib.Utils.Math
             z = _z;
         }
 
-        public int Ix => (int)MathF.Floor(x);
-        public int Iy => (int)MathF.Floor(y);
+        public int Ix => (int) MathF.Floor(x);
+        public int Iy => (int) MathF.Floor(y);
 
         public static RestrictedVector3D operator +(RestrictedVector3D _a, RestrictedVector3D _b)
         {
@@ -85,6 +85,12 @@ namespace GlLib.Utils.Math
         {
             return new RestrictedVector3D(_a.x * _k, _a.y * _k, _a.z);
         }
+
+        public static RestrictedVector3D operator /(RestrictedVector3D _a, float _k)
+        {
+            return new RestrictedVector3D(_a.x / _k, _a.y / _k, _a.z);
+        }
+
 
         public static RestrictedVector3D FromAngleAndHeight(float _angle, short _height)
         {

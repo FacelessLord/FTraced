@@ -1,7 +1,6 @@
 using GlLib.Client.Api.Renderers;
 using GlLib.Client.Graphic.Renderers;
 using GlLib.Common.Map;
-using GlLib.Utils;
 using GlLib.Utils.Math;
 
 namespace GlLib.Common.Blocks
@@ -10,7 +9,7 @@ namespace GlLib.Common.Blocks
     {
         public override string Name { get; protected set; } = "block.castle";
         public override string TextureName { get; internal set; } = ".";
-        
+
         public override bool RequiresSpecialRenderer(World _world, int _x, int _y)
         {
             return true;

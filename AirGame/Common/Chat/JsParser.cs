@@ -1,6 +1,5 @@
 using System;
 using GlLib.Client.Api;
-using GlLib.Common.Io;
 using GlLib.Utils.StringParser;
 using Jint;
 
@@ -8,8 +7,8 @@ namespace GlLib.Common.Chat
 {
     public class JsParser : IParser
     {
-        public Engine jsEngine;
         public bool isLogSetUp = false;
+        public Engine jsEngine;
 
         public JsParser()
         {
@@ -17,16 +16,9 @@ namespace GlLib.Common.Chat
             SetupEngine(jsEngine);
         }
 
-        private void SetupEngine(Engine _engine)
-        {
-            _engine.SetValue("whoami", new Action<Action<string>>(_io=> _io(Proxy.GetClient().player.nickname)));
-            
-//            _engine.SetValue("where", new Action<string, object>(SidedConsole.WriteLine(Proxy.GetServer().playerInfo[_name].Position)));
-        }
-
         public void Parse(string _arg, IStringIo _io)
         {
-            if(!isLogSetUp)
+            if (!isLogSetUp)
                 jsEngine.SetValue("log", new Action<string>(_io.Output));
             try
             {
@@ -36,6 +28,13 @@ namespace GlLib.Common.Chat
             {
                 _io.Output(e.ToString());
             }
+        }
+
+        private void SetupEngine(Engine _engine)
+        {
+            _engine.SetValue("whoami", new Action<Action<string>>(_io => _io(Proxy.GetClient().entityPlayer.nickname)));
+
+//            _engine.SetValue("where", new Action<string, object>(SidedConsole.WriteLine(Proxy.GetServer().playerInfo[_name].Position)));
         }
     }
 }

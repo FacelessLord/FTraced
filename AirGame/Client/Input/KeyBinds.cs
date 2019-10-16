@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using GlLib.Client.Graphic.Gui;
 using GlLib.Common;
 using GlLib.Common.Entities;
@@ -6,31 +9,27 @@ using GlLib.Common.Map;
 using GlLib.Common.SpellCastSystem;
 using GlLib.Utils.Math;
 using OpenTK.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GlLib.Client.Input
 {
     public class KeyBinds
     {
-        public static Dictionary<Key, Func<Player, bool>> binds = new Dictionary<Key, Func<Player, bool>>();
-        public static Dictionary<Key, Func<Player, bool>> clickBinds = new Dictionary<Key, Func<Player, bool>>();
+        public static Dictionary<Key, Func<EntityPlayer, bool>> binds = new Dictionary<Key, Func<EntityPlayer, bool>>();
+        public static Dictionary<Key, Func<EntityPlayer, bool>> clickBinds = new Dictionary<Key, Func<EntityPlayer, bool>>();
 
-        public static Dictionary<Func<Player, bool>, string> delegateNames =
-            new Dictionary<Func<Player, bool>, string>();
+        public static Dictionary<Func<EntityPlayer, bool>, string> delegateNames =
+            new Dictionary<Func<EntityPlayer, bool>, string>();
 
-        public static Func<Player, bool> moveLeft = _p =>
+        public static Func<EntityPlayer, bool> moveLeft = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.direction = Direction.Left;
             _p.SetState(EntityState.Walk, 3);
-            _p.velocity += new PlanarVector(-_p.accelerationValue, 0);
+            _p.velocity += new PlanarVector(-_p.accelerationValue);
             return true;
-
         };
 
-        public static Func<Player, bool> moveUp = _p =>
+        public static Func<EntityPlayer, bool> moveUp = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.SetState(EntityState.Walk, 3);
@@ -38,9 +37,8 @@ namespace GlLib.Client.Input
             return true;
         };
 
-        public static Func<Player, bool> setBlock = _p =>
+        public static Func<EntityPlayer, bool> setBlock = _p =>
         {
-
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             var chunkX = _p.Position.Ix / 16;
             var chunkY = _p.Position.Iy / 16;
@@ -48,11 +46,11 @@ namespace GlLib.Client.Input
             var blockX = _p.Position.Ix % 16;
             var blockY = _p.Position.Iy % 16;
 
-            _p.worldObj[chunkX, chunkY][blockX, blockY] = Proxy.GetClient().player.Brush;
+            _p.worldObj[chunkX, chunkY][blockX, blockY] = Proxy.GetClient().entityPlayer.Brush;
             return true;
         };
 
-        public static Func<Player, bool> saveWorld = _p =>
+        public static Func<EntityPlayer, bool> saveWorld = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             WorldManager.SaveChunks(_p.worldObj);
@@ -60,16 +58,16 @@ namespace GlLib.Client.Input
         };
 
 
-        public static Func<Player, bool> moveRight = _p =>
+        public static Func<EntityPlayer, bool> moveRight = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.SetState(EntityState.Walk, 3);
             _p.direction = Direction.Right;
-            _p.velocity += new PlanarVector(_p.accelerationValue, 0);
+            _p.velocity += new PlanarVector(_p.accelerationValue);
             return true;
         };
 
-        public static Func<Player, bool> moveDown = _p =>
+        public static Func<EntityPlayer, bool> moveDown = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.SetState(EntityState.Walk, 3);
@@ -77,70 +75,70 @@ namespace GlLib.Client.Input
             return true;
         };
 
-        public static Func<Player, bool> openInventory = _p =>
+        public static Func<EntityPlayer, bool> openInventory = _p =>
         {
             if (!Proxy.GetWindow().serverStarted) return false;
             Proxy.GetWindow().TryOpenGui(new PlayerInventoryGui(_p));
             return true;
         };
 
-        public static Func<Player, bool> openIngameMenu = _p =>
+        public static Func<EntityPlayer, bool> openIngameMenu = _p =>
         {
             if (!Proxy.GetWindow().serverStarted) return false;
             Proxy.GetWindow().TryOpenGui(new GuiIngameMenu(), true);
             return true;
         };
 
-        public static Func<Player, bool> openChat = _p =>
+        public static Func<EntityPlayer, bool> openChat = _p =>
         {
             if (!Proxy.GetWindow().serverStarted) return false;
             Proxy.GetWindow().TryOpenGui(new GuiChat());
             return true;
         };
 
-        public static Func<Player, bool> spawnSlime = _p =>
+        public static Func<EntityPlayer, bool> spawnSlime = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.worldObj.SpawnEntity(new EntitySlime(_p.worldObj, _p.Position));
             return true;
         };
 
-        public static Func<Player, bool> spawnBat = _p =>
+        public static Func<EntityPlayer, bool> spawnBat = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
-            _p.worldObj.SpawnEntity(new Bat(_p.worldObj, _p.Position));
+            _p.worldObj.SpawnEntity(new EntityBat(_p.worldObj, _p.Position));
             return true;
         };
 
-        public static Func<Player, bool> exit = _p =>
+        public static Func<EntityPlayer, bool> exit = _p =>
         {
             if (Proxy.GetWindow().CanMovementBeHandled())
                 Proxy.Exit = true;
             return true;
         };
 
-        public static Func<Player, bool> spellFire = _p =>
+        public static Func<EntityPlayer, bool> spellFire = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.spells.OnUpdate(ElementType.Fire);
             return true;
         };
 
-        public static Func<Player, bool> spellAir = _p =>
+        public static Func<EntityPlayer, bool> spellAir = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.spells.OnUpdate(ElementType.Air);
             return true;
         };
 
-        public static Func<Player, bool> spellEarth = _p =>
+        public static Func<EntityPlayer, bool> spellEarth = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.spells.OnUpdate(ElementType.Earth);
             return true;
         };
 
-        public static Func<Player, bool> spellWater = _p =>
+        public static Func<EntityPlayer, bool> spellWater = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.spells.OnUpdate(ElementType.Water);
@@ -148,7 +146,7 @@ namespace GlLib.Client.Input
         };
 
 
-        public static Func<Player, bool> attack = _p =>
+        public static Func<EntityPlayer, bool> attack = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             if (!(_p.state is EntityState.AttackInterrupted))
@@ -168,7 +166,7 @@ namespace GlLib.Client.Input
             return true;
         };
 
-        public static Func<Player, bool> spawnBox = _p =>
+        public static Func<EntityPlayer, bool> spawnBox = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             var box = new Box(_p.worldObj, _p.Position);
@@ -177,21 +175,21 @@ namespace GlLib.Client.Input
             return true;
         };
 
-        public static Func<Player, bool> spawnPile = _p =>
+        public static Func<EntityPlayer, bool> spawnPile = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.worldObj.SpawnEntity(new BonePile(_p.worldObj, _p.Position));
             return true;
         };
 
-        public static Func<Player, bool> spawnStreetlight = _p =>
+        public static Func<EntityPlayer, bool> spawnStreetlight = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.worldObj.SpawnEntity(new Streetlight(_p.worldObj, _p.Position));
             return true;
         };
 
-        public static Func<Player, bool> spawnPotion = _p =>
+        public static Func<EntityPlayer, bool> spawnPotion = _p =>
         {
             if (!Proxy.GetWindow().CanMovementBeHandled()) return false;
             _p.worldObj.SpawnEntity(new Potion(_p.worldObj, _p.Position));
@@ -227,28 +225,28 @@ namespace GlLib.Client.Input
             BindClick(Key.Number4, spellFire, "spell.fire");
         }
 
-        public static void Bind(Key _key, Func<Player, bool> _action, string _name)
+        public static void Bind(Key _key, Func<EntityPlayer, bool> _action, string _name)
         {
             binds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
             delegateNames.Add(_action, _name);
         }
 
-        public static void BindClick(Key _key, Func<Player, bool> _action, string _name)
+        public static void BindClick(Key _key, Func<EntityPlayer, bool> _action, string _name)
         {
             clickBinds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
             delegateNames.Add(_action, _name);
         }
 
-        public static void RebindClick(Key _key, Func<Player, bool> _action)
+        public static void RebindClick(Key _key, Func<EntityPlayer, bool> _action)
         {
             clickBinds.Remove(clickBinds.Keys.Single(_k => clickBinds[_k] == _action));
             clickBinds.Add(_key, _action);
             KeyboardHandler.RegisterKey(_key);
         }
 
-        public static void Rebind(Key _key, Func<Player, bool> _action)
+        public static void Rebind(Key _key, Func<EntityPlayer, bool> _action)
         {
             binds.Remove(binds.Keys.Single(_k => binds[_k] == _action));
             binds.Add(_key, _action);

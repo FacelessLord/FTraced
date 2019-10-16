@@ -5,8 +5,6 @@ using GlLib.Client;
 using GlLib.Common;
 using GlLib.Common.Entities;
 using GlLib.Common.Map;
-using GlLib.Utils;
-using GlLib.Utils.Collections;
 
 namespace GlLib.Server
 {
@@ -62,13 +60,13 @@ namespace GlLib.Server
             foreach (var world in worlds.Values) WorldManager.LoadWorld(world);
         }
 
-        public PlayerData GetDataFor(Player _player, string _password)
+        public PlayerData GetDataFor(EntityPlayer _entityPlayer, string _password)
         {
             //todo use password
-            if (playerInfo.ContainsKey(_player.nickname))
-                return playerInfo[_player.nickname];
+            if (playerInfo.ContainsKey(_entityPlayer.nickname))
+                return playerInfo[_entityPlayer.nickname];
             var data = new PlayerData();
-            playerInfo.Add(_player.nickname, data);
+            playerInfo.Add(_entityPlayer.nickname, data);
             return data;
         }
 

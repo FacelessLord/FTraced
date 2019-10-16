@@ -30,7 +30,7 @@ namespace GlLib.Client.Graphic.Gui
 
             var binds = KeyBinds.clickBinds.Concat(KeyBinds.binds).OrderBy(_ka => KeyBinds.delegateNames[_ka.Value])
                 .ToList();
-            for (int i = 0; i < binds.Count; i++)
+            for (var i = 0; i < binds.Count; i++)
             {
                 var bind = binds[i];
                 var dw = settings.width - settings.bar.width;

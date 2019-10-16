@@ -1,40 +1,45 @@
+using GlLib.Utils.Math;
+
 namespace GlLib.Common.Entities.Intelligence
 {
-    public class AIPursue<TTargetType> : IArtificialIntelligence where TTargetType : Entity
+    public class AiPursue<TTargetType> : IArtificialIntelligence where TTargetType : Entity
     {
-        private readonly int UpdateFrequency = 12;
-        public AISearch<TTargetType> searchAI { get; set; }
-        public float Speed { get; set; } = 0.2f;
+        private readonly int UpdateFrequency = 4;
 
-        public AIPursue(AISearch<TTargetType> _search, float _speed)
+        public AiPursue(AiSearch<TTargetType> _search, float _speed = 0.1f)
         {
-            searchAI = _search;
+            SearchAi = _search;
             Speed = _speed;
         }
 
-        public void Setup(EntityLiving _entity)
+        public AiSearch<TTargetType> SearchAi { get; set; }
+        public float Speed { get; set; }
+
+        public virtual void Setup(EntityLiving _entity)
         {
         }
 
-        public void Update(EntityLiving _entity)
+        public virtual void Update(EntityLiving _entity)
         {
-            var target = searchAI.Target;
+            var target = SearchAi.Target;
             if (!(target is null))
             {
-                UpdateEntityHeading(_entity, target);
+                if (_entity.InternalTicks % UpdateFrequency == 0)
+                    UpdateEntityHeading(_entity, target);
                 _entity.state = EntityState.DirectedAttack;
             }
         }
-        
-        private void UpdateEntityHeading(EntityLiving _entity, TTargetType _target)
+
+        public virtual void OnCollision(EntityLiving _entity, Entity _collider)
         {
-            _entity.velocity = _target.Position - _entity.Position;
-            _entity.velocity.Normalize();
-            _entity.velocity *= Speed;//TODO just rotation towards target or with given speed
         }
 
-        public void OnCollision(EntityLiving _entity, Entity _collider)
+        protected virtual void UpdateEntityHeading(EntityLiving _entity, TTargetType _target)
         {
+            PlanarVector dvelocity = _target.Position - _entity.Position;
+            dvelocity.Normalize();
+            dvelocity *= Speed; //TODO just rotation towards target or with given speed
+            _entity.velocity += dvelocity;
         }
     }
 }
